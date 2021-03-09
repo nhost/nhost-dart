@@ -307,9 +307,10 @@ class Auth {
     };
   }
 
-  void _autoLogin(String refreshToken) {
-    _refreshToken(refreshToken);
-  }
+  // TODO(shyndman): How should this work?
+  // void _autoLogin(String refreshToken) {
+  //   _refreshToken(refreshToken);
+  // }
 
   Future<void> _refreshToken([String initRefreshToken]) async {
     final refreshToken = initRefreshToken ??
