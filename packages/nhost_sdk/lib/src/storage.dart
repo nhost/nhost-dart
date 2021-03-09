@@ -13,8 +13,11 @@ class Storage {
   final ApiClient _apiClient;
   final UserSession _currentSession;
 
-  Storage({String baseUrl, UserSession session})
-      : _apiClient = ApiClient(Uri.parse(baseUrl)),
+  Storage({
+    @required String baseUrl,
+    @required UserSession session,
+    HttpClient httpClient,
+  })  : _apiClient = ApiClient(Uri.parse(baseUrl), httpClient: httpClient),
         _currentSession = session;
 
   Future<FileMetadata> putFileFromBytes({

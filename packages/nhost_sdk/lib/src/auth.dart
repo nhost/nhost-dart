@@ -20,14 +20,15 @@ const refreshTokenClientStorageKey = 'nhostRefreshToken';
 
 class Auth {
   Auth({
-    String baseUrl,
+    @required String baseUrl,
     Duration refreshInterval,
     UserSession session,
     ClientStorage clientStorage,
     bool autoLogin,
-  })  : _clientStorage = clientStorage,
+    HttpClient httpClient,
+  })  : _apiClient = ApiClient(Uri.parse(baseUrl), httpClient: httpClient),
+        _clientStorage = clientStorage,
         _tokenRefreshInterval = refreshInterval,
-        _apiClient = ApiClient(Uri.parse(baseUrl)),
         _currentSession = session {
     _refreshIntervalSleepCheckLastSample = DateTime.now();
     _sampleRate = Duration(milliseconds: 2000); // check every 2 seconds
