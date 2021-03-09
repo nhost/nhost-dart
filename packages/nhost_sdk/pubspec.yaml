@@ -1,15 +1,16 @@
-name: nhost_sdk
-description: A starting point for Dart libraries or applications.
-# version: 1.0.0
-# homepage: https://www.example.com
+name: nhost_dart_sdk
+description:
+private: true
 
 environment:
   sdk: '>=2.7.0 <3.0.0'
 
 dependencies:
+  http: ^0.13.0
   json_annotation: ^3.0.0
   jwt_decoder: ^2.0.0
   meta: ^1.0.0
+  path: ^1.0.0
   pedantic: ^1.8.0
 
 dev_dependencies:

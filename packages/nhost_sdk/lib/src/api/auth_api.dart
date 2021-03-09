@@ -6,25 +6,20 @@ import 'core_codec.dart';
 
 part 'auth_api.g.dart';
 
-@JsonSerializable(fieldRename: FieldRename.snake)
 class AuthResponse {
-  AuthResponse({
-    this.session,
-    this.user,
-    this.mfa,
-  });
-
+  AuthResponse({this.session, this.user, this.mfa});
   final Session session;
   final User user;
-
-  /// Multi-factor Authentication information.
-  ///
-  /// This field will be `null` if MFA is not enabled for the user.
   final MultiFactorAuthenticationInfo mfa;
 
-  static AuthResponse fromJson(Map<String, dynamic> json) =>
-      _$AuthResponseFromJson(json);
-  Map<String, dynamic> toJson() => _$AuthResponseToJson(this);
+  static AuthResponse fromJson(Map<String, dynamic> json) {
+    if (json['mfa'] == true) {
+      return AuthResponse(mfa: MultiFactorAuthenticationInfo.fromJson(json));
+    } else {
+      final session = Session.fromJson(json);
+      return AuthResponse(session: session, user: session.user);
+    }
+  }
 }
 
 @JsonSerializable(fieldRename: FieldRename.snake)
@@ -34,6 +29,7 @@ class Session {
     this.jwtExpiresIn,
     this.refreshToken,
     this.user,
+    this.mfa,
   });
 
   final String jwtToken;
@@ -44,6 +40,11 @@ class Session {
   final Duration jwtExpiresIn;
   final String refreshToken;
   final User user;
+
+  /// Multi-factor Authentication information.
+  ///
+  /// This field will be `null` if MFA is not enabled for the user.
+  final MultiFactorAuthenticationInfo mfa;
 
   static Session fromJson(Map<String, dynamic> json) => _$SessionFromJson(json);
   Map<String, dynamic> toJson() => _$SessionToJson(this);
@@ -75,8 +76,8 @@ class MultiFactorAuthenticationInfo {
 }
 
 @JsonSerializable(fieldRename: FieldRename.snake)
-class MfaResponse {
-  MfaResponse({this.qrCode, this.otpSecret});
+class MultiFactorAuthResponse {
+  MultiFactorAuthResponse({this.qrCode, this.otpSecret});
 
   /// Base64 data: image of the QR code
   @JsonKey(
@@ -89,7 +90,7 @@ class MfaResponse {
   /// OTP secret
   final String otpSecret;
 
-  static MfaResponse fromJson(Map<String, dynamic> json) =>
-      _$MfaResponseFromJson(json);
-  Map<String, dynamic> toJson() => _$MfaResponseToJson(this);
+  static MultiFactorAuthResponse fromJson(Map<String, dynamic> json) =>
+      _$MultiFactorAuthResponseFromJson(json);
+  Map<String, dynamic> toJson() => _$MultiFactorAuthResponseToJson(this);
 }

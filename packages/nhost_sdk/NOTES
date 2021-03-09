@@ -1,0 +1,69 @@
+* Q: What's the deal with refreshToken?
+* Request timeout isn't set on the client
+* Q: How does login provider work?
+  * Provider doesn't make sense in this context
+* Changed name of MFA* methods
+* Changed getClaim to only return nullable strings
+* Q: Can the session's user ever differ from the top-level user in the auth
+     response
+* Addition: File.toHttpHeaders or File.updateHttpHeaders
+* Change: Made unsubscribe delegate non-destructive and silent
+* BUGS
+  * DOCS
+    * /auth/mfa/generate reads qe code, not qr code
+    * login response is incorrect — there is no session
+    * MFAGenerate docs show the wrong params
+    * mfa/totp URL is wrong
+      https://docs.nhost.io/auth/api-reference#totp-login
+    * logout URL is wrong (all is being passed as a body arg, not a query arg)
+      https://docs.nhost.io/auth/api-reference#logout-user
+  * Unsubscribe listener functions can potentially remove listeners other than
+    themselves
+  * mfa/generate requires an empty JSON object body (should allow null body)
+* Sleep timer won't make sense for Dart, since periodic timers stack up. To
+  read: https://github.com/dart-lang/sdk/issues/23487
+* Q: Do we need toJSONs?
+* toStrings would be nice for the core types
+* Q: Do we need to support custom JWT keys? (hasura settings mentions them)
+* Q: user_data.name not allowed?
+* DART BUG:
+  * ContentType does not implement equality
+    * Posted https://github.com/dart-lang/sdk/issues/34061#issuecomment-793332807
+      to encourage an API change here
+* IDEA: More specific exceptions
+  * User already registered
+  * Invalid user data
+  * Consider renaming mfaTotp to completeMfaLogin or something
+* IDEA: API fool-proofing
+  * It's an API that reduces the opportunity for mistakes
+  * For example, a login() or register() call returns an object that is able
+    to perform operations specific to the user
+  * This has the added benefit of allowing multiple logged in users
+    simultaneously
+
+* Q: The decoded QR code provides a lot more information than the mfa/generate
+     response.
+     secret=BASXODRVLFSX452T&period=30&digits=6&algorithm=SHA1&issuer=HBP
+
+     otp_secret does not appear to be enough to generate a code. Should we also
+     return these additional values from the backend? OR document them?
+
+
+# TESTING
+
+## APIs
+### AUTH
+* register
+* login
+* logout
+* activate
+* changeEmail
+* requestEmailChange
+* confirmEmailChange
+* changePassword
+* requestPasswordChange
+* confirmPasswordChange
+* generateMfa
+* enableMfa
+* disableMfa
+* mfaTotp

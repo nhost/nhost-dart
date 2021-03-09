@@ -1,11 +1,5 @@
 void debugPrint(String message) {
-  print('DEBUG $message');
+  print('$message');
 }
 
-void warnPrint(String message) {
-  print('WARN  $message');
-}
-
-void errorPrint(String message) {
-  print('ERROR $message');
-}
+bool debugPrintApiCalls = true;

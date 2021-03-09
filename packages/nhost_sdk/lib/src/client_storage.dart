@@ -1,19 +1,24 @@
+import 'dart:async';
+
+/// Base class whose implementors are used to persist information longer-term.
 abstract class ClientStorage {
-  Future<String> getString(String key);
-  Future<void> setString(String key, String value);
-  Future<void> removeItem(String key);
+  FutureOr<String> getString(String key);
+  FutureOr<void> setString(String key, String value);
+  FutureOr<void> removeItem(String key);
 }
 
 /// Implements the [ClientStorage] interface using an internal [Map].
+///
+/// All methods are synchronous.
 class InMemoryClientStorage implements ClientStorage {
   final Map<String, String> _map = {};
 
   @override
-  Future<String> getString(String key) async => _map[key];
+  String getString(String key) => _map[key];
 
   @override
-  Future<void> removeItem(String key) async => _map.remove(key);
+  void removeItem(String key) => _map.remove(key);
 
   @override
-  Future<void> setString(String key, String value) async => _map[key] = value;
+  void setString(String key, String value) => _map[key] = value;
 }
