@@ -1,7 +1,7 @@
 # Nhost Dart SDK
 
 [![Pub](https://img.shields.io/pub/v/nhost_dart_sdk)](https://pub.dev/packages/nhost_dart_sdk)
-[![Github test](https://github.com/shyndman/nhost_dart_sdk/workflows/test/badge.svg)](https://github.com/shyndman/nhost_dart_sdk/actions?query=test)
+[![Github test](https://github.com/shyndman/nhost-dart-sdk/workflows/test/badge.svg)](https://github.com/shyndman/nhost-dart-sdk/actions?query=test)
 
 ## Getting Started
 
