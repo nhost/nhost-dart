@@ -1,5 +1,5 @@
 name: nhost_dart_sdk
-description: Nhost APIs for the Dart language
+description: Nhost authentication and file storage/retrieval APIs for the Dart language
 homepage: https://nhost.io
 reposity: https://github.com/nhost-dart-sdk
 private: true

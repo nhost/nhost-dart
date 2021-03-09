@@ -209,7 +209,7 @@ class Auth {
   }
 
   Future<void> activate(String ticket) async {
-    await _apiClient.get('/activate?ticket=${ticket}');
+    await _apiClient.get('/activate?ticket=$ticket');
   }
 
   Future<void> changeEmail(String newEmail) async {
