@@ -1,5 +1,7 @@
 library nhost_dart_sdk;
 
+import 'dart:io';
+
 import 'package:meta/meta.dart';
 
 import 'src/auth.dart';
@@ -32,8 +34,20 @@ class NhostClient {
   final bool _autoLogin;
   final UserSession _session;
 
+  @nonVirtual
+  HttpClient get httpClient => _httpClient ??= createHttpClient();
+  HttpClient _httpClient;
+
+  /// Creates the [HttpClient] to be used by this client's APIs.
+  ///
+  /// Can be overridden by subclasses. Useful for introducing custom clients for
+  /// proxies, or debugging.
+  @protected
+  HttpClient createHttpClient() => HttpClient();
+
   Auth get auth => _auth ??= Auth(
         baseUrl: '$baseUrl/auth',
+        httpClient: httpClient,
         autoLogin: _autoLogin,
         clientStorage: clientStorage,
         refreshInterval: _refreshInterval,
@@ -43,6 +57,7 @@ class NhostClient {
 
   Storage get storage => _storage ??= Storage(
         baseUrl: '$baseUrl/storage',
+        httpClient: httpClient,
         session: _session,
       );
   Storage _storage;

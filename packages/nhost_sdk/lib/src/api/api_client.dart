@@ -17,9 +17,11 @@ final _jsonContentType = ContentType.json.toString();
 /// * throws exceptions if response status codes fall outside of the 2xx range
 /// * automatically encodes request bodies as JSON
 class ApiClient {
-  ApiClient(Uri baseUrl)
-      : _baseUrl = baseUrl,
-        _httpClient = _createHttpClient();
+  ApiClient(
+    Uri baseUrl, {
+    HttpClient httpClient,
+  })  : _baseUrl = baseUrl,
+        _httpClient = http.IOClient(httpClient);
 
   final http.Client _httpClient;
   final Uri _baseUrl;
@@ -173,16 +175,6 @@ class ApiException {
       return '';
     }
   }
-}
-
-http.Client _createHttpClient() {
-  final innerClient = HttpClient();
-  // innerClient.findProxy = HttpClient.findProxyFromEnvironment;
-  // innerClient.badCertificateCallback = (cert, host, port) {
-  //   print('bad cert $host');
-  //   return true;
-  // };
-  return http.IOClient(innerClient);
 }
 
 typedef JsonDeserializer<ResponseType> = ResponseType Function(dynamic json);
