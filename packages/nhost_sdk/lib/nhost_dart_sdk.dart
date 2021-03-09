@@ -29,7 +29,7 @@ class NhostClient {
   final UserSession _session;
 
   Auth get auth => _auth ??= Auth(
-        baseUrl: baseUrl,
+        baseUrl: '$baseUrl/auth',
         autoLogin: _autoLogin,
         clientStorage: clientStorage,
         refreshInterval: _refreshInterval,
