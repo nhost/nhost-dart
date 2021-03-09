@@ -4,7 +4,7 @@ on: push
 jobs:
   # Ensure that the package meets a 100% pub.dev score (which impacts the sort
   # order of search results on the package manager site)
-  quality:
+  score:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -20,8 +20,10 @@ jobs:
         # "analysis" is the id set above
         TOTAL: ${{ steps.analysis.outputs.total }}
         TOTAL_MAX: ${{ steps.analysis.outputs.total_max }}
+        PLATFORMS: ${{ steps.analysis.outputs.platforms }}
+        PLATFORMS_MAX: ${{ steps.analysis.outputs.platforms_max }}
       run: |
-        PERCENTAGE=$(( $TOTAL * 100 / $TOTAL_MAX ))
+        PERCENTAGE=$((( $TOTAL - $PLATFORMS ) * 100 / ( $TOTAL_MAX - $PLATFORMS_MAX )))
         if (( $PERCENTAGE < 100 ))
         then
           echo Score to low.
