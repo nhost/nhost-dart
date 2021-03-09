@@ -26,6 +26,12 @@ class ApiClient {
   final http.Client _httpClient;
   final Uri _baseUrl;
 
+  void close() {
+    try {
+      _httpClient.close();
+    } catch (_) {}
+  }
+
   Future<ResponseType> delete<ResponseType>(
     String path, {
     Map<String, String> headers,

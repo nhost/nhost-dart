@@ -61,4 +61,11 @@ class NhostClient {
         session: _session,
       );
   Storage _storage;
+
+  /// Releases the resources used by this client.
+  void close() {
+    _auth?.close();
+    _storage?.close();
+    _httpClient?.close();
+  }
 }

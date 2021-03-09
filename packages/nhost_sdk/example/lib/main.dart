@@ -15,6 +15,9 @@ void main() async {
   // Single file
   print((await showFileMetadata(client)).toJson());
 
+  // Release
+  client.close();
+
   // // final another = await client.auth.mfaTotp(code: '574781', ticket: authRes.mfa.ticket);
   // // print(client.auth.isAuthenticated);
   // // await client.auth.disableMfa(code: '574781');
