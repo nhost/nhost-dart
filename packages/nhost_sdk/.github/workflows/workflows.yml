@@ -1,32 +1,60 @@
-name: workflows
+name: nhost-api-workflows
 
 # This workflow is triggered on pushes to the repository.
 
 on: push
 
 jobs:
+  # Analyzes, checks formatting, and tests the packages
   test:
     # This job will run on ubuntu virtual machine
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
 
-    # Setup the flutter environment.
+    # Setup the flutter environment
     - uses: subosito/flutter-action@v1.4.0
       with:
         channel: 'stable'
 
-    # Get flutter dependencies.
+    # Get package dependencies
     - run: pub get
 
-    # Check for any formatting issues in the code.
+    # Check for any formatting issues in the code
     - run: dart format --set-exit-if-changed .
 
-    # Statically analyze the Dart code for any errors.
+    # Statically analyze the Dart code for any errors
     - run: dart analyze .
 
     # Do the same for examples
     - run: dart analyze ./example
 
-    # Run widget tests for our flutter project.
+    # Run widget tests for our flutter project
     - run: pub run test
+
+  # Ensure that the package meets a 100% pub.dev score (which impacts the sort
+  # order of search results on the package manager site)
+  quality:
+    # This job will run on ubuntu virtual machine
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - uses: axel-op/dart-package-analyzer@v3
+      # set an id for the current step
+      id: analysis
+      with:
+        githubToken: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Require analysis perfection
+      env:
+        # "analysis" is the id set above
+        TOTAL: ${{ steps.analysis.outputs.total }}
+        TOTAL_MAX: ${{ steps.analysis.outputs.total_max }}
+      run: |
+        PERCENTAGE=$(( $TOTAL * 100 / $TOTAL_MAX ))
+        if (( $PERCENTAGE < 100 ))
+        then
+          echo Score to low.
+          exit 1
+        fi
