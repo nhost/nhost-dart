@@ -6,26 +6,38 @@ import 'core_codec.dart';
 
 part 'storage_api.g.dart';
 
-@JsonSerializable(fieldRename: FieldRename.pascal)
-class File {
-  String key;
-  String acceptRanges;
-  DateTime lastModified;
-  int contentLength;
-  String eTag;
-  @JsonKey(fromJson: contentTypeFromString, toJson: contentTypeToString)
-  ContentType contentType;
+@JsonSerializable(fieldRename: FieldRename.pascal, explicitToJson: true)
+class FileMetadata {
+  FileMetadata({
+    this.key,
+    this.acceptRanges,
+    this.lastModified,
+    this.contentLength,
+    this.eTag,
+    this.contentType,
+    this.nhostMetadata,
+  });
 
-  static File fromJson(Map<String, dynamic> json) => _$FileFromJson(json);
-  Map<String, dynamic> toJson() => _$FileToJson(this);
+  final String key;
+  final String acceptRanges;
+  final DateTime lastModified;
+  final int contentLength;
+  final String eTag;
+  @JsonKey(fromJson: contentTypeFromString, toJson: contentTypeToString)
+  final ContentType contentType;
+  @JsonKey(name: 'Metadata')
+  final FileNhostMetadata nhostMetadata;
+
+  static FileMetadata fromJson(dynamic json) => _$FileMetadataFromJson(json);
+  Map<String, dynamic> toJson() => _$FileMetadataToJson(this);
 }
 
 @JsonSerializable(fieldRename: FieldRename.snake)
-class FileMetadata {
-  FileMetadata({this.token});
+class FileNhostMetadata {
+  FileNhostMetadata({this.token});
   final String token;
 
-  static FileMetadata fromJson(Map<String, dynamic> json) =>
-      _$FileMetadataFromJson(json);
-  Map<String, dynamic> toJson() => _$FileMetadataToJson(this);
+  static FileNhostMetadata fromJson(dynamic json) =>
+      _$FileNhostMetadataFromJson(json);
+  Map<String, dynamic> toJson() => _$FileNhostMetadataToJson(this);
 }

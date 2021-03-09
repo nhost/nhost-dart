@@ -27,7 +27,8 @@ class Auth {
     bool autoLogin,
   })  : _clientStorage = clientStorage,
         _tokenRefreshInterval = refreshInterval,
-        _apiClient = ApiClient(Uri.parse(baseUrl)) {
+        _apiClient = ApiClient(Uri.parse(baseUrl)),
+        _currentSession = session {
     _refreshIntervalSleepCheckLastSample = DateTime.now();
     _sampleRate = Duration(milliseconds: 2000); // check every 2 seconds
 
@@ -35,7 +36,6 @@ class Auth {
     _loading = true;
 
     _currentUser = null;
-    _currentSession = session;
 
     // Get refresh token from query param (from external OAuth provider
     // callback)
@@ -70,7 +70,7 @@ class Auth {
   User _currentUser;
   final ClientStorage _clientStorage;
 
-  UserSession _currentSession;
+  final UserSession _currentSession;
 
   bool get isAuthenticated {
     if (_loading) return null;

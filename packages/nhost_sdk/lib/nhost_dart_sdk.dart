@@ -5,6 +5,10 @@ import 'package:meta/meta.dart';
 import 'src/auth.dart';
 import 'src/client_storage.dart';
 import 'src/session.dart';
+import 'src/storage.dart';
+
+export 'src/api/auth_api.dart';
+export 'src/api/storage_api.dart';
 
 class NhostClient {
   NhostClient({
@@ -36,4 +40,10 @@ class NhostClient {
         session: _session,
       );
   Auth _auth;
+
+  Storage get storage => _storage ??= Storage(
+        baseUrl: '$baseUrl/storage',
+        session: _session,
+      );
+  Storage _storage;
 }

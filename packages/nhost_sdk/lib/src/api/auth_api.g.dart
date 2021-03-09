@@ -25,8 +25,8 @@ Map<String, dynamic> _$SessionToJson(Session instance) => <String, dynamic>{
       'jwt_token': instance.jwtToken,
       'jwt_expires_in': durationToMs(instance.jwtExpiresIn),
       'refresh_token': instance.refreshToken,
-      'user': instance.user,
-      'mfa': instance.mfa,
+      'user': instance.user?.toJson(),
+      'mfa': instance.mfa?.toJson(),
     };
 
 User _$UserFromJson(Map<String, dynamic> json) {

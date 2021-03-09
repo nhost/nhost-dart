@@ -12,7 +12,7 @@ class AuthResponse {
   final User user;
   final MultiFactorAuthenticationInfo mfa;
 
-  static AuthResponse fromJson(Map<String, dynamic> json) {
+  static AuthResponse fromJson(dynamic json) {
     if (json['mfa'] == true) {
       return AuthResponse(mfa: MultiFactorAuthenticationInfo.fromJson(json));
     } else {
@@ -22,7 +22,7 @@ class AuthResponse {
   }
 }
 
-@JsonSerializable(fieldRename: FieldRename.snake)
+@JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 class Session {
   Session({
     this.jwtToken,
@@ -46,11 +46,11 @@ class Session {
   /// This field will be `null` if MFA is not enabled for the user.
   final MultiFactorAuthenticationInfo mfa;
 
-  static Session fromJson(Map<String, dynamic> json) => _$SessionFromJson(json);
+  static Session fromJson(dynamic json) => _$SessionFromJson(json);
   Map<String, dynamic> toJson() => _$SessionToJson(this);
 }
 
-@JsonSerializable(fieldRename: FieldRename.snake)
+@JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 class User {
   User({this.id, this.displayName, this.email});
 
@@ -58,11 +58,11 @@ class User {
   final String displayName;
   final String email;
 
-  static User fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
+  static User fromJson(dynamic json) => _$UserFromJson(json);
   Map<String, dynamic> toJson() => _$UserToJson(this);
 }
 
-@JsonSerializable(fieldRename: FieldRename.snake)
+@JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 class MultiFactorAuthenticationInfo {
   MultiFactorAuthenticationInfo({this.ticket});
 
@@ -75,7 +75,7 @@ class MultiFactorAuthenticationInfo {
   Map<String, dynamic> toJson() => _$MultiFactorAuthenticationInfoToJson(this);
 }
 
-@JsonSerializable(fieldRename: FieldRename.snake)
+@JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 class MultiFactorAuthResponse {
   MultiFactorAuthResponse({this.qrCode, this.otpSecret});
 
@@ -90,7 +90,7 @@ class MultiFactorAuthResponse {
   /// OTP secret
   final String otpSecret;
 
-  static MultiFactorAuthResponse fromJson(Map<String, dynamic> json) =>
+  static MultiFactorAuthResponse fromJson(dynamic json) =>
       _$MultiFactorAuthResponseFromJson(json);
   Map<String, dynamic> toJson() => _$MultiFactorAuthResponseToJson(this);
 }
