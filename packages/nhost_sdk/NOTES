@@ -20,6 +20,11 @@
   * Unsubscribe listener functions can potentially remove listeners other than
     themselves
   * mfa/generate requires an empty JSON object body (should allow null body)
+  * Bad path joining in Storage.ts
+  * Storage doesn't work outside of web pages, I don't think
+  * POST to /storage/o returns a response with "key" field, but
+    GET /storage/m for a directory lists the field as "Key" (capitalized)
+    GET /storage/m for a file is "key" lowercase
 * Sleep timer won't make sense for Dart, since periodic timers stack up. To
   read: https://github.com/dart-lang/sdk/issues/23487
 * Q: Do we need toJSONs?
@@ -47,10 +52,12 @@
 
      otp_secret does not appear to be enough to generate a code. Should we also
      return these additional values from the backend? OR document them?
-
+* Q: Should we automatically add a trailing slash to the getDirectoryMetadata
+     path
+* DOCS:
+  * Storage Rules should be better documented
 
 # TESTING
-
 ## APIs
 ### AUTH
 * register

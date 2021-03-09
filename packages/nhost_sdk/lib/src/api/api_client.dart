@@ -24,30 +24,72 @@ class ApiClient {
   final http.Client _httpClient;
   final Uri _baseUrl;
 
-  Future<ResponseType> get<ResponseType>(
+  Future<ResponseType> delete<ResponseType>(
     String path, {
     Map<String, String> headers,
-    ResponseType Function(Map<String, dynamic>) responseDeserializer,
+    JsonDeserializer<ResponseType> responseDeserializer,
   }) async {
     return send<ResponseType>(
-      'get',
-      path,
+      _newApiRequest('delete', path),
       headers: headers,
       responseDeserializer: responseDeserializer,
     );
   }
 
-  /// [data] is a JSON-serializable map
+  Future<ResponseType> get<ResponseType>(
+    String path, {
+    Map<String, String> headers,
+    JsonDeserializer<ResponseType> responseDeserializer,
+  }) async {
+    return send<ResponseType>(
+      _newApiRequest('get', path),
+      headers: headers,
+      responseDeserializer: responseDeserializer,
+    );
+  }
+
   Future<ResponseType> post<ResponseType>(
     String path, {
     Map<String, dynamic> data,
     Map<String, String> headers,
-    ResponseType Function(Map<String, dynamic>) responseDeserializer,
+    JsonDeserializer<ResponseType> responseDeserializer,
+  }) async {
+    final request = _newApiRequest('post', path);
+    if (data != null) {
+      request
+        ..body = jsonEncode(data)
+        ..headers.addAll({
+          HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8',
+        });
+    }
+
+    return send<ResponseType>(
+      request,
+      headers: headers,
+      responseDeserializer: responseDeserializer,
+    );
+  }
+
+  Future<ResponseType> postMultipart<ResponseType>(
+    String path, {
+    Iterable<http.MultipartFile> files,
+    Map<String, String> headers,
+    JsonDeserializer<ResponseType> responseDeserializer,
   }) async {
     return send<ResponseType>(
-      'post',
-      path,
-      data: data,
+      http.MultipartRequest('post', _baseUrl.extend(path))..files.addAll(files),
+      headers: headers,
+      responseDeserializer: responseDeserializer,
+    );
+  }
+
+  Future<ResponseType> put<ResponseType>(
+    String path, {
+    Map<String, String> headers,
+    JsonDeserializer<ResponseType> responseDeserializer,
+  }) async {
+    return send<ResponseType>(
+      _newApiRequest('put', path),
       headers: headers,
       responseDeserializer: responseDeserializer,
     );
@@ -55,67 +97,59 @@ class ApiClient {
 
   /// [data] is a JSON-serializable map
   Future<ResponseType> send<ResponseType>(
-    String method,
-    String path, {
-    Map<String, dynamic> data,
+    http.BaseRequest request, {
     Map<String, String> headers,
-    ResponseType Function(Map<String, dynamic>) responseDeserializer,
+    JsonDeserializer<ResponseType> responseDeserializer,
   }) async {
-    final apiUrl = _baseUrl.extend(path);
-
-    final request = http.Request(method, apiUrl)
-      ..encoding = utf8
-      ..headers.addAll({...?headers});
-
-    if (data != null) {
-      request
-        ..body = jsonEncode(data)
-        ..headers.addAll({
-          if (request.headers.containsKey(HttpHeaders.contentTypeHeader))
-            HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8',
-        });
-    }
-
-    if (debugPrintApiCalls) {
-      debugPrint('\nREQUEST');
-      debugPrint('${request.method} $apiUrl');
-      debugPrint(request.headers.entries
-          .map((e) => '${e.key}: ${e.value}')
-          .join('\n'));
-      debugPrint(request.body);
+    if (headers != null) {
+      request.headers.addAll(headers);
     }
 
     final response =
         await http.Response.fromStream(await _httpClient.send(request));
     final isJson = response.headers['content-type'] == _jsonContentType;
+    dynamic responseBody = isJson ? jsonDecode(response.body) : response.body;
 
-    dynamic body = isJson ? jsonDecode(response.body) : response.body;
-
+    // We group request and response together because the request's headers are
+    // only guaranteed available after sending.
     if (debugPrintApiCalls) {
+      debugPrint('\nREQUEST');
+      debugPrint('${request.method} ${request.url}');
+      debugPrint(request.headers.entries
+          .map((e) => '${e.key}: ${e.value}')
+          .join('\n'));
+      if (request is http.Request) {
+        debugPrint(request.body);
+      } else if (request is http.MultipartRequest) {
+        debugPrint('files:');
+        debugPrint(request.files.map((f) => '- ${f.filename}').join('\n'));
+      }
+
       debugPrint('\nRESPONSE');
       debugPrint('${response.statusCode}');
       debugPrint(response.headers.entries
           .map((e) => '${e.key}: ${e.value}')
           .join('\n'));
       if (isJson) {
-        debugPrint(JsonEncoder.withIndent('  ').convert(body));
+        debugPrint(JsonEncoder.withIndent('  ').convert(responseBody));
       } else {
-        debugPrint(body);
+        debugPrint(responseBody);
       }
     }
 
     if (response.statusCode < 200 || response.statusCode >= 300) {
-      throw ApiException(apiUrl, body, request, response);
+      throw ApiException(request.url, responseBody, request, response);
     }
 
     if (responseDeserializer != null && isJson) {
-      assert(body is Map<String, dynamic>,
-          'Response body for $apiUrl is expected to be a JSON map');
-      return responseDeserializer(body as Map<String, dynamic>);
+      return responseDeserializer(responseBody);
     } else {
       return null;
     }
   }
+
+  http.Request _newApiRequest(String method, String path) =>
+      http.Request(method, _baseUrl.extend(path))..encoding = utf8;
 }
 
 class ApiException {
@@ -123,15 +157,22 @@ class ApiException {
 
   final Uri url;
   final dynamic body;
-  final http.Request request;
+  final http.BaseRequest request;
   final http.Response response;
 
-  String get responseBody => body;
+  dynamic get responseBody => body;
   int get statusCode => response.statusCode;
 
   @override
-  String toString() => 'ApiException('
-      'apiUrl=$url, statusCode=$statusCode, responseBody=$responseBody)';
+  String toString() {
+    try {
+      return 'ApiException('
+          'apiUrl=$url, statusCode=$statusCode, responseBody=$responseBody)';
+    } catch (e, st) {
+      print('!!! $e\n$st');
+      return '';
+    }
+  }
 }
 
 http.Client _createHttpClient() {
@@ -142,4 +183,18 @@ http.Client _createHttpClient() {
   //   return true;
   // };
   return http.IOClient(innerClient);
+}
+
+typedef JsonDeserializer<ResponseType> = ResponseType Function(dynamic json);
+
+JsonDeserializer<List<ElementType>> listOf<ElementType>(
+    JsonDeserializer<ElementType> deserializer) {
+  return (dynamic json) {
+    assert(json is List);
+    if (json is List) {
+      return json.map((elementJson) => deserializer(elementJson)).toList();
+    }
+    // TODO(shyndman): Revisit
+    throw ArgumentError();
+  };
 }
