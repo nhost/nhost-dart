@@ -1,14 +1,15 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:math';
 
 import 'package:meta/meta.dart';
 import 'package:pedantic/pedantic.dart';
 
+import 'api/api_client.dart';
 import 'api/auth_api.dart';
 import 'client_storage.dart';
 import 'debug.dart';
-import 'foundation.dart';
+import 'foundation/duration.dart';
+import 'foundation/string.dart';
 import 'session.dart';
 
 typedef TokenChangedCallback = void Function();
@@ -18,25 +19,6 @@ typedef UnsubscribeDelegate = void Function();
 const refreshTokenClientStorageKey = 'nhostRefreshToken';
 
 class Auth {
-  final _httpClient = HttpClient();
-
-  final List<TokenChangedCallback> _tokenChangedFunctions = [];
-  final List<AuthChangedCallback> _authChangedFunctions = [];
-
-  Timer _refreshTimer;
-  final Duration _refreshInterval;
-
-  final ClientStorage _clientStorage;
-
-  bool _refreshTokenLock;
-  Uri _baseUrl;
-  User _currentUser;
-  UserSession _currentSession;
-  bool _loading;
-  Timer _refreshSleepCheckTimer;
-  DateTime _refreshIntervalSleepCheckLastSample;
-  Duration _sampleRate;
-
   Auth({
     String baseUrl,
     Duration refreshInterval,
@@ -44,12 +26,12 @@ class Auth {
     ClientStorage clientStorage,
     bool autoLogin,
   })  : _clientStorage = clientStorage,
-        _refreshInterval = refreshInterval {
+        _tokenRefreshInterval = refreshInterval,
+        _apiClient = ApiClient(Uri.parse(baseUrl)) {
     _refreshIntervalSleepCheckLastSample = DateTime.now();
     _sampleRate = Duration(milliseconds: 2000); // check every 2 seconds
 
     _refreshTokenLock = false;
-    _baseUrl = Uri.parse(baseUrl);
     _loading = true;
 
     _currentUser = null;
@@ -70,90 +52,38 @@ class Auth {
     // }
   }
 
-  User get user => _currentUser;
+  final ApiClient _apiClient;
 
-  Future<AuthResponse> register({
-    String email,
-    String password,
-    Map<String, String> userData,
-    String defaultRole,
-    List<String> allowedRoles,
-  }) async {
-    final registerOptions =
-        defaultRole != null || (allowedRoles != null && allowedRoles.isNotEmpty)
-            ? {
-                'default_role': defaultRole,
-                'allowed_roles': allowedRoles,
-              }
-            : null;
+  final List<TokenChangedCallback> _tokenChangedFunctions = [];
+  final List<AuthChangedCallback> _authChangedFunctions = [];
 
-    AuthResponse res;
-    try {
-      res = await _post('/register', data: {
-        'email': email,
-        'password': password,
-        'user_data': userData,
-        if (registerOptions != null) 'register_options': registerOptions,
-      });
-    } catch (e) {
-      rethrow;
-    }
+  Timer _tokenRefreshTimer;
+  final Duration _tokenRefreshInterval;
+  bool _refreshTokenLock;
 
-    if (res.session.jwtToken != null) {
-      _setSession(res.session);
-      return res;
-    } else {
-      // if AUTO_ACTIVATE_NEW_USERS is false
-      return AuthResponse(session: null, user: res.user);
-    }
+  Timer _refreshSleepCheckTimer;
+  DateTime _refreshIntervalSleepCheckLastSample;
+  Duration _sampleRate;
+
+  bool _loading;
+  User get currentUser => _currentUser;
+  User _currentUser;
+  final ClientStorage _clientStorage;
+
+  UserSession _currentSession;
+
+  bool get isAuthenticated {
+    if (_loading) return null;
+    return _currentSession.session != null;
   }
 
-  Future<AuthResponse> login({
-    @required String email,
-    @required String password,
-  }) async {
-    AuthResponse res;
-    try {
-      res = await _post('/login', data: {
-        'email': email,
-        'password': password,
-      });
-    } catch (e) {
-      unawaited(_clearSession());
-      rethrow;
-    }
+  String get jwtToken => _currentSession.session?.jwtToken;
 
-    if (res.mfa != null) {
-      return AuthResponse(
-        session: null,
-        user: null,
-        mfa: MultiFactorAuthenticationInfo(
-          ticket: res.mfa.ticket,
-        ),
-      );
-    }
-
-    _setSession(res.session);
-    return res;
+  String getClaim(String claim) {
+    return _currentSession.getClaim(claim);
   }
 
-  Future<AuthResponse> logout({
-    bool all = false,
-  }) async {
-    final refreshToken =
-        await _clientStorage.getString(refreshTokenClientStorageKey);
-    try {
-      await _post('/logout?refresh_token$refreshToken', data: {
-        'all': all,
-      });
-    } catch (e) {
-      // noop
-    }
-
-    unawaited(_clearSession());
-
-    return AuthResponse(session: null, user: null);
-  }
+  //#region Events
 
   UnsubscribeDelegate addTokenChangedCallback(TokenChangedCallback callback) {
     _tokenChangedFunctions.add(callback);
@@ -170,98 +100,209 @@ class Auth {
     };
   }
 
-  bool get isAuthenticated {
-    if (_loading) return null;
-    return _currentSession.session != null;
+  void _onTokenChanged() {
+    for (final tokenChangedFunction in _tokenChangedFunctions) {
+      tokenChangedFunction();
+    }
   }
 
-  String get jwtToken {
-    return _currentSession.session?.jwtToken;
+  void _onAuthStateChanged({@required bool authenticated}) {
+    for (final authChangedFunction in _authChangedFunctions) {
+      authChangedFunction(authenticated: authenticated);
+    }
   }
 
-  String getClaim(String claim) {
-    return _currentSession.getClaim(claim);
+  //#endregion
+
+  Future<AuthResponse> register({
+    String email,
+    String password,
+    Map<String, String> userData,
+    String defaultRole,
+    List<String> allowedRoles,
+  }) async {
+    final includeRoleOptions = defaultRole != null ||
+        (allowedRoles != null && allowedRoles.isNotEmpty);
+    final registerOptions = includeRoleOptions
+        ? {
+            'default_role': defaultRole,
+            'allowed_roles': allowedRoles,
+          }
+        : null;
+
+    Session sessionRes;
+    try {
+      sessionRes = await _apiClient.post(
+        '/register',
+        data: {
+          'email': email,
+          'password': password,
+          'user_data': userData,
+          if (registerOptions != null) 'register_options': registerOptions,
+        },
+        responseDeserializer: Session.fromJson,
+      );
+    } catch (e) {
+      rethrow;
+    }
+
+    if (sessionRes.jwtToken != null) {
+      _setSession(sessionRes);
+      return AuthResponse(session: sessionRes, user: sessionRes.user);
+    } else {
+      // if AUTO_ACTIVATE_NEW_USERS is false
+      return AuthResponse(session: null, user: sessionRes.user);
+    }
   }
 
-  Future<void> refreshSession() async {
-    return _refreshToken();
+  Future<AuthResponse> login({
+    @required String email,
+    @required String password,
+  }) async {
+    AuthResponse loginRes;
+    try {
+      loginRes = await _apiClient.post(
+        '/login',
+        data: {
+          'email': email,
+          'password': password,
+          'cookie': false,
+        },
+        responseDeserializer: AuthResponse.fromJson,
+      );
+    } catch (e) {
+      unawaited(_clearSession());
+      rethrow;
+    }
+
+    if (loginRes.mfa != null) {
+      return loginRes;
+    }
+
+    _setSession(loginRes.session);
+    return loginRes;
+  }
+
+  Future<AuthResponse> logout({
+    bool all = false,
+  }) async {
+    final refreshToken =
+        await _clientStorage.getString(refreshTokenClientStorageKey);
+    try {
+      await _apiClient.post(
+        '/logout?refresh_token$refreshToken',
+        data: {
+          'all': all,
+        },
+        responseDeserializer: Session.fromJson,
+      );
+    } catch (e) {
+      // noop
+      // TODO(shyndman): This probably shouldn't be a noop. If a logout fails,
+      // particularly in the ?all=true case, the user should know about it
+    }
+
+    unawaited(_clearSession());
+
+    return AuthResponse(session: null, user: null);
   }
 
   Future<void> activate(String ticket) async {
-    await _get('/activate?ticket=${ticket}');
+    await _apiClient.get('/activate?ticket=${ticket}');
   }
 
   Future<void> changeEmail(String newEmail) async {
-    await _post('/change-email', data: {
+    await _apiClient.post('/change-email', data: {
       'new_email': newEmail,
     });
   }
 
   Future<void> requestEmailChange(String newEmail) async {
-    await _post('/change-email/request', data: {
+    await _apiClient.post('/change-email/request', data: {
       'new_email': newEmail,
     });
   }
 
   Future<void> confirmEmailChange(String ticket) async {
-    await _post('/change-email/change', data: {
+    await _apiClient.post('/change-email/change', data: {
       'ticket': ticket,
     });
   }
 
   Future<void> changePassword(String oldPassword, String newPassword) async {
-    await _post('/change-password', data: {
+    await _apiClient.post('/change-password', data: {
       'old_password': oldPassword,
       'new_password': newPassword,
     });
   }
 
   Future<void> requestPasswordChange(String email) async {
-    await _post('/change-password/request', data: {
+    await _apiClient.post('/change-password/request', data: {
       'email': email,
     });
   }
 
   Future<void> confirmPasswordChange(String newPassword, String ticket) async {
-    await _post('/change-password/change', data: {
+    await _apiClient.post('/change-password/change', data: {
       'new_password': newPassword,
       'ticket': ticket,
     });
   }
 
-  Future<void> MFAGenerate() async {
-    final res = await _post('/mfa/generate');
-    return res.data;
+  Future<MultiFactorAuthResponse> generateMfa() async {
+    return await _apiClient.post(
+      '/mfa/generate',
+      headers: _generateHeaders(),
+      data: {},
+      responseDeserializer: MultiFactorAuthResponse.fromJson,
+    );
   }
 
-  Future<void> MFAEnable(String code) async {
-    await _post('/mfa/enable', data: {
-      'code': code,
-    });
+  Future<void> enableMfa(String code) async {
+    await _apiClient.post(
+      '/mfa/enable',
+      headers: _generateHeaders(),
+      data: {
+        'code': code,
+      },
+    );
   }
 
-  Future<void> disableMfa(String code) async {
-    await _post('/mfa/disable', data: {
-      'code': code,
-    });
+  Future<void> disableMfa({@required String code}) async {
+    await _apiClient.post(
+      '/mfa/disable',
+      data: {
+        'code': code,
+      },
+      headers: _generateHeaders(),
+    );
   }
 
   Future<AuthResponse> mfaTotp({
     @required String code,
     @required String ticket,
   }) async {
-    final res = await _post<AuthResponse>('/mfa/totp', data: {
-      'code': code,
-      'ticket': ticket,
-    });
+    final res = await _apiClient.post<Session>(
+      '/mfa/totp',
+      data: {
+        'code': code,
+        'ticket': ticket,
+      },
+      responseDeserializer: Session.fromJson,
+    );
 
-    _setSession(res.session);
-    return res;
+    _setSession(res);
+    return AuthResponse(session: res, user: res.user);
+  }
+
+  Future<void> refreshSession() async {
+    return _refreshToken();
   }
 
   Map<String, String> _generateHeaders() {
     return {
-      'Authorization': 'Bearer ${_currentSession.session?.jwtToken}',
+      HttpHeaders.authorizationHeader:
+          'Bearer ${_currentSession.session?.jwtToken}',
     };
   }
 
@@ -281,45 +322,38 @@ class Auth {
       return;
     }
 
-    var res;
+    Session res;
     try {
       // Set lock to avoid two refresh token request being sent at the same time
       // with the same token. If so, the last request will fail because the
       // first request used the refresh token
       if (_refreshTokenLock) {
-        return debugPrint(
-            'Refresh token already in transit. Halting this request.');
+        debugPrint('Refresh token already in transit. Halting this request.');
+        return;
       }
       _refreshTokenLock = true;
 
-      // make refresh token request
-      res = await _get('/token/refresh?refresh_token=$refreshToken');
-    } catch (e) {
-      if (e.response?.status == 401) {
+      // Make refresh token request
+      res = await _apiClient.get(
+        '/token/refresh?refresh_token=$refreshToken',
+        responseDeserializer: Session.fromJson,
+      );
+    } on ApiException catch (e) {
+      if (e.statusCode == 401) {
         await logout();
         return;
       } else {
         return; // silent fail
       }
+    } catch (e) {
+      return;
     } finally {
       // Release lock
       _refreshTokenLock = false;
     }
 
-    _setSession(res.data);
+    _setSession(res);
     _onTokenChanged();
-  }
-
-  void _onTokenChanged() {
-    for (final tokenChangedFunction in _tokenChangedFunctions) {
-      tokenChangedFunction();
-    }
-  }
-
-  void _onAuthStateChanged({@required bool authenticated}) {
-    for (final authChangedFunction in _authChangedFunctions) {
-      authChangedFunction(authenticated: authenticated);
-    }
   }
 
   Future<void> _clearSession() async {
@@ -328,8 +362,8 @@ class Auth {
       return;
     }
 
-    _refreshTimer.cancel();
-    _refreshTimer = null;
+    _tokenRefreshTimer.cancel();
+    _tokenRefreshTimer = null;
     _refreshSleepCheckTimer.cancel();
     _refreshSleepCheckTimer = null;
 
@@ -341,7 +375,7 @@ class Auth {
   }
 
   void _setSession(Session session) async {
-    final previouslyAuthenticated = isAuthenticated;
+    final previouslyAuthenticated = isAuthenticated ?? false;
     _currentSession.session = session;
     _currentUser = session.user;
 
@@ -351,16 +385,14 @@ class Auth {
     }
 
     final jwtExpiresIn = session.jwtExpiresIn;
-    final refreshTimerDuration = _refreshInterval ??
-        Duration(
-          milliseconds: max(
-            30 * 1000,
-            jwtExpiresIn.inMilliseconds - 45000,
-          ),
+    final refreshTimerDuration = _tokenRefreshInterval ??
+        max(
+          Duration(seconds: 30),
+          jwtExpiresIn - Duration(seconds: 45),
         ); // 45 sec before expiry
 
     // start refresh token interval after logging in
-    _refreshTimer =
+    _tokenRefreshTimer =
         Timer.periodic(refreshTimerDuration, (_) => _refreshToken());
 
     // refresh token after computer has been sleeping
@@ -381,14 +413,4 @@ class Auth {
       _onAuthStateChanged(authenticated: true);
     }
   }
-
-  Future<ResponseType> _get<ResponseType>(String path) {
-    ;
-  }
-
-  Future<ResponseType> _post<ResponseType>(
-    String path, {
-    Map<String, dynamic> data,
-    ResponseType Function(Map<String, dynamic>) deserializer,
-  }) async {}
 }
