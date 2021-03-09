@@ -1,5 +1,7 @@
 name: nhost_dart_sdk
-description:
+description: Nhost APIs for the Dart language
+homepage: https://nhost.io
+reposity: https://github.com/nhost-dart-sdk
 private: true
 
 environment:

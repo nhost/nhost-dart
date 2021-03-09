@@ -1,22 +1,20 @@
-A library for Dart developers.
+# Nhost Dart SDK
 
-Created from templates made available by Stagehand under a BSD-style
-[license](https://github.com/dart-lang/stagehand/blob/master/LICENSE).
+[![Pub](https://img.shields.io/pub/v/nhost_dart_sdk)](https://pub.dev/packages/nhost_dart_sdk)
+[![Github test](https://github.com/shyndman/nhost_dart_sdk/workflows/test/badge.svg)](https://github.com/shyndman/nhost_dart_sdk/actions?query=test)
 
-## Usage
+## Getting Started
 
-A simple usage example:
-
-```dart
-import 'package:nhost_dart_sdk/nhost_dart_sdk.dart';
-
-main() {
-  var awesome = new Awesome();
-}
+```yaml
+dependencies:
+  nhost_dart_sdk: ^1.0.0
 ```
 
-## Features and bugs
+If you are running against (early Flutter):
 
-Please file feature requests and bugs at the [issue tracker][tracker].
+### Flutter pre-v1.14.0 version
 
-[tracker]: http://example.com/issues/replaceme
+```yaml
+dependencies:
+  nhost_dart_sdk: ^0.9.0
+```
