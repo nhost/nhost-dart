@@ -3,6 +3,7 @@ description: A new Flutter package project.
 version: 0.0.1
 author:
 homepage:
+publish_to: none
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
@@ -11,6 +12,11 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_nhost_auth:
+    path: ../flutter-nhost-auth
+  graphql_flutter: ^4.0.0
+  nhost_dart_sdk:
+    path: ../nhost-dart-sdk
 
 dev_dependencies:
   flutter_test:
