@@ -1,0 +1,32 @@
+name: workflows
+
+# This workflow is triggered on pushes to the repository.
+
+on: push
+
+jobs:
+  test:
+    # This job will run on ubuntu virtual machine
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+
+    # Setup the flutter environment.
+    - uses: subosito/flutter-action@v1.4.0
+      with:
+        channel: 'stable'
+
+    # Get flutter dependencies.
+    - run: pub get
+
+    # Check for any formatting issues in the code.
+    - run: dart format --set-exit-if-changed .
+
+    # Statically analyze the Dart code for any errors.
+    - run: dart analyze .
+
+    # Do the same for examples
+    - run: dart analyze ./example
+
+    # Run widget tests for our flutter project.
+    - run: pub run test
