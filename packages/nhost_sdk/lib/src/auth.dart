@@ -301,8 +301,9 @@ class Auth {
 
   Map<String, String> _generateHeaders() {
     return {
-      HttpHeaders.authorizationHeader:
-          'Bearer ${_currentSession.session?.jwtToken}',
+      if (_currentSession.session != null)
+        HttpHeaders.authorizationHeader:
+            'Bearer ${_currentSession.session?.jwtToken}',
     };
   }
 
