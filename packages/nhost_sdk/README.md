@@ -10,7 +10,7 @@ dependencies:
   nhost_dart_sdk: ^1.0.0
 ```
 
-If you are running against (early Flutter):
+If you are running against Flutter 1.14.0 to bypass the Metal jank issues:
 
 ### Flutter pre-v1.14.0 version
 
