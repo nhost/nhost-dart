@@ -20,6 +20,11 @@ class Storage {
   })  : _apiClient = ApiClient(Uri.parse(baseUrl), httpClient: httpClient),
         _currentSession = session;
 
+  /// Releases the object's resources.
+  void close() {
+    _apiClient?.close();
+  }
+
   Future<FileMetadata> putFileFromBytes({
     @required String filePath,
     @required List<int> bytes,

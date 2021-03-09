@@ -54,6 +54,8 @@ class Auth {
   }
 
   final ApiClient _apiClient;
+  final ClientStorage _clientStorage;
+  final UserSession _currentSession;
 
   final List<TokenChangedCallback> _tokenChangedFunctions = [];
   final List<AuthChangedCallback> _authChangedFunctions = [];
@@ -69,19 +71,17 @@ class Auth {
   bool _loading;
   User get currentUser => _currentUser;
   User _currentUser;
-  final ClientStorage _clientStorage;
-
-  final UserSession _currentSession;
 
   bool get isAuthenticated {
     if (_loading) return null;
     return _currentSession.session != null;
   }
 
-  String get jwtToken => _currentSession.session?.jwtToken;
-
-  String getClaim(String claim) {
-    return _currentSession.getClaim(claim);
+  /// Releases the object's resources.
+  void close() {
+    _apiClient?.close();
+    _tokenRefreshTimer?.cancel();
+    _refreshSleepCheckTimer?.cancel();
   }
 
   //#region Events
