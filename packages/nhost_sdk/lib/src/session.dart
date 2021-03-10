@@ -1,6 +1,6 @@
 import 'package:jwt_decoder/jwt_decoder.dart';
 
-import 'api/auth_api.dart';
+import 'api/auth_api_types.dart';
 
 const _hasuraClaimsNamespace = 'https://hasura.io/jwt/claims';
 

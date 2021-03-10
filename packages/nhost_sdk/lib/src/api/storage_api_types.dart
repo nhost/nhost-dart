@@ -4,7 +4,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 import 'core_codec.dart';
 
-part 'storage_api.g.dart';
+part 'storage_api_types.g.dart';
 
 @JsonSerializable(fieldRename: FieldRename.pascal, explicitToJson: true)
 class FileMetadata {
