@@ -90,6 +90,8 @@
   my cached user could refresh.
 * CONCERN: Could it be problematic that the login API reveals that a user
   exists when the password doesn't match.
+* It is EXTREMELY important that _setSession() and _clearSession() be awaited. I
+  just battled a brutal race condition caused by the use of unawaited().
 
 # TESTING
 ## APIs

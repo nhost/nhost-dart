@@ -1,16 +1,14 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:meta/meta.dart';
-import 'package:pedantic/pedantic.dart';
-
 import 'package:http/http.dart' as http;
+import 'package:meta/meta.dart';
+
 import 'api/api_client.dart';
 import 'api/auth_api_types.dart';
 import 'client_storage.dart';
 import 'debug.dart';
 import 'foundation/duration.dart';
-import 'foundation/string.dart';
 import 'session.dart';
 
 typedef TokenChangedCallback = void Function();
@@ -159,7 +157,7 @@ class Auth {
     }
 
     if (sessionRes.jwtToken != null) {
-      _setSession(sessionRes);
+      await _setSession(sessionRes);
       return AuthResponse(session: sessionRes, user: sessionRes.user);
     } else {
       // if AUTO_ACTIVATE_NEW_USERS is false
@@ -193,7 +191,7 @@ class Auth {
         responseDeserializer: AuthResponse.fromJson,
       );
     } catch (e) {
-      unawaited(_clearSession());
+      await _clearSession();
       rethrow;
     }
 
@@ -201,7 +199,7 @@ class Auth {
       return loginRes;
     }
 
-    _setSession(loginRes.session);
+    await _setSession(loginRes.session);
     return loginRes;
   }
 
@@ -236,8 +234,7 @@ class Auth {
       // particularly in the ?all=true case, the user should know about it
     }
 
-    unawaited(_clearSession());
-
+    await _clearSession();
     return AuthResponse(session: null, user: null);
   }
 
@@ -441,7 +438,7 @@ class Auth {
       responseDeserializer: Session.fromJson,
     );
 
-    _setSession(res);
+    await _setSession(res);
     return AuthResponse(session: res, user: res.user);
   }
 
@@ -460,14 +457,6 @@ class Auth {
   Future<void> _refreshToken([String initRefreshToken]) async {
     final refreshToken = initRefreshToken ??
         await _clientStorage.getString(refreshTokenClientStorageKey);
-
-    if (refreshToken.isNullOrEmpty) {
-      // Place at end of call-stack to let frontend get 'null' first (to match
-      // SSR)
-      // TODO(shyndman): Do we need this?
-      unawaited(Future.microtask(_clearSession));
-      return;
-    }
 
     Session res;
     try {
@@ -502,27 +491,16 @@ class Auth {
       _refreshTokenLock = false;
     }
 
-    _setSession(res);
+    await _setSession(res);
     _onTokenChanged();
   }
 
-  Future<void> _clearSession() async {
-    // early exit
-    if (isAuthenticated == false || isAuthenticated == null) {
-      return;
-    }
-
-    _tokenRefreshTimer.cancel();
-    _tokenRefreshTimer = null;
-
-    _currentSession.clear();
-    await _clientStorage.removeItem(refreshTokenClientStorageKey);
-
-    _loading = false;
-    _onAuthStateChanged(authenticated: false);
-  }
-
-  void _setSession(Session session) async {
+  /// Sets the active session to [session], and begins the refresh timer.
+  ///
+  /// It is CRITICAL that this function be awaited before returning to the user.
+  /// Failure to do so will result in very difficult to track down race
+  /// conditions.
+  Future<void> _setSession(Session session) async {
     final previouslyAuthenticated = isAuthenticated ?? false;
     _currentSession.session = session;
     _currentUser = session.user;
@@ -539,9 +517,13 @@ class Auth {
           jwtExpiresIn - Duration(seconds: 45),
         ); // 45 sec before expiry
 
-    // start refresh token interval after logging in
-    _tokenRefreshTimer =
-        Timer.periodic(refreshTimerDuration, (_) => _refreshToken());
+    // Ensure that the previous timer is cancelled.
+    _tokenRefreshTimer?.cancel();
+
+    // Start refresh token interval after logging in.
+    _tokenRefreshTimer = Timer.periodic(refreshTimerDuration, (_) {
+      return _refreshToken();
+    });
 
     // We're ready!
     _loading = false;
@@ -549,5 +531,28 @@ class Auth {
     if (!previouslyAuthenticated) {
       _onAuthStateChanged(authenticated: true);
     }
+  }
+
+  /// Clears the active session, if any, and removes all derived state.
+  ///
+  /// It is CRITICAL that this function be awaited before returning to the user.
+  /// Failure to do so will result in very difficult to track down race
+  /// conditions.
+  Future<void> _clearSession() async {
+    if (_tokenRefreshTimer != null) {
+      _tokenRefreshTimer.cancel();
+      _tokenRefreshTimer = null;
+    }
+
+    // Early exit
+    if (isAuthenticated == false || isAuthenticated == null) {
+      return;
+    }
+
+    _currentSession.clear();
+    await _clientStorage.removeItem(refreshTokenClientStorageKey);
+
+    _loading = false;
+    _onAuthStateChanged(authenticated: false);
   }
 }
