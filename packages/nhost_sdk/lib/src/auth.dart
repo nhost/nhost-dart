@@ -18,40 +18,25 @@ typedef UnsubscribeDelegate = void Function();
 
 const refreshTokenClientStorageKey = 'nhostRefreshToken';
 
+/// The Nhost Auth service class.
+///
+/// Supports user authentication, MFA, OTP, and various user management
+/// functions.
+///
+/// See https://docs.nhost.io/auth/api-reference for more info.
 class Auth {
   Auth({
     @required String baseUrl,
     Duration refreshInterval,
     UserSession session,
     ClientStorage clientStorage,
-    bool autoLogin,
     HttpClient httpClient,
   })  : _apiClient = ApiClient(Uri.parse(baseUrl), httpClient: httpClient),
         _clientStorage = clientStorage,
         _tokenRefreshInterval = refreshInterval,
-        _currentSession = session {
-    _refreshIntervalSleepCheckLastSample = DateTime.now();
-    _sampleRate = Duration(milliseconds: 2000); // check every 2 seconds
-
-    _refreshTokenLock = false;
-    _loading = true;
-
-    _currentUser = null;
-
-    // Get refresh token from query param (from external OAuth provider
-    // callback)
-
-    // If empty string, then set it to null
-    // NOTE: This was previously populated via the URL. Do we need to allow
-    // this to be supplied?
-    // refreshToken = refreshToken ? refreshToken : null;
-
-    // if (autoLogin) {
-    //   _autoLogin(refreshToken);
-    // } else if (refreshToken) {
-    //   _setItem('nhostRefreshToken', refreshToken);
-    // }
-  }
+        _currentSession = session,
+        _refreshTokenLock = false,
+        _loading = true;
 
   final ApiClient _apiClient;
   final ClientStorage _clientStorage;
@@ -64,28 +49,36 @@ class Auth {
   final Duration _tokenRefreshInterval;
   bool _refreshTokenLock;
 
-  Timer _refreshSleepCheckTimer;
-  DateTime _refreshIntervalSleepCheckLastSample;
-  Duration _sampleRate;
-
   bool _loading;
+
+  /// Currently logged-in user, or `null` if unauthenticated.
   User get currentUser => _currentUser;
   User _currentUser;
 
+  /// The currently logged-in user's Json Web Token, or `null` if
+  /// unauthenticated.
+  String get jwt => _currentSession.session?.jwtToken;
+
+  /// `true` if the user is authenticated, `false` if they are not, or `null`
+  /// if authentication is in process.
   bool get isAuthenticated {
     if (_loading) return null;
     return _currentSession.session != null;
   }
 
-  /// Releases the object's resources.
+  /// Releases the service's resources.
+  ///
+  /// The service's methods cannot be called past this point.
   void close() {
     _apiClient?.close();
     _tokenRefreshTimer?.cancel();
-    _refreshSleepCheckTimer?.cancel();
   }
 
   //#region Events
 
+  /// Add a callback that will be invoked when the service's token changes.
+  ///
+  /// The returned function will remove the callback when called.
   UnsubscribeDelegate addTokenChangedCallback(TokenChangedCallback callback) {
     _tokenChangedFunctions.add(callback);
     return () {
@@ -93,6 +86,10 @@ class Auth {
     };
   }
 
+  /// Add a callback that will be invoked when the service's authentication
+  /// state changes.
+  ///
+  /// The returned function will remove the callback when called.
   UnsubscribeDelegate addAuthStateChangedCallback(
       AuthChangedCallback callback) {
     _authChangedFunctions.add(callback);
@@ -115,9 +112,20 @@ class Auth {
 
   //#endregion
 
+  /// Creates a user from an [email] and [password].
+  ///
+  /// If Nhost is configured to not automatically activate new users, the
+  /// returned [AuthResponse] will not contain a session. The user must first
+  /// activate their account by clicking an activation link sent to their email.
+  ///
+  /// Throws an [ApiException] if registration fails.
+  ///
+  /// https://docs.nhost.io/auth/api-reference#register-user
   Future<AuthResponse> register({
     String email,
     String password,
+    // TODO(shyndman): This can only be a couple things...why don't we just
+    // specify them instead of using a map.
     Map<String, String> userData,
     String defaultRole,
     List<String> allowedRoles,
@@ -156,6 +164,16 @@ class Auth {
     }
   }
 
+  /// Authenticates a user using an [email] and [password].
+  ///
+  /// If the user has multi-factor authentication enabled, the returned
+  /// [AuthResponse] will only have its [AuthResponse.mfa] field set, which can
+  /// then be used to complete the login via [mfaTotp] alongside the user's
+  /// one-time-password.
+  ///
+  /// Throws an [ApiException] if login fails.
+  ///
+  /// https://docs.nhost.io/auth/api-reference#login-user
   Future<AuthResponse> login({
     @required String email,
     @required String password,
@@ -184,6 +202,15 @@ class Auth {
     return loginRes;
   }
 
+  /// Logs out the current user.
+  ///
+  /// If [all] is true, all of the user's devices will be logged out.
+  ///
+  /// Returns an [AuthResponse] with its fields unset.
+  ///
+  /// Throws an [ApiException] if logout fails.
+  ///
+  /// https://docs.nhost.io/auth/api-reference#logout-user
   Future<AuthResponse> logout({
     bool all = false,
   }) async {
@@ -208,41 +235,105 @@ class Auth {
     return AuthResponse(session: null, user: null);
   }
 
+  /// Activates a user.
+  ///
+  /// This is only required if Nhost is configured to require manual user
+  /// activation.
+  ///
+  /// Throws an [ApiException] if activation fails.
+  ///
+  /// https://docs.nhost.io/auth/api-reference#activate-user
   Future<void> activate(String ticket) async {
     await _apiClient.get('/activate?ticket=$ticket');
   }
 
+  //#region Email and password changes
+
+  /// Changes the email address of a logged in user.
+  ///
+  /// Throws an [ApiException] if changing emails fails.
+  ///
+  /// TODO(shyndman): Link to API docs (currently missing)
   Future<void> changeEmail(String newEmail) async {
-    await _apiClient.post('/change-email', data: {
-      'new_email': newEmail,
-    });
+    await _apiClient.post(
+      '/change-email',
+      data: {
+        'new_email': newEmail,
+      },
+      headers: _generateHeaders(),
+    );
   }
 
+  /// Requests an email change for the logging in user.
+  ///
+  /// The backend will send an email to their current email address with an
+  /// activation link.
+  ///
+  /// Throws an [ApiException] if requesting the email change fails.
+  ///
+  /// TODO(shyndman): Link to API docs (currently missing)
   Future<void> requestEmailChange(String newEmail) async {
-    await _apiClient.post('/change-email/request', data: {
-      'new_email': newEmail,
-    });
+    await _apiClient.post(
+      '/change-email/request',
+      data: {
+        'new_email': newEmail,
+      },
+      headers: _generateHeaders(),
+    );
   }
 
+  /// Confirms an email change.
+  ///
+  /// [ticket] is the server-generated value that was sent to the user's
+  /// old email address via [requestEmailChange].
+  ///
+  /// Throws an [ApiException] if confirming the email change fails.
+  ///
+  /// TODO(shyndman): Link to API docs (currently missing)
   Future<void> confirmEmailChange(String ticket) async {
     await _apiClient.post('/change-email/change', data: {
       'ticket': ticket,
     });
   }
 
+  /// Changes the password of a logged in user who knows their current password.
+  ///
+  /// Throws an [ApiException] if changing passwords fails.
+  ///
+  /// https://docs.nhost.io/auth/api-reference#change-password
   Future<void> changePassword(String oldPassword, String newPassword) async {
-    await _apiClient.post('/change-password', data: {
-      'old_password': oldPassword,
-      'new_password': newPassword,
-    });
+    await _apiClient.post(
+      '/change-password',
+      data: {
+        'old_password': oldPassword,
+        'new_password': newPassword,
+      },
+      headers: _generateHeaders(),
+    );
   }
 
+  /// Requests a password change for a user.
+  ///
+  /// The backend will send an email to [email] with a ticket that can be used
+  /// to confirm the password change, via [confirmPasswordChange].
+  ///
+  /// Throws an [ApiException] if requesting the password change fails.
+  ///
+  /// https://docs.nhost.io/auth/api-reference#request-to-change-password
   Future<void> requestPasswordChange(String email) async {
     await _apiClient.post('/change-password/request', data: {
       'email': email,
     });
   }
 
+  /// Confirms an password change.
+  ///
+  /// [ticket] is the server-generated value that was sent to the user's
+  /// email address via [requestPasswordChange].
+  ///
+  /// Throws an [ApiException] if confirming the password change fails.
+  ///
+  /// https://docs.nhost.io/auth/api-reference#change-password-with-ticket
   Future<void> confirmPasswordChange(String newPassword, String ticket) async {
     await _apiClient.post('/change-password/change', data: {
       'new_password': newPassword,
@@ -250,15 +341,42 @@ class Auth {
     });
   }
 
+  //#endregion
+
+  //#region MFA
+
+  /// Generates an MFA (Multi-Factor Authentication) QR-code.
+  ///
+  /// The user must be logged in to generate this QR-code. The user should scan
+  /// the QR-code with their password manager.
+  ///
+  /// The password manager will return a code (one-time password) that will be
+  /// used to [enableMfa] and [disableMfa] for the user and login the user using
+  /// TOTP login.
+  ///
+  /// Throws an [ApiException] if MFA generation fails.
+  ///
+  /// https://docs.nhost.io/auth/api-reference#generate-mfa-qr-code
   Future<MultiFactorAuthResponse> generateMfa() async {
     return await _apiClient.post(
       '/mfa/generate',
       headers: _generateHeaders(),
+      // This empty map is required by the server, otherwise it fails
       data: {},
       responseDeserializer: MultiFactorAuthResponse.fromJson,
     );
   }
 
+  /// Enable MFA (Multi-Factor Authentication).
+  ///
+  /// [code] is the one-time password generated by the user's password manager.
+  ///
+  /// To configure the password manager to generate these codes, see
+  /// [generateMfa].
+  ///
+  /// Throws an [ApiException] if enabling MFA fails.
+  ///
+  /// https://docs.nhost.io/auth/api-reference#enable-mfa
   Future<void> enableMfa(String code) async {
     await _apiClient.post(
       '/mfa/enable',
@@ -269,7 +387,14 @@ class Auth {
     );
   }
 
-  Future<void> disableMfa({@required String code}) async {
+  /// Disable MFA (Multi-Factor Authentication).
+  ///
+  /// [code] is the one-time password generated by the user's password manager.
+  ///
+  /// Throws an [ApiException] if disabling MFA fails.
+  ///
+  /// https://docs.nhost.io/auth/api-reference#disable-mfa
+  Future<void> disableMfa(String code) async {
     await _apiClient.post(
       '/mfa/disable',
       data: {
@@ -279,6 +404,16 @@ class Auth {
     );
   }
 
+  /// Complete an MFA login using a time-based one-time password.
+  ///
+  /// This is only necessary if the user has MFA enabled.
+  ///
+  /// [code] is the OTP generated by the user's password manager, and [ticket]
+  /// is the [AuthResponse.mfa.ticket] returned by a preceding call to [login].
+  ///
+  /// Throws an [ApiException] if logging in via MFA fails.
+  ///
+  /// https://docs.nhost.io/auth/api-reference#totp-login
   Future<AuthResponse> mfaTotp({
     @required String code,
     @required String ticket,
@@ -296,6 +431,8 @@ class Auth {
     return AuthResponse(session: res, user: res.user);
   }
 
+  //#endregion
+
   Future<void> refreshSession() async {
     return _refreshToken();
   }
@@ -305,11 +442,6 @@ class Auth {
       if (jwt != null) HttpHeaders.authorizationHeader: 'Bearer $jwt',
     };
   }
-
-  // TODO(shyndman): How should this work?
-  // void _autoLogin(String refreshToken) {
-  //   _refreshToken(refreshToken);
-  // }
 
   Future<void> _refreshToken([String initRefreshToken]) async {
     final refreshToken = initRefreshToken ??
@@ -340,7 +472,7 @@ class Auth {
         responseDeserializer: Session.fromJson,
       );
     } on ApiException catch (e) {
-      if (e.statusCode == 401) {
+      if (e.statusCode == HttpStatus.unauthorized) {
         await logout();
         return;
       } else {
@@ -365,8 +497,6 @@ class Auth {
 
     _tokenRefreshTimer.cancel();
     _tokenRefreshTimer = null;
-    _refreshSleepCheckTimer.cancel();
-    _refreshSleepCheckTimer = null;
 
     _currentSession.clear();
     await _clientStorage.removeItem(refreshTokenClientStorageKey);
@@ -396,24 +526,11 @@ class Auth {
     _tokenRefreshTimer =
         Timer.periodic(refreshTimerDuration, (_) => _refreshToken());
 
-    // refresh token after computer has been sleeping
-    // https://stackoverflow.com/questions/14112708/start-calling-js-function-when-pc-wakeup-from-sleep-mode
-    _refreshIntervalSleepCheckLastSample = DateTime.now();
-    _refreshSleepCheckTimer = Timer.periodic(_sampleRate, (_) {
-      final elapsed =
-          DateTime.now().difference(_refreshIntervalSleepCheckLastSample);
-      if (elapsed >= _sampleRate * 2) {
-        _refreshToken();
-      }
-      _refreshIntervalSleepCheckLastSample = DateTime.now();
-    });
-
+    // We're ready!
     _loading = false;
 
     if (!previouslyAuthenticated) {
       _onAuthStateChanged(authenticated: true);
     }
   }
-
-  String get jwt => _currentSession.session?.jwtToken;
 }

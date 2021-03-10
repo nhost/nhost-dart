@@ -1,6 +1,7 @@
 import 'dart:async';
 
-/// Base class whose implementors are used to persist information longer-term.
+/// Interface implemented by objects responsible for persisting authentication
+/// information between restarts of the process.
 abstract class ClientStorage {
   FutureOr<String> getString(String key);
   FutureOr<void> setString(String key, String value);

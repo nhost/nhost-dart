@@ -9,6 +9,11 @@ import 'api/api_client.dart';
 import 'foundation/uri.dart';
 import 'session.dart';
 
+/// The Nhost storage service class.
+///
+/// Supports the storage and retrieval of files on the backend.
+///
+/// See https://docs.nhost.io/storage/api-reference for more info.
 class Storage {
   final ApiClient _apiClient;
   final UserSession _currentSession;
@@ -25,6 +30,11 @@ class Storage {
     _apiClient?.close();
   }
 
+  /// Uploads a file to the backend from a list of bytes.
+  ///
+  /// Throws an [ApiException] if the upload fails.
+  ///
+  /// https://docs.nhost.io/storage/api-reference#upload-file
   Future<FileMetadata> putFileFromBytes({
     @required String filePath,
     @required List<int> bytes,
@@ -46,6 +56,11 @@ class Storage {
     );
   }
 
+  /// Uploads a file to the backend from a string.
+  ///
+  /// Throws an [ApiException] if the upload fails.
+  ///
+  /// https://docs.nhost.io/storage/api-reference#upload-file
   Future<FileMetadata> putFileFromString({
     @required String filePath,
     @required String data,
@@ -71,6 +86,11 @@ class Storage {
     );
   }
 
+  /// Deletes a file on the backend.
+  ///
+  /// Throws an [ApiException] if the deletion fails.
+  ///
+  /// https://docs.nhost.io/storage/api-reference#delete-file
   void delete(String filePath) async {
     await _apiClient.delete(
       joinSubpath('/o', filePath),
@@ -78,6 +98,11 @@ class Storage {
     );
   }
 
+  /// Retrieves a file's metadata from the backend.
+  ///
+  /// Throws an [ApiException] if the metadata retrieval fails.
+  ///
+  /// https://docs.nhost.io/storage/api-reference#get-file-metadata
   Future<FileMetadata> getFileMetadata(String filePath) async {
     assert(!filePath.endsWith('/'),
         '$filePath is not a valid file path, because it ends with a /');
@@ -88,6 +113,11 @@ class Storage {
     );
   }
 
+  /// Retrieves a directory's contents' metadata from the backend.
+  ///
+  /// Throws an [ApiException] if the metadata retrieval fails.
+  ///
+  /// https://docs.nhost.io/storage/api-reference#get-directory-metadata
   Future<List<FileMetadata>> getDirectoryMetadata(String directoryPath) async {
     assert(
         directoryPath.endsWith('/'),
@@ -100,6 +130,7 @@ class Storage {
     );
   }
 
+  /// Generates authenticated HTTP request headers.
   Map<String, String> _generateHeaders() {
     return {
       if (_currentSession.session != null)
