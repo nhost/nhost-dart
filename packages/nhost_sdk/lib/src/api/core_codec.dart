@@ -3,13 +3,6 @@ library foundation;
 
 import 'dart:io';
 
-/// Deserializes a [UriData] from its [String] representation.
-UriData uriDataFromString(String uriDataString) =>
-    uriDataString == null ? null : UriData.parse(uriDataString);
-
-/// Serializes a [UriData] into its [String] representation.
-String uriDataToString(UriData uriData) => uriData?.toString();
-
 /// Deserializes a [ContentType] from its [String] representation.
 ContentType contentTypeFromString(String contentTypeString) =>
     contentTypeString == null ? null : ContentType.parse(contentTypeString);
@@ -23,3 +16,10 @@ Duration durationFromMs(int milliseconds) =>
 
 /// Serializes a [Duration] into a milliseconds [int].
 int durationToMs(Duration duration) => duration?.inMilliseconds;
+
+/// Deserializes a [UriData] from its [String] representation.
+UriData uriDataFromString(String uriDataString) =>
+    uriDataString == null ? null : UriData.parse(uriDataString);
+
+/// Serializes a [UriData] into its [String] representation.
+String uriDataToString(UriData uriData) => uriData?.toString();

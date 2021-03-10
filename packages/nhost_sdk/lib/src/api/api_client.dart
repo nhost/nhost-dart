@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:http/http.dart' as http;
 import 'package:http/io_client.dart' as http;
+import 'package:meta/meta.dart';
 import 'package:nhost_dart_sdk/src/debug.dart';
 
 import '../foundation/uri.dart';
@@ -12,26 +13,44 @@ final _jsonContentType = ContentType.json.toString();
 /// Provides HTTP API methods, with response deserialization.
 ///
 /// This client is built to resemble Node's Axios package
-/// (https://github.com/axios/axios) in the following ways:
+/// (https://github.com/axios/axios) by:
 ///
-/// * throws exceptions if response status codes fall outside of the 2xx range
-/// * automatically encodes request bodies as JSON
+/// * throwing exceptions if response status codes fall outside of the 2xx range
+/// * automatically encoding request bodies as JSON
 class ApiClient {
+  /// All HTTP methods ([get], [post], etc.) append their path args to [baseUrl]
+  /// in order to build the endpoint URL.
+  ///
+  /// An optional [httpClient] can be provided if a custom HTTP strategy is
+  /// required, as is the case with proxies.
   ApiClient(
-    Uri baseUrl, {
+    this.baseUrl, {
     HttpClient httpClient,
-  })  : _baseUrl = baseUrl,
-        _httpClient = http.IOClient(httpClient);
+  }) : _httpClient = http.IOClient(httpClient);
 
+  final Uri baseUrl;
   final http.Client _httpClient;
-  final Uri _baseUrl;
 
+  /// Closes the API client.
+  ///
+  /// Any requests made after closing the client will fail.
   void close() {
     try {
       _httpClient.close();
     } catch (_) {}
   }
 
+  /// Performs an HTTP DELETE api call.
+  ///
+  /// {@template nhost.api.ApiClient.path}
+  /// [path] is appended to [baseUrl] to determine the API endpoint.
+  /// {@endtemplate}
+  ///
+  /// {@template nhost.api.ApiClient.responseDeserializer}
+  /// The return value is the result of passing the response's JSON-decoded body
+  /// to [responseDeserializer]. If [responseDeserializer] is `null`, `null`
+  /// will be returned.
+  /// {@endtemplate}
   Future<ResponseType> delete<ResponseType>(
     String path, {
     Map<String, String> headers,
@@ -44,6 +63,11 @@ class ApiClient {
     );
   }
 
+  /// Performs an HTTP GET api call.
+  ///
+  /// {@macro nhost.api.ApiClient.path}
+  ///
+  /// {@macro nhost.api.ApiClient.responseDeserializer}
   Future<ResponseType> get<ResponseType>(
     String path, {
     Map<String, String> headers,
@@ -56,6 +80,11 @@ class ApiClient {
     );
   }
 
+  /// Performs an HTTP POST api call.
+  ///
+  /// {@macro nhost.api.ApiClient.path}
+  ///
+  /// {@macro nhost.api.ApiClient.responseDeserializer}
   Future<ResponseType> post<ResponseType>(
     String path, {
     Map<String, dynamic> data,
@@ -78,6 +107,11 @@ class ApiClient {
     );
   }
 
+  /// Performs an HTTP POST multipart api call.
+  ///
+  /// {@macro nhost.api.ApiClient.path}
+  ///
+  /// {@macro nhost.api.ApiClient.responseDeserializer}
   Future<ResponseType> postMultipart<ResponseType>(
     String path, {
     Iterable<http.MultipartFile> files,
@@ -85,12 +119,17 @@ class ApiClient {
     JsonDeserializer<ResponseType> responseDeserializer,
   }) async {
     return send<ResponseType>(
-      http.MultipartRequest('post', _baseUrl.extend(path))..files.addAll(files),
+      http.MultipartRequest('post', baseUrl.extend(path))..files.addAll(files),
       headers: headers,
       responseDeserializer: responseDeserializer,
     );
   }
 
+  /// Performs an HTTP PUT api call.
+  ///
+  /// {@macro nhost.api.ApiClient.path}
+  ///
+  /// {@macro nhost.api.ApiClient.responseDeserializer}
   Future<ResponseType> put<ResponseType>(
     String path, {
     Map<String, String> headers,
@@ -103,7 +142,7 @@ class ApiClient {
     );
   }
 
-  /// [data] is a JSON-serializable map
+  @protected
   Future<ResponseType> send<ResponseType>(
     http.BaseRequest request, {
     Map<String, String> headers,
@@ -157,9 +196,13 @@ class ApiClient {
   }
 
   http.Request _newApiRequest(String method, String path) =>
-      http.Request(method, _baseUrl.extend(path))..encoding = utf8;
+      http.Request(method, baseUrl.extend(path))..encoding = utf8;
 }
 
+/// Thrown by [ApiClient] to indicate a failed API call.
+///
+/// An API call is considered failed if its [response]'s [statusCode] falls
+/// outside the 2xx range.
 class ApiException {
   ApiException(this.url, this.body, this.request, this.response);
 
@@ -173,18 +216,15 @@ class ApiException {
 
   @override
   String toString() {
-    try {
-      return 'ApiException('
-          'apiUrl=$url, statusCode=$statusCode, responseBody=$responseBody)';
-    } catch (e, st) {
-      print('!!! $e\n$st');
-      return '';
-    }
+    return 'ApiException('
+        'apiUrl=$url, statusCode=$statusCode, responseBody=$responseBody)';
   }
 }
 
+/// Maps a JSON-decoded [json] value into a [ResponseType].
 typedef JsonDeserializer<ResponseType> = ResponseType Function(dynamic json);
 
+/// Maps a JSON-decoded list of elements into a list of [ElementType].
 JsonDeserializer<List<ElementType>> listOf<ElementType>(
     JsonDeserializer<ElementType> deserializer) {
   return (dynamic json) {

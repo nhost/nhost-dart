@@ -34,6 +34,9 @@ User _$UserFromJson(Map<String, dynamic> json) {
     id: json['id'] as String,
     displayName: json['display_name'] as String,
     email: json['email'] as String,
+    avatarUrl: json['avatar_url'] == null
+        ? null
+        : Uri.parse(json['avatar_url'] as String),
   );
 }
 
@@ -41,6 +44,7 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'id': instance.id,
       'display_name': instance.displayName,
       'email': instance.email,
+      'avatar_url': instance.avatarUrl?.toString(),
     };
 
 MultiFactorAuthenticationInfo _$MultiFactorAuthenticationInfoFromJson(

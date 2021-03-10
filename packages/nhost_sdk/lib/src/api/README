@@ -1,0 +1,5 @@
+The api package contains the lower level bits and pieces for interacting with
+the Nhost backend.
+
+A specialized API client, a bunch of JSON-serializable response types, and a
+few serializers for core dart types.
