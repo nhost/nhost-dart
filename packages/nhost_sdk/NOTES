@@ -1,13 +1,12 @@
 * Q: What's the deal with refreshToken?
 * Request timeout isn't set on the client
-* Q: How does login provider work?
-  * Provider doesn't make sense in this context
-* Changed name of MFA* methods
-* Changed getClaim to only return nullable strings
-* Q: Can the session's user ever differ from the top-level user in the auth
-     response
-* Addition: File.toHttpHeaders or File.updateHttpHeaders
-* Change: Made unsubscribe delegate non-destructive and silent
+* Q: How does login provider work with apps?
+  * The backend appears to specify a redirect URL. I guess this could be an
+    application link.
+* CHANGE name of MFA* methods
+* CHANGE getClaim to only return nullable strings
+* IDEA: FileMetadata.toHttpHeaders or FileMetadata.updateHttpHeaders
+* CHANGE: Made unsubscribe delegate non-destructive and silent
 * BUGS
   * DOCS
     * /auth/mfa/generate reads qe code, not qr code
@@ -17,6 +16,10 @@
       https://docs.nhost.io/auth/api-reference#totp-login
     * logout URL is wrong (all is being passed as a body arg, not a query arg)
       https://docs.nhost.io/auth/api-reference#logout-user
+    * NhostApolloProvider confuses the NhostAuthProvider docs
+      * It's completely unrelated, but uses the same `auth` variable, so the
+        reader (me!) wonders how everything ties together. Until I realize they
+        aren't (aside from requiring the same auth resource).
   * Unsubscribe listener functions can potentially remove listeners other than
     themselves
   * mfa/generate requires an empty JSON object body (should allow null body)
@@ -25,6 +28,7 @@
   * POST to /storage/o returns a response with "key" field, but
     GET /storage/m for a directory lists the field as "Key" (capitalized)
     GET /storage/m for a file is "key" lowercase
+  * Packages are missing LICENSE files
 * Sleep timer won't make sense for Dart, since periodic timers stack up. To
   read: https://github.com/dart-lang/sdk/issues/23487
 * Q: Do we need toJSONs?
@@ -45,7 +49,13 @@
     to perform operations specific to the user
   * This has the added benefit of allowing multiple logged in users
     simultaneously
-
+* IDEA: Cross-platform API tests
+  * Each client can be verified against headers and JSON body, keyed by a
+    request ID
+  * Each request ID has an associated response object, which can be used for
+    simulating behavioral tests
+  * Because we have requests and responses, we can test the server as well
+  * A single repo can ensure that all clients and the server stay in sync
 * Q: The decoded QR code provides a lot more information than the mfa/generate
      response.
      secret=BASXODRVLFSX452T&period=30&digits=6&algorithm=SHA1&issuer=HBP
@@ -54,9 +64,23 @@
      return these additional values from the backend? OR document them?
 * Q: Should we automatically add a trailing slash to the getDirectoryMetadata
      path
-* DOCS:
-  * Storage Rules should be better documented
+* IMPROVE
+  * DOCS:
+    * Storage Rules should be better documented
 * TODO: Extract workflows into a version configurable action
+* Ensure that Auth isAutenticated goes to false when logging out
+* RECOMMEND:
+  * Packages are called
+    * 'nhost' (or 'nhost_sdk')
+    * 'nhost_flutter_auth'
+    * 'nhost_flutter_graphql'
+    * (+) 'nhost_graphql'
+  * Consider passing null to authStateChanges, representing loading. This way
+    UI can react more easily (like disabling buttons during a login/logout)
+* IDEA: isAutenticated should be a tri-state
+* Q: I see a banner asking me if I want to upgrade Hasura server...can I
+     actually do that?
+* IDEA: A 4th package, for graphql'ing from Dart without Flutter
 
 # TESTING
 ## APIs
