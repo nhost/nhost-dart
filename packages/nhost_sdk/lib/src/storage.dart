@@ -9,7 +9,7 @@ import 'api/api_client.dart';
 import 'foundation/uri.dart';
 import 'session.dart';
 
-/// The Nhost storage service class.
+/// The Nhost storage service.
 ///
 /// Supports the storage and retrieval of files on the backend.
 ///
