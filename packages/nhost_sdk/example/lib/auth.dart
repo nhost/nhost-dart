@@ -13,7 +13,6 @@ void main() async {
   print('Success!');
   print('JWT:\n${response.session.jwtToken}');
 
-  // Change password
   stdout.write('\nCHANGE PASS');
   waitForReturnKey();
   await client.auth
@@ -62,15 +61,15 @@ void main() async {
   print('YES!');
   print('Current user email: ${client.auth.currentUser.email}');
 
-  // stdout.write('\nREGISTER');
-  // waitForReturnKey();
-  // await client.auth.register(
-  //   email: 'henry@dogs.com',
-  //   password: 'abcdefg',
-  //   defaultRole: 'dog',
-  //   allowedRoles: ['dog'],
-  // );
-  // print('Done! currentUser: ${client.auth.currentUser.toJson()}');
+  stdout.write('\nREGISTER');
+  waitForReturnKey();
+  await client.auth.register(
+    email: 'henry@dogs.com',
+    password: 'abcdefg',
+    defaultRole: 'dog',
+    allowedRoles: ['dog'],
+  );
+  print('Done! currentUser: ${client.auth.currentUser.toJson()}');
 
   // Release
   client.close();

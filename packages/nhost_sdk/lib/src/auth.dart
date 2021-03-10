@@ -11,10 +11,20 @@ import 'debug.dart';
 import 'foundation/duration.dart';
 import 'session.dart';
 
+/// Signature for callbacks that respond to token changes.
+///
+/// Registered via [Auth.addTokenChangedCallback].
 typedef TokenChangedCallback = void Function();
+
+/// Signature for callbacks that respond to authentication changes.
+///
+/// Registered via [Auth.addTokenChangedCallback].
 typedef AuthChangedCallback = void Function({bool authenticated});
+
+/// Signature for functions that remove their associated callback when called.
 typedef UnsubscribeDelegate = void Function();
 
+/// Identifies the refresh token in the [Auth]'s [ClientStorage] instance.
 const refreshTokenClientStorageKey = 'nhostRefreshToken';
 
 /// The Nhost Auth service.
@@ -48,6 +58,11 @@ class Auth {
   final Duration _tokenRefreshInterval;
   bool _refreshTokenLock;
 
+  /// `true` if the service is currently loading.
+  ///
+  /// While loading, the authentication state is indeterminate.
+  ///
+  /// TODO(shyndman): Evaluate whether necessary
   bool _loading;
 
   /// Currently logged-in user, or `null` if unauthenticated.
@@ -482,7 +497,7 @@ class Auth {
         await logout();
         return;
       } else {
-        return; // silent fail
+        return; // Silent fail
       }
     } catch (e) {
       return;
