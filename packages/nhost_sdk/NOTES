@@ -1,5 +1,5 @@
 * Q: What's the deal with refreshToken?
-* Request timeout isn't set on the client
+* Q: Should I be setting request timeout? Where? How?
 * Q: How does login provider work with apps?
   * The backend appears to specify a redirect URL. I guess this could be an
     application link.
