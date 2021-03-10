@@ -4,6 +4,7 @@ import 'api/auth_api_types.dart';
 
 const _hasuraClaimsNamespace = 'https://hasura.io/jwt/claims';
 
+/// Shares authentication information between service classes.
 class UserSession {
   Session _session;
   Map<String, dynamic> _hasuraClaims;

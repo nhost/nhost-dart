@@ -20,6 +20,7 @@
       * It's completely unrelated, but uses the same `auth` variable, so the
         reader (me!) wonders how everything ties together. Until I realize they
         aren't (aside from requiring the same auth resource).
+    * Email changing APIs are not documented
   * Unsubscribe listener functions can potentially remove listeners other than
     themselves
   * mfa/generate requires an empty JSON object body (should allow null body)
