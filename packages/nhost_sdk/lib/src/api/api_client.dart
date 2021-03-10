@@ -24,8 +24,8 @@ class ApiClient {
   /// required, as is the case with proxies.
   ApiClient(
     this.baseUrl, {
-    http.Client httpClient,
-  }) : _httpClient = httpClient ?? http.Client();
+    @required http.Client httpClient,
+  }) : _httpClient = httpClient;
 
   final Uri baseUrl;
   final http.Client _httpClient;
@@ -69,11 +69,12 @@ class ApiClient {
   /// {@macro nhost.api.ApiClient.responseDeserializer}
   Future<ResponseType> get<ResponseType>(
     String path, {
+    Map<String, String> query = const {},
     Map<String, String> headers,
     JsonDeserializer<ResponseType> responseDeserializer,
   }) async {
     return send<ResponseType>(
-      _newApiRequest('get', path),
+      _newApiRequest('get', path, query: query),
       headers: headers,
       responseDeserializer: responseDeserializer,
     );
@@ -86,11 +87,12 @@ class ApiClient {
   /// {@macro nhost.api.ApiClient.responseDeserializer}
   Future<ResponseType> post<ResponseType>(
     String path, {
+    Map<String, String> query = const {},
     Map<String, dynamic> data,
     Map<String, String> headers,
     JsonDeserializer<ResponseType> responseDeserializer,
   }) async {
-    final request = _newApiRequest('post', path);
+    final request = _newApiRequest('post', path, query: query);
     if (data != null) {
       request
         ..body = jsonEncode(data)
@@ -194,8 +196,13 @@ class ApiClient {
     }
   }
 
-  http.Request _newApiRequest(String method, String path) =>
-      http.Request(method, baseUrl.extend(path))..encoding = utf8;
+  http.Request _newApiRequest(
+    String method,
+    String path, {
+    Map<String, String> query,
+  }) =>
+      http.Request(method, baseUrl.extend(path, queryParameters: query))
+        ..encoding = utf8;
 }
 
 /// Thrown by [ApiClient] to indicate a failed API call.

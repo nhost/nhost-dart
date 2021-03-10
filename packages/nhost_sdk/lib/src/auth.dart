@@ -131,6 +131,7 @@ class Auth {
     String defaultRole,
     List<String> allowedRoles,
   }) async {
+    userData ??= const {};
     final includeRoleOptions = defaultRole != null ||
         (allowedRoles != null && allowedRoles.isNotEmpty);
     final registerOptions = includeRoleOptions
@@ -148,6 +149,7 @@ class Auth {
           'email': email,
           'password': password,
           'user_data': userData,
+          'cookie': false,
           if (registerOptions != null) 'register_options': registerOptions,
         },
         responseDeserializer: Session.fromJson,
@@ -219,7 +221,10 @@ class Auth {
         await _clientStorage.getString(refreshTokenClientStorageKey);
     try {
       await _apiClient.post(
-        '/logout?refresh_token$refreshToken',
+        '/logout',
+        query: {
+          'refresh_token': refreshToken,
+        },
         data: {
           'all': all,
         },
@@ -245,7 +250,9 @@ class Auth {
   ///
   /// https://docs.nhost.io/auth/api-reference#activate-user
   Future<void> activate(String ticket) async {
-    await _apiClient.get('/activate?ticket=$ticket');
+    await _apiClient.get('/activate', query: {
+      'ticket': ticket,
+    });
   }
 
   //#region Email and password changes
@@ -257,7 +264,7 @@ class Auth {
   /// TODO(shyndman): Link to API docs (currently missing)
   Future<void> changeEmail(String newEmail) async {
     await _apiClient.post(
-      '/change-email',
+      '/change-email/',
       data: {
         'new_email': newEmail,
       },
@@ -273,7 +280,7 @@ class Auth {
   /// Throws an [ApiException] if requesting the email change fails.
   ///
   /// TODO(shyndman): Link to API docs (currently missing)
-  Future<void> requestEmailChange(String newEmail) async {
+  Future<void> requestEmailChange({@required String newEmail}) async {
     await _apiClient.post(
       '/change-email/request',
       data: {
@@ -291,7 +298,7 @@ class Auth {
   /// Throws an [ApiException] if confirming the email change fails.
   ///
   /// TODO(shyndman): Link to API docs (currently missing)
-  Future<void> confirmEmailChange(String ticket) async {
+  Future<void> confirmEmailChange({@required String ticket}) async {
     await _apiClient.post('/change-email/change', data: {
       'ticket': ticket,
     });
@@ -302,7 +309,10 @@ class Auth {
   /// Throws an [ApiException] if changing passwords fails.
   ///
   /// https://docs.nhost.io/auth/api-reference#change-password
-  Future<void> changePassword(String oldPassword, String newPassword) async {
+  Future<void> changePassword({
+    @required String oldPassword,
+    @required String newPassword,
+  }) async {
     await _apiClient.post(
       '/change-password',
       data: {
@@ -335,7 +345,10 @@ class Auth {
   /// Throws an [ApiException] if confirming the password change fails.
   ///
   /// https://docs.nhost.io/auth/api-reference#change-password-with-ticket
-  Future<void> confirmPasswordChange(String newPassword, String ticket) async {
+  Future<void> confirmPasswordChange({
+    @required String newPassword,
+    @required String ticket,
+  }) async {
     await _apiClient.post('/change-password/change', data: {
       'new_password': newPassword,
       'ticket': ticket,
@@ -469,7 +482,10 @@ class Auth {
 
       // Make refresh token request
       res = await _apiClient.get(
-        '/token/refresh?refresh_token=$refreshToken',
+        '/token/refresh',
+        query: {
+          'refresh_token': refreshToken,
+        },
         responseDeserializer: Session.fromJson,
       );
     } on ApiException catch (e) {
