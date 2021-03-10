@@ -3,8 +3,10 @@ import 'package:path/path.dart';
 /// Joins together path fragments
 final _joinPath = Context(style: Style.url).join;
 
-String joinSubpath(String path, String subPath) =>
-    _joinPath(path, subPath.startsWith('/') ? '.$subPath' : subPath);
+/// Joins together path fragments so that [basePath] and [subPath] are both
+/// represented in the resulting string, even if [subPath] starts with a `/`.
+String joinSubpath(String basePath, String subPath) =>
+    _joinPath(basePath, subPath.startsWith('/') ? '.$subPath' : subPath);
 
 extension UriExt on Uri {
   /// Extends a base Uri to include a [subPath], and optionally a new set of
