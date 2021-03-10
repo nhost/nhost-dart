@@ -17,7 +17,23 @@ export 'src/auth.dart';
 export 'src/client_storage.dart';
 export 'src/storage.dart';
 
+/// API client for accessing Nhost's authentication and storage APIs.
+///
+/// User authentication and management is provided by the [auth] service, which
+/// implements the Nhost Auth API: https://docs.nhost.io/storage/api-reference
+///
+/// File storage is provided by the [storage] service, which implements the
+/// Nhost Storage API: https://docs.nhost.io/storage/api-reference
+///
+/// Additional packages for working with GraphQL and Flutter can be found at
+/// https://pub.dev/publishers/nhost
+///
+/// TODO(shyndman): We need to create an nhost publisher
 class NhostClient {
+  /// Constructs a new Nhost client.
+  ///
+  /// For information on getting started, please visit
+  /// https://docs.nhost.io/libraries/nhost-dart-sdk#setup
   NhostClient({
     @required this.baseUrl,
     ClientStorage clientStorage,
@@ -31,7 +47,7 @@ class NhostClient {
         _refreshInterval = tokenRefreshInterval,
         clientStorage = clientStorage ?? InMemoryClientStorage();
 
-  /// The Nhost backend URL
+  /// The Nhost project's backend URL.
   final String baseUrl;
 
   /// Persists authentication information between restarts of the process.
@@ -51,7 +67,7 @@ class NhostClient {
   @protected
   http.Client createHttpClient() => http.Client();
 
-  /// This client's authentication service.
+  /// The Nhost authentication service.
   Auth get auth => _auth ??= Auth(
         baseUrl: '$baseUrl/auth',
         httpClient: httpClient,
@@ -61,7 +77,7 @@ class NhostClient {
       );
   Auth _auth;
 
-  /// This client's file storage service.
+  /// The Nhost file storage service.
   Storage get storage => _storage ??= Storage(
         baseUrl: '$baseUrl/storage',
         httpClient: httpClient,

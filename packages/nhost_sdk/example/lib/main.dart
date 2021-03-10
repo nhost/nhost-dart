@@ -1,4 +1,4 @@
-import 'package:nhost_dart_sdk/nhost_dart_sdk.dart';
+import 'package:nhost_dart_sdk/client.dart';
 
 void main() async {
   final client = NhostClient(
