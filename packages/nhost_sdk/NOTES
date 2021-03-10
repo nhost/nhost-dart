@@ -30,12 +30,16 @@
     GET /storage/m for a directory lists the field as "Key" (capitalized)
     GET /storage/m for a file is "key" lowercase
   * Packages are missing LICENSE files
+  * Is it really the OLD password...or is it the current one?
+  * Does the API to directly change your email work? I keep on 404'ing
+  * Why does the change email request get sent to the _new_ email address?
 * Sleep timer won't make sense for Dart, since periodic timers stack up. To
   read: https://github.com/dart-lang/sdk/issues/23487
-* Q: Do we need toJSONs?
-* toStrings would be nice for the core types
+* Q: Do we need toJSONs? They are kind of helpful for debug printing.
+* THOUGHT: toStrings would be nice for the core types
 * Q: Do we need to support custom JWT keys? (hasura settings mentions them)
-* Q: user_data.name not allowed?
+* IDEA: user_data seems pretty limited. Why not expose the fields that are
+    actually editable? Or does this hook into Hasura somehow.
 * DART BUG:
   * ContentType does not implement equality
     * Posted https://github.com/dart-lang/sdk/issues/34061#issuecomment-793332807
@@ -70,6 +74,7 @@
     * Storage Rules should be better documented
 * TODO: Extract workflows into a version configurable action
 * Ensure that Auth isAutenticated goes to false when logging out
+* IDEA: A 4th package, for graphql'ing from Dart without Flutter
 * RECOMMEND:
   * Packages are called
     * 'nhost' (or 'nhost_sdk')
@@ -78,10 +83,13 @@
     * (+) 'nhost_graphql'
   * Consider passing null to authStateChanges, representing loading. This way
     UI can react more easily (like disabling buttons during a login/logout)
-* IDEA: isAutenticated should be a tri-state
+* IDEA: isAutenticated could be a tri-state enum
 * Q: I see a banner asking me if I want to upgrade Hasura server...can I
      actually do that?
-* IDEA: A 4th package, for graphql'ing from Dart without Flutter
+* IDEA: It would be nice if confirmEmailChange was an auth response, so that
+  my cached user could refresh.
+* CONCERN: Could it be problematic that the login API reveals that a user
+  exists when the password doesn't match.
 
 # TESTING
 ## APIs
