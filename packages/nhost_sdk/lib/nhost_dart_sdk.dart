@@ -9,7 +9,9 @@ import 'src/client_storage.dart';
 import 'src/session.dart';
 import 'src/storage.dart';
 
+export 'src/auth.dart';
 export 'src/api/auth_api.dart';
+export 'src/storage.dart';
 export 'src/api/storage_api.dart';
 
 class NhostClient {
