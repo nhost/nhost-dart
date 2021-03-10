@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:meta/meta.dart';
 import 'package:pedantic/pedantic.dart';
 
+import 'package:http/http.dart' as http;
 import 'api/api_client.dart';
 import 'api/auth_api_types.dart';
 import 'client_storage.dart';
@@ -30,7 +31,7 @@ class Auth {
     Duration refreshInterval,
     UserSession session,
     ClientStorage clientStorage,
-    HttpClient httpClient,
+    http.Client httpClient,
   })  : _apiClient = ApiClient(Uri.parse(baseUrl), httpClient: httpClient),
         _clientStorage = clientStorage,
         _tokenRefreshInterval = refreshInterval,

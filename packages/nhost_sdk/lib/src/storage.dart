@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:http/http.dart';
+import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:meta/meta.dart';
 import 'package:nhost_dart_sdk/src/api/storage_api_types.dart';
@@ -21,7 +21,7 @@ class Storage {
   Storage({
     @required String baseUrl,
     @required UserSession session,
-    HttpClient httpClient,
+    http.Client httpClient,
   })  : _apiClient = ApiClient(Uri.parse(baseUrl), httpClient: httpClient),
         _currentSession = session;
 
@@ -41,7 +41,7 @@ class Storage {
     String contentType,
     Function onUploadProgress,
   }) async {
-    final file = MultipartFile.fromBytes(
+    final file = http.MultipartFile.fromBytes(
       'file',
       bytes,
       filename: filePath,
@@ -67,7 +67,7 @@ class Storage {
     String contentType,
     Function onUploadProgress,
   }) async {
-    final file = MultipartFile.fromString(
+    final file = http.MultipartFile.fromString(
       'file',
       data,
       filename: filePath,

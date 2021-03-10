@@ -2,6 +2,7 @@ library nhost_dart_sdk;
 
 import 'dart:io';
 
+import 'package:http/http.dart' as http;
 import 'package:meta/meta.dart';
 
 import 'src/auth.dart';
@@ -13,6 +14,7 @@ export 'src/api/api_client.dart' show ApiException;
 export 'src/api/auth_api_types.dart';
 export 'src/api/storage_api_types.dart';
 export 'src/auth.dart';
+export 'src/client_storage.dart';
 export 'src/storage.dart';
 
 class NhostClient {
@@ -39,15 +41,15 @@ class NhostClient {
 
   /// The HTTP client used by this client's services.
   @nonVirtual
-  HttpClient get httpClient => _httpClient ??= createHttpClient();
-  HttpClient _httpClient;
+  http.Client get httpClient => _httpClient ??= createHttpClient();
+  http.Client _httpClient;
 
   /// Creates the [HttpClient] to be used by this client's APIs.
   ///
   /// Can be overridden by subclasses. Useful for introducing custom clients for
   /// proxies, or debugging.
   @protected
-  HttpClient createHttpClient() => HttpClient();
+  http.Client createHttpClient() => http.Client();
 
   /// This client's authentication service.
   Auth get auth => _auth ??= Auth(

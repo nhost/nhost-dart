@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:http/http.dart' as http;
-import 'package:http/io_client.dart' as http;
 import 'package:meta/meta.dart';
 import 'package:nhost_dart_sdk/src/debug.dart';
 
@@ -25,8 +24,8 @@ class ApiClient {
   /// required, as is the case with proxies.
   ApiClient(
     this.baseUrl, {
-    HttpClient httpClient,
-  }) : _httpClient = http.IOClient(httpClient);
+    http.Client httpClient,
+  }) : _httpClient = httpClient ?? http.Client();
 
   final Uri baseUrl;
   final http.Client _httpClient;
