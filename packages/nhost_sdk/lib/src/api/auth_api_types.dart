@@ -4,7 +4,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 import 'core_codec.dart';
 
-part 'auth_api.g.dart';
+part 'auth_api_types.g.dart';
 
 class AuthResponse {
   AuthResponse({this.session, this.user, this.mfa});

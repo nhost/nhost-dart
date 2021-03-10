@@ -5,7 +5,7 @@ import 'package:meta/meta.dart';
 import 'package:pedantic/pedantic.dart';
 
 import 'api/api_client.dart';
-import 'api/auth_api.dart';
+import 'api/auth_api_types.dart';
 import 'client_storage.dart';
 import 'debug.dart';
 import 'foundation/duration.dart';
