@@ -9,13 +9,23 @@ jobs:
     strategy:
       matrix:
         # We test against several Flutter versions
-        flutter_channel: ['stable', 'beta']
+        flutter_channel: [stable, beta]
+        # include:
+        # - flutter_channel: dev
+        #   flutter_version: '1.22.4'
 
     steps:
     - uses: actions/checkout@v2
 
     # Setup the flutter environment
     - uses: subosito/flutter-action@v1.4.0
+      if: matrix.flutter_version != null
+      with:
+        flutter-version: ${{ matrix.flutter_version }}
+
+    # Setup the flutter environment
+    - uses: subosito/flutter-action@v1.4.0
+      if: matrix.flutter_version == null
       with:
         channel: ${{ matrix.flutter_channel }}
 

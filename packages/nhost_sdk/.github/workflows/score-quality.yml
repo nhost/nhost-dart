@@ -6,12 +6,6 @@ jobs:
   # order of search results on the package manager site)
   score:
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        # We test against several Flutter versions
-        flutter_channel: ['stable', 'dev']
-
     steps:
     - uses: actions/checkout@v2
     - uses: axel-op/dart-package-analyzer@v3
