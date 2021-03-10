@@ -91,7 +91,7 @@ class Storage {
   /// Throws an [ApiException] if the deletion fails.
   ///
   /// https://docs.nhost.io/storage/api-reference#delete-file
-  void delete(String filePath) async {
+  Future<void> delete(String filePath) async {
     await _apiClient.delete(
       joinSubpath('/o', filePath),
       headers: _generateHeaders(),
