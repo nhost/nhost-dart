@@ -9,3 +9,4 @@ dependencies:
   mime: ^1.0.0
   nhost_dart_sdk:
     path: ../
+  random_string:
