@@ -3,6 +3,16 @@
 [![Pub](https://img.shields.io/pub/v/nhost_dart_sdk)](https://pub.dev/packages/nhost_dart_sdk)
 [![Github test](https://github.com/shyndman/nhost-dart-sdk/workflows/test/badge.svg)](https://github.com/shyndman/nhost-dart-sdk/actions?query=test)
 
+A Dart SDK for accessing [Nhost](https://nhost.io) authentication and file
+storage APIs, written entirely in Dart.
+
+TODO(shyndman): Links to other packages?
+Check out our other packages for getting even more out of Nhost:
+
+* [nhost_graphql](https://pub.dev/publishers/nhost/nhost_graphql)
+* [nhost_flutter_graphql](https://pub.dev/publishers/nhost/nhost_flutter_graphql)
+* [nhost_flutter_auth](https://pub.dev/publishers/nhost/nhost_flutter_auth)
+
 ## Getting Started
 
 ```yaml
