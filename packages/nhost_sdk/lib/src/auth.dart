@@ -19,7 +19,7 @@ typedef UnsubscribeDelegate = void Function();
 
 const refreshTokenClientStorageKey = 'nhostRefreshToken';
 
-/// The Nhost Auth service class.
+/// The Nhost Auth service.
 ///
 /// Supports user authentication, MFA, OTP, and various user management
 /// functions.
