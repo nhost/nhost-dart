@@ -39,6 +39,7 @@ jobs:
     - run: dart analyze .
 
     # Do the same for examples
+    - run: cd example && pub get
     - run: dart analyze ./example
 
     # Run widget tests for our flutter project
