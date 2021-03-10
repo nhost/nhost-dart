@@ -361,7 +361,7 @@ class Auth {
 
   Future<void> _clearSession() async {
     // early exit
-    if (!isAuthenticated) {
+    if (isAuthenticated == false || isAuthenticated == null) {
       return;
     }
 
