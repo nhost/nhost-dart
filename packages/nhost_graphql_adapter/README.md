@@ -1,22 +1,34 @@
-A library for Dart developers.
+# Nhost GraphQL Adapter
 
-Created from templates made available by Stagehand under a BSD-style
-[license](https://github.com/dart-lang/stagehand/blob/master/LICENSE).
+[![Pub](https://img.shields.io/pub/v/nhost_graphql)](https://pub.dev/packages/nhost_graphql)
+[![Github test](https://github.com/shyndman/nhost-graphql/workflows/test/badge.svg)](https://github.com/shyndman/nhost-graphql/actions?query=test)
 
-## Usage
+[Nhost](https://nhost.io) integration with the
+[graphql](https://pub.dev/packages/graphql) package.
 
-A simple usage example:
+If you're building for Flutter, check out
+[nhost_flutter_graphql](https://pub.dev/publishers/nhost/nhost_flutter_graphql)
+for widgets that work great with
+[graphql_flutter](https://pub.dev/packages/graphql_flutter).
 
-```dart
-import 'package:nhost_graphql/nhost_graphql.dart';
+### More Dart & Flutter packages from Nhost 🔥
 
-main() {
-  var awesome = new Awesome();
-}
+* [nhost_dart_sdk](https://pub.dev/publishers/nhost/nhost_dart_sdk)
+* [nhost_flutter_graphql](https://pub.dev/publishers/nhost/nhost_flutter_graphql)
+* [nhost_flutter_auth](https://pub.dev/publishers/nhost/nhost_flutter_auth)
+
+## Getting Started
+
+```yaml
+dependencies:
+  nhost_graphql: ^1.0.0
 ```
 
-## Features and bugs
+### Flutter 1.22.4 support
 
-Please file feature requests and bugs at the [issue tracker][tracker].
+For people affected by the Metal jank issues on iOS.
 
-[tracker]: http://example.com/issues/replaceme
+```yaml
+dependencies:
+  nhost_graphql: ^0.9.0
+```
