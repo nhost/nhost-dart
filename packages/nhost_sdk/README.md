@@ -19,8 +19,6 @@ dependencies:
   nhost_dart_sdk: ^1.0.0
 ```
 
-If you are running against Flutter 1.14.0 to bypass the Metal jank issues:
-
 ### Flutter 1.22.4 support
 
 For people affected by the Metal jank issues on iOS.
