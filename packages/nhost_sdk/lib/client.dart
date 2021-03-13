@@ -34,6 +34,8 @@ class NhostClient {
   ///
   /// For information on getting started, please visit
   /// https://docs.nhost.io/libraries/nhost-dart-sdk#setup
+  ///
+  /// TODO(shyndman): Document all parameters
   NhostClient({
     @required this.baseUrl,
     ClientStorage clientStorage,
