@@ -41,7 +41,14 @@ class FileMetadata {
   @JsonKey(name: 'Metadata')
   final FileNhostMetadata nhostMetadata;
 
-  static FileMetadata fromJson(dynamic json) => _$FileMetadataFromJson(json);
+  static FileMetadata fromJson(dynamic json) {
+    // TODO(https://github.com/nhost/hasura-backend-plus/issues/436): In
+    // order to work around inconsistencies in the backend's naming of this
+    // field, we duplicate.
+    json['Key'] = json['Key'] ?? json['key'];
+    return _$FileMetadataFromJson(json);
+  }
+
   Map<String, dynamic> toJson() => _$FileMetadataToJson(this);
 }
 
