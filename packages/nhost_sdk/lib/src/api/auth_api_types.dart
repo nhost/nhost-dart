@@ -87,19 +87,19 @@ class Session {
 class User {
   User({
     this.id,
-    this.displayName,
     this.email,
+    this.displayName,
     this.avatarUrl,
   });
 
-  /// A GUID identifying the user
+  /// A UUID identifying the user
   final String id;
-
-  /// The user's preferred name for display
-  final String displayName;
 
   /// The user's email address
   final String email;
+
+  /// The user's preferred name for display, or `null` if none
+  final String displayName;
 
   /// A [Uri] locating the user's avatar image, or `null` if none.
   final Uri avatarUrl;

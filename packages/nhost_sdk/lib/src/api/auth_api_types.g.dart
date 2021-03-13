@@ -32,8 +32,8 @@ Map<String, dynamic> _$SessionToJson(Session instance) => <String, dynamic>{
 User _$UserFromJson(Map<String, dynamic> json) {
   return User(
     id: json['id'] as String,
-    displayName: json['display_name'] as String,
     email: json['email'] as String,
+    displayName: json['display_name'] as String,
     avatarUrl: json['avatar_url'] == null
         ? null
         : Uri.parse(json['avatar_url'] as String),
@@ -42,8 +42,8 @@ User _$UserFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'id': instance.id,
-      'display_name': instance.displayName,
       'email': instance.email,
+      'display_name': instance.displayName,
       'avatar_url': instance.avatarUrl?.toString(),
     };
 
