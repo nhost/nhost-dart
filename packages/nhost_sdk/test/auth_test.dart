@@ -8,9 +8,8 @@ import 'package:nock/nock.dart';
 import 'package:test/test.dart';
 
 import 'admin_gql.dart';
-
-const apiUrl = 'http://localhost:3000';
-const gqlUrl = 'http://localhost:8080/v1/graphql';
+import 'test_helpers.dart';
+import 'setup.dart';
 
 const testEmail = 'user-1@nhost.io';
 const testPassword = 'password-1';
@@ -24,33 +23,8 @@ void main() async {
     await gqlAdmin.clearUsers();
 
     // Create a fresh client
-    auth = createFreshAuth();
+    auth = createTestClient().auth;
   });
-
-  // Registers a basic user for test setup. The auth object will be left in a
-  // logged out state.
-  Future<void> registerTestUser({Auth authOverride}) async {
-    final localAuth = authOverride ?? auth;
-    await localAuth.register(email: testEmail, password: testPassword);
-    await localAuth.logout();
-  }
-
-  // Register and logs in a basic user for test setup. The auth object will be
-  // left in a logged out state.
-  Future<void> registerAndLoginBasicUser({Auth authOverride}) async {
-    await (authOverride ?? auth)
-        .register(email: testEmail, password: testPassword);
-  }
-
-  // Registers an MFA user for test setup, logs them out, and returns the OTP
-  // secret.
-  Future<String> registerMfaUser({bool logout = true}) async {
-    await auth.register(email: testEmail, password: testPassword);
-    final mfaDetails = await auth.generateMfa();
-    await auth.enableMfa(totpFromSecret(mfaDetails.otpSecret));
-    if (logout) await auth.logout();
-    return mfaDetails.otpSecret;
-  }
 
   group('register', () {
     test('should register first user', () async {
@@ -134,7 +108,7 @@ void main() async {
   group('login', () {
     // Each tests registers a basic user, and leaves auth in a logged out state
     setUp(() async {
-      await registerTestUser();
+      await registerTestUser(auth);
       assert(!auth.isAuthenticated);
     });
 
@@ -183,7 +157,7 @@ void main() async {
   group('logout', () {
     // All logout tests log a user in first
     setUp(() async {
-      await registerAndLoginBasicUser();
+      await registerAndLoginBasicUser(auth);
     });
 
     test('should be able to logout', () async {
@@ -223,19 +197,19 @@ void main() async {
     });
 
     test('should be called on login', () async {
-      await registerTestUser();
+      await registerTestUser(auth);
       await auth.login(email: testEmail, password: testPassword);
       expect(authStateVar, true);
     });
 
     test('should be called on logout', () async {
-      await registerTestUser();
+      await registerTestUser(auth);
       await auth.logout();
       expect(authStateVar, false);
     });
 
     test('should not be called once unsubscribed', () async {
-      await registerTestUser();
+      await registerTestUser(auth);
       unsubscribe();
       await auth.login(email: testEmail, password: testPassword);
       expect(authStateVar, false);
@@ -334,7 +308,7 @@ void main() async {
 
   group('email change', () {
     setUp(() async {
-      await registerAndLoginBasicUser();
+      await registerAndLoginBasicUser(auth);
     });
 
     // This should be tested, but requires a server configured with
@@ -378,7 +352,7 @@ void main() async {
 
   group('password change', () {
     setUp(() async {
-      await registerAndLoginBasicUser();
+      await registerAndLoginBasicUser(auth);
     });
 
     test('should be able to change password directly', () async {
@@ -430,7 +404,7 @@ void main() async {
 
   group('multi-factor authentication', () {
     test('can be enabled on a user', () async {
-      await registerAndLoginBasicUser();
+      await registerAndLoginBasicUser(auth);
 
       // Ask the backend to generate MFA configuration, and from that, generate
       // a time-based OTP.
@@ -445,7 +419,7 @@ void main() async {
     });
 
     test('should require TOTP for login once enabled', () async {
-      final otpSecret = await registerMfaUser();
+      final otpSecret = await registerMfaUser(auth);
 
       final firstFactorAuthResult =
           await auth.login(email: testEmail, password: testPassword);
@@ -463,7 +437,7 @@ void main() async {
     });
 
     test('can be disabled', () async {
-      final otpSecret = await registerMfaUser(logout: false);
+      final otpSecret = await registerMfaUser(auth, logout: false);
 
       expect(
         auth.disableMfa(totpFromSecret(otpSecret)),
@@ -472,8 +446,3 @@ void main() async {
     });
   });
 }
-
-Auth createFreshAuth() => NhostClient(baseUrl: apiUrl).auth;
-
-String totpFromSecret(String otpSecret) =>
-    TOTP(secret: otpSecret).value(date: DateTime.now());

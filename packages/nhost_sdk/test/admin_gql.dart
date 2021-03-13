@@ -17,8 +17,8 @@ class GqlAdminTestHelper {
   GraphQLClient client;
 
   /// Clears the users table in the test backend
-  Future<void> clearUsers() async {
-    await client.mutate(clearUsersMutation);
+  Future<QueryResult> clearUsers() async {
+    return await client.mutate(clearUsersMutation);
   }
 
   Future<String> getChangeTicketForUser(String userId) async {
