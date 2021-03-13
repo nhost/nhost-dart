@@ -1,8 +1,4 @@
-import 'dart:io';
-
 import 'package:json_annotation/json_annotation.dart';
-
-import 'core_codec.dart';
 
 part 'storage_api_types.g.dart';
 
