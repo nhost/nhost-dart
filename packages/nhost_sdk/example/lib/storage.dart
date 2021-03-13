@@ -8,12 +8,12 @@ void main() async {
   await client.auth.login(email: 'scott@madewithfelt.com', password: 'foofoo');
 
   final fileName = '${randomAlpha(10)}.txt';
-  final filePath = '/public/$fileName';
+  final filePath = '/${client.auth.currentUser.id}/$fileName';
 
   // Upload
-  await client.storage.putFileFromString(
+  await client.storage.uploadString(
     filePath: filePath,
-    data: 'abcdef abcdef abcdef abcdef abcdef',
+    string: 'abcdef abcdef abcdef abcdef abcdef',
     contentType: 'text/plain',
   );
 
