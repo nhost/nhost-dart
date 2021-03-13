@@ -97,7 +97,7 @@ class User {
 class MultiFactorAuthenticationInfo {
   MultiFactorAuthenticationInfo({this.ticket});
 
-  /// Ticket string to be provided to [Auth.mfaTotp] in order to continue the
+  /// Ticket string to be provided to [Auth.completeMfaLogin] in order to continue the
   /// login process
   final String ticket;
 

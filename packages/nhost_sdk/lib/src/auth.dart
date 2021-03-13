@@ -184,7 +184,7 @@ class Auth {
   ///
   /// If the user has multi-factor authentication enabled, the returned
   /// [AuthResponse] will only have its [AuthResponse.mfa] field set, which can
-  /// then be used to complete the login via [mfaTotp] alongside the user's
+  /// then be used to complete the login via [completeMfaLogin] alongside the user's
   /// one-time-password.
   ///
   /// Throws an [ApiException] if login fails.
@@ -440,7 +440,7 @@ class Auth {
   /// Throws an [ApiException] if logging in via MFA fails.
   ///
   /// https://docs.nhost.io/auth/api-reference#totp-login
-  Future<AuthResponse> mfaTotp({
+  Future<AuthResponse> completeMfaLogin({
     @required String code,
     @required String ticket,
   }) async {
