@@ -19,7 +19,7 @@ typedef TokenChangedCallback = void Function();
 /// Signature for callbacks that respond to authentication changes.
 ///
 /// Registered via [Auth.addTokenChangedCallback].
-typedef AuthChangedCallback = void Function({bool authenticated});
+typedef AuthStateChangedCallback = void Function({bool authenticated});
 
 /// Signature for functions that remove their associated callback when called.
 typedef UnsubscribeDelegate = void Function();
@@ -52,7 +52,7 @@ class Auth {
   final UserSession _currentSession;
 
   final List<TokenChangedCallback> _tokenChangedFunctions = [];
-  final List<AuthChangedCallback> _authChangedFunctions = [];
+  final List<AuthStateChangedCallback> _authChangedFunctions = [];
 
   Timer _tokenRefreshTimer;
   final Duration _tokenRefreshInterval;
@@ -105,7 +105,7 @@ class Auth {
   ///
   /// The returned function will remove the callback when called.
   UnsubscribeDelegate addAuthStateChangedCallback(
-      AuthChangedCallback callback) {
+      AuthStateChangedCallback callback) {
     _authChangedFunctions.add(callback);
     return () {
       _authChangedFunctions.removeWhere((element) => element == callback);
