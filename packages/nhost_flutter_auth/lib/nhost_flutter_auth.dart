@@ -1,8 +1,8 @@
-library flutter_nhost_auth;
+library nhost_flutter_auth;
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
-import 'package:nhost_dart_sdk/nhost_dart_sdk.dart';
+import 'package:nhost_dart_sdk/client.dart';
 
 /// Exposes Nhost authentication information to its subtree.
 ///

@@ -1,9 +1,9 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import 'package:nhost_dart_sdk/nhost_dart_sdk.dart';
+import 'package:nhost_dart_sdk/client.dart';
 
-import '../lib/flutter_nhost_auth.dart';
+import '../lib/nhost_flutter_auth.dart';
 
 void main() {
   group('NhostAuth', () {
@@ -109,10 +109,10 @@ void main() {
 }
 
 class MockAuth extends Mock implements Auth {
-  final List<AuthChangedCallback> _authChangedFunctions = [];
+  final List<AuthStateChangedCallback> _authChangedFunctions = [];
 
   UnsubscribeDelegate addAuthStateChangedCallback(
-      AuthChangedCallback callback) {
+      AuthStateChangedCallback callback) {
     _authChangedFunctions.add(callback);
     return () {
       _authChangedFunctions.removeWhere((element) => element == callback);

@@ -1,8 +1,7 @@
-name: flutter_nhost_auth
-description: A new Flutter package project.
-version: 0.0.1
-author:
-homepage:
+name: nhost_flutter_auth
+description:
+version: 1.0.0
+homepage: https://nhost.io
 publish_to: none
 
 environment:
