@@ -88,6 +88,16 @@ class Storage {
     );
   }
 
+  /// Downloads the file at the provided path.
+  ///
+  /// The file is returned as an HTTP response, populated with the headers.
+  Future<http.Response> downloadFile(String filePath) {
+    return _apiClient.get<http.Response>(
+      _objectPath(filePath),
+      headers: _session.authenticationHeaders,
+    );
+  }
+
   /// Deletes a file on the backend.
   ///
   /// Throws an [ApiException] if the deletion fails.
