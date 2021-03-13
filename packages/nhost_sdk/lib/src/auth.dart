@@ -174,7 +174,7 @@ class Auth {
     }
 
     if (sessionRes.jwtToken != null) {
-      await _setSession(sessionRes);
+      await setSession(sessionRes);
       return AuthResponse(session: sessionRes, user: sessionRes.user);
     } else {
       // if AUTO_ACTIVATE_NEW_USERS is false
@@ -216,7 +216,7 @@ class Auth {
       return loginRes;
     }
 
-    await _setSession(loginRes.session);
+    await setSession(loginRes.session);
     return loginRes;
   }
 
@@ -462,7 +462,7 @@ class Auth {
       responseDeserializer: Session.fromJson,
     );
 
-    await _setSession(res);
+    await setSession(res);
     return AuthResponse(session: res, user: res.user);
   }
 
@@ -509,16 +509,18 @@ class Auth {
       _refreshTokenLock = false;
     }
 
-    await _setSession(res);
+    await setSession(res);
     _onTokenChanged();
   }
 
-  /// Sets the active session to [session], and begins the refresh timer.
+  /// Updates the [Auth] to begin identifying as the user described by
+  /// [session].
   ///
   /// It is CRITICAL that this function be awaited before returning to the user.
   /// Failure to do so will result in very difficult to track down race
   /// conditions.
-  Future<void> _setSession(Session session) async {
+  @visibleForTesting
+  Future<void> setSession(Session session) async {
     final previouslyAuthenticated = isAuthenticated ?? false;
     _session.session = session;
     _currentUser = session.user;
