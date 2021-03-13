@@ -99,14 +99,21 @@
 * register
 * login
 * logout
-* activate
+* activate ⚠️
 * changeEmail
 * requestEmailChange
 * confirmEmailChange
-* changePassword
+* changePassword ⚠️
 * requestPasswordChange
 * confirmPasswordChange
 * generateMfa
 * enableMfa
 * disableMfa
-* mfaTotp
+* completeMfaLogin
+
+### Storage
+* uploadFileFromBytes
+* uploadFileFromString
+* getFileMetadata
+* getDirectoryMetadata
+* delete
