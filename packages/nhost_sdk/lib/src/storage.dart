@@ -7,6 +7,9 @@ import 'api/api_client.dart';
 import 'foundation/uri.dart';
 import 'session.dart';
 
+/// The default used during file upload if not provided.
+const applicationOctetStreamType = 'application/octet-stream';
+
 /// The Nhost storage service.
 ///
 /// Supports the storage and retrieval of files on the backend.
@@ -30,14 +33,15 @@ class Storage {
 
   /// Uploads a file to the backend from a list of bytes.
   ///
+  /// If not provided, [contentType] defaults to `application/octet-stream`.
+  ///
   /// Throws an [ApiException] if the upload fails.
   ///
   /// https://docs.nhost.io/storage/api-reference#upload-file
   Future<FileMetadata> putFileFromBytes({
     @required String filePath,
     @required List<int> bytes,
-    String contentType,
-    Function onUploadProgress,
+    String contentType = applicationOctetStreamType,
   }) async {
     final file = http.MultipartFile.fromBytes(
       'file',
@@ -56,14 +60,15 @@ class Storage {
 
   /// Uploads a file to the backend from a string.
   ///
+  /// If not provided, [contentType] defaults to `application/octet-stream`.
+  ///
   /// Throws an [ApiException] if the upload fails.
   ///
   /// https://docs.nhost.io/storage/api-reference#upload-file
   Future<FileMetadata> putFileFromString({
     @required String filePath,
     @required String data,
-    String contentType,
-    Function onUploadProgress,
+    String contentType = applicationOctetStreamType,
   }) async {
     final file = http.MultipartFile.fromString(
       'file',
@@ -79,7 +84,6 @@ class Storage {
         'Content-Type': 'multipart/form-data',
         ..._session.authenticationHeaders,
       },
-      // onUploadProgress,
       responseDeserializer: FileMetadata.fromJson,
     );
   }
