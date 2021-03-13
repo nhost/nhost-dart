@@ -39,8 +39,7 @@ class FileMetadata {
   final String eTag;
 
   /// content-type value for HTTP response header
-  @JsonKey(fromJson: contentTypeFromString, toJson: contentTypeToString)
-  final ContentType contentType;
+  final String contentType;
 
   /// Additional Nhost-specific metadata associated with this file
   @JsonKey(name: 'Metadata')

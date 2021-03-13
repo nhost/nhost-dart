@@ -15,7 +15,7 @@ FileMetadata _$FileMetadataFromJson(Map<String, dynamic> json) {
         : DateTime.parse(json['LastModified'] as String),
     contentLength: json['ContentLength'] as int,
     eTag: json['ETag'] as String,
-    contentType: contentTypeFromString(json['ContentType'] as String),
+    contentType: json['ContentType'] as String,
     nhostMetadata: json['Metadata'] == null
         ? null
         : FileNhostMetadata.fromJson(json['Metadata'] as Map<String, dynamic>),
@@ -29,7 +29,7 @@ Map<String, dynamic> _$FileMetadataToJson(FileMetadata instance) =>
       'LastModified': instance.lastModified?.toIso8601String(),
       'ContentLength': instance.contentLength,
       'ETag': instance.eTag,
-      'ContentType': contentTypeToString(instance.contentType),
+      'ContentType': instance.contentType,
       'Metadata': instance.nhostMetadata?.toJson(),
     };
 
