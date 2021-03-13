@@ -38,7 +38,7 @@ class Storage {
   /// Throws an [ApiException] if the upload fails.
   ///
   /// https://docs.nhost.io/storage/api-reference#upload-file
-  Future<FileMetadata> putFileFromBytes({
+  Future<FileMetadata> uploadBytes({
     @required String filePath,
     @required List<int> bytes,
     String contentType = applicationOctetStreamType,
@@ -51,7 +51,7 @@ class Storage {
     );
 
     return await _apiClient.postMultipart<FileMetadata>(
-      joinSubpath('/o', filePath),
+      _objectPath(filePath),
       headers: _session.authenticationHeaders,
       files: [file],
       responseDeserializer: FileMetadata.fromJson,
@@ -65,20 +65,20 @@ class Storage {
   /// Throws an [ApiException] if the upload fails.
   ///
   /// https://docs.nhost.io/storage/api-reference#upload-file
-  Future<FileMetadata> putFileFromString({
+  Future<FileMetadata> uploadString({
     @required String filePath,
-    @required String data,
+    @required String string,
     String contentType = applicationOctetStreamType,
   }) async {
     final file = http.MultipartFile.fromString(
       'file',
-      data,
+      string,
       filename: filePath,
       contentType: MediaType.parse(contentType),
     );
 
     return await _apiClient.postMultipart(
-      joinSubpath('/o', filePath),
+      _objectPath(filePath),
       files: [file],
       headers: {
         'Content-Type': 'multipart/form-data',
@@ -95,7 +95,7 @@ class Storage {
   /// https://docs.nhost.io/storage/api-reference#delete-file
   Future<void> delete(String filePath) async {
     await _apiClient.delete(
-      joinSubpath('/o', filePath),
+      _objectPath(filePath),
       headers: _session.authenticationHeaders,
     );
   }
@@ -109,7 +109,7 @@ class Storage {
     assert(!filePath.endsWith('/'),
         '$filePath is not a valid file path, because it ends with a /');
     return await _apiClient.get(
-      joinSubpath('/m', filePath),
+      _metadataPath(filePath),
       headers: _session.authenticationHeaders,
       responseDeserializer: FileMetadata.fromJson,
     );
@@ -126,9 +126,12 @@ class Storage {
         '$directoryPath is not a valid directory path, because it does not '
         'end with a /');
     return await _apiClient.get(
-      joinSubpath('/m', directoryPath),
+      _metadataPath(directoryPath),
       headers: _session.authenticationHeaders,
       responseDeserializer: listOf(FileMetadata.fromJson),
     );
   }
+
+  String _objectPath(String filePath) => joinSubpath('/o', filePath);
+  String _metadataPath(String filePath) => joinSubpath('/m', filePath);
 }
