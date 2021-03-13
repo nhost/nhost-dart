@@ -189,7 +189,9 @@ class ApiClient {
       throw ApiException(request.url, responseBody, request, response);
     }
 
-    if (responseDeserializer != null && isJson) {
+    if (ResponseType == http.Response) {
+      return response as ResponseType;
+    } else if (responseDeserializer != null) {
       return responseDeserializer(responseBody);
     } else {
       return null;
