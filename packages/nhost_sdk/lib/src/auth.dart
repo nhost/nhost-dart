@@ -43,13 +43,13 @@ class Auth {
   })  : _apiClient = ApiClient(Uri.parse(baseUrl), httpClient: httpClient),
         _clientStorage = clientStorage,
         _tokenRefreshInterval = refreshInterval,
-        _currentSession = session,
+        _session = session,
         _refreshTokenLock = false,
         _loading = true;
 
   final ApiClient _apiClient;
   final ClientStorage _clientStorage;
-  final UserSession _currentSession;
+  final UserSession _session;
 
   final List<TokenChangedCallback> _tokenChangedFunctions = [];
   final List<AuthStateChangedCallback> _authChangedFunctions = [];
@@ -69,16 +69,18 @@ class Auth {
   User get currentUser => _currentUser;
   User _currentUser;
 
-  /// The currently logged-in user's Json Web Token, or `null` if
-  /// unauthenticated.
-  String get jwt => _currentSession.session?.jwtToken;
-
   /// `true` if the user is authenticated, `false` if they are not, or `null`
   /// if authentication is in process.
   bool get isAuthenticated {
     if (_loading) return null;
-    return _currentSession.session != null;
+    return _session.session != null;
   }
+
+  /// The currently logged-in user's Json Web Token, or `null` if
+  /// unauthenticated.
+  String get jwt => _session.jwt;
+
+  String getClaim(String jwtClaim) => _session.getClaim(jwtClaim);
 
   /// Releases the service's resources.
   ///
@@ -280,7 +282,7 @@ class Auth {
       data: {
         'new_email': newEmail,
       },
-      headers: _generateHeaders(),
+      headers: _session.authenticationHeaders,
     );
   }
 
@@ -298,7 +300,7 @@ class Auth {
       data: {
         'new_email': newEmail,
       },
-      headers: _generateHeaders(),
+      headers: _session.authenticationHeaders,
     );
   }
 
@@ -331,7 +333,7 @@ class Auth {
         'old_password': oldPassword,
         'new_password': newPassword,
       },
-      headers: _generateHeaders(),
+      headers: _session.authenticationHeaders,
     );
   }
 
@@ -386,7 +388,7 @@ class Auth {
   Future<MultiFactorAuthResponse> generateMfa() async {
     return await _apiClient.post(
       '/mfa/generate',
-      headers: _generateHeaders(),
+      headers: _session.authenticationHeaders,
       // This empty map is required by the server, otherwise it fails
       data: {},
       responseDeserializer: MultiFactorAuthResponse.fromJson,
@@ -406,7 +408,7 @@ class Auth {
   Future<void> enableMfa(String code) async {
     await _apiClient.post(
       '/mfa/enable',
-      headers: _generateHeaders(),
+      headers: _session.authenticationHeaders,
       data: {
         'code': code,
       },
@@ -426,7 +428,7 @@ class Auth {
       data: {
         'code': code,
       },
-      headers: _generateHeaders(),
+      headers: _session.authenticationHeaders,
     );
   }
 
@@ -461,12 +463,6 @@ class Auth {
 
   Future<void> refreshSession() async {
     return _refreshToken();
-  }
-
-  Map<String, String> _generateHeaders() {
-    return {
-      if (jwt != null) HttpHeaders.authorizationHeader: 'Bearer $jwt',
-    };
   }
 
   Future<void> _refreshToken([String initRefreshToken]) async {
@@ -517,7 +513,7 @@ class Auth {
   /// conditions.
   Future<void> _setSession(Session session) async {
     final previouslyAuthenticated = isAuthenticated ?? false;
-    _currentSession.session = session;
+    _session.session = session;
     _currentUser = session.user;
 
     if (session.refreshToken != null) {
@@ -564,7 +560,7 @@ class Auth {
       return;
     }
 
-    _currentSession.clear();
+    _session.clear();
     await _clientStorage.removeItem(refreshTokenClientStorageKey);
 
     _loading = false;
