@@ -62,6 +62,22 @@ class Session {
   /// This field will be `null` if MFA is not enabled for the user.
   final MultiFactorAuthenticationInfo mfa;
 
+  Session copyWith({
+    String jwtToken,
+    Duration jwtExpiresIn,
+    String refreshToken,
+    User user,
+    MultiFactorAuthenticationInfo mfa,
+  }) {
+    return Session(
+      jwtToken: jwtToken ?? this.jwtToken,
+      jwtExpiresIn: jwtExpiresIn ?? this.jwtExpiresIn,
+      refreshToken: refreshToken ?? this.refreshToken,
+      user: user ?? this.user,
+      mfa: mfa ?? this.mfa,
+    );
+  }
+
   static Session fromJson(dynamic json) => _$SessionFromJson(json);
   Map<String, dynamic> toJson() => _$SessionToJson(this);
 }
