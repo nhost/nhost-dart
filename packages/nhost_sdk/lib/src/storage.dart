@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:meta/meta.dart';
@@ -16,14 +14,14 @@ import 'session.dart';
 /// See https://docs.nhost.io/storage/api-reference for more info.
 class Storage {
   final ApiClient _apiClient;
-  final UserSession _currentSession;
+  final UserSession _session;
 
   Storage({
     @required String baseUrl,
     @required UserSession session,
     http.Client httpClient,
   })  : _apiClient = ApiClient(Uri.parse(baseUrl), httpClient: httpClient),
-        _currentSession = session;
+        _session = session;
 
   /// Releases the object's resources.
   void close() {
@@ -50,7 +48,7 @@ class Storage {
 
     return await _apiClient.postMultipart<FileMetadata>(
       joinSubpath('/o', filePath),
-      headers: _generateHeaders(),
+      headers: _session.authenticationHeaders,
       files: [file],
       responseDeserializer: FileMetadata.fromJson,
     );
@@ -79,7 +77,7 @@ class Storage {
       files: [file],
       headers: {
         'Content-Type': 'multipart/form-data',
-        ..._generateHeaders(),
+        ..._session.authenticationHeaders,
       },
       // onUploadProgress,
       responseDeserializer: FileMetadata.fromJson,
@@ -94,7 +92,7 @@ class Storage {
   Future<void> delete(String filePath) async {
     await _apiClient.delete(
       joinSubpath('/o', filePath),
-      headers: _generateHeaders(),
+      headers: _session.authenticationHeaders,
     );
   }
 
@@ -108,7 +106,7 @@ class Storage {
         '$filePath is not a valid file path, because it ends with a /');
     return await _apiClient.get(
       joinSubpath('/m', filePath),
-      headers: _generateHeaders(),
+      headers: _session.authenticationHeaders,
       responseDeserializer: FileMetadata.fromJson,
     );
   }
@@ -125,17 +123,8 @@ class Storage {
         'end with a /');
     return await _apiClient.get(
       joinSubpath('/m', directoryPath),
-      headers: _generateHeaders(),
+      headers: _session.authenticationHeaders,
       responseDeserializer: listOf(FileMetadata.fromJson),
     );
-  }
-
-  /// Generates authenticated HTTP request headers.
-  Map<String, String> _generateHeaders() {
-    return {
-      if (_currentSession.session != null)
-        HttpHeaders.authorizationHeader:
-            'Bearer ${_currentSession.session?.jwtToken}',
-    };
   }
 }
