@@ -5,3 +5,9 @@
 
 Provides [Nhost](https://nhost.io) authentication state to your Flutter app,
 making it easy to set up protected resources, and react to logins and logouts.
+
+### More Dart & Flutter packages from Nhost 🔥
+
+* [nhost_sdk](https://pub.dev/publishers/nhost/nhost_sdk)
+* [nhost_graphql](https://pub.dev/publishers/nhost/nhost_graphql)
+* [nhost_flutter_graphql](https://pub.dev/publishers/nhost/nhost_flutter_graphql)
