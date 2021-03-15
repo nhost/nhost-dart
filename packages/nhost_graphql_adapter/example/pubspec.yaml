@@ -1,0 +1,13 @@
+name: nhost_graphql_example
+description: Demonstrates usage of the nhost_graphql package
+publish_to: none
+
+environment:
+  sdk: '>=2.10.0 <3.0.0'
+
+dependencies:
+  graphql: ^4.0.0
+  nhost_dart_sdk:
+    path: ../../nhost-dart-sdk
+  nhost_graphql:
+    path: ../
