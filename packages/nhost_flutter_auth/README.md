@@ -1,14 +1,7 @@
-# nhost_flutter_auth
+# Nhost Authentication for Flutter
 
-A new Flutter package project.
+[![Pub](https://img.shields.io/pub/v/nhost_flutter_auth)](https://pub.dev/packages/nhost_flutter_auth)
+[![Github test](https://github.com/shyndman/nhost-flutter-auth/workflows/test/badge.svg)](https://github.com/shyndman/nhost-flutter-auth/actions?query=test)
 
-## Getting Started
-
-This project is a starting point for a Dart
-[package](https://flutter.dev/developing-packages/),
-a library module containing code that can be shared easily across
-multiple Flutter or Dart projects.
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Provides [Nhost](https://nhost.io) authentication state to your Flutter app,
+making it easy to set up protected resources, and react to logins and logouts.
