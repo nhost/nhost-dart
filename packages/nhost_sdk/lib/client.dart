@@ -1,7 +1,5 @@
 library nhost_dart_sdk;
 
-import 'dart:io';
-
 import 'package:http/http.dart' as http;
 import 'package:meta/meta.dart';
 
@@ -27,15 +25,26 @@ export 'src/storage.dart';
 ///
 /// Additional packages for working with GraphQL and Flutter can be found at
 /// https://pub.dev/publishers/nhost
-///
-/// TODO(shyndman): We need to create an nhost publisher
 class NhostClient {
   /// Constructs a new Nhost client.
   ///
   /// For information on getting started, please visit
   /// https://docs.nhost.io/libraries/nhost-dart-sdk#setup
   ///
-  /// TODO(shyndman): Document all parameters
+  /// [baseUrl] is the Nhost "Backend URL" that can be found on your Nhost
+  /// project page.
+  ///
+  /// [clientStorage] is an object used to store Nhost authentication tokens,
+  /// with the intent of persisting them between restarts of your app. If not
+  /// provided, the tokens will not be persisted.
+  ///
+  /// [tokenRefreshInterval] is the amount of time the client will wait between
+  /// refreshing its authentication tokens. If not provided, will default to
+  /// a value provided by the server.
+  ///
+  /// The optional [httpClient] parameter can be provided in order to customize
+  /// the requests made by the Nhost APIs, which can be useful for proxies
+  /// configuration and debugging.
   NhostClient({
     @required this.baseUrl,
     ClientStorage clientStorage,
