@@ -1,14 +1,13 @@
-# flutter_nhost_graphql
+# Nhost GraphQL Support for Flutter
 
-A new Flutter package project.
+[![Pub](https://img.shields.io/pub/v/nhost_flutter_graphql)](https://pub.dev/packages/nhost_flutter_graphql)
+[![Github test](https://github.com/shyndman/nhost-flutter-graphql/workflows/test/badge.svg)](https://github.com/shyndman/nhost-flutter-graphql/actions?query=test)
 
-## Getting Started
+Provides [Nhost](https://nhost.io) authentication state to your Flutter app,
+making it easy to set up protected resources, and react to logins and logouts.
 
-This project is a starting point for a Dart
-[package](https://flutter.dev/developing-packages/),
-a library module containing code that can be shared easily across
-multiple Flutter or Dart projects.
+### More Dart & Flutter packages from Nhost 🔥
 
-For help getting started with Flutter, view our 
-[online documentation](https://flutter.dev/docs), which offers tutorials, 
-samples, guidance on mobile development, and a full API reference.
+* [nhost_sdk](https://pub.dev/publishers/nhost/nhost_sdk)
+* [nhost_graphql](https://pub.dev/publishers/nhost/nhost_graphql)
+* [nhost_flutter_auth](https://pub.dev/publishers/nhost/nhost_flutter_auth)
