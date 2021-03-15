@@ -40,6 +40,7 @@ class NhostClient {
     @required this.baseUrl,
     ClientStorage clientStorage,
     Duration tokenRefreshInterval,
+    http.Client httpClient,
   })  : assert(
             baseUrl != null,
             'Please specify a baseURL. More information at '
@@ -59,15 +60,8 @@ class NhostClient {
 
   /// The HTTP client used by this client's services.
   @nonVirtual
-  http.Client get httpClient => _httpClient ??= createHttpClient();
+  http.Client get httpClient => _httpClient ??= http.Client();
   http.Client _httpClient;
-
-  /// Creates the [HttpClient] to be used by this client's APIs.
-  ///
-  /// Can be overridden by subclasses. Useful for introducing custom clients for
-  /// proxies, or debugging.
-  @protected
-  http.Client createHttpClient() => http.Client();
 
   /// The Nhost authentication service.
   Auth get auth => _auth ??= Auth(
