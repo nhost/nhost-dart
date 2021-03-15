@@ -14,7 +14,7 @@ void main() {
       Auth actualAuth;
       await tester.pumpWidget(
         NhostAuth(
-          auth: mockAuth,
+          nhostAuth: mockAuth,
           child: Builder(builder: (context) {
             actualAuth = NhostAuth.of(context);
             return SizedBox();
@@ -36,7 +36,7 @@ void main() {
 
       await tester.pumpWidget(
         NhostAuth(
-          auth: MockAuth(),
+          nhostAuth: MockAuth(),
           child: countingBuilder,
         ),
       );
@@ -44,7 +44,8 @@ void main() {
 
       await tester.pumpWidget(
         NhostAuth(
-          auth: MockAuth(), // Brand new MockAuth(), which triggers a change
+          nhostAuth:
+              MockAuth(), // Brand new MockAuth(), which triggers a change
           child: countingBuilder,
         ),
       );
@@ -64,7 +65,7 @@ void main() {
 
       await tester.pumpWidget(
         NhostAuth(
-          auth: consistentAuth,
+          nhostAuth: consistentAuth,
           child: countingBuilder,
         ),
       );
@@ -72,7 +73,8 @@ void main() {
 
       await tester.pumpWidget(
         NhostAuth(
-          auth: consistentAuth, // Brand new MockAuth(), which triggers a change
+          nhostAuth:
+              consistentAuth, // Brand new MockAuth(), which triggers a change
           child: countingBuilder,
         ),
       );
@@ -86,7 +88,7 @@ void main() {
       int buildCount = 0;
       await tester.pumpWidget(
         NhostAuth(
-          auth: mockAuth,
+          nhostAuth: mockAuth,
           child: Builder(builder: (context) {
             NhostAuth.of(context); // Establish dependency
             buildCount++;
