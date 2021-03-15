@@ -6,7 +6,7 @@
 [Nhost](https://nhost.io) authentication and file storage API clients, written
 entirely in Dart.
 
-### More 🔥 Dart & Flutter packages from Nhost
+### More Dart & Flutter packages from Nhost 🔥
 
 * [nhost_graphql](https://pub.dev/publishers/nhost/nhost_graphql)
 * [nhost_flutter_graphql](https://pub.dev/publishers/nhost/nhost_flutter_graphql)
