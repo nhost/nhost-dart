@@ -217,9 +217,9 @@ packages:
   nhost_dart_sdk:
     dependency: "direct main"
     description:
-      path: "../nhost-dart-sdk"
-      relative: true
-    source: path
+      name: nhost_dart_sdk
+      url: "https://pub.dartlang.org"
+    source: hosted
     version: "0.0.0"
   package_config:
     dependency: transitive
@@ -333,4 +333,4 @@ packages:
     version: "3.1.0"
 sdks:
   dart: ">=2.12.0 <3.0.0"
-  flutter: ">=1.17.0"
+  flutter: ">=1.22.4"
