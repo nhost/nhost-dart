@@ -72,34 +72,14 @@ class Screen extends StatelessWidget {
     // the user's authentication state changes.
     final auth = NhostAuthProvider.of(context);
     if (auth.isAuthenticated == true) {
-      return ProtectedContent();
+      return LoggedInUserDetails();
     } else {
       return LoginForm();
     }
   }
 }
 
-class ProtectedContent extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final auth = NhostAuthProvider.of(context);
-    final textTheme = Theme.of(context).textTheme;
-
-    return Center(
-      child: Column(
-        children: [
-          Text('Welcome to the protected content!', style: textTheme.headline3),
-          ElevatedButton(
-            onPressed: () {
-              auth.logout();
-            },
-            child: Text('Logout'),
-          ),
-        ],
-      ),
-    );
-  }
-}
+const rowSpacing = SizedBox(height: 12);
 
 class LoginForm extends StatefulWidget {
   @override
@@ -142,37 +122,92 @@ class _LoginFormState extends State<LoginForm> {
 
   @override
   Widget build(BuildContext context) {
-    const spacing = SizedBox(height: 12);
     return Padding(
       padding: EdgeInsets.all(32),
       child: Form(
         key: formKey,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            TextFormField(
-              controller: emailController,
-              decoration: InputDecoration(
-                hintText: 'Email',
-                border: OutlineInputBorder(),
+        child: FocusTraversalGroup(
+          policy: ReadingOrderTraversalPolicy(),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              TextFormField(
+                controller: emailController,
+                decoration: InputDecoration(
+                  hintText: 'Email',
+                  border: OutlineInputBorder(),
+                ),
+                onFieldSubmitted: (_) => tryLogin(),
               ),
-            ),
-            spacing,
-            TextFormField(
-              controller: passwordController,
-              decoration: InputDecoration(
-                hintText: 'Password',
-                border: OutlineInputBorder(),
+              rowSpacing,
+              TextFormField(
+                controller: passwordController,
+                decoration: InputDecoration(
+                  hintText: 'Password',
+                  border: OutlineInputBorder(),
+                ),
+                obscureText: true,
+                onFieldSubmitted: (_) => tryLogin(),
               ),
-              obscureText: true,
-            ),
-            spacing,
-            ElevatedButton(
-              onPressed: tryLogin,
-              child: Text('Submit'),
-            )
-          ],
+              rowSpacing,
+              ElevatedButton(
+                onPressed: tryLogin,
+                child: Text('Submit'),
+              )
+            ],
+          ),
         ),
+      ),
+    );
+  }
+}
+
+class LoggedInUserDetails extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final auth = NhostAuthProvider.of(context);
+    final currentUser = auth.currentUser;
+
+    final textTheme = Theme.of(context).textTheme;
+    const cellPadding = EdgeInsets.all(4);
+
+    return Center(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Welcome ${currentUser.email}!',
+            style: textTheme.headline5,
+          ),
+          rowSpacing,
+          Text('User details:', style: textTheme.caption),
+          rowSpacing,
+          Table(
+            defaultColumnWidth: IntrinsicColumnWidth(),
+            children: [
+              for (final row in currentUser.toJson().entries)
+                TableRow(
+                  children: [
+                    Padding(
+                      padding: cellPadding.copyWith(right: 12),
+                      child: Text(row.key),
+                    ),
+                    Padding(
+                      padding: cellPadding,
+                      child: Text('${row.value}'),
+                    ),
+                  ],
+                )
+            ],
+          ),
+          rowSpacing,
+          ElevatedButton(
+            onPressed: () {
+              auth.logout();
+            },
+            child: Text('Logout'),
+          ),
+        ],
       ),
     );
   }
