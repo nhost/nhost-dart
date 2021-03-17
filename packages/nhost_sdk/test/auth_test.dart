@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:betamax/betamax.dart';
 import 'package:dart_otp/dart_otp.dart';
 import 'package:fake_async/fake_async.dart';
 import 'package:nhost_dart_sdk/client.dart';
