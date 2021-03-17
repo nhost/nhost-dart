@@ -37,11 +37,11 @@ class _AuthNotifier extends ChangeNotifier implements ValueListenable<Auth> {
   _AuthNotifier(Auth auth) : _auth = auth {
     _unsubscribeAuthListener =
         _auth.addAuthStateChangedCallback(({authenticated}) {
-      this.notifyListeners();
+      notifyListeners();
     });
   }
 
-  Auth _auth;
+  final Auth _auth;
   UnsubscribeDelegate _unsubscribeAuthListener;
 
   @override
