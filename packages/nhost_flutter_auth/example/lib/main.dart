@@ -56,9 +56,9 @@ class _SimpleAuthenticationExampleState
 
   @override
   Widget build(BuildContext context) {
-    // The NhostAuth widget provides authentication state to its subtree, which
-    // can be accessed using NhostAuth.of(BuildContext).
-    return NhostAuth(
+    // The NhostAuthProvider widget provides authentication state to its subtree, which
+    // can be accessed using NhostAuthProvider.of(BuildContext).
+    return NhostAuthProvider(
       auth: nhostClient.auth,
       child: Screen(),
     );
@@ -68,9 +68,9 @@ class _SimpleAuthenticationExampleState
 class Screen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // NhostAuth.of will register this widget so that it rebuilds whenever
+    // NhostAuthProvider.of will register this widget so that it rebuilds whenever
     // the user's authentication state changes.
-    final auth = NhostAuth.of(context);
+    final auth = NhostAuthProvider.of(context);
     if (auth.isAuthenticated == true) {
       return ProtectedContent();
     } else {
@@ -82,7 +82,7 @@ class Screen extends StatelessWidget {
 class ProtectedContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final auth = NhostAuth.of(context);
+    final auth = NhostAuthProvider.of(context);
     final textTheme = Theme.of(context).textTheme;
 
     return Center(
@@ -126,7 +126,7 @@ class _LoginFormState extends State<LoginForm> {
   }
 
   void tryLogin() async {
-    final auth = NhostAuth.of(context);
+    final auth = NhostAuthProvider.of(context);
 
     try {
       await auth.login(
