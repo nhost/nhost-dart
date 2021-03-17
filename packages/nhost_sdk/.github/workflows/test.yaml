@@ -31,15 +31,14 @@ jobs:
 
     # Get package dependencies
     - run: pub get
+    - run: pub get
+      working-directory: ./example
 
     # Check for any formatting issues in the code
     - run: dart format --set-exit-if-changed .
 
     # Statically analyze the Dart code for any errors
     - run: dart analyze .
-
-    # Do the same for examples
-    - run: cd example && pub get
     - run: dart analyze ./example
 
     # Run widget tests for our flutter project
