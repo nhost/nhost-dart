@@ -243,7 +243,6 @@ class Auth {
         data: {
           'all': all,
         },
-        responseDeserializer: Session.fromJson,
       );
     } catch (e) {
       // noop
