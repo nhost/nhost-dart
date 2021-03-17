@@ -27,5 +27,4 @@ dev_dependencies:
   stack_trace: ^1.0.0
 
   # Nhost packages
-  nhost_graphql_adapter:
-    path: ../nhost-dart-graphql-adapter
+  nhost_graphql_adapter: ^0.0.0
