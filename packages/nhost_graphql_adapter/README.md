@@ -21,7 +21,7 @@ for widgets that work great with
 
 ```yaml
 dependencies:
-  nhost_graphql: ^1.0.0
+  nhost_adapter_graphql: ^1.0.0
 ```
 
 ### Flutter 1.22.4 support
@@ -30,5 +30,5 @@ For people affected by the Metal jank issues on iOS.
 
 ```yaml
 dependencies:
-  nhost_graphql: ^0.9.0
+  nhost_adapter_graphql: ^0.9.0
 ```
