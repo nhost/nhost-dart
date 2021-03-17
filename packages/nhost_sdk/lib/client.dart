@@ -39,17 +39,17 @@ class NhostClient {
   /// provided, the tokens will not be persisted.
   ///
   /// [tokenRefreshInterval] is the amount of time the client will wait between
-  /// refreshing its authentication tokens. If not provided, will default to
-  /// a value provided by the server.
+  /// refreshing its authentication tokens. If not provided, will default to a
+  /// value provided by the server.
   ///
-  /// The optional [httpClient] parameter can be provided in order to customize
-  /// the requests made by the Nhost APIs, which can be useful for proxies
-  /// configuration and debugging.
+  /// The optional [httpClientOverride] parameter can be provided in order to
+  /// customize the requests made by the Nhost APIs, which can be useful for
+  /// proxy configuration and debugging.
   NhostClient({
     @required this.baseUrl,
     ClientStorage clientStorage,
     Duration tokenRefreshInterval,
-    http.Client httpClient,
+    http.Client httpClientOverride,
   })  : assert(
             baseUrl != null,
             'Please specify a baseURL. More information at '
@@ -57,6 +57,7 @@ class NhostClient {
             'https://docs.nhost.io/libraries/nhost-dart-sdk#setup'),
         _session = UserSession(),
         _refreshInterval = tokenRefreshInterval,
+        _httpClient = httpClientOverride,
         clientStorage = clientStorage ?? InMemoryClientStorage();
 
   /// The Nhost project's backend URL.
