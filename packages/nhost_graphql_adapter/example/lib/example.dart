@@ -1,6 +1,6 @@
 import 'package:graphql/client.dart';
 import 'package:nhost_dart_sdk/client.dart';
-import 'package:nhost_graphql/nhost_graphql.dart';
+import 'package:nhost_graphql_adapter/nhost_graphql_adapter.dart';
 
 // Both of these URLs can be found in your nhost.io console, under the project
 // you wish to connect to.

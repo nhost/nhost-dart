@@ -7,7 +7,5 @@ environment:
 
 dependencies:
   graphql: ^4.0.0
-  nhost_dart_sdk:
-    path: ../../nhost-dart-sdk
-  nhost_graphql:
+  nhost_graphql_adapter:
     path: ../
