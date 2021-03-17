@@ -34,9 +34,11 @@ NhostClient createApiTestClient(http.Client httpClient) {
   );
 }
 
+const noHttpFixturesTag = 'no-http-fixtures';
+
 Future<http.Client> setUpApiTest() async {
   final currentTest = Invoker.current.liveTest;
-  if (currentTest.test.metadata.tags.contains(Betamax.noPlaybackTag)) {
+  if (currentTest.test.metadata.tags.contains(noHttpFixturesTag)) {
     return http.Client();
   }
 
