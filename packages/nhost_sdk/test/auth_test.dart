@@ -298,7 +298,7 @@ void main() async {
 
       expect(tokenEndpointRefreshMock.isDone, isTrue);
       expect(nhostClient.auth.jwt, mockNextSession.jwtToken);
-    }, tags: Betamax.noPlaybackTag);
+    }, tags: noHttpFixturesTag);
 
     test('should occur after a user-provided interval, if specified', () {
       final testRefreshInterval = Duration(minutes: 10);
@@ -314,7 +314,7 @@ void main() async {
 
       expect(tokenEndpointRefreshMock.isDone, isTrue);
       expect(nhostClient.auth.jwt, mockNextSession.jwtToken);
-    }, tags: Betamax.noPlaybackTag);
+    }, tags: noHttpFixturesTag);
   });
 
   group('email change', () {
