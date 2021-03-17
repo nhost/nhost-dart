@@ -1,5 +1,7 @@
 import 'package:dart_otp/dart_otp.dart';
 import 'package:nhost_dart_sdk/client.dart';
+import 'package:path/path.dart';
+import 'package:stack_trace/stack_trace.dart';
 
 const defaultTestEmail = 'user-1@nhost.io';
 const defaultTestPassword = 'password-1';
@@ -33,3 +35,12 @@ Future<String> registerMfaUser(Auth auth, {bool logout = true}) async {
 /// current time.
 String totpFromSecret(String otpSecret) =>
     TOTP(secret: otpSecret).value(date: DateTime.now());
+
+/// Returns the package's test directory path
+///
+/// The directory returned by [Directory.current] is inconsistent in tests.
+/// Sometimes it's the project root, other times it's the project directory,
+/// depending on how the tests are invoked.
+String getTestDirectory() {
+  return dirname(Trace.current().frames.first.location);
+}

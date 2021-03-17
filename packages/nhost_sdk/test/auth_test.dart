@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:betamax/betamax.dart';
 import 'package:dart_otp/dart_otp.dart';
 import 'package:fake_async/fake_async.dart';
 import 'package:nhost_dart_sdk/client.dart';
@@ -8,33 +9,43 @@ import 'package:nock/nock.dart';
 import 'package:test/test.dart';
 
 import 'admin_gql.dart';
-import 'test_helpers.dart';
 import 'setup.dart';
+import 'test_helpers.dart';
 
 const testEmail = 'user-1@nhost.io';
 const testPassword = 'password-1';
 
 void main() async {
-  final gqlAdmin = GqlAdminTestHelper(apiUrl, gqlUrl);
+  final unrecordedGqlAdmin = GqlAdminTestHelper(apiUrl: apiUrl, gqlUrl: gqlUrl);
+
+  // This admin client has its traffic recorded for playback
+  GqlAdminTestHelper gqlAdmin;
   Auth auth;
+
+  setUpAll(() => initializeHttpFixturesForSuite('auth'));
 
   setUp(() async {
     // Clear out any data from the previous test
-    await gqlAdmin.clearUsers();
+    await unrecordedGqlAdmin.clearUsers();
 
-    // Create a fresh client
-    auth = createTestClient().auth;
+    // Get a recording/playback HTTP client from Betamax
+    final httpClient = await setUpApiTest();
+
+    // Create the service objects that we're going to be using to test
+    gqlAdmin = GqlAdminTestHelper(
+        apiUrl: apiUrl, gqlUrl: gqlUrl, httpClientOverride: httpClient);
+    auth = createApiTestClient(httpClient).auth;
   });
 
   group('register', () {
-    test('should register first user', () async {
+    test('should succeed', () async {
       expect(
         auth.register(email: testEmail, password: testPassword),
         completes,
       );
     });
 
-    test('should register two users', () async {
+    test('should succeed with multiple unique users', () async {
       expect(
         auth.register(email: testEmail, password: testPassword),
         completes,
@@ -287,7 +298,7 @@ void main() async {
 
       expect(tokenEndpointRefreshMock.isDone, isTrue);
       expect(nhostClient.auth.jwt, mockNextSession.jwtToken);
-    });
+    }, tags: Betamax.noPlaybackTag);
 
     test('should occur after a user-provided interval, if specified', () {
       final testRefreshInterval = Duration(minutes: 10);
@@ -303,7 +314,7 @@ void main() async {
 
       expect(tokenEndpointRefreshMock.isDone, isTrue);
       expect(nhostClient.auth.jwt, mockNextSession.jwtToken);
-    });
+    }, tags: Betamax.noPlaybackTag);
   });
 
   group('email change', () {
@@ -373,7 +384,7 @@ void main() async {
       );
     });
 
-    test('should not change passwords if old password is incorrect', () {
+    test('should not change passwords if old password is incorrect', () async {
       expect(
         auth.changePassword(
           oldPassword: 'wrong-old-password-1',

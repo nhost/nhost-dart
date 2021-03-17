@@ -13,18 +13,23 @@ import 'test_helpers.dart';
 final pathContext = Context(style: Style.url);
 
 void main() async {
-  final gqlAdmin = GqlAdminTestHelper(apiUrl, gqlUrl);
+  final gqlAdmin = GqlAdminTestHelper(apiUrl: apiUrl, gqlUrl: gqlUrl);
 
   NhostClient client;
   Storage storage;
   User user;
 
+  setUpAll(() => initializeHttpFixturesForSuite('storage'));
+
   setUp(() async {
     // Clear out any data from the previous test
     await gqlAdmin.clearUsers();
 
+    // Get a recording/playback HTTP client from Betamax
+    final httpClient = await setUpApiTest();
+
     // Create a fresh client
-    client = createTestClient();
+    client = createApiTestClient(httpClient);
 
     // Register the basic user
     await registerAndLoginBasicUser(client.auth);
@@ -47,7 +52,7 @@ void main() async {
   /// Note that this is configurable on the backend via storage rules.
   String pathInUserDirectory(path) => joinSubpath('user/${user.id}', path);
 
-  group('uploading files', () {
+  group('creating files', () {
     test('defaults to uploading application/octet-stream', () async {
       final fileMetadata = await storage.uploadString(
         filePath: pathInUserDirectory('/test-file.txt'),
@@ -120,7 +125,7 @@ void main() async {
     });
   });
 
-  group('existing files', () {
+  group('stored files', () {
     String filePath;
     final fileContents = '* { margin: 0; }';
     final fileContentType = 'text/css';

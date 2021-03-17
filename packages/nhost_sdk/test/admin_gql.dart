@@ -1,9 +1,14 @@
 import 'package:graphql/client.dart';
+import 'package:http/http.dart' as http;
 import 'package:nhost_dart_sdk/client.dart';
 import 'package:nhost_graphql_adapter/nhost_graphql.dart';
 
 class GqlAdminTestHelper {
-  GqlAdminTestHelper(String apiUrl, String gqlUrl) {
+  GqlAdminTestHelper({
+    String apiUrl,
+    String gqlUrl,
+    http.Client httpClientOverride,
+  }) {
     // Used to verify, retrieve, or clear backend state.
     client = createNhostGraphQLClient(
       gqlUrl,
@@ -11,6 +16,7 @@ class GqlAdminTestHelper {
       defaultRequestHeaders: {
         'X-Hasura-Admin-Secret': 'hejsan',
       },
+      httpClientOverride: httpClientOverride,
     );
   }
 

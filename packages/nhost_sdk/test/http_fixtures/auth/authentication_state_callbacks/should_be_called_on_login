@@ -1,0 +1,134 @@
+{
+  "name": "auth/authentication_state_callbacks/should_be_called_on_login",
+  "interactions": [
+    {
+      "request": {
+        "method": "post",
+        "uri": "http://localhost:3000/auth/register",
+        "headers": {
+          "content-type": "application/json; charset=utf-8"
+        },
+        "body": {
+          "encoding": "utf-8",
+          "string": "{\"email\":\"user-1@nhost.io\",\"password\":\"password-1\",\"user_data\":{},\"cookie\":false}"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "connection": "keep-alive",
+          "surrogate-control": "no-store",
+          "set-cookie": "refresh_token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT,permission_variables=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT",
+          "cache-control": "no-store, no-cache, must-revalidate, proxy-revalidate",
+          "x-dns-prefetch-control": "off",
+          "x-ratelimit-reset": "1615999750",
+          "date": "Wed, 17 Mar 2021 16:49:09 GMT",
+          "x-ratelimit-limit": "1000",
+          "vary": "Origin",
+          "strict-transport-security": "max-age=15552000; includeSubDomains",
+          "x-ratelimit-remaining": "994",
+          "content-type": "application/json; charset=utf-8",
+          "pragma": "no-cache",
+          "x-xss-protection": "1; mode=block",
+          "access-control-allow-credentials": "true",
+          "keep-alive": "timeout=5",
+          "content-length": "527",
+          "x-download-options": "noopen",
+          "etag": "W/\"20f-f8ikZ1HXdHnEp/+l8zwA3LjeQSw\"",
+          "x-frame-options": "SAMEORIGIN",
+          "x-content-type-options": "nosniff",
+          "expires": "0"
+        },
+        "body": {
+          "encoding": "utf-8",
+          "string": "{\"jwt_token\":\"eyJhbGciOiJIUzI1NiJ9.eyJodHRwczovL2hhc3VyYS5pby9qd3QvY2xhaW1zIjp7IngtaGFzdXJhLXVzZXItaWQiOiJmMmZhMWJjNS03YmI5LTRjYjgtOTg5Ny0yZWQxMjhiN2I1YjkiLCJ4LWhhc3VyYS1hbGxvd2VkLXJvbGVzIjpbInVzZXIiXSwieC1oYXN1cmEtZGVmYXVsdC1yb2xlIjoidXNlciJ9LCJpYXQiOjE2MTU5OTk3NDksImV4cCI6MTYxNjAwMDY0OX0.1gDRrG8OYtjAzgSYWd2RzdYRKhaFG_3HBkpfVbSzk_w\",\"jwt_expires_in\":900000,\"user\":{\"id\":\"f2fa1bc5-7bb9-4cb8-9897-2ed128b7b5b9\",\"display_name\":\"user-1@nhost.io\",\"email\":\"user-1@nhost.io\"},\"refresh_token\":\"16c3463e-e1be-4ecc-85c0-776d4f4f07a8\"}"
+        }
+      }
+    },
+    {
+      "request": {
+        "method": "post",
+        "uri": "http://localhost:3000/auth/logout?refresh_token=16c3463e-e1be-4ecc-85c0-776d4f4f07a8",
+        "headers": {
+          "content-type": "application/json; charset=utf-8"
+        },
+        "body": {
+          "encoding": "utf-8",
+          "string": "{\"all\":false}"
+        }
+      },
+      "response": {
+        "status": 204,
+        "headers": {
+          "connection": "keep-alive",
+          "surrogate-control": "no-store",
+          "set-cookie": "refresh_token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT,permission_variables=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT",
+          "cache-control": "no-store, no-cache, must-revalidate, proxy-revalidate",
+          "x-dns-prefetch-control": "off",
+          "x-ratelimit-reset": "1615999750",
+          "date": "Wed, 17 Mar 2021 16:49:09 GMT",
+          "x-ratelimit-limit": "1000",
+          "vary": "Origin",
+          "strict-transport-security": "max-age=15552000; includeSubDomains",
+          "x-ratelimit-remaining": "993",
+          "pragma": "no-cache",
+          "x-xss-protection": "1; mode=block",
+          "access-control-allow-credentials": "true",
+          "keep-alive": "timeout=5",
+          "x-download-options": "noopen",
+          "x-frame-options": "SAMEORIGIN",
+          "x-content-type-options": "nosniff",
+          "expires": "0"
+        },
+        "body": {
+          "encoding": "iso-8859-1",
+          "string": ""
+        }
+      }
+    },
+    {
+      "request": {
+        "method": "post",
+        "uri": "http://localhost:3000/auth/login",
+        "headers": {
+          "content-type": "application/json; charset=utf-8"
+        },
+        "body": {
+          "encoding": "utf-8",
+          "string": "{\"email\":\"user-1@nhost.io\",\"password\":\"password-1\",\"cookie\":false}"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "connection": "keep-alive",
+          "surrogate-control": "no-store",
+          "set-cookie": "refresh_token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT,permission_variables=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT",
+          "cache-control": "no-store, no-cache, must-revalidate, proxy-revalidate",
+          "x-dns-prefetch-control": "off",
+          "x-ratelimit-reset": "1615999750",
+          "date": "Wed, 17 Mar 2021 16:49:09 GMT",
+          "x-ratelimit-limit": "1000",
+          "vary": "Origin",
+          "strict-transport-security": "max-age=15552000; includeSubDomains",
+          "x-ratelimit-remaining": "992",
+          "content-type": "application/json; charset=utf-8",
+          "pragma": "no-cache",
+          "x-xss-protection": "1; mode=block",
+          "access-control-allow-credentials": "true",
+          "keep-alive": "timeout=5",
+          "content-length": "527",
+          "x-download-options": "noopen",
+          "etag": "W/\"20f-SbKfVz+aj07oZ3GhXA4ml1+ZnSU\"",
+          "x-frame-options": "SAMEORIGIN",
+          "x-content-type-options": "nosniff",
+          "expires": "0"
+        },
+        "body": {
+          "encoding": "utf-8",
+          "string": "{\"jwt_token\":\"eyJhbGciOiJIUzI1NiJ9.eyJodHRwczovL2hhc3VyYS5pby9qd3QvY2xhaW1zIjp7IngtaGFzdXJhLXVzZXItaWQiOiJmMmZhMWJjNS03YmI5LTRjYjgtOTg5Ny0yZWQxMjhiN2I1YjkiLCJ4LWhhc3VyYS1hbGxvd2VkLXJvbGVzIjpbInVzZXIiXSwieC1oYXN1cmEtZGVmYXVsdC1yb2xlIjoidXNlciJ9LCJpYXQiOjE2MTU5OTk3NDksImV4cCI6MTYxNjAwMDY0OX0.1gDRrG8OYtjAzgSYWd2RzdYRKhaFG_3HBkpfVbSzk_w\",\"jwt_expires_in\":900000,\"user\":{\"id\":\"f2fa1bc5-7bb9-4cb8-9897-2ed128b7b5b9\",\"display_name\":\"user-1@nhost.io\",\"email\":\"user-1@nhost.io\"},\"refresh_token\":\"ca708d9f-a264-42a6-b623-729cb4c007d3\"}"
+        }
+      }
+    }
+  ]
+}
