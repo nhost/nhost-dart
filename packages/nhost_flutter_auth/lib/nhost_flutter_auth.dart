@@ -10,12 +10,12 @@ import 'package:nhost_dart_sdk/client.dart';
 class NhostAuth extends InheritedNotifier<_AuthNotifier> {
   NhostAuth({
     Key key,
-    @required Auth nhostAuth,
+    @required Auth auth,
     @required Widget child,
-  })  : assert(nhostAuth != null),
+  })  : assert(auth != null),
         super(
           key: key,
-          notifier: _AuthNotifier(nhostAuth),
+          notifier: _AuthNotifier(auth),
           child: child,
         );
 
