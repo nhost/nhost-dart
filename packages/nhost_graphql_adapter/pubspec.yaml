@@ -1,6 +1,7 @@
 name: nhost_graphql_adapter
 version: 0.0.0
 description: Easily connect to your Nhost GraphQL backend.
+repository: https://github.com/nhost-dart-graphql-adapter
 
 environment:
   sdk: '>=2.10.0 <3.0.0'
