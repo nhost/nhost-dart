@@ -16,8 +16,7 @@ dependencies:
   pedantic: ^1.8.0
 
 dev_dependencies:
-  betamax:
-    path: ../../betamax
+  betamax: ^2.0.0-dev.0
   build_runner: ^1.0.0
   dart_otp: ^1.0.0
   fake_async: ^1.0.0
