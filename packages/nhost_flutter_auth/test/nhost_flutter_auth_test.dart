@@ -2,8 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:nhost_dart_sdk/client.dart';
-
-import '../lib/nhost_flutter_auth.dart';
+import 'package:nhost_flutter_auth/nhost_flutter_auth.dart';
 
 void main() {
   group('NhostAuth', () {
@@ -27,7 +26,7 @@ void main() {
 
     testWidgets('rebuilds subtrees when the auth argument changes',
         (tester) async {
-      int buildCount = 0;
+      var buildCount = 0;
       final countingBuilder = Builder(builder: (context) {
         NhostAuth.of(context); // Establish dependency
         buildCount++;
@@ -54,7 +53,7 @@ void main() {
 
     testWidgets('does not rebuild when same argument provided repeatedly',
         (tester) async {
-      int buildCount = 0;
+      var buildCount = 0;
       final countingBuilder = Builder(builder: (context) {
         NhostAuth.of(context); // Establish dependency
         buildCount++;
@@ -85,7 +84,7 @@ void main() {
         (tester) async {
       final mockAuth = MockAuth();
 
-      int buildCount = 0;
+      var buildCount = 0;
       await tester.pumpWidget(
         NhostAuth(
           nhostAuth: mockAuth,
@@ -113,6 +112,7 @@ void main() {
 class MockAuth extends Mock implements Auth {
   final List<AuthStateChangedCallback> _authChangedFunctions = [];
 
+  @override
   UnsubscribeDelegate addAuthStateChangedCallback(
       AuthStateChangedCallback callback) {
     _authChangedFunctions.add(callback);
