@@ -224,24 +224,24 @@ packages:
   nhost_dart_sdk:
     dependency: "direct main"
     description:
-      path: "../nhost-dart-sdk"
-      relative: true
-    source: path
-    version: "0.0.0"
+      name: nhost_dart_sdk
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.0"
   nhost_flutter_auth:
     dependency: "direct main"
     description:
-      path: "../nhost-flutter-auth"
-      relative: true
-    source: path
-    version: "1.0.0"
+      name: nhost_flutter_auth
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.0"
   nhost_graphql_adapter:
     dependency: "direct main"
     description:
-      path: "../nhost-dart-graphql-adapter"
-      relative: true
-    source: path
-    version: "0.0.0"
+      name: nhost_graphql_adapter
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.0"
   normalize:
     dependency: transitive
     description:
@@ -424,4 +424,4 @@ packages:
     version: "0.1.2"
 sdks:
   dart: ">=2.12.0 <3.0.0"
-  flutter: ">=1.20.0"
+  flutter: ">=1.22.4"
