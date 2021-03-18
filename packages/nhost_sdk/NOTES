@@ -4,7 +4,8 @@
 * Add better exception when .of methods fail
 * Ensure that connections aren't being recreated on auth change in flutter-graphql
 * Add image transformation to Storage
-
+* Flutter APIs should take clients, not service objects
+* Need UPDATE and DELETE permissions on todos table
 
 Q:
   * Why don't file deletions need the token?
