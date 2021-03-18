@@ -7,44 +7,32 @@ void main() async {
   );
   await client.auth.login(email: 'scott@madewithfelt.com', password: 'foofoo');
 
-  final fileName = '${randomAlpha(10)}.txt';
-  final filePath = '/${client.auth.currentUser.id}/$fileName';
+  final fileName = 'some_text_file.txt';
+  final userPath = '/user/${client.auth.currentUser.id}/';
+  final filePath = '$userPath$fileName';
 
-  // Upload
-  await client.storage.uploadString(
+  // Create a new file
+  final fileMetadata = await client.storage.uploadString(
     filePath: filePath,
     string: 'abcdef abcdef abcdef abcdef abcdef',
     contentType: 'text/plain',
   );
 
-  // Single file
-  final fileMetadata = await client.storage.getFileMetadata(
-    filePath,
-  );
-  print('Single File');
-  print(fileMetadata.toJson());
+  // Request its metadata again...
+  final refreshedFileMetadata = await client.storage
+      .getFileMetadata(filePath, fileToken: fileMetadata.nhostMetadata.token);
+  print('File meta:');
+  print(refreshedFileMetadata.toJson());
 
-  // Directory metadata
-  final fileMetadatasInPublic = await client.storage.getDirectoryMetadata(
-    '/public/',
-  );
-  print('\nDirectory');
-  print(fileMetadatasInPublic.map((f) => f.toJson()));
+  // ...and its contents
+  final downloadedFileContent = await client.storage
+      .downloadFile(filePath, fileToken: fileMetadata.nhostMetadata.token);
+  print('Downloaded file contents:');
+  print(downloadedFileContent.body);
 
   // File removal
   await client.storage.delete(filePath);
   print('\nFile removed...most likely. Let\'s check');
-
-  // Check to make sure
-  try {
-    final deletedFileMetadata = await client.storage.getFileMetadata(
-      filePath,
-    );
-    print(deletedFileMetadata);
-  } on ApiException catch (e) {
-    print('Success!! The file is gone.');
-    print('We know because of this: $e');
-  }
 
   // Release
   client.close();
