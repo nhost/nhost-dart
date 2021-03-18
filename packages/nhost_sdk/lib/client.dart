@@ -31,22 +31,39 @@ class NhostClient {
   /// For information on getting started, please visit
   /// https://docs.nhost.io/libraries/nhost-dart-sdk#setup
   ///
+  /// {@template nhost.api.NhostClient.baseUrl}
   /// [baseUrl] is the Nhost "Backend URL" that can be found on your Nhost
   /// project page.
+  /// {@endtemplate}
   ///
-  /// [authStore] is an object used to persist authentication tokens between
-  /// restarts of your app. If not provided, the tokens will not be persisted.
+  /// {@template nhost.api.NhostClient.authStore}
+  /// [authStore] (optional) is used to persist authentication tokens
+  /// between restarts of your app. If not provided, the tokens will not be
+  /// persisted.
+  /// {@endtemplate}
   ///
-  /// [tokenRefreshInterval] is the amount of time the client will wait between
-  /// refreshing its authentication tokens. If not provided, will default to a
-  /// value provided by the server.
+  /// {@template nhost.api.NhostClient.refreshToken}
+  /// [refreshToken] (optional) is the result of a previously successful login,
+  /// and is used to initialize this client into a logged-in state.
+  /// {@endtemplate}
   ///
-  /// [autoLogin] indicates whether the client should attempt to login
-  /// automatically if the appropriate information exists in [authStore].
+  /// {@template nhost.api.NhostClient.autoLogin}
+  /// [autoLogin] (optional) indicates whether the client should attempt to
+  /// login automatically using [refreshToken], or information pulled from
+  /// the [authStore] (if available).
+  /// {@endtemplate}
   ///
-  /// The optional [httpClientOverride] parameter can be provided in order to
-  /// customize the requests made by the Nhost APIs, which can be useful for
-  /// proxy configuration and debugging.
+  /// {@template nhost.api.NhostClient.tokenRefreshInterval}
+  /// [tokenRefreshInterval] (optional) is the amount of time the client will
+  /// wait between refreshing its authentication tokens. If not provided, will
+  /// default to a value provided by the server.
+  /// {@endtemplate}
+  ///
+  /// {@template nhost.api.NhostClient.httpClientOverride}
+  /// [httpClientOverride] (optional) can be provided in order to customize the
+  /// requests made by the Nhost APIs, which can be useful for proxy
+  /// configuration and debugging.
+  /// {@endtemplate}
   NhostClient({
     @required this.baseUrl,
     AuthStore authStore,
