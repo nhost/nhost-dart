@@ -1,39 +1,47 @@
 import 'package:nhost_dart_sdk/client.dart';
-import 'package:random_string/random_string.dart';
+
+/// Fill in this value with the backend URL found on your Nhost project page.
+const nhostApiUrl = 'https://backend-5e69d1d7.nhost.app';
 
 void main() async {
-  final client = NhostClient(
-    baseUrl: 'https://backend-5e69d1d7.nhost.app',
-  );
-  await client.auth.login(email: 'scott@madewithfelt.com', password: 'foofoo');
+  // Setup
+  final client = NhostClient(baseUrl: nhostApiUrl);
+  await loginOrRegister(client,
+      email: 'user-1@nhost.io', password: 'password-1');
 
   final fileName = 'some_text_file.txt';
   final userPath = '/user/${client.auth.currentUser.id}/';
   final filePath = '$userPath$fileName';
 
-  // Create a new file
+  // Create a new file...
   final fileMetadata = await client.storage.uploadString(
     filePath: filePath,
     string: 'abcdef abcdef abcdef abcdef abcdef',
     contentType: 'text/plain',
   );
 
-  // Request its metadata again...
-  final refreshedFileMetadata = await client.storage
-      .getFileMetadata(filePath, fileToken: fileMetadata.nhostMetadata.token);
-  print('File meta:');
-  print(refreshedFileMetadata.toJson());
-
-  // ...and its contents
+  // ...turn around and download its contents...
   final downloadedFileContent = await client.storage
       .downloadFile(filePath, fileToken: fileMetadata.nhostMetadata.token);
   print('Downloaded file contents:');
   print(downloadedFileContent.body);
 
-  // File removal
+  // ...then delete it.
   await client.storage.delete(filePath);
-  print('\nFile removed...most likely. Let\'s check');
 
   // Release
   client.close();
+}
+
+Future<void> loginOrRegister(
+  NhostClient client, {
+  String email,
+  String password,
+}) async {
+  try {
+    await client.auth.login(email: email, password: password);
+  } on ApiException {
+    // Login failed, so try to register instead
+  }
+  await client.auth.register(email: email, password: password);
 }
