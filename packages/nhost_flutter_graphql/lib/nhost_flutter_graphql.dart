@@ -6,6 +6,7 @@ import 'package:nhost_dart_sdk/client.dart';
 import 'package:nhost_flutter_auth/nhost_flutter_auth.dart';
 import 'package:nhost_graphql_adapter/nhost_graphql_adapter.dart';
 
+export 'package:nhost_dart_sdk/client.dart';
 export 'package:nhost_flutter_auth/nhost_flutter_auth.dart';
 
 /// Provides a GraphQL connection the subtree.
@@ -13,7 +14,7 @@ class NhostGraphQLProvider extends StatefulWidget {
   NhostGraphQLProvider({
     Key key,
     @required this.gqlEndpointUrl,
-    this.nhostAuth,
+    this.auth,
     this.child,
   })  : assert(gqlEndpointUrl != null),
         super(key: key);
@@ -23,7 +24,7 @@ class NhostGraphQLProvider extends StatefulWidget {
 
   /// Optional. If not provided, will be requested from ancestry using
   /// [NhostAuth.of(BuildContext)]
-  final Auth nhostAuth;
+  final Auth auth;
   final Widget child;
 
   @override
@@ -41,7 +42,7 @@ class _NhostGraphQLProviderState extends State<NhostGraphQLProvider> {
   }
 
   Auth updateAuth() {
-    return _auth = widget.nhostAuth ?? NhostAuthProvider.of(context);
+    return _auth = widget.auth ?? NhostAuthProvider.of(context);
   }
 
   @override
