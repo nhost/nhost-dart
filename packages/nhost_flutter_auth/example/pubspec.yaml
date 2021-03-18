@@ -8,5 +8,11 @@ dependencies:
   flutter:
     sdk: flutter
 
+  provider: '>=4.0.0'
+
+  # Nhost packages
   nhost_flutter_auth:
     path: ../
+
+flutter:
+  uses-material-design: true

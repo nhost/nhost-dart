@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:nhost_dart_sdk/client.dart';
 import 'package:nhost_flutter_auth/nhost_flutter_auth.dart';
 
-
 /// Fill in this value with the backend URL found on your Nhost project page.
 const nhostApiUrl = 'https://backend-5e69d1d7.nhost.app';
 
@@ -37,13 +36,15 @@ class _SimpleAuthExampleState extends State<SimpleAuthExample> {
 
   @override
   Widget build(BuildContext context) {
-    // The NhostAuthProvider widget provides authentication state to its subtree, which
-    // can be accessed using NhostAuthProvider.of(BuildContext).
+    // The NhostAuthProvider widget provides authentication state to its
+    // subtree, which can be accessed using NhostAuthProvider.of(BuildContext).
     return NhostAuthProvider(
       auth: nhostClient.auth,
       child: MaterialApp(
         title: 'Nhost.io Simple Flutter Authentication',
-        home: Screen(),
+        home: Scaffold(
+          body: Screen(),
+        ),
       ),
     );
   }
@@ -55,11 +56,17 @@ class Screen extends StatelessWidget {
     // NhostAuthProvider.of will register this widget so that it rebuilds whenever
     // the user's authentication state changes.
     final auth = NhostAuthProvider.of(context);
+    Widget widget;
     if (auth.isAuthenticated == true) {
-      return LoggedInUserDetails();
+      widget = LoggedInUserDetails();
     } else {
-      return LoginForm();
+      widget = LoginForm();
     }
+
+    return Padding(
+      padding: EdgeInsets.all(32),
+      child: widget,
+    );
   }
 }
 
@@ -106,40 +113,37 @@ class _LoginFormState extends State<LoginForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.all(32),
-      child: Form(
-        key: formKey,
-        child: FocusTraversalGroup(
-          policy: ReadingOrderTraversalPolicy(),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              TextFormField(
-                controller: emailController,
-                decoration: InputDecoration(
-                  hintText: 'Email',
-                  border: OutlineInputBorder(),
-                ),
-                onFieldSubmitted: (_) => tryLogin(),
+    return Form(
+      key: formKey,
+      child: FocusTraversalGroup(
+        policy: ReadingOrderTraversalPolicy(),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            TextFormField(
+              controller: emailController,
+              decoration: InputDecoration(
+                hintText: 'Email',
+                border: OutlineInputBorder(),
               ),
-              rowSpacing,
-              TextFormField(
-                controller: passwordController,
-                decoration: InputDecoration(
-                  hintText: 'Password',
-                  border: OutlineInputBorder(),
-                ),
-                obscureText: true,
-                onFieldSubmitted: (_) => tryLogin(),
+              onFieldSubmitted: (_) => tryLogin(),
+            ),
+            rowSpacing,
+            TextFormField(
+              controller: passwordController,
+              decoration: InputDecoration(
+                hintText: 'Password',
+                border: OutlineInputBorder(),
               ),
-              rowSpacing,
-              ElevatedButton(
-                onPressed: tryLogin,
-                child: Text('Submit'),
-              )
-            ],
-          ),
+              obscureText: true,
+              onFieldSubmitted: (_) => tryLogin(),
+            ),
+            rowSpacing,
+            ElevatedButton(
+              onPressed: tryLogin,
+              child: Text('Submit'),
+            )
+          ],
         ),
       ),
     );
