@@ -1,9 +1,13 @@
 * Add tests for AuthStore
 * Add tests for auto-login
+* Add tests for file keys
 * Add better exception when .of methods fail
 * Ensure that connections aren't being recreated on auth change in flutter-graphql
 * Add image transformation to Storage
 
+
+Q:
+  * Why don't file deletions need the token?
 
 * IDEA: FileMetadata.toHttpHeaders or FileMetadata.updateHttpHeaders
 * BUGS
