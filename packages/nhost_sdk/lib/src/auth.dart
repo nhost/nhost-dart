@@ -34,24 +34,36 @@ const refreshTokenClientStorageKey = 'nhostRefreshToken';
 ///
 /// See https://docs.nhost.io/auth/api-reference for more info.
 class Auth {
-  /// [autoLogin] indicates whether the client should attempt to login
-  /// automatically if the appropriate information exists in [authStore].
+  /// {@macro nhost.api.NhostClient.baseUrl}
+  ///
+  /// {@macro nhost.api.NhostClient.authStore}
+  ///
+  /// {@macro nhost.api.NhostClient.refreshToken}
+  ///
+  /// {@macro nhost.api.NhostClient.autoLogin}
+  ///
+  /// {@macro nhost.api.NhostClient.tokenRefreshInterval}
+  ///
+  /// {@macro nhost.api.NhostClient.httpClientOverride}
   Auth({
     @required String baseUrl,
     UserSession session,
     AuthStore authStore,
+    String refreshToken,
     bool autoLogin = true,
     Duration refreshInterval,
     http.Client httpClient,
   })  : _apiClient = ApiClient(Uri.parse(baseUrl), httpClient: httpClient),
+        _session = session,
         _authStore = authStore,
         _tokenRefreshInterval = refreshInterval,
-        _session = session,
         _refreshTokenLock = false,
         _loading = true,
         _autoLogin = autoLogin ?? true {
     if (_autoLogin) {
-      _refreshToken();
+      _refreshToken(refreshToken);
+    } else if (refreshToken != null) {
+      _authStore.setString(refreshTokenClientStorageKey, refreshToken);
     }
   }
 
@@ -484,7 +496,7 @@ class Auth {
     final refreshToken = initRefreshToken ??
         await _authStore.getString(refreshTokenClientStorageKey);
 
-    // If there's no refresh token, we're all done
+    // If there's no refresh token, we're all done.
     if (refreshToken == null) {
       return;
     }

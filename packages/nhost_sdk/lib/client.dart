@@ -50,6 +50,7 @@ class NhostClient {
   NhostClient({
     @required this.baseUrl,
     AuthStore authStore,
+    String refreshToken,
     bool autoLogin = true,
     Duration tokenRefreshInterval,
     http.Client httpClientOverride,
@@ -60,8 +61,9 @@ class NhostClient {
             'https://docs.nhost.io/libraries/nhost-dart-sdk#setup'),
         _session = UserSession(),
         _authStore = authStore ?? InMemoryAuthStore(),
-        _refreshInterval = tokenRefreshInterval,
+        _refreshToken = refreshToken,
         _autoLogin = autoLogin ?? true,
+        _refreshInterval = tokenRefreshInterval,
         _httpClient = httpClientOverride;
 
   /// The Nhost project's backend URL.
@@ -69,6 +71,7 @@ class NhostClient {
 
   /// Persists authentication information between restarts of the app.
   final AuthStore _authStore;
+  final String _refreshToken;
   final Duration _refreshInterval;
   final UserSession _session;
   final bool _autoLogin;
@@ -82,6 +85,7 @@ class NhostClient {
   Auth get auth => _auth ??= Auth(
         baseUrl: '$baseUrl/auth',
         authStore: _authStore,
+        refreshToken: _refreshToken,
         autoLogin: _autoLogin,
         refreshInterval: _refreshInterval,
         session: _session,
