@@ -1,17 +1,11 @@
 * Add tests for AuthStore
 * Add tests for auto-login
+* Add better exception when .of methods fail
+* Ensure that connections aren't being recreated on auth change in flutter-graphql
+* Add image transformation to Storage
 
 
-
-* Q: What's the deal with refreshToken?
-* Q: Should I be setting request timeout? Where? How?
-* Q: How does login provider work with apps?
-  * The backend appears to specify a redirect URL. I guess this could be an
-    application link.
-* CHANGE name of MFA* methods
-* CHANGE getClaim to only return nullable strings
 * IDEA: FileMetadata.toHttpHeaders or FileMetadata.updateHttpHeaders
-* CHANGE: Made unsubscribe delegate non-destructive and silent
 * BUGS
   * DOCS
     * /auth/mfa/generate reads qe code, not qr code
@@ -26,8 +20,6 @@
         reader (me!) wonders how everything ties together. Until I realize they
         aren't (aside from requiring the same auth resource).
     * Email changing APIs are not documented
-  * Unsubscribe listener functions can potentially remove listeners other than
-    themselves
   * mfa/generate requires an empty JSON object body (should allow null body)
   * Bad path joining in Storage.ts
   * Storage doesn't work outside of web pages, I don't think
@@ -35,9 +27,6 @@
     GET /storage/m for a directory lists the field as "Key" (capitalized)
     GET /storage/m for a file is "key" lowercase
   * Packages are missing LICENSE files
-  * Is it really the OLD password...or is it the current one?
-  * Does the API to directly change your email work? I keep on 404'ing
-  * Why does the change email request get sent to the _new_ email address?
 * Sleep timer won't make sense for Dart, since periodic timers stack up. To
   read: https://github.com/dart-lang/sdk/issues/23487
 * Q: Do we need toJSONs? They are kind of helpful for debug printing.
@@ -77,17 +66,6 @@
 * IMPROVE
   * DOCS:
     * Storage Rules should be better documented
-* TODO: Extract workflows into a version configurable action
-* Ensure that Auth isAutenticated goes to false when logging out
-* IDEA: A 4th package, for graphql'ing from Dart without Flutter
-* RECOMMEND:
-  * Packages are called
-    * 'nhost' (or 'nhost_sdk')
-    * 'nhost_flutter_auth'
-    * 'nhost_flutter_graphql'
-    * (+) 'nhost_graphql'
-  * Consider passing null to authStateChanges, representing loading. This way
-    UI can react more easily (like disabling buttons during a login/logout)
 * IDEA: isAutenticated could be a tri-state enum
 * Q: I see a banner asking me if I want to upgrade Hasura server...can I
      actually do that?
