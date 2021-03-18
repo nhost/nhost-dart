@@ -138,7 +138,7 @@ class _LoginFormState extends State<LoginForm> {
               obscureText: true,
               onFieldSubmitted: (_) => tryLogin(),
             ),
-            rowSpacing,
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: tryLogin,
               child: Text('Submit'),
