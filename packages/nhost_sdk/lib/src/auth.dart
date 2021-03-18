@@ -6,7 +6,7 @@ import 'package:meta/meta.dart';
 
 import 'api/api_client.dart';
 import 'api/auth_api_types.dart';
-import 'client_storage.dart';
+import 'auth_store.dart';
 import 'debug.dart';
 import 'foundation/duration.dart';
 import 'session.dart';
@@ -24,7 +24,7 @@ typedef AuthStateChangedCallback = void Function({bool authenticated});
 /// Signature for functions that remove their associated callback when called.
 typedef UnsubscribeDelegate = void Function();
 
-/// Identifies the refresh token in the [Auth]'s [ClientStorage] instance.
+/// Identifies the refresh token in the [Auth]'s [AuthStore] instance.
 const refreshTokenClientStorageKey = 'nhostRefreshToken';
 
 /// The Nhost Auth service.
@@ -34,22 +34,31 @@ const refreshTokenClientStorageKey = 'nhostRefreshToken';
 ///
 /// See https://docs.nhost.io/auth/api-reference for more info.
 class Auth {
+  /// [autoLogin] indicates whether the client should attempt to login
+  /// automatically if the appropriate information exists in [authStore].
   Auth({
     @required String baseUrl,
-    Duration refreshInterval,
     UserSession session,
-    ClientStorage clientStorage,
+    AuthStore authStore,
+    bool autoLogin = true,
+    Duration refreshInterval,
     http.Client httpClient,
   })  : _apiClient = ApiClient(Uri.parse(baseUrl), httpClient: httpClient),
-        _clientStorage = clientStorage,
+        _authStore = authStore,
         _tokenRefreshInterval = refreshInterval,
         _session = session,
         _refreshTokenLock = false,
-        _loading = true;
+        _loading = true,
+        _autoLogin = autoLogin ?? true {
+    if (_autoLogin) {
+      _refreshToken();
+    }
+  }
 
   final ApiClient _apiClient;
-  final ClientStorage _clientStorage;
+  final AuthStore _authStore;
   final UserSession _session;
+  final bool _autoLogin;
 
   final List<TokenChangedCallback> _tokenChangedFunctions = [];
   final List<AuthStateChangedCallback> _authChangedFunctions = [];
@@ -233,7 +242,7 @@ class Auth {
     bool all = false,
   }) async {
     final refreshToken =
-        await _clientStorage.getString(refreshTokenClientStorageKey);
+        await _authStore.getString(refreshTokenClientStorageKey);
     try {
       await _apiClient.post(
         '/logout',
@@ -473,7 +482,12 @@ class Auth {
 
   Future<void> _refreshToken([String initRefreshToken]) async {
     final refreshToken = initRefreshToken ??
-        await _clientStorage.getString(refreshTokenClientStorageKey);
+        await _authStore.getString(refreshTokenClientStorageKey);
+
+    // If there's no refresh token, we're all done
+    if (refreshToken == null) {
+      return;
+    }
 
     Session res;
     try {
@@ -525,7 +539,7 @@ class Auth {
     _currentUser = session.user;
 
     if (session.refreshToken != null) {
-      await _clientStorage.setString(
+      await _authStore.setString(
           refreshTokenClientStorageKey, session.refreshToken);
     }
 
@@ -569,7 +583,7 @@ class Auth {
     }
 
     _session.clear();
-    await _clientStorage.removeItem(refreshTokenClientStorageKey);
+    await _authStore.removeItem(refreshTokenClientStorageKey);
 
     _loading = false;
     _onAuthStateChanged(authenticated: false);

@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:meta/meta.dart';
 
 import 'src/auth.dart';
-import 'src/client_storage.dart';
+import 'src/auth_store.dart';
 import 'src/session.dart';
 import 'src/storage.dart';
 
@@ -12,7 +12,7 @@ export 'src/api/api_client.dart' show ApiException;
 export 'src/api/auth_api_types.dart';
 export 'src/api/storage_api_types.dart';
 export 'src/auth.dart';
-export 'src/client_storage.dart';
+export 'src/auth_store.dart';
 export 'src/storage.dart';
 
 /// API client for accessing Nhost's authentication and storage APIs.
@@ -34,20 +34,23 @@ class NhostClient {
   /// [baseUrl] is the Nhost "Backend URL" that can be found on your Nhost
   /// project page.
   ///
-  /// [clientStorage] is an object used to store Nhost authentication tokens,
-  /// with the intent of persisting them between restarts of your app. If not
-  /// provided, the tokens will not be persisted.
+  /// [authStore] is an object used to persist authentication tokens between
+  /// restarts of your app. If not provided, the tokens will not be persisted.
   ///
   /// [tokenRefreshInterval] is the amount of time the client will wait between
   /// refreshing its authentication tokens. If not provided, will default to a
   /// value provided by the server.
+  ///
+  /// [autoLogin] indicates whether the client should attempt to login
+  /// automatically if the appropriate information exists in [authStore].
   ///
   /// The optional [httpClientOverride] parameter can be provided in order to
   /// customize the requests made by the Nhost APIs, which can be useful for
   /// proxy configuration and debugging.
   NhostClient({
     @required this.baseUrl,
-    ClientStorage clientStorage,
+    AuthStore authStore,
+    bool autoLogin = true,
     Duration tokenRefreshInterval,
     http.Client httpClientOverride,
   })  : assert(
@@ -56,17 +59,19 @@ class NhostClient {
             // TODO(shyndman): URL for Dart required
             'https://docs.nhost.io/libraries/nhost-dart-sdk#setup'),
         _session = UserSession(),
+        _authStore = authStore ?? InMemoryAuthStore(),
         _refreshInterval = tokenRefreshInterval,
-        _httpClient = httpClientOverride,
-        clientStorage = clientStorage ?? InMemoryClientStorage();
+        _autoLogin = autoLogin ?? true,
+        _httpClient = httpClientOverride;
 
   /// The Nhost project's backend URL.
   final String baseUrl;
 
-  /// Persists authentication information between restarts of the process.
-  final ClientStorage clientStorage;
+  /// Persists authentication information between restarts of the app.
+  final AuthStore _authStore;
   final Duration _refreshInterval;
   final UserSession _session;
+  final bool _autoLogin;
 
   /// The HTTP client used by this client's services.
   @nonVirtual
@@ -76,10 +81,11 @@ class NhostClient {
   /// The Nhost authentication service.
   Auth get auth => _auth ??= Auth(
         baseUrl: '$baseUrl/auth',
-        httpClient: httpClient,
-        clientStorage: clientStorage,
+        authStore: _authStore,
+        autoLogin: _autoLogin,
         refreshInterval: _refreshInterval,
         session: _session,
+        httpClient: httpClient,
       );
   Auth _auth;
 
