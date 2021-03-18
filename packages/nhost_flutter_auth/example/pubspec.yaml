@@ -7,8 +7,10 @@ dependencies:
   flutter:
     sdk: flutter
 
+  app_links: ^2.0.0
   provider: '>=4.0.0'
   shared_preferences: ^2.0.0
+  url_launcher: ^6.0.0
 
   # Nhost packages
   nhost_flutter_auth:
