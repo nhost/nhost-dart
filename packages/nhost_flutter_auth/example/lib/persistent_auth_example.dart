@@ -7,7 +7,7 @@
 /// To try it out, run the application, log in, then restart the app. You should
 /// see the contents of [ExampleProtectedScreen] without having to log in a
 /// second time.
-library persistent_token_example;
+library persistent_auth_example;
 
 import 'dart:async';
 
