@@ -1,44 +1,25 @@
+/// Demonstrates login, logout, and requiring authentication to access a
+/// resource.
+library simple_auth_example;
+
 import 'package:flutter/material.dart';
 import 'package:nhost_dart_sdk/client.dart';
 import 'package:nhost_flutter_auth/nhost_flutter_auth.dart';
 
-// HOW TO RUN THIS APP:
-//
-// Check out README.md for instructions on how to get your backend set up to run
-// this application.
-//
-// For more authentication examples, visit
-// https://github.com/nhost/nhost-flutter-auth/example/lib
 
 /// Fill in this value with the backend URL found on your Nhost project page.
 const nhostApiUrl = 'https://backend-5e69d1d7.nhost.app';
 
 void main() {
-  runApp(App());
+  runApp(SimpleAuthExample());
 }
 
-class App extends StatelessWidget {
+class SimpleAuthExample extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Nhost.io Simple Flutter Authentication',
-      home: Scaffold(
-        body: SimpleAuthenticationExample(),
-      ),
-    );
-  }
+  _SimpleAuthExampleState createState() => _SimpleAuthExampleState();
 }
 
-class SimpleAuthenticationExample extends StatefulWidget {
-  SimpleAuthenticationExample({Key key}) : super(key: key);
-
-  @override
-  _SimpleAuthenticationExampleState createState() =>
-      _SimpleAuthenticationExampleState();
-}
-
-class _SimpleAuthenticationExampleState
-    extends State<SimpleAuthenticationExample> {
+class _SimpleAuthExampleState extends State<SimpleAuthExample> {
   NhostClient nhostClient;
 
   @override
@@ -60,7 +41,10 @@ class _SimpleAuthenticationExampleState
     // can be accessed using NhostAuthProvider.of(BuildContext).
     return NhostAuthProvider(
       auth: nhostClient.auth,
-      child: Screen(),
+      child: MaterialApp(
+        title: 'Nhost.io Simple Flutter Authentication',
+        home: Screen(),
+      ),
     );
   }
 }
