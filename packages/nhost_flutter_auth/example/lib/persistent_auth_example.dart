@@ -2,7 +2,7 @@
 /// restarts of your application, so that the user is logged in automatically.
 ///
 /// This example depends on the `shared_preferences` package, which is used to
-/// implement the [SharedPreferencesClientStorage] class.
+/// implement the [SharedPreferencesAuthStore] class.
 ///
 /// To try it out, run the application, log in, then restart the app. You should
 /// see the contents of [ExampleProtectedScreen] without having to log in a
@@ -39,7 +39,7 @@ class _PersistentAuthExampleState extends State<PersistentAuthExample> {
     nhostClient = NhostClient(
       baseUrl: nhostApiUrl,
       // Instruct the client to store tokens using shared preferences.
-      clientStorage: SharedPreferencesClientStorage(),
+      authStore: SharedPreferencesAuthStore(),
     );
   }
 
@@ -63,10 +63,10 @@ class _PersistentAuthExampleState extends State<PersistentAuthExample> {
   }
 }
 
-/// An Nhost [ClientStorage] implementation backed by the `shared_preferences`
+/// An Nhost [AuthStore] implementation backed by the `shared_preferences`
 /// plugin, so authentication information is retained between runs of the
 /// application.
-class SharedPreferencesClientStorage implements ClientStorage {
+class SharedPreferencesAuthStore implements AuthStore {
   @override
   FutureOr<String> getString(String key) async {
     final prefs = await SharedPreferences.getInstance();
