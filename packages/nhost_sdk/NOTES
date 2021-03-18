@@ -1,3 +1,8 @@
+* Add tests for AuthStore
+* Add tests for auto-login
+
+
+
 * Q: What's the deal with refreshToken?
 * Q: Should I be setting request timeout? Where? How?
 * Q: How does login provider work with apps?

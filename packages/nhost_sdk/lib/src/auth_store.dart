@@ -1,17 +1,20 @@
 import 'dart:async';
 
 /// Interface implemented by objects responsible for persisting authentication
-/// information between restarts of the process.
-abstract class ClientStorage {
+/// information between restarts of an app.
+abstract class AuthStore {
   FutureOr<String> getString(String key);
   FutureOr<void> setString(String key, String value);
   FutureOr<void> removeItem(String key);
 }
 
-/// Implements the [ClientStorage] interface using an internal [Map].
+/// Implements the [AuthStore] interface using an internal [Map].
+///
+/// As such, all information written to the store is transient, and will not
+/// persist between restarts of the app.
 ///
 /// All methods are synchronous.
-class InMemoryClientStorage implements ClientStorage {
+class InMemoryAuthStore implements AuthStore {
   final Map<String, String> _map = {};
 
   @override
