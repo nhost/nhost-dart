@@ -4,5 +4,3 @@
   content
 * [Persistent authentication](https://github.com/nhost/nhost-flutter-auth/example/lib/navigator_2_example.dart): Remember authentication information across restarts
 * [Authentication using Navigator 2.0](https://github.com/nhost/nhost-flutter-auth/example/lib/navigator_2_example.dart): More complex application structure built around auth
-
-## Setup
