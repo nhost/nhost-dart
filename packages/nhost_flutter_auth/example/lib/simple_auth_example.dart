@@ -43,14 +43,14 @@ class _SimpleAuthExampleState extends State<SimpleAuthExample> {
       child: MaterialApp(
         title: 'Nhost.io Simple Flutter Authentication',
         home: Scaffold(
-          body: Screen(),
+          body: ExampleProtectedScreen(),
         ),
       ),
     );
   }
 }
 
-class Screen extends StatelessWidget {
+class ExampleProtectedScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // NhostAuthProvider.of will register this widget so that it rebuilds whenever
