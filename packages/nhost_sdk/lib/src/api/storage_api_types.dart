@@ -88,3 +88,24 @@ class FileNhostMetadata {
     };
   }
 }
+
+/// Instructs the backend on how to transform a stored image.
+class ImageTransformConfig {
+  ImageTransformConfig({
+    this.width,
+    this.height,
+    this.quality,
+  });
+
+  final int width;
+  final int height;
+  final int quality;
+
+  Map<String, String> toQueryArguments() {
+    return {
+      if (width != null) 'w': '$width',
+      if (height != null) 'h': '$height',
+      if (quality != null) 'q': '$quality',
+    };
+  }
+}

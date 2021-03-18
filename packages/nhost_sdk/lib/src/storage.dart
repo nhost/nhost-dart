@@ -107,6 +107,29 @@ class Storage {
     );
   }
 
+  /// Downloads the image at the provided path, transforming it if requested.
+  ///
+  /// {@macro nhost.api.Storage.fileToken}
+  ///
+  /// [imageTransformConfig] (optional) instructs the backend to scale or adjust the
+  /// quality of the returned image.
+  ///
+  /// The file is returned as an HTTP response, populated with the headers.
+  Future<http.Response> downloadImage(
+    String filePath, {
+    String fileToken,
+    ImageTransformConfig imageTransformConfig,
+  }) {
+    return _apiClient.get<http.Response>(
+      _objectPath(filePath),
+      query: {
+        if (fileToken != null) 'token': fileToken,
+        ...?imageTransformConfig?.toQueryArguments(),
+      },
+      headers: _session.authenticationHeaders,
+    );
+  }
+
   /// Deletes a file on the backend.
   ///
   /// Throws an [ApiException] if the deletion fails.
