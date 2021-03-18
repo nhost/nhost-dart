@@ -90,10 +90,19 @@ class Storage {
 
   /// Downloads the file at the provided path.
   ///
+  /// {@template nhost.api.Storage.fileToken}
+  /// The [fileToken] argument must be provided if the resource is protected
+  /// by a storage function that checks the file's `resource.Metadata.token`
+  /// (https://nhost.github.io/hasura-backend-plus/configuration.html#storage-rules).
+  /// {@endtemplate}
+  ///
   /// The file is returned as an HTTP response, populated with the headers.
-  Future<http.Response> downloadFile(String filePath) {
+  Future<http.Response> downloadFile(String filePath, {String fileToken}) {
     return _apiClient.get<http.Response>(
       _objectPath(filePath),
+      query: {
+        if (fileToken != null) 'token': fileToken,
+      },
       headers: _session.authenticationHeaders,
     );
   }
@@ -112,14 +121,22 @@ class Storage {
 
   /// Retrieves a file's metadata from the backend.
   ///
+  /// {@macro nhost.api.Storage.fileToken}
+  ///
   /// Throws an [ApiException] if the metadata retrieval fails.
   ///
   /// https://docs.nhost.io/storage/api-reference#get-file-metadata
-  Future<FileMetadata> getFileMetadata(String filePath) async {
+  Future<FileMetadata> getFileMetadata(
+    String filePath, {
+    String fileToken,
+  }) async {
     assert(!filePath.endsWith('/'),
         '$filePath is not a valid file path, because it ends with a /');
     return await _apiClient.get(
       _metadataPath(filePath),
+      query: {
+        if (fileToken != null) 'token': fileToken,
+      },
       headers: _session.authenticationHeaders,
       responseDeserializer: FileMetadata.fromJson,
     );
