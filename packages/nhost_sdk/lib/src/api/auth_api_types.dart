@@ -1,10 +1,6 @@
 import 'dart:core';
 
-import 'package:json_annotation/json_annotation.dart';
-
 import 'core_codec.dart';
-
-part 'auth_api_types.g.dart';
 
 /// Describes the client's authorization state.
 ///
@@ -27,7 +23,6 @@ class AuthResponse {
 }
 
 /// Represents a user-authenticated session with Nhost.
-@JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 class Session {
   Session({
     this.jwtToken,
@@ -43,10 +38,6 @@ class Session {
   /// The amount of time that [jwtToken] will remain valid.
   ///
   /// Measured from the time of issue.
-  @JsonKey(
-    fromJson: durationFromMs,
-    toJson: durationToMs,
-  )
   final Duration jwtExpiresIn;
 
   /// A token that can be used to periodically refresh the session.
@@ -78,12 +69,33 @@ class Session {
     );
   }
 
-  static Session fromJson(dynamic json) => _$SessionFromJson(json);
-  Map<String, dynamic> toJson() => _$SessionToJson(this);
+  Map<String, dynamic> toJson() {
+    return <String, dynamic>{
+      'jwt_token': jwtToken,
+      'jwt_expires_in': durationToMs(jwtExpiresIn),
+      'refresh_token': refreshToken,
+      'user': user?.toJson(),
+      'mfa': mfa?.toJson(),
+    };
+  }
+
+  static Session fromJson(dynamic json) {
+    return Session(
+      jwtToken: json['jwt_token'] as String,
+      jwtExpiresIn: durationFromMs(json['jwt_expires_in'] as int),
+      refreshToken: json['refresh_token'] as String,
+      user: json['user'] == null
+          ? null
+          : User.fromJson(json['user'] as Map<String, dynamic>),
+      mfa: json['mfa'] == null
+          ? null
+          : MultiFactorAuthenticationInfo.fromJson(
+              json['mfa'] as Map<String, dynamic>),
+    );
+  }
 }
 
 /// Describes an Nhost user.
-@JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 class User {
   User({
     this.id,
@@ -104,12 +116,28 @@ class User {
   /// A [Uri] locating the user's avatar image, or `null` if none.
   final Uri avatarUrl;
 
-  static User fromJson(dynamic json) => _$UserFromJson(json);
-  Map<String, dynamic> toJson() => _$UserToJson(this);
+  static User fromJson(dynamic json) {
+    return User(
+      id: json['id'] as String,
+      email: json['email'] as String,
+      displayName: json['display_name'] as String,
+      avatarUrl: json['avatar_url'] == null
+          ? null
+          : Uri.parse(json['avatar_url'] as String),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return <String, dynamic>{
+      'id': id,
+      'email': email,
+      'display_name': displayName,
+      'avatar_url': avatarUrl?.toString(),
+    };
+  }
 }
 
 /// Describes information required to perform an MFA login.
-@JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 class MultiFactorAuthenticationInfo {
   MultiFactorAuthenticationInfo({this.ticket});
 
@@ -117,13 +145,19 @@ class MultiFactorAuthenticationInfo {
   /// login process
   final String ticket;
 
-  static MultiFactorAuthenticationInfo fromJson(Map<String, dynamic> json) =>
-      _$MultiFactorAuthenticationInfoFromJson(json);
-  Map<String, dynamic> toJson() => _$MultiFactorAuthenticationInfoToJson(this);
+  static MultiFactorAuthenticationInfo fromJson(dynamic json) {
+    return MultiFactorAuthenticationInfo(
+      ticket: json['ticket'] as String,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return <String, dynamic>{
+      'ticket': ticket,
+    };
+  }
 }
 
-///
-@JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 class MultiFactorAuthResponse {
   MultiFactorAuthResponse({this.qrCode, this.otpSecret});
 
@@ -131,17 +165,22 @@ class MultiFactorAuthResponse {
   ///
   /// This value, when presented to the user, can be read by authenticator apps
   /// to set up OTP.
-  @JsonKey(
-    name: 'image_url',
-    fromJson: uriDataFromString,
-    toJson: uriDataToString,
-  )
   final UriData qrCode;
 
   /// OTP secret
   final String otpSecret;
 
-  static MultiFactorAuthResponse fromJson(dynamic json) =>
-      _$MultiFactorAuthResponseFromJson(json);
-  Map<String, dynamic> toJson() => _$MultiFactorAuthResponseToJson(this);
+  static MultiFactorAuthResponse fromJson(dynamic json) {
+    return MultiFactorAuthResponse(
+      qrCode: uriDataFromString(json['image_url'] as String),
+      otpSecret: json['otp_secret'] as String,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return <String, dynamic>{
+      'image_url': uriDataToString(qrCode),
+      'otp_secret': otpSecret,
+    };
+  }
 }

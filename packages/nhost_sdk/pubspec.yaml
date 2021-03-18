@@ -10,7 +10,6 @@ environment:
 dependencies:
   http: ^0.13.0
   http_parser: ^4.0.0
-  json_annotation: ^3.0.0
   jwt_decoder: ^2.0.0
   meta: ^1.0.0
   path: ^1.0.0
@@ -18,11 +17,9 @@ dependencies:
 
 dev_dependencies:
   betamax: ^2.0.0-dev.0
-  build_runner: ^1.0.0
   dart_otp: ^1.0.0
   fake_async: ^1.0.0
   graphql: ^4.0.0
-  json_serializable: ^3.0.0
   nock: ^1.0.0
   stack_trace: ^1.0.0
   test_api: ^0.2.19
