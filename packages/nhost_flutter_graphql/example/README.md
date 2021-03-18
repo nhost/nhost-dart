@@ -1,16 +1,34 @@
-# nhost_flutter_graphql_example
+# Nhost GraphQL Support for Flutter Examples
 
-A new Flutter project.
+* [Simple GraphQL example](https://github.com/nhost/nhost-flutter-auth/example/lib/simple_graphql_example.dart): Demonstrates establishing a GraphQL connection, and
+  interaction with widgets from the `graphql` package
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+```sql
+CREATE TABLE public.todos
+(
+    id uuid NOT NULL DEFAULT gen_random_uuid(),
+    name text COLLATE pg_catalog."default" NOT NULL,
+    is_completed boolean NOT NULL DEFAULT false,
+    created_at timestamp with time zone NOT NULL DEFAULT now(),
+	updated_at timestamp with time zone NOT NULL DEFAULT now(),
+    CONSTRAINT todos_pkey PRIMARY KEY (id),
+)
 
-A few resources to get you started if this is your first Flutter project:
+TABLESPACE pg_default;
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+ALTER TABLE public.todos
+    OWNER to postgres;
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+CREATE TRIGGER set_public_todos_updated_at
+    BEFORE UPDATE
+    ON public.todos
+    FOR EACH ROW
+    EXECUTE PROCEDURE public.set_current_timestamp_updated_at();
+
+INSERT INTO public.todos VALUES ('1140916c-c1ff-4c2c-aa37-7dcab48600dc', '2021-03-12 00:27:37.100541+00', 'Walk the dog', true, '2021-03-12 00:27:37.100541+00', 'f8d9befd-c6c8-41b8-b975-bee7e457571d');
+INSERT INTO public.todos VALUES ('4912f5d2-ec4d-4c5e-bd50-0e8ddb27a689', '2021-03-12 00:27:49.347099+00', 'Cut the grass', false, '2021-03-12 00:27:49.347099+00', 'f8d9befd-c6c8-41b8-b975-bee7e457571d');
+INSERT INTO public.todos VALUES ('7b06fa71-c2cc-4026-b07b-5eea9e01d307', '2021-03-12 00:27:55.886203+00', 'Take out the garbage', true, '2021-03-12 00:27:55.886203+00', 'f8d9befd-c6c8-41b8-b975-bee7e457571d');
+INSERT INTO public.todos VALUES ('f98b73c9-54d4-4156-89fd-4507169baf4b', '2021-03-12 00:27:06.917262+00', 'Feed the frog', false, '2021-03-12 00:45:53.420608+00', 'f8d9befd-c6c8-41b8-b975-bee7e457571d');
+```
