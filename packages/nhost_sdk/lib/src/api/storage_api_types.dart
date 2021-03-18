@@ -1,13 +1,8 @@
-import 'package:json_annotation/json_annotation.dart';
-
-part 'storage_api_types.g.dart';
-
 /// Describes a file stored by Nhost.
 ///
 /// The fields of this class can be used to fetch the file's contents ([key]),
 /// as well as populate the headers of an HttpResponse if you were to serve
 /// this file to a client.
-@JsonSerializable(fieldRename: FieldRename.pascal, explicitToJson: true)
 class FileMetadata {
   FileMetadata({
     this.key,
@@ -38,30 +33,58 @@ class FileMetadata {
   final String contentType;
 
   /// Additional Nhost-specific metadata associated with this file
-  @JsonKey(name: 'Metadata')
   final FileNhostMetadata nhostMetadata;
 
   static FileMetadata fromJson(dynamic json) {
-    // TODO(https://github.com/nhost/hasura-backend-plus/issues/436): In
-    // order to work around inconsistencies in the backend's naming of this
-    // field, we duplicate.
-    json['Key'] = json['Key'] ?? json['key'];
-    return _$FileMetadataFromJson(json);
+    return FileMetadata(
+      // TODO(https://github.com/nhost/hasura-backend-plus/issues/436): In
+      // order to work around inconsistencies in the backend's naming of this
+      // field, we duplicate.
+      key: (json['Key'] ?? json['key']) as String,
+      acceptRanges: json['AcceptRanges'] as String,
+      lastModified: json['LastModified'] == null
+          ? null
+          : DateTime.parse(json['LastModified'] as String),
+      contentLength: json['ContentLength'] as int,
+      eTag: json['ETag'] as String,
+      contentType: json['ContentType'] as String,
+      nhostMetadata: json['Metadata'] == null
+          ? null
+          : FileNhostMetadata.fromJson(
+              json['Metadata'] as Map<String, dynamic>),
+    );
   }
 
-  Map<String, dynamic> toJson() => _$FileMetadataToJson(this);
+  Map<String, dynamic> toJson() {
+    return <String, dynamic>{
+      'Key': key,
+      'AcceptRanges': acceptRanges,
+      'LastModified': lastModified?.toIso8601String(),
+      'ContentLength': contentLength,
+      'ETag': eTag,
+      'ContentType': contentType,
+      'Metadata': nhostMetadata?.toJson(),
+    };
+  }
 }
 
 /// Additional Nhost-specific metadata associated with a [FileMetadata]
 /// instance.
-@JsonSerializable(fieldRename: FieldRename.snake)
 class FileNhostMetadata {
   FileNhostMetadata({this.token});
 
   /// TODO(shyndman): What is this?
   final String token;
 
-  static FileNhostMetadata fromJson(dynamic json) =>
-      _$FileNhostMetadataFromJson(json);
-  Map<String, dynamic> toJson() => _$FileNhostMetadataToJson(this);
+  static FileNhostMetadata fromJson(dynamic json) {
+    return FileNhostMetadata(
+      token: json['token'] as String,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return <String, dynamic>{
+      'token': token,
+    };
+  }
 }
