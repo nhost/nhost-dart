@@ -1,5 +1,7 @@
 import 'package:nhost_dart_sdk/client.dart';
 
+import 'auth_example.dart';
+
 /// Fill in this value with the backend URL found on your Nhost project page.
 const nhostApiUrl = 'https://backend-5e69d1d7.nhost.app';
 
@@ -31,17 +33,4 @@ void main() async {
 
   // Release
   client.close();
-}
-
-Future<void> loginOrRegister(
-  NhostClient client, {
-  String email,
-  String password,
-}) async {
-  try {
-    await client.auth.login(email: email, password: password);
-  } on ApiException {
-    // Login failed, so try to register instead
-  }
-  await client.auth.register(email: email, password: password);
 }
