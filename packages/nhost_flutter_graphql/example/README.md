@@ -2,6 +2,7 @@
 
 * [Simple GraphQL example](https://github.com/nhost/nhost-flutter-auth/example/lib/simple_graphql_example.dart): Demonstrates establishing a GraphQL connection, and
   interaction with widgets from the `graphql` package
+* [Todos Quick Start example](https://github.com/nhost/nhost-flutter-auth/example/lib/todos_quick_start_example.dart): A Flutter implementation of the [Nhost Quick Start app](https://docs.nhost.io/quick-start)
 
 ## Getting Started
 
