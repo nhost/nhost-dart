@@ -21,10 +21,12 @@ dev_dependencies:
   build_runner: ^1.0.0
   dart_otp: ^1.0.0
   fake_async: ^1.0.0
+  graphql: ^4.0.0
   json_serializable: ^3.0.0
   nock: ^1.0.0
-  test: ^1.6.0
   stack_trace: ^1.0.0
+  test_api: ^0.2.19
+  test: ^1.6.0
 
   # Nhost packages
   nhost_graphql_adapter: ^0.0.0
