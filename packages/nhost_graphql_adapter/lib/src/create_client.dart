@@ -11,13 +11,16 @@ import 'links.dart';
 /// The connection will be configured to automatically reflect the logged in
 /// state of [nhostAuth], and will change over time.
 ///
-/// The optional [httpClientOverride] parameter can be provided in order to
-/// customize the requests made by the Nhost APIs, which can be useful for
-/// proxy configuration and debugging.
+/// [gqlCache] (optional) the GraphQL cache to provide to the client. Defaults
+/// to a basic [GraphQLCache] instance.
 ///
-/// [defaultRequestHeaders] are an optional map of headers that will accompany
-/// HTTP and web socket requests. Any headers set by the client will overwrite
-/// the default values.
+/// [defaultRequestHeaders] (optional) a map of headers that will accompany HTTP
+/// requests and the initial web socket payload. Any matching headers set by the
+/// client will overwrite the default values.
+///
+/// [httpClientOverride] (optional) can be provided in order to customize the
+/// requests made by the Nhost APIs, which can be useful for proxy configuration
+/// and debugging.
 GraphQLClient createNhostGraphQLClient(
   String nhostGqlEndpointUrl,
   Auth nhostAuth, {
@@ -27,7 +30,6 @@ GraphQLClient createNhostGraphQLClient(
 }) {
   return GraphQLClient(
     link: Link.split(
-      // TODO(shyndman): Do we need an equivalent for request.isDefinition?
       (request) => request.isSubscription,
       webSocketLinkForNhost(
         nhostGqlEndpointUrl,

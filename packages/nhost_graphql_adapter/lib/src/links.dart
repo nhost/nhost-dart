@@ -7,8 +7,11 @@ import 'package:nhost_dart_sdk/client.dart';
 /// Creates an HTTP link that configures automatically based on [nhostAuth]'s
 /// authentication state.
 ///
-/// [httpClientOverride] can be provided to customize the network request, such
-/// as to configure proxies, introduce interceptors, etc.
+/// [httpClientOverride] (optional) can be provided to customize the network
+/// request, such as to configure proxies, introduce interceptors, etc.
+///
+/// [defaultHeaders] (optional) A set of headers that will be provided with
+/// all requests passing through the link.
 Link httpLinkForNhost(
   String nhostGqlEndpointUrl,
   Auth nhostAuth, {
