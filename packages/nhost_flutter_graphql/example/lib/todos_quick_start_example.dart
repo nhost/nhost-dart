@@ -1,7 +1,8 @@
 /// Implementation of the Nhost Quick Start app in Flutter.
 ///
 /// GETTING STARTED: Follow the Nhost Quick Start at
-/// https://docs.nhost.io/quick-start to prepare the backend.
+/// https://docs.nhost.io/quick-start to prepare the backend. You can ignore
+/// the client-side JS, because this Flutter app takes on that responsibility.
 library todos_quick_start_example;
 
 import 'package:flutter/material.dart';
