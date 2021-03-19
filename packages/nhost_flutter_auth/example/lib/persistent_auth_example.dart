@@ -68,19 +68,19 @@ class _PersistentAuthExampleState extends State<PersistentAuthExample> {
 /// application.
 class SharedPreferencesAuthStore implements AuthStore {
   @override
-  FutureOr<String> getString(String key) async {
+  Future<String> getString(String key) async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString(key);
   }
 
   @override
-  FutureOr<void> setString(String key, String value) async {
+  Future<void> setString(String key, String value) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString(key, value);
   }
 
   @override
-  FutureOr<void> removeItem(String key) async {
+  Future<void> removeItem(String key) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove(key);
   }
