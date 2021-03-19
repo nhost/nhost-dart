@@ -31,20 +31,21 @@ Link httpLinkForNhost(
   );
 }
 
-/// Creates a web socket link that configures automatically based on
-/// [nhostAuth]'s authentication state.
+/// Creates a web socket link that configures (and reconfigures) automatically
+/// based on [nhostAuth]'s authentication state.
+///
+/// [defaultHeaders] (optional) A set of headers that will be provided in the
+/// initial payload when opening the socket.
 Link webSocketLinkForNhost(
   String nhostGqlEndpointUrl,
   Auth nhostAuth, {
   Map<String, String> defaultHeaders,
 }) {
   final uri = Uri.parse(nhostGqlEndpointUrl);
-
   final wsEndpointUri =
       uri.replace(scheme: uri.scheme == 'https' ? 'wss' : 'ws').toString();
 
-  final unauthenticatedLink = WebSocketLink(wsEndpointUri);
-  final authenticatedLink = WebSocketLink(
+  final webSocketLink = WebSocketLink(
     wsEndpointUri,
     config: SocketClientConfig(
       autoReconnect: true,
@@ -52,16 +53,20 @@ Link webSocketLinkForNhost(
         return {
           'headers': {
             ...?defaultHeaders,
-            HttpHeaders.authorizationHeader: 'Bearer ${nhostAuth.jwt}',
+            if (nhostAuth.isAuthenticated == true)
+              HttpHeaders.authorizationHeader: 'Bearer ${nhostAuth.jwt}',
           }
         };
       },
     ),
   );
 
-  return Link.split(
-    (request) => nhostAuth.isAuthenticated == true,
-    authenticatedLink,
-    unauthenticatedLink,
-  );
+  // If authentication state changes, we reconnect the socket, which will also
+  // re-evaluate the initialPayload providing (or not providing) the auth
+  // header.
+  nhostAuth.addTokenChangedCallback(() {
+    webSocketLink.connectOrReconnect();
+  });
+
+  return webSocketLink;
 }
