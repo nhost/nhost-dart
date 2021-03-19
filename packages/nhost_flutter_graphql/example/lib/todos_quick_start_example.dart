@@ -244,18 +244,30 @@ class TodoTile extends StatelessWidget {
 class TodoListActions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Mutation(
-      options: MutationOptions(
-        document: removeCompletedTodosMutation,
-      ),
-      builder: (runMutation, result) {
-        return TextButton(
+    final auth = NhostAuthProvider.of(context);
+    return Row(
+      children: [
+        TextButton(
           onPressed: () {
-            runMutation({}).networkResult;
+            auth.logout();
           },
-          child: Text('Clear Completed'),
-        );
-      },
+          child: Text('Logout'),
+        ),
+        const SizedBox(width: 12),
+        Mutation(
+          options: MutationOptions(
+            document: removeCompletedTodosMutation,
+          ),
+          builder: (runMutation, result) {
+            return TextButton(
+              onPressed: () {
+                runMutation({}).networkResult;
+              },
+              child: Text('Clear Completed'),
+            );
+          },
+        ),
+      ],
     );
   }
 }
