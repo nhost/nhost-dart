@@ -15,25 +15,8 @@ void main() async {
     nhostClient.auth,
   );
 
-  var todosStream = graphqlClient.subscribe(SubscriptionOptions(
-    document: gql('''
-      subscription {
-        todos {
-          id
-          name
-          is_completed
-          created_at
-          updated_at
-        }
-      }
-    '''),
-  ));
-  final firstTodoResult = await todosStream.first;
-  assert(firstTodoResult.hasException);
-
-  //
   final myTodosQuery = gql(r'''
-    query MyTodos {
+    query {
       todos {
         id
         name
@@ -62,28 +45,8 @@ void main() async {
   );
 
   // Success!
+  print(queryResult.exception);
   print(queryResult.data['todos']);
-
-  // Do the same with the stream
-  todosStream = graphqlClient.subscribe(SubscriptionOptions(
-    document: gql('''
-      subscription {
-        todos {
-          id
-          name
-          is_completed
-          created_at
-          updated_at
-        }
-      }
-    '''),
-  ));
-
-  // Print the next 5 updates (jump into your Hasura console and make some
-  // changes)
-  await for (final latestQueryResult in todosStream.take(5)) {
-    print(latestQueryResult.data['todos']);
-  }
 
   nhostClient.close();
 }
