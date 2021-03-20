@@ -8,15 +8,16 @@ environment:
   sdk: '>=2.10.0 <3.0.0'
 
 dependencies:
-  graphql: ^4.0.0
+  graphql: '>=4.1.0-beta.1'
   http: ^0.13.0
   meta: ^1.0.0
-  web_socket_channel: ^1.0.0
 
   # Nhost packages
   nhost_dart_sdk: ^0.0.0
 
 dev_dependencies:
+  async: ^2.0.0
+  mockito: ^5.0.0
   nock: ^1.0.0
   pedantic: ^1.9.0
   test: ^1.14.4
