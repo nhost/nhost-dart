@@ -12,8 +12,8 @@ class GqlAdminTestHelper {
     // Used to verify, retrieve, or clear backend state.
     client = createNhostGraphQLClient(
       gqlUrl,
-      NhostClient(baseUrl: apiUrl).auth,
-      defaultRequestHeaders: {
+      NhostClient(baseUrl: apiUrl),
+      defaultHeaders: {
         'X-Hasura-Admin-Secret': 'hejsan',
       },
       httpClientOverride: httpClientOverride,

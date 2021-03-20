@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:dart_otp/dart_otp.dart';
+import 'package:otp/otp.dart';
 import 'package:fake_async/fake_async.dart';
 import 'package:nhost_dart_sdk/client.dart';
 import 'package:nock/nock.dart';
@@ -419,8 +419,8 @@ void main() async {
       // Ask the backend to generate MFA configuration, and from that, generate
       // a time-based OTP.
       final mfaConfiguration = await auth.generateMfa();
-      final totp =
-          TOTP(secret: mfaConfiguration.otpSecret).value(date: DateTime.now());
+      final totp = OTP.generateTOTPCodeString(
+          mfaConfiguration.otpSecret, DateTime.now().millisecondsSinceEpoch);
 
       expect(
         auth.enableMfa(totp),
