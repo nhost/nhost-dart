@@ -2,7 +2,7 @@ name: nhost_flutter_auth
 description: >
   Provides Nhost authentication state to your Flutter app, making it easy to set
   up protected resources, and react to logins and logouts.
-version: 0.0.0
+version: 0.1.0
 homepage: https://nhost.io
 repository: https://github.com/nhost/nhost-flutter-auth
 
