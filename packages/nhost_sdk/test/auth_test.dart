@@ -111,7 +111,7 @@ void main() async {
 
     test('should be authenticated', () async {
       await auth.register(email: testEmail, password: testPassword);
-      expect(auth.isAuthenticated, true);
+      expect(auth.authenticationState, AuthenticationState.loggedIn);
     });
   });
 
@@ -119,7 +119,7 @@ void main() async {
     // Each tests registers a basic user, and leaves auth in a logged out state
     setUp(() async {
       await registerTestUser(auth);
-      assert(!auth.isAuthenticated);
+      assert(auth.authenticationState == AuthenticationState.loggedOut);
     });
 
     test('should be able to login with the correct password', () async {
@@ -150,7 +150,7 @@ void main() async {
 
     test('should be authenticated', () async {
       await auth.login(email: testEmail, password: testPassword);
-      expect(auth.isAuthenticated, true);
+      expect(auth.authenticationState, AuthenticationState.loggedIn);
     });
 
     test('should be able to retreive JWT Token', () async {
@@ -181,7 +181,7 @@ void main() async {
 
     test('a logged out user should not be authenticated', () async {
       await auth.logout();
-      expect(auth.isAuthenticated, false);
+      expect(auth.authenticationState, AuthenticationState.loggedOut);
     });
 
     test('should not be able to retreive JWT token after logout', () async {
@@ -356,7 +356,7 @@ void main() async {
         ),
         completes,
       );
-      expect(auth.isAuthenticated, true);
+      expect(auth.authenticationState, AuthenticationState.loggedIn);
     });
   });
 
@@ -434,7 +434,7 @@ void main() async {
       final firstFactorAuthResult =
           await auth.login(email: testEmail, password: testPassword);
       expect(firstFactorAuthResult.user, isNull);
-      expect(auth.isAuthenticated, isFalse);
+      expect(auth.authenticationState, AuthenticationState.loggedOut);
       expect(auth.jwt, isNull);
 
       final secondFactorAuthResult = await auth.completeMfaLogin(
@@ -442,7 +442,7 @@ void main() async {
         ticket: firstFactorAuthResult.mfa.ticket,
       );
       expect(secondFactorAuthResult.user, isNotNull);
-      expect(auth.isAuthenticated, isTrue);
+      expect(auth.authenticationState, AuthenticationState.loggedIn);
       expect(auth.jwt, isNotNull);
     });
 
