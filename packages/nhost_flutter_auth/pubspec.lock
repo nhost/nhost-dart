@@ -172,13 +172,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.0.0"
-  json_annotation:
-    dependency: transitive
-    description:
-      name: json_annotation
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "3.1.1"
   jwt_decoder:
     dependency: transitive
     description:
@@ -220,7 +213,7 @@ packages:
       name: nhost_dart_sdk
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.1.0"
+    version: "0.6.0"
   package_config:
     dependency: transitive
     description:

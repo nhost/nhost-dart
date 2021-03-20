@@ -57,10 +57,16 @@ class ExampleProtectedScreen extends StatelessWidget {
     // the user's authentication state changes.
     final auth = NhostAuthProvider.of(context);
     Widget widget;
-    if (auth.isAuthenticated == true) {
-      widget = LoggedInUserDetails();
-    } else {
-      widget = LoginForm();
+    switch (auth.authenticationState) {
+      case AuthenticationState.loggedIn:
+        widget = LoggedInUserDetails();
+        break;
+      case AuthenticationState.loggedOut:
+        widget = LoginForm();
+        break;
+      default:
+        widget = SizedBox();
+        break;
     }
 
     return Padding(
