@@ -90,11 +90,12 @@ class Auth {
   User get currentUser => _currentUser;
   User _currentUser;
 
-  /// `true` if the user is authenticated, `false` if they are not, or `null`
-  /// if authentication is in process.
-  bool get isAuthenticated {
-    if (_loading) return null;
-    return _session.session != null;
+  /// Whether a user is logged in, not logged in, or if a login is in process.
+  AuthenticationState get authenticationState {
+    if (_loading) return AuthenticationState.inProgress;
+    return _session.session != null
+        ? AuthenticationState.loggedIn
+        : AuthenticationState.loggedOut;
   }
 
   /// The currently logged-in user's Json Web Token, or `null` if
@@ -535,7 +536,6 @@ class Auth {
     }
 
     await setSession(res);
-    _onTokenChanged();
   }
 
   /// Updates the [Auth] to begin identifying as the user described by
@@ -546,7 +546,7 @@ class Auth {
   /// conditions.
   @visibleForTesting
   Future<void> setSession(Session session) async {
-    final previouslyAuthenticated = isAuthenticated ?? false;
+    final previouslyAuthenticated = authenticationState ?? false;
     _session.session = session;
     _currentUser = session.user;
 
@@ -573,6 +573,7 @@ class Auth {
     // We're ready!
     _loading = false;
 
+    _onTokenChanged();
     if (!previouslyAuthenticated) {
       _onAuthStateChanged(authenticated: true);
     }
@@ -590,7 +591,7 @@ class Auth {
     }
 
     // Early exit
-    if (isAuthenticated == false || isAuthenticated == null) {
+    if (authenticationState != AuthenticationState.loggedIn) {
       return;
     }
 
@@ -598,6 +599,13 @@ class Auth {
     await _authStore.removeItem(refreshTokenClientStorageKey);
 
     _loading = false;
+    _onTokenChanged();
     _onAuthStateChanged(authenticated: false);
   }
+}
+
+enum AuthenticationState {
+  inProgress,
+  loggedIn,
+  loggedOut,
 }
