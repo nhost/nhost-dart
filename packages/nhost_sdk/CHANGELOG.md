@@ -1,3 +1,8 @@
+## 0.3.0
+
+- Upgrade to work with latest nhost_graphql_adapter library, which had a few
+  breaking changes
+
 ## 0.2.0
 
 - Add fileToken support to storage APIs
