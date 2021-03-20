@@ -1,4 +1,15 @@
 /// Demonstrates the use of Nhost Auth with a Navigator 2.0 application.
+///
+/// The core idea being demonstrated here is the protected route. We accomplish
+/// this by configuring our [ExampleRouterDelegate] to operate on path objects
+/// ([ExampleRoutePath]s) that can optionally implement a [ProtectedRoutePath]
+/// interface.
+///
+/// When the router delegate is requested to navigate to a [ProtectedRoutePath],
+/// it will first check to see if the user is authenticated. If they are,
+/// navigation will proceed. If not, they will be forwarded to the login page,
+/// where they can authenticate, and upon success proceed to their requested
+/// route.
 library simple_auth_example;
 
 import 'package:flutter/foundation.dart';
@@ -67,7 +78,9 @@ class _NavigatorExampleAppState extends State<NavigatorExampleApp> {
   }
 }
 
+/// Changes the currently visible page in the application.
 ///
+/// Accessible via `Provider.of<ExampleNavigator>(context)`.
 class ExampleNavigator extends ChangeNotifier {
   /// The route currently being requested by the application.
   ///
@@ -181,13 +194,13 @@ class ExampleRouteInformationParser
 abstract class ExampleRoutePath {}
 
 /// A marker interface used to indicate that authentication is required
-abstract class AuthRequiredPath {}
+abstract class ProtectedRoutePath {}
 
 /// The administrator home page's route.
 ///
-/// Note that this implements the [AuthRequiredPath] interface, which instructs
+/// Note that this implements the [ProtectedRoutePath] interface, which instructs
 /// the [ExampleRouterDelegate] to require a logged in user.
-class AdminRoutePath extends ExampleRoutePath implements AuthRequiredPath {}
+class AdminRoutePath extends ExampleRoutePath implements ProtectedRoutePath {}
 
 /// The home page's route, accessible to both admin and anonymous users
 class HomeRoutePath extends ExampleRoutePath {}
@@ -270,7 +283,7 @@ class LoginPage extends StatelessWidget {
     return Container(
       child: Column(
         children: [
-          if (navigator.requestedRoutePath is AuthRequiredPath)
+          if (navigator.requestedRoutePath is ProtectedRoutePath)
             Container(
               decoration: BoxDecoration(
                 border: Border.all(color: Colors.red[600]),
