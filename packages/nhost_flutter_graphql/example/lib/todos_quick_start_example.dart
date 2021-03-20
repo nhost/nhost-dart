@@ -7,6 +7,7 @@ library todos_quick_start_example;
 
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:nhost_dart_sdk/client.dart';
 import 'package:nhost_flutter_graphql/nhost_flutter_graphql.dart';
 
 // Fill in these values with the Backend and GraphQL URL found on your Nhost
@@ -45,9 +46,22 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     final auth = NhostAuthProvider.of(context);
 
+    Widget widget;
+    switch (auth.authenticationState) {
+      case AuthenticationState.loggedIn:
+        widget = TodosPage();
+        break;
+      case AuthenticationState.loggedOut:
+        widget = LoginPage();
+        break;
+      default:
+        widget = SizedBox();
+        break;
+    }
+
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      child: auth.isAuthenticated == true ? TodosPage() : LoginPage(),
+      child: widget,
     );
   }
 }
