@@ -131,10 +131,10 @@ class ExampleRouterDelegate extends RouterDelegate<ExampleRoutePath>
     // be shown the login page.
     final auth = NhostAuthProvider.of(context);
     final requestedRoutePath = navigator.requestedRoutePath;
-    final isLoginPageRequested =
-        requestedRoutePath is LoginRoutePath && auth.isAuthenticated != true;
-    final needsLogin =
-        requestedRoutePath is AuthRequiredPath && auth.isAuthenticated != true;
+    final isLoginPageRequested = requestedRoutePath is LoginRoutePath &&
+        auth.authenticationState != AuthenticationState.loggedIn;
+    final needsLogin = requestedRoutePath is ProtectedRoutePath &&
+        auth.authenticationState != AuthenticationState.loggedIn;
 
     return Navigator(
       key: navigatorKey,
@@ -212,7 +212,8 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final auth = NhostAuthProvider.of(context);
-    final isAuthenticated = auth.isAuthenticated == true;
+    final isAuthenticated =
+        auth.authenticationState == AuthenticationState.loggedIn;
     final navigator = Provider.of<ExampleNavigator>(context);
 
     final textTheme = Theme.of(context).textTheme;
@@ -238,7 +239,7 @@ class HomePage extends StatelessWidget {
           ),
         ),
         ContentItem(child: Text('This content is visible to everyone.')),
-        if (auth.isAuthenticated == true)
+        if (auth.authenticationState == AuthenticationState.loggedIn)
           ContentItem(
             child: Text(
               'This additional content is only visible to authenticated '
@@ -254,14 +255,14 @@ class HomePage extends StatelessWidget {
               child: Text('Admin Page (Protected)'),
             ),
             SizedBox(width: 8),
-            if (auth.isAuthenticated != true)
+            if (auth.authenticationState == AuthenticationState.loggedOut)
               ElevatedButton(
                 onPressed: () {
                   navigator.requestRoutePath(LoginRoutePath());
                 },
                 child: Text('Login'),
               ),
-            if (auth.isAuthenticated == true)
+            if (auth.authenticationState == AuthenticationState.loggedIn)
               ElevatedButton(
                 onPressed: () {
                   auth.logout();
@@ -347,14 +348,14 @@ class AppFrame extends StatelessWidget {
       appBar: AppBar(
         title: Text('Nhost Navigator 2.0 Example'),
         actions: [
-          if (auth.isAuthenticated != true)
+          if (auth.authenticationState == AuthenticationState.loggedOut)
             IconButton(
               icon: Icon(Icons.login),
               onPressed: () {
                 navigator.requestRoutePath(LoginRoutePath());
               },
             ),
-          if (auth.isAuthenticated == true)
+          if (auth.authenticationState == AuthenticationState.loggedIn)
             IconButton(
               icon: Icon(Icons.logout),
               onPressed: () {
