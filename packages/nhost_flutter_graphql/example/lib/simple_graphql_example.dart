@@ -39,7 +39,7 @@ class SimpleGqlExample extends StatelessWidget {
           body: Query(
             options: QueryOptions(
               document: gql('''
-                  query AllTodos {
+                  query {
                     todos {
                       name
                       is_completed
