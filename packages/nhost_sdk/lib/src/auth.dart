@@ -546,7 +546,7 @@ class Auth {
   /// conditions.
   @visibleForTesting
   Future<void> setSession(Session session) async {
-    final previouslyAuthenticated = authenticationState ?? false;
+    final previouslyAuthenticated = authenticationState;
     _session.session = session;
     _currentUser = session.user;
 
@@ -574,7 +574,7 @@ class Auth {
     _loading = false;
 
     _onTokenChanged();
-    if (!previouslyAuthenticated) {
+    if (previouslyAuthenticated != AuthenticationState.loggedIn) {
       _onAuthStateChanged(authenticated: true);
     }
   }
