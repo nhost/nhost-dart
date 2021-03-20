@@ -1,3 +1,8 @@
+## 0.5.0
+
+- Remove isAuthenticated, and introduce authenticationState — a tri-state enum.
+  Nullable booleans are too easy to make mistakes with.
+
 ## 0.4.0
 
 - Remove dependency on dart:io

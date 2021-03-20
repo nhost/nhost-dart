@@ -7,7 +7,7 @@
 * Add image transformation tests
 * Flutter APIs should take clients, not service objects
 * Need UPDATE and DELETE permissions on todos table
-
+* Authentication callback feels wrong...
 
 Q:
   * Why don't file deletions need the token?
