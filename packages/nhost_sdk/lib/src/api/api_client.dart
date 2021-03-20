@@ -1,13 +1,18 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
 import 'package:meta/meta.dart';
 import 'package:nhost_dart_sdk/src/debug.dart';
 
 import '../foundation/uri.dart';
+import '../http.dart';
 
-final _jsonContentType = ContentType.json.toString();
+/// Defined here so we don't need to import dart:io (which affects quality
+/// score, because it thinks that dart:io makes using Flutter Web impossible)
+final _noCharsetJsonContentType = MediaType('application', 'json');
+final _jsonContentType =
+    _noCharsetJsonContentType.change(parameters: {'charset': 'utf-8'});
 
 /// Provides HTTP API methods, with response deserialization.
 ///
@@ -97,7 +102,7 @@ class ApiClient {
       request
         ..body = jsonEncode(data)
         ..headers.addAll({
-          HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8',
+          contentTypeHeader: _jsonContentType.toString(),
         });
     }
 
@@ -155,7 +160,10 @@ class ApiClient {
 
     final response =
         await http.Response.fromStream(await _httpClient.send(request));
-    final isJson = response.headers['content-type'] == _jsonContentType;
+    final contentTypeHeader = response.headers['content-type'];
+    final isJson =
+        contentTypeHeader?.startsWith(_noCharsetJsonContentType.toString()) ==
+            true;
     dynamic responseBody = isJson ? jsonDecode(response.body) : response.body;
 
     // We group request and response together because the request's headers are

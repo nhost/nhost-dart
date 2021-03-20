@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:http/http.dart' as http;
 import 'package:meta/meta.dart';
@@ -9,6 +8,7 @@ import 'api/auth_api_types.dart';
 import 'auth_store.dart';
 import 'debug.dart';
 import 'foundation/duration.dart';
+import 'http.dart';
 import 'session.dart';
 
 /// Signature for callbacks that respond to token changes.
@@ -521,7 +521,7 @@ class Auth {
         responseDeserializer: Session.fromJson,
       );
     } on ApiException catch (e) {
-      if (e.statusCode == HttpStatus.unauthorized) {
+      if (e.statusCode == unauthorizedStatus) {
         await logout();
         return;
       } else {

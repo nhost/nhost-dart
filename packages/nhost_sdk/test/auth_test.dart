@@ -56,10 +56,10 @@ void main() async {
     });
 
     test('should not be able to register same user twice', () async {
-      await auth.register(email: testEmail, password: 'password-2');
+      await auth.register(email: testEmail, password: testPassword);
 
       expect(
-        auth.register(email: testEmail, password: 'password-2'),
+        auth.register(email: testEmail, password: testPassword),
         throwsA(anything),
       );
     });

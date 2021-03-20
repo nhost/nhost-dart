@@ -1,6 +1,5 @@
-import 'dart:io';
-
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:nhost_dart_sdk/src/http.dart';
 
 import 'api/auth_api_types.dart';
 
@@ -20,7 +19,7 @@ class UserSession {
 
   Map<String, String> get authenticationHeaders {
     return {
-      if (jwt != null) HttpHeaders.authorizationHeader: 'Bearer $jwt',
+      if (jwt != null) authorizationHeader: 'Bearer $jwt',
     };
   }
 
