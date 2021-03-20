@@ -1,5 +1,5 @@
-import 'package:dart_otp/dart_otp.dart';
 import 'package:nhost_dart_sdk/client.dart';
+import 'package:otp/otp.dart';
 import 'package:path/path.dart';
 import 'package:stack_trace/stack_trace.dart';
 
@@ -33,8 +33,9 @@ Future<String> registerMfaUser(Auth auth, {bool logout = true}) async {
 
 /// Creates a new time-based one-time-pass based on the provided secret and the
 /// current time.
-String totpFromSecret(String otpSecret) =>
-    TOTP(secret: otpSecret).value(date: DateTime.now());
+String totpFromSecret(String otpSecret) => OTP
+    .generateTOTPCode(otpSecret, DateTime.now().millisecondsSinceEpoch)
+    .toString();
 
 /// Returns the package's test directory path
 ///
