@@ -1,3 +1,7 @@
+## 0.6.0
+
+- Fix bug in authentication state change. I missed a boolean.
+
 ## 0.5.0
 
 - Remove isAuthenticated, and introduce authenticationState — a tri-state enum.
