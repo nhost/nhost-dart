@@ -12,7 +12,7 @@ import 'links.dart';
 /// [gqlCache] (optional) the GraphQL cache to provide to the client. Defaults
 /// to a basic [GraphQLCache] instance.
 ///
-/// [defaultRequestHeaders] (optional) a map of headers that will accompany HTTP
+/// [defaultHeaders] (optional) a map of headers that will accompany HTTP
 /// requests and the initial web socket payload. Any matching headers set by the
 /// client will overwrite the default values.
 ///
@@ -23,14 +23,14 @@ GraphQLClient createNhostGraphQLClient(
   String nhostGqlEndpointUrl,
   NhostClient nhostClient, {
   GraphQLCache gqlCache,
-  Map<String, String> defaultRequestHeaders,
+  Map<String, String> defaultHeaders,
   http.Client httpClientOverride,
 }) {
   return GraphQLClient(
     link: combinedLinkForNhost(
       nhostGqlEndpointUrl,
       nhostClient,
-      defaultHeaders: defaultRequestHeaders,
+      defaultHeaders: defaultHeaders,
       httpClientOverride: httpClientOverride,
     ),
     cache: gqlCache ?? GraphQLCache(),
