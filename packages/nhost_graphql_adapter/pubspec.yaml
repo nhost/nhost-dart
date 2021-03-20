@@ -20,4 +20,6 @@ dev_dependencies:
   mockito: ^5.0.0
   nock: ^1.0.0
   pedantic: ^1.9.0
+  stream_channel: ^2.0.0
   test: ^1.14.4
+  web_socket_channel: ^2.0.0
