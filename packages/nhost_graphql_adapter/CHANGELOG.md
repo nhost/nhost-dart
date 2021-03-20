@@ -1,3 +1,7 @@
+## 0.3.0
+
+- Update to latest Nhost SDK
+
 ## 0.2.0
 
 - API tweaks
