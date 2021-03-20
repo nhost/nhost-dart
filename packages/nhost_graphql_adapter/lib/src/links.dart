@@ -62,7 +62,7 @@ Link httpLinkForNhost(
   ).concat(unauthenticatedLink);
 
   return Link.split(
-    (request) => auth.isAuthenticated == true,
+    (request) => auth.authenticationState == AuthenticationState.loggedIn,
     authenticatedLink,
     unauthenticatedLink,
   );
@@ -100,7 +100,7 @@ Link webSocketLinkForNhost(
         return {
           'headers': {
             ...?defaultHeaders,
-            if (auth.isAuthenticated == true)
+            if (auth.authenticationState == AuthenticationState.loggedIn)
               'Authorization': 'Bearer ${auth.jwt}',
           }
         };
