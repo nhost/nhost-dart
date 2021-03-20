@@ -1,3 +1,7 @@
+## 0.4.0
+
+- Remove dependency on dart:io
+
 ## 0.3.0
 
 - Upgrade to work with latest nhost_graphql_adapter library, which had a few
