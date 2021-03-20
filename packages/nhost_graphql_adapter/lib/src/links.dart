@@ -1,5 +1,6 @@
 import 'package:graphql/client.dart';
 import 'package:http/http.dart' as http;
+import 'package:meta/meta.dart';
 import 'package:nhost_dart_sdk/client.dart';
 
 /// Creates a link that that configures automatically based on [nhostClient]'s
@@ -76,6 +77,9 @@ Link webSocketLinkForNhost(
   String nhostGqlEndpointUrl,
   NhostClient nhostClient, {
   Map<String, String> defaultHeaders = const {},
+  @visibleForTesting WebSocketConnect testWebSocketConnectOverride,
+  @visibleForTesting
+      Duration testInactivityTimeout = const Duration(seconds: 1),
 }) {
   final auth = nhostClient.auth;
 
@@ -87,12 +91,17 @@ Link webSocketLinkForNhost(
     wsEndpointUri,
     config: SocketClientConfig(
       autoReconnect: true,
+      connect:
+          testWebSocketConnectOverride ?? SocketClientConfig.defaultConnect,
+      queryAndMutationTimeout: testWebSocketConnectOverride != null
+          ? testInactivityTimeout // Fast timeouts for tests
+          : const Duration(seconds: 10),
       initialPayload: () {
         return {
           'headers': {
             ...?defaultHeaders,
             if (auth.isAuthenticated == true)
-              'authorization': 'Bearer ${auth.jwt}',
+              'Authorization': 'Bearer ${auth.jwt}',
           }
         };
       },
