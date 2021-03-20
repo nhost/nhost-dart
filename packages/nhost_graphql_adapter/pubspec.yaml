@@ -8,7 +8,7 @@ environment:
   sdk: '>=2.10.0 <3.0.0'
 
 dependencies:
-  graphql: '>=4.1.0-beta.1'
+  graphql: '>=4.1.0-beta.1 <6.0.0'
   http: ^0.13.0
   meta: ^1.0.0
 
