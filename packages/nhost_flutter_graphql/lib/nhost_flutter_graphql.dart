@@ -52,8 +52,26 @@ class _NhostGraphQLProviderState extends State<NhostGraphQLProvider> {
     clientNotifier = ValueNotifier(null);
   }
 
-  Auth get currentNhostAuth =>
-      widget.nhostClient.auth ?? NhostAuthProvider.of(context);
+  Auth get currentNhostAuth {
+    final auth = widget.nhostClient?.auth ?? NhostAuthProvider.of(context);
+
+    assert(() {
+      if (auth == null) {
+        throw FlutterError.fromParts([
+          ErrorSummary('Cannot find Nhost authentication.'),
+          ErrorDescription(
+            'NhostGraphQLProvider not provided with authentication '
+            'information. Either construct the widget by providing the '
+            'nhostClient argument, or ensure an NhostAuthProvider widget is '
+            'somewhere in the widget\'s ancestry.',
+          ),
+        ]);
+      }
+      return true;
+    }());
+
+    return auth;
+  }
 
   @override
   void didUpdateWidget(covariant NhostGraphQLProvider oldWidget) {
@@ -75,10 +93,11 @@ class _NhostGraphQLProviderState extends State<NhostGraphQLProvider> {
   /// If the instance changes, it means we're dealing with an entirely new
   /// client, and the `Link`s themselves need rebuilding.
   void _rebuildGraphQLClientIfNecessary({bool force = false}) {
-    if (force || _lastAuth != currentNhostAuth) {
+    final currentAuth = currentNhostAuth;
+    if (force || _lastAuth != currentAuth) {
       clientNotifier.value = createNhostGraphQLClientForAuth(
         widget.gqlEndpointUrl,
-        _lastAuth = currentNhostAuth,
+        _lastAuth = currentAuth,
       );
     }
   }
@@ -87,10 +106,7 @@ class _NhostGraphQLProviderState extends State<NhostGraphQLProvider> {
   Widget build(BuildContext context) {
     return GraphQLProvider(
       client: clientNotifier,
-      child: NhostAuthProvider(
-        auth: _lastAuth,
-        child: widget.child,
-      ),
+      child: widget.child,
     );
   }
 }
