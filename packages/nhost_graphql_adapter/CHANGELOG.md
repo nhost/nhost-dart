@@ -1,3 +1,8 @@
+## 0.4.0
+
+- Add an overload for constructing a client using an Auth object, and not a full
+  NhostClient.
+
 ## 0.3.0
 
 - Update to latest Nhost SDK
