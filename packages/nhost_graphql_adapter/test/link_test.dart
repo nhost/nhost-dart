@@ -136,7 +136,7 @@ void main() {
       final gqlClient = GraphQLClient(
         link: webSocketLinkForNhost(
           gqlEndpoint,
-          nhost,
+          nhost.auth,
           testWebSocketConnectOverride: (uri, protocols) {
             return mockWebSocket;
           },
@@ -158,7 +158,7 @@ void main() {
       final gqlClient = GraphQLClient(
         link: webSocketLinkForNhost(
           gqlEndpoint,
-          nhost,
+          nhost.auth,
           testWebSocketConnectOverride: (uri, protocols) {
             return mockWebSocket;
           },
@@ -181,7 +181,7 @@ void main() {
       final gqlClient = GraphQLClient(
         link: webSocketLinkForNhost(
           gqlEndpoint,
-          nhost,
+          nhost.auth,
           defaultHeaders: expectedHeaders,
           testWebSocketConnectOverride: (uri, protocols) {
             return mockWebSocket;
@@ -201,7 +201,7 @@ void main() {
       final gqlClient = GraphQLClient(
         link: webSocketLinkForNhost(
           gqlEndpoint,
-          nhost,
+          nhost.auth,
           testWebSocketConnectOverride: (uri, protocols) {
             connectionCount++;
             return mockWebSocket = MockWebSocket.connect();
