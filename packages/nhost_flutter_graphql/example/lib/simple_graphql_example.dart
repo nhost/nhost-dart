@@ -28,7 +28,7 @@ class SimpleGqlExample extends StatelessWidget {
     // The NhostGraphQLProvider automatically provides connection information
     // to `graphql_flutter` widgets in its subtree.
     return NhostGraphQLProvider(
-      auth: nhostClient.auth,
+      nhostClient: nhostClient,
       gqlEndpointUrl: nhostGraphQLUrl,
       child: MaterialApp(
         title: 'Nhost.io Simple Flutter GraphQL Example',
@@ -58,8 +58,7 @@ class SimpleGqlExample extends StatelessWidget {
                 return Text('Loading…');
               }
 
-              final todosList =
-                  result.data['todos'] as List<dynamic>;
+              final todosList = result.data['todos'] as List<dynamic>;
               if (todosList.isEmpty) {
                 return Text('No todos yet!');
               }
