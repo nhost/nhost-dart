@@ -104,6 +104,20 @@ void main() {
       // The state change should result in a second build
       expect(buildCount, 2);
     });
+
+    testWidgets('.of() returns null if no authentication found',
+        (tester) async {
+      // We set it to a value to ensure it gets changed
+      Auth auth = MockAuth();
+      await tester.pumpWidget(
+        Builder(builder: (context) {
+          auth = NhostAuthProvider.of(context);
+          return SizedBox();
+        }),
+      );
+
+      expect(auth, isNull);
+    });
   });
 }
 
