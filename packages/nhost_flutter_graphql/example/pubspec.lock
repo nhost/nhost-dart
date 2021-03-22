@@ -187,14 +187,14 @@ packages:
       name: nhost_flutter_auth
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.0.0"
+    version: "0.2.0"
   nhost_flutter_graphql:
     dependency: "direct main"
     description:
       path: ".."
       relative: true
     source: path
-    version: "0.0.0"
+    version: "0.1.0"
   nhost_graphql_adapter:
     dependency: transitive
     description:
