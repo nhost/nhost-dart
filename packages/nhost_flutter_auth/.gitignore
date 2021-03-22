@@ -1,3 +1,6 @@
+# pubspec.lock is not committed for library packages
+pubspec.lock
+
 # Miscellaneous
 *.class
 *.log
