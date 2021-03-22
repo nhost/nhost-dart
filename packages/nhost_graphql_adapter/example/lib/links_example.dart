@@ -36,7 +36,7 @@ void main() async {
   // going to build links that execute on requests before this point is reached.
   final nhostLink = combinedLinkForNhost(
     graphQLEndpoint,
-    nhostClient,
+    nhostClient.auth,
   );
 
   // Create a new custom link that logs all requests and responses passing
