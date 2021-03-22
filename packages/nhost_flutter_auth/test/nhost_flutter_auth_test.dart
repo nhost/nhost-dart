@@ -43,8 +43,7 @@ void main() {
 
       await tester.pumpWidget(
         NhostAuthProvider(
-          auth:
-              MockAuth(), // Brand new MockAuth(), which triggers a change
+          auth: MockAuth(), // Brand new MockAuth(), which triggers a change
           child: countingBuilder,
         ),
       );
@@ -72,8 +71,7 @@ void main() {
 
       await tester.pumpWidget(
         NhostAuthProvider(
-          auth:
-              consistentAuth, // Brand new MockAuth(), which triggers a change
+          auth: consistentAuth, // Brand new MockAuth(), which triggers a change
           child: countingBuilder,
         ),
       );
@@ -100,7 +98,7 @@ void main() {
       expect(buildCount, 1);
 
       // Emulate an auth state change, then pump the engine
-      mockAuth.triggerStateChange(authenticated: true);
+      mockAuth.triggerStateChange();
       await tester.pump();
 
       // The state change should result in a second build
@@ -110,20 +108,19 @@ void main() {
 }
 
 class MockAuth extends Mock implements Auth {
-  final List<AuthStateChangedCallback> _authChangedFunctions = [];
+  final List<TokenChangedCallback> _tokenChangedCallbacks = [];
 
   @override
-  UnsubscribeDelegate addAuthStateChangedCallback(
-      AuthStateChangedCallback callback) {
-    _authChangedFunctions.add(callback);
+  UnsubscribeDelegate addTokenChangedCallback(TokenChangedCallback callback) {
+    _tokenChangedCallbacks.add(callback);
     return () {
-      _authChangedFunctions.removeWhere((element) => element == callback);
+      _tokenChangedCallbacks.removeWhere((element) => element == callback);
     };
   }
 
-  void triggerStateChange({@required bool authenticated}) {
-    for (final authChangedFunction in _authChangedFunctions) {
-      authChangedFunction(authenticated: authenticated);
+  void triggerStateChange() {
+    for (final callback in _tokenChangedCallbacks) {
+      callback();
     }
   }
 }
