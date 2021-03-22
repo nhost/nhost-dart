@@ -1,9 +1,10 @@
 name: nhost_flutter_graphql
-description: A new Flutter package project.
-version: 0.0.1
-author:
-homepage:
-publish_to: none
+description: >
+  Provides GraphQL clients to your Flutter application, automatically configured
+  to work with Nhost
+version: 0.0.0
+homepage: https://nhost.io
+repository: https://github.com/nhost/nhost-flutter-graphql
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
