@@ -1,6 +1,6 @@
 import 'package:graphql/client.dart';
 import 'package:http/http.dart' as http;
-import 'package:nhost_dart_sdk/client.dart';
+import 'package:nhost_sdk/client.dart';
 
 import 'links.dart';
 
