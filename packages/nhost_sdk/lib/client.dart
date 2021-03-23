@@ -94,7 +94,6 @@ class NhostClient {
   final bool _autoLogin;
 
   /// The HTTP client used by this client's services.
-  @nonVirtual
   http.Client get httpClient => _httpClient ??= http.Client();
   http.Client _httpClient;
 
