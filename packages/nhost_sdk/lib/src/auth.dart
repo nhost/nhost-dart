@@ -401,7 +401,7 @@ class Auth {
 
   //#endregion
 
-  //#region MFA
+  //#region Multi-factor authentication
 
   /// Generates an MFA (Multi-Factor Authentication) QR-code.
   ///
@@ -488,6 +488,8 @@ class Auth {
   }
 
   //#endregion
+
+  //#region Token and session Handling
 
   Future<void> refreshSession() async {
     return _refreshToken();
@@ -602,6 +604,8 @@ class Auth {
     _onTokenChanged();
     _onAuthStateChanged(authenticated: false);
   }
+
+  //#endregion
 }
 
 enum AuthenticationState {
