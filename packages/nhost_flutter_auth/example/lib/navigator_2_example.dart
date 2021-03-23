@@ -14,7 +14,7 @@ library simple_auth_example;
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:nhost_dart_sdk/client.dart';
+import 'package:nhost_sdk/client.dart';
 import 'package:nhost_flutter_auth/nhost_flutter_auth.dart';
 import 'package:nhost_flutter_auth_sample/simple_auth_example.dart';
 import 'package:provider/provider.dart';
