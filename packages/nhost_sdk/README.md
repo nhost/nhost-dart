@@ -1,6 +1,6 @@
 # Nhost Dart SDK
 
-[![Pub](https://img.shields.io/pub/v/nhost_dart_sdk)](https://pub.dev/packages/nhost_dart_sdk)
+[![Pub](https://img.shields.io/pub/v/nhost_sdk)](https://pub.dev/packages/nhost_sdk)
 [![Github test](https://github.com/shyndman/nhost-dart-sdk/workflows/test/badge.svg)](https://github.com/shyndman/nhost-dart-sdk/actions?query=test)
 
 [Nhost](https://nhost.io) authentication and file storage API clients for Dart
@@ -17,7 +17,7 @@ Includes support for:
 
 ### Sample
 ```dart
-import 'package:nhost_dart_sdk/client.dart';
+import 'package:nhost_sdk/client.dart';
 
 void main() async {
   final nhost = NhostClient(baseUrl: 'https://backend-5e69d1d7.nhost.app');
@@ -43,7 +43,7 @@ void main() async {
 
 ```yaml
 dependencies:
-  nhost_dart_sdk: ^1.0.0
+  nhost_sdk: ^1.0.0
 ```
 
 ### Flutter 1.22.4 support
@@ -52,7 +52,7 @@ For people affected by the Metal jank issues on iOS.
 
 ```yaml
 dependencies:
-  nhost_dart_sdk: ^0.9.0
+  nhost_sdk: ^0.9.0
 ```
 
 ## 🔥 More Dart & Flutter packages from Nhost

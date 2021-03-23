@@ -1,5 +1,5 @@
 import 'package:jwt_decoder/jwt_decoder.dart';
-import 'package:nhost_dart_sdk/src/http.dart';
+import 'package:nhost_sdk/src/http.dart';
 
 import 'api/auth_api_types.dart';
 

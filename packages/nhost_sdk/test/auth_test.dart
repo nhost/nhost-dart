@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:otp/otp.dart';
 import 'package:fake_async/fake_async.dart';
-import 'package:nhost_dart_sdk/client.dart';
+import 'package:nhost_sdk/client.dart';
 import 'package:nock/nock.dart';
 import 'package:test/test.dart';
 

@@ -1,3 +1,8 @@
+## 0.7.0
+
+- Add method to help with completing OAuth provider logins
+- Change package name to nhost_sdk
+
 ## 0.6.0
 
 - Fix bug in authentication state change. I missed a boolean.
