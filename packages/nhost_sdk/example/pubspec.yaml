@@ -1,4 +1,4 @@
-name: nhost_dart_sdk_example
+name: nhost_sdk_example
 description:
 private: true
 
@@ -9,5 +9,5 @@ dependencies:
   mime: ^1.0.0
 
   # Nhost packages
-  nhost_dart_sdk:
+  nhost_sdk:
     path: ../

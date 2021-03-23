@@ -1,4 +1,4 @@
-import 'package:nhost_dart_sdk/src/debug.dart';
+import 'package:nhost_sdk/src/debug.dart';
 import 'package:test/test.dart';
 
 void main() {

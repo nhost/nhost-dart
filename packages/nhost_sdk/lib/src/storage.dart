@@ -1,7 +1,7 @@
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:meta/meta.dart';
-import 'package:nhost_dart_sdk/src/api/storage_api_types.dart';
+import 'package:nhost_sdk/src/api/storage_api_types.dart';
 
 import 'api/api_client.dart';
 import 'foundation/uri.dart';

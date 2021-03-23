@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:meta/meta.dart';
-import 'package:nhost_dart_sdk/src/debug.dart';
+import 'package:nhost_sdk/src/debug.dart';
 
 import '../foundation/uri.dart';
 import '../http.dart';

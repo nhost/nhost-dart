@@ -1,4 +1,4 @@
-library nhost_dart_sdk;
+library nhost_sdk;
 
 import 'package:http/http.dart' as http;
 import 'package:meta/meta.dart';

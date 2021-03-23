@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:nhost_dart_sdk/client.dart';
+import 'package:nhost_sdk/client.dart';
 
 import 'auth_example.dart';
 
