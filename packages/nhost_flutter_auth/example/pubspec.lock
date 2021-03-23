@@ -95,13 +95,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.0"
-  nhost_dart_sdk:
-    dependency: transitive
-    description:
-      name: nhost_dart_sdk
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.6.0"
   nhost_flutter_auth:
     dependency: "direct main"
     description:
@@ -109,6 +102,13 @@ packages:
       relative: true
     source: path
     version: "0.2.0"
+  nhost_sdk:
+    dependency: transitive
+    description:
+      name: nhost_sdk
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.7.0"
   path:
     dependency: transitive
     description:
