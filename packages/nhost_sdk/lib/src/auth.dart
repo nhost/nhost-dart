@@ -27,6 +27,10 @@ typedef UnsubscribeDelegate = void Function();
 /// Identifies the refresh token in the [Auth]'s [AuthStore] instance.
 const refreshTokenClientStorageKey = 'nhostRefreshToken';
 
+/// The query parameter name for the refresh token provided during OAuth
+/// provider-based logins.
+const refreshTokenQueryParamName = 'refresh_token';
+
 /// The Nhost Auth service.
 ///
 /// Supports user authentication, MFA, OTP, and various user management
@@ -485,6 +489,27 @@ class Auth {
 
     await setSession(res);
     return AuthResponse(session: res, user: res.user);
+  }
+
+  //#endregion
+
+  //#region OAuth providers
+
+  /// Completes an OAuth provider login, given the Nhost OAuth provider's
+  /// [redirectUrl].
+  ///
+  /// For more information on redirect URLs, see
+  /// https://docs.nhost.io/auth/oauth-providers.
+  ///
+  /// For an example of this in practice, see the `nhost_flutter_auth` package's
+  /// OAuthProvider example.
+  Future<void> completeOAuthProviderLogin(Uri redirectUrl) async {
+    final queryArgs = redirectUrl.queryParameters;
+    if (!queryArgs.containsKey(redirectUrl)) {
+      return;
+    }
+
+    await _refreshToken(queryArgs[refreshTokenQueryParamName]);
   }
 
   //#endregion
