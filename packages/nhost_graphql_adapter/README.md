@@ -30,6 +30,6 @@ dependencies:
 
 ## 🔥 More Dart & Flutter packages from Nhost
 
-* [nhost_dart_sdk](https://pub.dev/publishers/nhost/nhost_dart_sdk)
+* [nhost_sdk](https://pub.dev/publishers/nhost/nhost_sdk)
 * [nhost_flutter_graphql](https://pub.dev/publishers/nhost/nhost_flutter_graphql)
 * [nhost_flutter_auth](https://pub.dev/publishers/nhost/nhost_flutter_auth)
