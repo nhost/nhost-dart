@@ -1,3 +1,7 @@
+## 0.6.0
+
+- Update to latest nhost_sdk
+
 ## 0.5.0
 
 - Update to latest nhost_sdk
