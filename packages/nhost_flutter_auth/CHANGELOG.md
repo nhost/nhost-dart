@@ -1,3 +1,7 @@
+## 0.3.0
+
+- Update to latest nhost_sdk
+
 ## 0.2.0
 
 - NhostAuthProvider.of no longer fails if authentication information cannot be
