@@ -1,0 +1,5 @@
+{
+  // When using Melos, it's important that pub doesn't overwrite the changes
+  // that it makes to .packages
+  "dart.runPubGetOnPubspecChanges": false
+}
