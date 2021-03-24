@@ -29,7 +29,7 @@ class ApiClient {
   /// required, as is the case with proxies.
   ApiClient(
     this.baseUrl, {
-    @required http.Client httpClient,
+    required http.Client httpClient,
   }) : _httpClient = httpClient;
 
   final Uri baseUrl;
@@ -55,10 +55,10 @@ class ApiClient {
   /// to [responseDeserializer]. If [responseDeserializer] is `null`, `null`
   /// will be returned.
   /// {@endtemplate}
-  Future<ResponseType> delete<ResponseType>(
+  Future<ResponseType?> delete<ResponseType>(
     String path, {
-    Map<String, String> headers,
-    JsonDeserializer<ResponseType> responseDeserializer,
+    Map<String, String>? headers,
+    JsonDeserializer<ResponseType>? responseDeserializer,
   }) async {
     return send<ResponseType>(
       _newApiRequest('delete', path),
@@ -75,8 +75,8 @@ class ApiClient {
   Future<ResponseType> get<ResponseType>(
     String path, {
     Map<String, String> query = const {},
-    Map<String, String> headers,
-    JsonDeserializer<ResponseType> responseDeserializer,
+    Map<String, String>? headers,
+    JsonDeserializer<ResponseType>? responseDeserializer,
   }) async {
     return send<ResponseType>(
       _newApiRequest('get', path, query: query),
@@ -92,10 +92,10 @@ class ApiClient {
   /// {@macro nhost.api.ApiClient.responseDeserializer}
   Future<ResponseType> post<ResponseType>(
     String path, {
-    Map<String, String> query = const {},
-    Map<String, dynamic> data,
-    Map<String, String> headers,
-    JsonDeserializer<ResponseType> responseDeserializer,
+    Map<String, String?> query = const {},
+    Map<String, dynamic>? data,
+    Map<String, String>? headers,
+    JsonDeserializer<ResponseType>? responseDeserializer,
   }) async {
     final request = _newApiRequest('post', path, query: query);
     if (data != null) {
@@ -120,9 +120,9 @@ class ApiClient {
   /// {@macro nhost.api.ApiClient.responseDeserializer}
   Future<ResponseType> postMultipart<ResponseType>(
     String path, {
-    Iterable<http.MultipartFile> files,
-    Map<String, String> headers,
-    JsonDeserializer<ResponseType> responseDeserializer,
+    required Iterable<http.MultipartFile> files,
+    Map<String, String>? headers,
+    JsonDeserializer<ResponseType>? responseDeserializer,
   }) async {
     return send<ResponseType>(
       http.MultipartRequest('post', baseUrl.extend(path))..files.addAll(files),
@@ -138,8 +138,8 @@ class ApiClient {
   /// {@macro nhost.api.ApiClient.responseDeserializer}
   Future<ResponseType> put<ResponseType>(
     String path, {
-    Map<String, String> headers,
-    JsonDeserializer<ResponseType> responseDeserializer,
+    Map<String, String>? headers,
+    JsonDeserializer<ResponseType>? responseDeserializer,
   }) async {
     return send<ResponseType>(
       _newApiRequest('put', path),
@@ -151,8 +151,8 @@ class ApiClient {
   @protected
   Future<ResponseType> send<ResponseType>(
     http.BaseRequest request, {
-    Map<String, String> headers,
-    JsonDeserializer<ResponseType> responseDeserializer,
+    Map<String, String>? headers,
+    JsonDeserializer<ResponseType>? responseDeserializer,
   }) async {
     if (headers != null) {
       request.headers.addAll(headers);
@@ -202,14 +202,14 @@ class ApiClient {
     } else if (responseDeserializer != null) {
       return responseDeserializer(responseBody);
     } else {
-      return null;
+      return null as ResponseType;
     }
   }
 
   http.Request _newApiRequest(
     String method,
     String path, {
-    Map<String, String> query,
+    Map<String, String?>? query,
   }) =>
       http.Request(method, baseUrl.extend(path, queryParameters: query))
         ..encoding = utf8;

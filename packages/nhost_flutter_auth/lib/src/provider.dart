@@ -5,11 +5,10 @@ import 'package:nhost_sdk/nhost_sdk.dart';
 /// Exposes Nhost authentication information to its subtree.
 class NhostAuthProvider extends InheritedNotifier<_AuthNotifier> {
   NhostAuthProvider({
-    Key key,
-    @required Auth auth,
-    @required Widget child,
-  })  : assert(auth != null),
-        super(
+    Key? key,
+    required Auth auth,
+    required Widget child,
+  }) : super(
           key: key,
           notifier: _AuthNotifier(auth),
           child: child,
@@ -20,7 +19,7 @@ class NhostAuthProvider extends InheritedNotifier<_AuthNotifier> {
     return oldWidget.notifier != notifier;
   }
 
-  static Auth of(BuildContext context) {
+  static Auth? of(BuildContext context) {
     return context
         .dependOnInheritedWidgetOfExactType<NhostAuthProvider>()
         ?.notifier
@@ -35,7 +34,7 @@ class _AuthNotifier extends ChangeNotifier implements ValueListenable<Auth> {
   }
 
   final Auth _auth;
-  UnsubscribeDelegate _unsubscribeAuthListener;
+  late UnsubscribeDelegate _unsubscribeAuthListener;
 
   @override
   void dispose() {

@@ -28,9 +28,9 @@ import 'links.dart';
 GraphQLClient createNhostGraphQLClient(
   String nhostGqlEndpointUrl,
   NhostClient nhostClient, {
-  GraphQLCache gqlCache,
-  Map<String, String> defaultHeaders,
-  http.Client httpClientOverride,
+  GraphQLCache? gqlCache,
+  Map<String, String>? defaultHeaders,
+  http.Client? httpClientOverride,
 }) {
   return createNhostGraphQLClientForAuth(
     nhostGqlEndpointUrl,
@@ -54,9 +54,9 @@ GraphQLClient createNhostGraphQLClient(
 GraphQLClient createNhostGraphQLClientForAuth(
   String nhostGqlEndpointUrl,
   Auth nhostAuth, {
-  GraphQLCache gqlCache,
-  Map<String, String> defaultHeaders,
-  http.Client httpClientOverride,
+  GraphQLCache? gqlCache,
+  Map<String, String>? defaultHeaders,
+  http.Client? httpClientOverride,
 }) {
   return GraphQLClient(
     link: combinedLinkForNhost(

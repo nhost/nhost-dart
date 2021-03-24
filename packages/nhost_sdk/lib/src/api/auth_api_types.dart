@@ -8,9 +8,9 @@ import 'core_codec.dart';
 /// details of which can be found on specific methods of [Auth].
 class AuthResponse {
   AuthResponse({this.session, this.user, this.mfa});
-  final Session session;
-  final User user;
-  final MultiFactorAuthenticationInfo mfa;
+  final Session? session;
+  final User? user;
+  final MultiFactorAuthenticationInfo? mfa;
 
   static AuthResponse fromJson(dynamic json) {
     if (json['mfa'] == true) {
@@ -33,32 +33,32 @@ class Session {
   });
 
   /// The raw JSON web token
-  final String jwtToken;
+  final String? jwtToken;
 
   /// The amount of time that [jwtToken] will remain valid.
   ///
   /// Measured from the time of issue.
-  final Duration jwtExpiresIn;
+  final Duration? jwtExpiresIn;
 
   /// A token that can be used to periodically refresh the session.
   ///
   /// This value is managed automatically by the [Auth] class.
-  final String refreshToken;
+  final String? refreshToken;
 
   /// The user associated with this session.
-  final User user;
+  final User? user;
 
   /// Multi-factor Authentication information.
   ///
   /// This field will be `null` if MFA is not enabled for the user.
-  final MultiFactorAuthenticationInfo mfa;
+  final MultiFactorAuthenticationInfo? mfa;
 
   Session copyWith({
-    String jwtToken,
-    Duration jwtExpiresIn,
-    String refreshToken,
-    User user,
-    MultiFactorAuthenticationInfo mfa,
+    String? jwtToken,
+    Duration? jwtExpiresIn,
+    String? refreshToken,
+    User? user,
+    MultiFactorAuthenticationInfo? mfa,
   }) {
     return Session(
       jwtToken: jwtToken ?? this.jwtToken,
@@ -82,8 +82,8 @@ class Session {
   static Session fromJson(dynamic json) {
     return Session(
       jwtToken: json['jwt_token'] as String,
-      jwtExpiresIn: durationFromMs(json['jwt_expires_in'] as int),
-      refreshToken: json['refresh_token'] as String,
+      jwtExpiresIn: durationFromMs(json['jwt_expires_in'] as int?)!,
+      refreshToken: json['refresh_token'] as String?,
       user: json['user'] == null
           ? null
           : User.fromJson(json['user'] as Map<String, dynamic>),
@@ -98,8 +98,8 @@ class Session {
 /// Describes an Nhost user.
 class User {
   User({
-    this.id,
-    this.email,
+    required this.id,
+    required this.email,
     this.displayName,
     this.avatarUrl,
   });
@@ -111,16 +111,16 @@ class User {
   final String email;
 
   /// The user's preferred name for display, or `null` if none
-  final String displayName;
+  final String? displayName;
 
   /// A [Uri] locating the user's avatar image, or `null` if none.
-  final Uri avatarUrl;
+  final Uri? avatarUrl;
 
   static User fromJson(dynamic json) {
     return User(
       id: json['id'] as String,
       email: json['email'] as String,
-      displayName: json['display_name'] as String,
+      displayName: json['display_name'] as String?,
       avatarUrl: json['avatar_url'] == null
           ? null
           : Uri.parse(json['avatar_url'] as String),
@@ -139,7 +139,7 @@ class User {
 
 /// Describes information required to perform an MFA login.
 class MultiFactorAuthenticationInfo {
-  MultiFactorAuthenticationInfo({this.ticket});
+  MultiFactorAuthenticationInfo({required this.ticket});
 
   /// Ticket string to be provided to [Auth.completeMfaLogin] in order to continue the
   /// login process
@@ -159,7 +159,7 @@ class MultiFactorAuthenticationInfo {
 }
 
 class MultiFactorAuthResponse {
-  MultiFactorAuthResponse({this.qrCode, this.otpSecret});
+  MultiFactorAuthResponse({required this.qrCode, required this.otpSecret});
 
   /// Data URI of the QR code that describes a user's OTP generation.
   ///
@@ -172,7 +172,7 @@ class MultiFactorAuthResponse {
 
   static MultiFactorAuthResponse fromJson(dynamic json) {
     return MultiFactorAuthResponse(
-      qrCode: uriDataFromString(json['image_url'] as String),
+      qrCode: uriDataFromString(json['image_url'] as String)!,
       otpSecret: json['otp_secret'] as String,
     );
   }

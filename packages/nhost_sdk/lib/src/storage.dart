@@ -1,6 +1,5 @@
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
-import 'package:meta/meta.dart';
 import 'package:nhost_sdk/src/api/storage_api_types.dart';
 
 import 'api/api_client.dart';
@@ -20,15 +19,15 @@ class Storage {
   final UserSession _session;
 
   Storage({
-    @required String baseUrl,
-    @required UserSession session,
-    http.Client httpClient,
-  })  : _apiClient = ApiClient(Uri.parse(baseUrl), httpClient: httpClient),
+    required String baseUrl,
+    required UserSession session,
+    required http.Client httpClient,
+  })   : _apiClient = ApiClient(Uri.parse(baseUrl), httpClient: httpClient),
         _session = session;
 
   /// Releases the object's resources.
   void close() {
-    _apiClient?.close();
+    _apiClient.close();
   }
 
   /// Uploads a file to the backend from a list of bytes.
@@ -39,8 +38,8 @@ class Storage {
   ///
   /// https://docs.nhost.io/storage/api-reference#upload-file
   Future<FileMetadata> uploadBytes({
-    @required String filePath,
-    @required List<int> bytes,
+    required String filePath,
+    required List<int> bytes,
     String contentType = applicationOctetStreamType,
   }) async {
     final file = http.MultipartFile.fromBytes(
@@ -66,8 +65,8 @@ class Storage {
   ///
   /// https://docs.nhost.io/storage/api-reference#upload-file
   Future<FileMetadata> uploadString({
-    @required String filePath,
-    @required String string,
+    required String filePath,
+    required String string,
     String contentType = applicationOctetStreamType,
   }) async {
     final file = http.MultipartFile.fromString(
@@ -97,7 +96,7 @@ class Storage {
   /// {@endtemplate}
   ///
   /// The file is returned as an HTTP response, populated with the headers.
-  Future<http.Response> downloadFile(String filePath, {String fileToken}) {
+  Future<http.Response> downloadFile(String filePath, {String? fileToken}) {
     return _apiClient.get<http.Response>(
       _objectPath(filePath),
       query: {
@@ -115,10 +114,10 @@ class Storage {
   /// quality of the returned image.
   ///
   /// The file is returned as an HTTP response, populated with the headers.
-  Future<http.Response> downloadImage(
+  Future<http.Response?> downloadImage(
     String filePath, {
-    String fileToken,
-    ImageTransformConfig imageTransformConfig,
+    String? fileToken,
+    ImageTransformConfig? imageTransformConfig,
   }) {
     return _apiClient.get<http.Response>(
       _objectPath(filePath),
@@ -151,7 +150,7 @@ class Storage {
   /// https://docs.nhost.io/storage/api-reference#get-file-metadata
   Future<FileMetadata> getFileMetadata(
     String filePath, {
-    String fileToken,
+    String? fileToken,
   }) async {
     assert(!filePath.endsWith('/'),
         '$filePath is not a valid file path, because it ends with a /');

@@ -9,13 +9,13 @@ const _hasuraClaimsNamespace = 'https://hasura.io/jwt/claims';
 class UserSession {
   UserSession();
 
-  Session _session;
-  Map<String, dynamic> _hasuraClaims;
+  Session? _session;
+  Map<String, dynamic>? _hasuraClaims;
 
-  String get jwt => session?.jwtToken;
+  String? get jwt => session?.jwtToken;
 
-  String getClaim(String claim) =>
-      _hasuraClaims != null ? _hasuraClaims[claim] : null;
+  String? getClaim(String claim) =>
+      _hasuraClaims != null ? _hasuraClaims![claim] : null;
 
   Map<String, String> get authenticationHeaders {
     return {
@@ -28,12 +28,16 @@ class UserSession {
     _hasuraClaims = null;
   }
 
-  Session get session => _session;
-  set session(Session session) {
-    _session = session;
+  Session? get session => _session;
+  set session(Session? session) {
+    if (session != null && session.jwtToken != null) {
+      _session = session;
 
-    final decodedToken = JwtDecoder.decode(session.jwtToken);
-    _hasuraClaims =
-        decodedToken[_hasuraClaimsNamespace] as Map<String, dynamic>;
+      final decodedToken = JwtDecoder.decode(session.jwtToken!);
+      _hasuraClaims =
+          decodedToken[_hasuraClaimsNamespace] as Map<String, dynamic>?;
+    } else {
+      clear();
+    }
   }
 }

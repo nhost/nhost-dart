@@ -19,7 +19,7 @@ typedef TokenChangedCallback = void Function();
 /// Signature for callbacks that respond to authentication changes.
 ///
 /// Registered via [Auth.addTokenChangedCallback].
-typedef AuthStateChangedCallback = void Function({bool authenticated});
+typedef AuthStateChangedCallback = void Function({required bool authenticated});
 
 /// Signature for functions that remove their associated callback when called.
 typedef UnsubscribeDelegate = void Function();
@@ -50,14 +50,14 @@ class Auth {
   ///
   /// {@macro nhost.api.NhostClient.httpClientOverride}
   Auth({
-    @required String baseUrl,
-    UserSession session,
-    AuthStore authStore,
-    String refreshToken,
-    bool autoLogin = true,
-    Duration refreshInterval,
-    http.Client httpClient,
-  })  : _apiClient = ApiClient(Uri.parse(baseUrl), httpClient: httpClient),
+    required String baseUrl,
+    required UserSession session,
+    required AuthStore authStore,
+    String? refreshToken,
+    bool? autoLogin = true,
+    Duration? refreshInterval,
+    required http.Client httpClient,
+  })   : _apiClient = ApiClient(Uri.parse(baseUrl), httpClient: httpClient),
         _session = session,
         _authStore = authStore,
         _tokenRefreshInterval = refreshInterval,
@@ -75,14 +75,14 @@ class Auth {
 
   final ApiClient _apiClient;
   final AuthStore _authStore;
-  final UserSession _session;
+  final UserSession /*?*/ _session;
   final bool _autoLogin;
 
   final List<TokenChangedCallback> _tokenChangedFunctions = [];
   final List<AuthStateChangedCallback> _authChangedFunctions = [];
 
-  Timer _tokenRefreshTimer;
-  final Duration _tokenRefreshInterval;
+  Timer? _tokenRefreshTimer;
+  final Duration? _tokenRefreshInterval;
   bool _refreshTokenLock;
 
   /// `true` if the service is currently loading.
@@ -93,8 +93,8 @@ class Auth {
   bool _loading;
 
   /// Currently logged-in user, or `null` if unauthenticated.
-  User get currentUser => _currentUser;
-  User _currentUser;
+  User? get currentUser => _currentUser;
+  User? _currentUser;
 
   /// Whether a user is logged in, not logged in, or if a login is in process.
   AuthenticationState get authenticationState {
@@ -106,15 +106,15 @@ class Auth {
 
   /// The currently logged-in user's Json Web Token, or `null` if
   /// unauthenticated.
-  String get jwt => _session.jwt;
+  String? get jwt => _session.jwt;
 
-  String getClaim(String jwtClaim) => _session.getClaim(jwtClaim);
+  String? getClaim(String jwtClaim) => _session.getClaim(jwtClaim);
 
   /// Releases the service's resources.
   ///
   /// The service's methods cannot be called past this point.
   void close() {
-    _apiClient?.close();
+    _apiClient.close();
     _tokenRefreshTimer?.cancel();
   }
 
@@ -148,7 +148,7 @@ class Auth {
     }
   }
 
-  void _onAuthStateChanged({@required bool authenticated}) {
+  void _onAuthStateChanged({required bool authenticated}) {
     for (final authChangedFunction in _authChangedFunctions) {
       authChangedFunction(authenticated: authenticated);
     }
@@ -166,13 +166,13 @@ class Auth {
   ///
   /// https://docs.nhost.io/auth/api-reference#register-user
   Future<AuthResponse> register({
-    String email,
-    String password,
+    required String email,
+    required String password,
     // TODO(shyndman): This can only be a couple things...why don't we just
     // specify them instead of using a map.
-    Map<String, String> userData,
-    String defaultRole,
-    List<String> allowedRoles,
+    Map<String, String>? userData,
+    String? defaultRole,
+    List<String>? allowedRoles,
   }) async {
     userData ??= const {};
     final includeRoleOptions = defaultRole != null ||
@@ -184,7 +184,7 @@ class Auth {
           }
         : null;
 
-    Session sessionRes;
+    Session? sessionRes;
     try {
       sessionRes = await _apiClient.post(
         '/register',
@@ -201,7 +201,7 @@ class Auth {
       rethrow;
     }
 
-    if (sessionRes.jwtToken != null) {
+    if (sessionRes!.jwtToken != null) {
       await setSession(sessionRes);
       return AuthResponse(session: sessionRes, user: sessionRes.user);
     } else {
@@ -221,10 +221,10 @@ class Auth {
   ///
   /// https://docs.nhost.io/auth/api-reference#login-user
   Future<AuthResponse> login({
-    @required String email,
-    @required String password,
+    required String email,
+    required String password,
   }) async {
-    AuthResponse loginRes;
+    AuthResponse? loginRes;
     try {
       loginRes = await _apiClient.post(
         '/login',
@@ -240,11 +240,11 @@ class Auth {
       rethrow;
     }
 
-    if (loginRes.mfa != null) {
+    if (loginRes!.mfa != null) {
       return loginRes;
     }
 
-    await setSession(loginRes.session);
+    await setSession(loginRes.session!);
     return loginRes;
   }
 
@@ -327,7 +327,7 @@ class Auth {
   /// Throws an [ApiException] if requesting the email change fails.
   ///
   /// TODO(shyndman): Link to API docs (currently missing)
-  Future<void> requestEmailChange({@required String newEmail}) async {
+  Future<void> requestEmailChange({required String newEmail}) async {
     await _apiClient.post(
       '/change-email/request',
       data: {
@@ -348,7 +348,7 @@ class Auth {
   /// EMAIL VERIFICATION" turned ON.
   ///
   /// TODO(shyndman): Link to API docs (currently missing)
-  Future<void> confirmEmailChange({@required String ticket}) async {
+  Future<void> confirmEmailChange({required String ticket}) async {
     await _apiClient.post('/change-email/change', data: {
       'ticket': ticket,
     });
@@ -360,8 +360,8 @@ class Auth {
   ///
   /// https://docs.nhost.io/auth/api-reference#change-password
   Future<void> changePassword({
-    @required String oldPassword,
-    @required String newPassword,
+    required String oldPassword,
+    required String newPassword,
   }) async {
     await _apiClient.post(
       '/change-password',
@@ -381,7 +381,7 @@ class Auth {
   /// Throws an [ApiException] if requesting the password change fails.
   ///
   /// https://docs.nhost.io/auth/api-reference#request-to-change-password
-  Future<void> requestPasswordChange({@required String email}) async {
+  Future<void> requestPasswordChange({required String email}) async {
     await _apiClient.post('/change-password/request', data: {
       'email': email,
     });
@@ -396,8 +396,8 @@ class Auth {
   ///
   /// https://docs.nhost.io/auth/api-reference#change-password-with-ticket
   Future<void> confirmPasswordChange({
-    @required String newPassword,
-    @required String ticket,
+    required String newPassword,
+    required String? ticket,
   }) async {
     await _apiClient.post('/change-password/change', data: {
       'new_password': newPassword,
@@ -477,8 +477,8 @@ class Auth {
   ///
   /// https://docs.nhost.io/auth/api-reference#totp-login
   Future<AuthResponse> completeMfaLogin({
-    @required String code,
-    @required String ticket,
+    required String code,
+    required String ticket,
   }) async {
     final res = await _apiClient.post<Session>(
       '/mfa/totp',
@@ -522,7 +522,7 @@ class Auth {
     return _refreshToken();
   }
 
-  Future<void> _refreshToken([String initRefreshToken]) async {
+  Future<void> _refreshToken([String? initRefreshToken]) async {
     final refreshToken = initRefreshToken ??
         await _authStore.getString(refreshTokenClientStorageKey);
 
@@ -532,7 +532,7 @@ class Auth {
       return;
     }
 
-    Session res;
+    Session? res;
     try {
       // Set lock to avoid two refresh token request being sent at the same time
       // with the same token. If so, the last request will fail because the
@@ -565,7 +565,7 @@ class Auth {
       _refreshTokenLock = false;
     }
 
-    await setSession(res);
+    await setSession(res!);
   }
 
   /// Updates the [Auth] to begin identifying as the user described by
@@ -582,22 +582,24 @@ class Auth {
 
     if (session.refreshToken != null) {
       await _authStore.setString(
-          refreshTokenClientStorageKey, session.refreshToken);
+          refreshTokenClientStorageKey, session.refreshToken!);
     }
 
     final jwtExpiresIn = session.jwtExpiresIn;
     final refreshTimerDuration = _tokenRefreshInterval ??
-        max(
-          Duration(seconds: 30),
-          jwtExpiresIn - Duration(seconds: 45),
-        ); // 45 sec before expiry
+        (jwtExpiresIn != null
+            ? max(
+                Duration(seconds: 30),
+                jwtExpiresIn - Duration(seconds: 45),
+              )
+            : Duration(seconds: 30)); // 45 sec before expiry
 
     // Ensure that the previous timer is cancelled.
     _tokenRefreshTimer?.cancel();
 
     // Start refresh token interval after logging in.
     _tokenRefreshTimer = Timer.periodic(refreshTimerDuration, (_) {
-      return _refreshToken();
+      _refreshToken();
     });
 
     // We're ready!
@@ -616,7 +618,7 @@ class Auth {
   /// conditions.
   Future<void> _clearSession() async {
     if (_tokenRefreshTimer != null) {
-      _tokenRefreshTimer.cancel();
+      _tokenRefreshTimer!.cancel();
       _tokenRefreshTimer = null;
     }
 

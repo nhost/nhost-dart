@@ -16,8 +16,8 @@ void main() async {
   final gqlAdmin = GqlAdminTestHelper(apiUrl: apiUrl, gqlUrl: gqlUrl);
 
   NhostClient client;
-  Storage storage;
-  User user;
+  late Storage storage;
+  User? user;
 
   setUpAll(() => initializeHttpFixturesForSuite('storage'));
 
@@ -40,7 +40,8 @@ void main() async {
 
     // Clear out all user files from previous run
     try {
-      final userFiles = await storage.getDirectoryMetadata('/user/${user.id}/');
+      final userFiles =
+          await storage.getDirectoryMetadata('/user/${user!.id}/');
       for (final file in userFiles) {
         await storage.delete(file.key);
       }
@@ -50,7 +51,7 @@ void main() async {
   /// Returns [path] inside the user's storage directory.
   ///
   /// Note that this is configurable on the backend via storage rules.
-  String pathInUserDirectory(path) => joinSubpath('user/${user.id}', path);
+  String pathInUserDirectory(path) => joinSubpath('user/${user!.id}', path);
 
   group('creating files', () {
     test('defaults to uploading application/octet-stream', () async {
@@ -78,7 +79,7 @@ void main() async {
       // Verify stored media
       final storedFile = await storage.downloadFile(filePath);
       final storedFileMimeType =
-          ContentType.parse(storedFile.headers[HttpHeaders.contentTypeHeader]);
+          ContentType.parse(storedFile.headers[HttpHeaders.contentTypeHeader]!);
       expect(storedFileMimeType.mimeType, 'text/plain');
       expect(storedFile.body, fileContents);
     });
@@ -119,14 +120,14 @@ void main() async {
       // Verify stored media
       final storedFile = await storage.downloadFile(filePath);
       final storedFileMimeType =
-          ContentType.parse(storedFile.headers[HttpHeaders.contentTypeHeader]);
+          ContentType.parse(storedFile.headers[HttpHeaders.contentTypeHeader]!);
       expect(storedFileMimeType.mimeType, 'text/html');
       expect(storedFile.bodyBytes, fileContents);
     });
   });
 
   group('stored files', () {
-    String filePath;
+    late String filePath;
     final fileContents = '* { margin: 0; }';
     final fileContentType = 'text/css';
 

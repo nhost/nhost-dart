@@ -6,6 +6,8 @@ environment:
   sdk: '>=2.10.0 <3.0.0'
 
 dependencies:
-  graphql: ^4.0.0
+  graphql: ^5.0.0-nullsafety.1
+
+  # Nhost packages
   nhost_graphql_adapter:
     path: ../

@@ -18,8 +18,8 @@ void main() async {
   final unrecordedGqlAdmin = GqlAdminTestHelper(apiUrl: apiUrl, gqlUrl: gqlUrl);
 
   // This admin client has its traffic recorded for playback
-  GqlAdminTestHelper gqlAdmin;
-  Auth auth;
+  late GqlAdminTestHelper gqlAdmin;
+  late Auth auth;
 
   setUpAll(() => initializeHttpFixturesForSuite('auth'));
 
@@ -196,12 +196,13 @@ void main() async {
   });
 
   group('authentication state callbacks', () {
-    bool authStateVar;
-    UnsubscribeDelegate unsubscribe;
+    bool? authStateVar = false;
+    late UnsubscribeDelegate unsubscribe;
 
     setUp(() {
       authStateVar = false;
-      unsubscribe = auth.addAuthStateChangedCallback(({authenticated}) {
+      unsubscribe =
+          auth.addAuthStateChangedCallback(({required authenticated}) {
         authStateVar = authenticated;
       });
     });
@@ -257,7 +258,7 @@ void main() async {
 
     Interceptor runTokenRefreshSequence(
       NhostClient client, {
-      Duration elapseTimeBy,
+      Duration? elapseTimeBy,
     }) {
       final interceptor = nock('$apiUrl/auth').get('/token/refresh')
         ..query({
@@ -279,7 +280,7 @@ void main() async {
         auth.setSession(mockFirstSession);
 
         // Move time forward by the refresh interval
-        async.elapse(elapseTimeBy);
+        async.elapse(elapseTimeBy!);
         async.flushMicrotasks();
       });
 
@@ -345,7 +346,7 @@ void main() async {
 
       await auth.requestEmailChange(newEmail: expectedNewEmail);
       await auth.confirmEmailChange(
-        ticket: await gqlAdmin.getChangeTicketForUser(auth.currentUser.id),
+        ticket: await gqlAdmin.getChangeTicketForUser(auth.currentUser!.id),
       );
       await auth.logout();
 
@@ -395,10 +396,10 @@ void main() async {
 
     test('should be able to change password via request and confirmation',
         () async {
-      await auth.requestPasswordChange(email: auth.currentUser.email);
+      await auth.requestPasswordChange(email: auth.currentUser!.email);
       await auth.confirmPasswordChange(
         newPassword: 'requested-new-password-1',
-        ticket: await gqlAdmin.getChangeTicketForUser(auth.currentUser.id),
+        ticket: await gqlAdmin.getChangeTicketForUser(auth.currentUser!.id),
       );
       await auth.logout();
 
@@ -439,7 +440,7 @@ void main() async {
 
       final secondFactorAuthResult = await auth.completeMfaLogin(
         code: totpFromSecret(otpSecret),
-        ticket: firstFactorAuthResult.mfa.ticket,
+        ticket: firstFactorAuthResult.mfa!.ticket,
       );
       expect(secondFactorAuthResult.user, isNotNull);
       expect(auth.authenticationState, AuthenticationState.loggedIn);

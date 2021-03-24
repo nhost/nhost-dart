@@ -5,7 +5,7 @@
 /// this file to a client.
 class FileMetadata {
   FileMetadata({
-    this.key,
+    required this.key,
     this.acceptRanges,
     this.lastModified,
     this.contentLength,
@@ -18,22 +18,22 @@ class FileMetadata {
   final String key;
 
   /// accept-ranges value for HTTP response header
-  final String acceptRanges;
+  final String? acceptRanges;
 
   /// last-modified  value for HTTP response header
-  final DateTime lastModified;
+  final DateTime? lastModified;
 
   /// content-length value for HTTP response header
-  final int contentLength;
+  final int? contentLength;
 
   /// etag value for HTTP response header
-  final String eTag;
+  final String? eTag;
 
   /// content-type value for HTTP response header
-  final String contentType;
+  final String? contentType;
 
   /// Additional Nhost-specific metadata associated with this file
-  final FileNhostMetadata nhostMetadata;
+  final FileNhostMetadata? nhostMetadata;
 
   static FileMetadata fromJson(dynamic json) {
     return FileMetadata(
@@ -41,13 +41,13 @@ class FileMetadata {
       // order to work around inconsistencies in the backend's naming of this
       // field, we duplicate.
       key: (json['Key'] ?? json['key']) as String,
-      acceptRanges: json['AcceptRanges'] as String,
+      acceptRanges: json['AcceptRanges'] as String?,
       lastModified: json['LastModified'] == null
           ? null
           : DateTime.parse(json['LastModified'] as String),
-      contentLength: json['ContentLength'] as int,
-      eTag: json['ETag'] as String,
-      contentType: json['ContentType'] as String,
+      contentLength: json['ContentLength'] as int?,
+      eTag: json['ETag'] as String?,
+      contentType: json['ContentType'] as String?,
       nhostMetadata: json['Metadata'] == null
           ? null
           : FileNhostMetadata.fromJson(
@@ -74,11 +74,11 @@ class FileNhostMetadata {
   FileNhostMetadata({this.token});
 
   /// TODO(shyndman): What is this?
-  final String token;
+  final String? token;
 
   static FileNhostMetadata fromJson(dynamic json) {
     return FileNhostMetadata(
-      token: json['token'] as String,
+      token: json['token'] as String?,
     );
   }
 
@@ -97,9 +97,9 @@ class ImageTransformConfig {
     this.quality,
   });
 
-  final int width;
-  final int height;
-  final int quality;
+  final int? width;
+  final int? height;
+  final int? quality;
 
   Map<String, String> toQueryArguments() {
     return {

@@ -38,7 +38,7 @@ void main() {
       );
       final firstClient = tester
           .firstWidget<GraphQLProvider>(find.byType(GraphQLProvider))
-          .client
+          .client!
           .value;
 
       await tester.pumpWidget(
@@ -50,7 +50,7 @@ void main() {
       );
       final secondClient = tester
           .firstWidget<GraphQLProvider>(find.byType(GraphQLProvider))
-          .client
+          .client!
           .value;
 
       expect(firstClient, secondClient);
@@ -69,7 +69,7 @@ void main() {
       );
       final firstClient = tester
           .firstWidget<GraphQLProvider>(find.byType(GraphQLProvider))
-          .client
+          .client!
           .value;
 
       await tester.pumpWidget(
@@ -81,7 +81,7 @@ void main() {
       );
       final secondClient = tester
           .firstWidget<GraphQLProvider>(find.byType(GraphQLProvider))
-          .client
+          .client!
           .value;
 
       expect(firstClient, isNot(secondClient));
@@ -99,7 +99,7 @@ void main() {
       );
       final firstClient = tester
           .firstWidget<GraphQLProvider>(find.byType(GraphQLProvider))
-          .client
+          .client!
           .value;
 
       await tester.pumpWidget(
@@ -111,7 +111,7 @@ void main() {
       );
       final secondClient = tester
           .firstWidget<GraphQLProvider>(find.byType(GraphQLProvider))
-          .client
+          .client!
           .value;
 
       expect(firstClient, isNot(secondClient));
@@ -152,7 +152,7 @@ void main() {
       );
       final firstClient = tester
           .firstWidget<GraphQLProvider>(find.byType(GraphQLProvider))
-          .client
+          .client!
           .value;
 
       await tester.pumpWidget(
@@ -166,7 +166,7 @@ void main() {
       );
       final secondClient = tester
           .firstWidget<GraphQLProvider>(find.byType(GraphQLProvider))
-          .client
+          .client!
           .value;
 
       expect(firstClient, secondClient);
@@ -186,7 +186,7 @@ void main() {
       );
       final firstClient = tester
           .firstWidget<GraphQLProvider>(find.byType(GraphQLProvider))
-          .client
+          .client!
           .value;
 
       await tester.pumpWidget(
@@ -200,7 +200,7 @@ void main() {
       );
       final secondClient = tester
           .firstWidget<GraphQLProvider>(find.byType(GraphQLProvider))
-          .client
+          .client!
           .value;
 
       expect(firstClient, isNot(secondClient));
@@ -229,7 +229,7 @@ void main() {
 class MockNhostClient extends Mock implements NhostClient {
   @override
   Auth get auth => _auth ??= MockAuth();
-  Auth _auth;
+  Auth? _auth;
 }
 
 class MockAuth extends Mock implements Auth {

@@ -2,14 +2,11 @@ import 'package:path/path.dart';
 
 final _urlPathContext = Context(style: Style.url);
 
-/// Joins together path fragments
-final _joinPath = _urlPathContext.join;
-
 /// Joins together path fragments so that [basePath] and [subPath] are both
 /// represented in the resulting string, even if [subPath] starts with a `/`.
 String joinSubpath(String basePath, String subPath) {
   final suffix = subPath.endsWith('/') ? '/' : '';
-  final path = _urlPathContext.normalize(_joinPath(
+  final path = _urlPathContext.normalize(_urlPathContext.join(
     basePath,
     subPath.startsWith('/') ? '.$subPath' : subPath,
   ));
@@ -21,7 +18,7 @@ extension UriExt on Uri {
   /// [queryParameters].
   Uri extend(
     String subPath, {
-    Map<String, String> queryParameters,
+    Map<String, String?>? queryParameters,
   }) {
     final query = {
       if (queryParameters != null && queryParameters.isNotEmpty)

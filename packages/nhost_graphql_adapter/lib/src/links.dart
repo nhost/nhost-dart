@@ -19,8 +19,8 @@ import 'package:nhost_sdk/nhost_sdk.dart';
 Link combinedLinkForNhost(
   String nhostGqlEndpointUrl,
   Auth nhostAuth, {
-  Map<String, String> defaultHeaders,
-  http.Client httpClientOverride,
+  Map<String, String>? defaultHeaders,
+  http.Client? httpClientOverride,
 }) {
   return Link.split(
     (request) => request.isSubscription,
@@ -47,8 +47,8 @@ Link combinedLinkForNhost(
 Link httpLinkForNhost(
   String nhostGqlEndpointUrl,
   Auth nhostAuth, {
-  http.Client httpClientOverride,
-  Map<String, String> defaultHeaders = const {},
+  http.Client? httpClientOverride,
+  Map<String, String>? defaultHeaders = const {},
 }) {
   final unauthenticatedLink = HttpLink(
     nhostGqlEndpointUrl,
@@ -74,8 +74,8 @@ Link httpLinkForNhost(
 Link webSocketLinkForNhost(
   String nhostGqlEndpointUrl,
   Auth nhostAuth, {
-  Map<String, String> defaultHeaders = const {},
-  @visibleForTesting WebSocketConnect testWebSocketConnectOverride,
+  Map<String, String>? defaultHeaders = const {},
+  @visibleForTesting WebSocketConnect? testWebSocketConnectOverride,
   @visibleForTesting
       Duration testInactivityTimeout = const Duration(seconds: 1),
 }) {

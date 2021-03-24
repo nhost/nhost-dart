@@ -10,7 +10,7 @@ void main() {
         (tester) async {
       final mockAuth = MockAuth();
 
-      Auth actualAuth;
+      Auth? actualAuth;
       await tester.pumpWidget(
         NhostAuthProvider(
           auth: mockAuth,
@@ -108,7 +108,7 @@ void main() {
     testWidgets('.of() returns null if no authentication found',
         (tester) async {
       // We set it to a value to ensure it gets changed
-      Auth auth = MockAuth();
+      Auth? auth = MockAuth();
       await tester.pumpWidget(
         Builder(builder: (context) {
           auth = NhostAuthProvider.of(context);

@@ -1,13 +1,13 @@
 import 'package:graphql/client.dart';
 import 'package:http/http.dart' as http;
-import 'package:nhost_sdk/nhost_sdk.dart';
 import 'package:nhost_graphql_adapter/nhost_graphql_adapter.dart';
+import 'package:nhost_sdk/nhost_sdk.dart';
 
 class GqlAdminTestHelper {
   GqlAdminTestHelper({
-    String apiUrl,
-    String gqlUrl,
-    http.Client httpClientOverride,
+    required String apiUrl,
+    required String gqlUrl,
+    http.Client? httpClientOverride,
   }) {
     // Used to verify, retrieve, or clear backend state.
     client = createNhostGraphQLClient(
@@ -20,7 +20,7 @@ class GqlAdminTestHelper {
     );
   }
 
-  GraphQLClient client;
+  late GraphQLClient client;
 
   /// Clears the users table in the test backend
   Future<QueryResult> clearUsers() async {
@@ -36,7 +36,7 @@ class GqlAdminTestHelper {
         },
       ),
     );
-    return result.data['users'].first['account']['ticket'];
+    return result.data!['users'].first['account']['ticket'];
   }
 }
 

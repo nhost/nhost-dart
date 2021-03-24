@@ -28,7 +28,7 @@ final testSession = Session(
 );
 
 void main() {
-  NhostClient nhost;
+  late NhostClient nhost;
   setUp(() {
     nhost = NhostClient(baseUrl: backendEndpoint);
   });
@@ -114,7 +114,7 @@ void main() {
   });
 
   group('web socket links', () {
-    MockWebSocket mockWebSocket;
+    late MockWebSocket mockWebSocket;
 
     setUp(() {
       mockWebSocket = MockWebSocket.connect();

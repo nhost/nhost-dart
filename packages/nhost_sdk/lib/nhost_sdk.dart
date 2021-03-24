@@ -1,7 +1,6 @@
 library nhost_sdk;
 
 import 'package:http/http.dart' as http;
-import 'package:meta/meta.dart';
 
 import 'src/auth.dart';
 import 'src/auth_store.dart';
@@ -65,18 +64,13 @@ class NhostClient {
   /// configuration and debugging.
   /// {@endtemplate}
   NhostClient({
-    @required this.baseUrl,
-    AuthStore authStore,
-    String refreshToken,
-    bool autoLogin = true,
-    Duration tokenRefreshInterval,
-    http.Client httpClientOverride,
-  })  : assert(
-            baseUrl != null,
-            'Please specify a baseURL. More information at '
-            // TODO(shyndman): URL for Dart required
-            'https://docs.nhost.io/libraries/nhost-dart-sdk#setup'),
-        _session = UserSession(),
+    required this.baseUrl,
+    AuthStore? authStore,
+    String? refreshToken,
+    bool? autoLogin = true,
+    Duration? tokenRefreshInterval,
+    http.Client? httpClientOverride,
+  })  : _session = UserSession(),
         _authStore = authStore ?? InMemoryAuthStore(),
         _refreshToken = refreshToken,
         _autoLogin = autoLogin ?? true,
@@ -88,14 +82,14 @@ class NhostClient {
 
   /// Persists authentication information between restarts of the app.
   final AuthStore _authStore;
-  final String _refreshToken;
-  final Duration _refreshInterval;
+  final String? _refreshToken;
+  final Duration? _refreshInterval;
   final UserSession _session;
   final bool _autoLogin;
 
   /// The HTTP client used by this client's services.
   http.Client get httpClient => _httpClient ??= http.Client();
-  http.Client _httpClient;
+  http.Client? _httpClient;
 
   /// The Nhost authentication service.
   Auth get auth => _auth ??= Auth(
@@ -107,7 +101,7 @@ class NhostClient {
         session: _session,
         httpClient: httpClient,
       );
-  Auth _auth;
+  Auth? _auth;
 
   /// The Nhost file storage service.
   Storage get storage => _storage ??= Storage(
@@ -115,7 +109,7 @@ class NhostClient {
         httpClient: httpClient,
         session: _session,
       );
-  Storage _storage;
+  Storage? _storage;
 
   /// Releases the resources used by this client.
   void close() {

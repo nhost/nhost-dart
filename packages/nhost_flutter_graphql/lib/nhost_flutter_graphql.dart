@@ -2,12 +2,11 @@ library nhost_flutter_graphql;
 
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:nhost_sdk/nhost_sdk.dart';
 import 'package:nhost_flutter_auth/nhost_flutter_auth.dart';
 import 'package:nhost_graphql_adapter/nhost_graphql_adapter.dart';
+import 'package:nhost_sdk/nhost_sdk.dart';
 
 export 'package:nhost_sdk/nhost_sdk.dart';
-export 'package:nhost_flutter_auth/nhost_flutter_auth.dart';
 
 /// Provides a [GraphQLProvider] to this widget's subtree, configured to access
 /// Nhost.
@@ -23,33 +22,31 @@ export 'package:nhost_flutter_auth/nhost_flutter_auth.dart';
 /// update the GraphQL client accordingly.
 class NhostGraphQLProvider extends StatefulWidget {
   NhostGraphQLProvider({
-    Key key,
-    @required this.gqlEndpointUrl,
+    Key? key,
+    required this.gqlEndpointUrl,
     this.nhostClient,
     this.child,
-  })  : assert(gqlEndpointUrl != null),
-        super(key: key);
+  }) : super(key: key);
 
   /// The Nhost GQL URL
   final String gqlEndpointUrl;
 
   /// Optional. If not provided, the necessary information will be requested
   /// from ancestry using [NhostAuth.of(BuildContext)]
-  final NhostClient nhostClient;
-  final Widget child;
+  final NhostClient? nhostClient;
+  final Widget? child;
 
   @override
   _NhostGraphQLProviderState createState() => _NhostGraphQLProviderState();
 }
 
 class _NhostGraphQLProviderState extends State<NhostGraphQLProvider> {
-  ValueNotifier<GraphQLClient> clientNotifier;
-  Auth _lastAuth;
+  ValueNotifier<GraphQLClient>? clientNotifier;
+  Auth? _lastAuth;
 
   @override
   void initState() {
     super.initState();
-    clientNotifier = ValueNotifier(null);
   }
 
   Auth get currentNhostAuth {
@@ -70,7 +67,7 @@ class _NhostGraphQLProviderState extends State<NhostGraphQLProvider> {
       return true;
     }());
 
-    return auth;
+    return auth!;
   }
 
   @override
@@ -95,17 +92,22 @@ class _NhostGraphQLProviderState extends State<NhostGraphQLProvider> {
   void _rebuildGraphQLClientIfNecessary({bool force = false}) {
     final currentAuth = currentNhostAuth;
     if (force || _lastAuth != currentAuth) {
-      clientNotifier.value = createNhostGraphQLClientForAuth(
+      final client = createNhostGraphQLClientForAuth(
         widget.gqlEndpointUrl,
         _lastAuth = currentAuth,
       );
+      if (clientNotifier == null) {
+        clientNotifier = ValueNotifier(client);
+      } else {
+        clientNotifier!.value = client;
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return GraphQLProvider(
-      client: clientNotifier,
+      client: clientNotifier as ValueNotifier<GraphQLClient>,
       child: widget.child,
     );
   }
