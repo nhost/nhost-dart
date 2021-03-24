@@ -2,11 +2,11 @@ library nhost_flutter_graphql;
 
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:nhost_dart_sdk/client.dart';
+import 'package:nhost_sdk/client.dart';
 import 'package:nhost_flutter_auth/nhost_flutter_auth.dart';
 import 'package:nhost_graphql_adapter/nhost_graphql_adapter.dart';
 
-export 'package:nhost_dart_sdk/client.dart';
+export 'package:nhost_sdk/client.dart';
 export 'package:nhost_flutter_auth/nhost_flutter_auth.dart';
 
 /// Provides a [GraphQLProvider] to this widget's subtree, configured to access
