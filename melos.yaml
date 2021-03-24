@@ -1,6 +1,9 @@
 name: nhost-dart
 packages:
   - packages/**
+scripts:
+  test:
+    run: melos exec -- 'if [ -d test ]; then flutter test --reporter=expanded; fi'
 ide:
   intellij:
     false
