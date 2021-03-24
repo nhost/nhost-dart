@@ -14,10 +14,11 @@ library simple_auth_example;
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:nhost_sdk/nhost_sdk.dart';
 import 'package:nhost_flutter_auth/nhost_flutter_auth.dart';
-import 'package:nhost_flutter_auth_sample/simple_auth_example.dart';
+import 'package:nhost_sdk/nhost_sdk.dart';
 import 'package:provider/provider.dart';
+
+import 'simple_auth_example.dart';
 
 /// Fill in this value with the backend URL found on your Nhost project page.
 const nhostApiUrl = 'https://backend-5e69d1d7.nhost.app';
