@@ -4,7 +4,7 @@ description: >
   up protected resources, and react to logins and logouts.
 version: 0.3.0
 homepage: https://nhost.io
-repository: https://github.com/nhost/nhost-flutter-auth
+repository: https://github.com/nhost/nhost-dart/packages/nhost_flutter_auth
 
 environment:
   sdk: ">=2.7.0 <3.0.0"

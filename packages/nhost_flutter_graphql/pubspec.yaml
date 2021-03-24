@@ -4,7 +4,7 @@ description: >
   to work with Nhost
 version: 0.0.0
 homepage: https://nhost.io
-repository: https://github.com/nhost/nhost-flutter-graphql
+repository: https://github.com/nhost/nhost-dart/packages/nhost_flutter_graphql
 
 environment:
   sdk: ">=2.7.0 <3.0.0"

@@ -2,7 +2,7 @@ name: nhost_sdk
 version: 0.7.0
 description: Nhost authentication and file storage/retrieval APIs for the Dart language
 homepage: https://nhost.io
-repository: https://github.com/nhost-dart-sdk
+repository: https://github.com/nhost-dart/packages/nhost_sdk
 
 environment:
   sdk: '>=2.7.0 <3.0.0'
