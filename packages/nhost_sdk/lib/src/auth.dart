@@ -68,6 +68,8 @@ class Auth {
       _refreshToken(refreshToken);
     } else if (refreshToken != null) {
       _authStore.setString(refreshTokenClientStorageKey, refreshToken);
+    } else {
+      _loading = false;
     }
   }
 
@@ -526,6 +528,7 @@ class Auth {
 
     // If there's no refresh token, we're all done.
     if (refreshToken == null) {
+      _loading = false;
       return;
     }
 
