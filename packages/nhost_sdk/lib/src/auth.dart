@@ -507,7 +507,7 @@ class Auth {
   /// OAuthProvider example.
   Future<void> completeOAuthProviderLogin(Uri redirectUrl) async {
     final queryArgs = redirectUrl.queryParameters;
-    if (!queryArgs.containsKey(redirectUrl)) {
+    if (!queryArgs.containsKey(refreshTokenQueryParamName)) {
       return;
     }
 
