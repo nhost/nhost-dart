@@ -25,6 +25,7 @@ jobs:
     needs: get-package-names
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         # We test against several Flutter versions
         flutter_channel: [stable, beta]
@@ -77,6 +78,7 @@ jobs:
     runs-on: ubuntu-latest
 
     strategy:
+      fail-fast: false
       matrix:
         # We test against several Flutter versions
         flutter_channel: [stable, beta]
