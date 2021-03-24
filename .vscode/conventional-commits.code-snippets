@@ -1,0 +1,12 @@
+{
+	"Conventional Commits": {
+		"prefix": "ccommit",
+		"scope": "git-commit",
+		"body": [
+			"${1|build,ci,chore,docs,feat,fix,perf,refactor,revert,test|}${2:(optional scope)}: ${3:description}",
+			"",
+			"${4:body (optional)}",
+		],
+		"description": "Conventional Commits"
+	}
+}
