@@ -3,7 +3,7 @@
 library simple_auth_example;
 
 import 'package:flutter/material.dart';
-import 'package:nhost_sdk/client.dart';
+import 'package:nhost_sdk/nhost_sdk.dart';
 import 'package:nhost_flutter_auth/nhost_flutter_auth.dart';
 
 /// Fill in this value with the backend URL found on your Nhost project page.

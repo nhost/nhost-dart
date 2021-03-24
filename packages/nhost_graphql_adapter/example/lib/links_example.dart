@@ -5,7 +5,7 @@ library links_example;
 import 'dart:async';
 
 import 'package:graphql/client.dart';
-import 'package:nhost_sdk/client.dart';
+import 'package:nhost_sdk/nhost_sdk.dart';
 import 'package:nhost_graphql_adapter/nhost_graphql_adapter.dart';
 
 import 'todo_example.dart';

@@ -3,7 +3,7 @@
 library simple_example;
 
 import 'package:graphql/client.dart';
-import 'package:nhost_sdk/client.dart';
+import 'package:nhost_sdk/nhost_sdk.dart';
 import 'package:nhost_graphql_adapter/nhost_graphql_adapter.dart';
 
 // Both of these URLs can be found in your nhost.io console, under the project

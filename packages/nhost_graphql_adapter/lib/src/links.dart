@@ -1,7 +1,7 @@
 import 'package:graphql/client.dart';
 import 'package:http/http.dart' as http;
 import 'package:meta/meta.dart';
-import 'package:nhost_sdk/client.dart';
+import 'package:nhost_sdk/nhost_sdk.dart';
 
 /// Creates a link that that configures automatically based on [nhostClient]'s
 /// authentication state, and will select HTTP or Web Socket transport as

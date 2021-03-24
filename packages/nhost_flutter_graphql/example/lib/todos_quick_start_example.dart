@@ -7,7 +7,7 @@ library todos_quick_start_example;
 
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:nhost_sdk/client.dart';
+import 'package:nhost_sdk/nhost_sdk.dart';
 import 'package:nhost_flutter_graphql/nhost_flutter_graphql.dart';
 
 // Fill in these values with the Backend and GraphQL URL found on your Nhost
