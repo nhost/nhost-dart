@@ -1,5 +1,10 @@
 {
   // When using Melos, it's important that pub doesn't overwrite the changes
   // that it makes to .packages
-  "dart.runPubGetOnPubspecChanges": false
+  "dart.runPubGetOnPubspecChanges": false,
+
+  "files.associations": {
+    // Override language mode for our workflow template
+    "*.yaml.template": "yaml",
+  }
 }
