@@ -3,7 +3,7 @@
 		"prefix": "ccommit",
 		"scope": "git-commit",
 		"body": [
-			"${1|build,ci,chore,docs,feat,fix,perf,refactor,revert,test|}${2:(optional scope)}: ${3:description}",
+			"${1|build,ci,chore,docs,feat,fix,perf,refactor,revert,test|}${2|(nhost_sdk),(nhost_graphql_adapter),(nhost_flutter_auth),(nhost_flutter_graphql),(repo)|}: ${3:description}",
 			"",
 			"${4:body (optional)}",
 		],
