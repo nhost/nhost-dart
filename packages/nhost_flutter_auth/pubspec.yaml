@@ -2,7 +2,7 @@ name: nhost_flutter_auth
 description: >
   Provides Nhost authentication state to your Flutter app, making it easy to set
   up protected resources, and react to logins and logouts.
-version: 0.3.0+1
+version: 0.3.0+2
 homepage: https://nhost.io
 repository: https://github.com/nhost/nhost-dart/packages/nhost_flutter_auth
 
@@ -15,7 +15,7 @@ dependencies:
     sdk: flutter
 
   # Nhost packages
-  nhost_sdk: ^0.8.0
+  nhost_sdk: ^0.8.0+1
 dev_dependencies:
   flutter_test:
     sdk: flutter

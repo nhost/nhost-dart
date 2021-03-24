@@ -1,3 +1,11 @@
+## 0.8.0+1
+
+ - **FIX**: Correct the refresh token lookup during OAuth login.
+ - **FIX**: Ensure that loading is set to false when no token is provided.
+ - **CI**: Set up repository-wide continuous tests.
+ - **CHORE**: Publish packages.
+ - **CHORE**: publish packages.
+
 ## 0.8.0
 
 > Note: This release has breaking changes.

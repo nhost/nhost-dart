@@ -1,5 +1,5 @@
 name: nhost_sdk
-version: 0.8.0
+version: 0.8.0+1
 description: Nhost authentication and file storage/retrieval APIs for the Dart language
 homepage: https://nhost.io
 repository: https://github.com/nhost-dart/packages/nhost_sdk
@@ -26,4 +26,4 @@ dev_dependencies:
   test: ^1.6.0
 
   # Nhost packages
-  nhost_graphql_adapter: ^0.6.0+1
+  nhost_graphql_adapter: ^0.6.0+2
