@@ -111,8 +111,10 @@ jobs:
       run: melos bootstrap
 
     # Run analysis on all packages
-    - name: Analyze Dart
-      run: melos exec -- flutter analyze --congratulate
+    - name: Analyze package
+      run: melos --depends-on=nhost_sdk exec -- flutter analyze --congratulate
+    - name: Analyze dependent packages
+      run: melos --scope=nhost_sdk exec -- flutter analyze --congratulate
 
     # Run tests for package in question
     - name: Execute tests
