@@ -1,3 +1,10 @@
+## 0.3.0+2
+
+ - **FIX**: Fix the OAuth provider login flow example.
+ - **CI**: Set up repository-wide continuous tests.
+ - **CHORE**: Change name of example package.
+ - **CHORE**: Publish packages.
+
 ## 0.3.0+1
 
  - **DOCS**: Update links in example READMEs to point to monorepo.
