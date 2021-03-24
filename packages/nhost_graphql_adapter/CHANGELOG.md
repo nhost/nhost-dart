@@ -1,3 +1,9 @@
+## 0.6.0+1
+
+ - **DOCS**: Update links in example READMEs to point to monorepo.
+ - **CHORE**: Update imports to point to new nhost_sdk top-level.
+ - **CHORE**: Update package repository URLs.
+
 ## 0.6.0
 
 - Update to latest nhost_sdk
