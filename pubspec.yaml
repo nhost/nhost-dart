@@ -1,3 +1,4 @@
+# This is used to establish tool dependencies, and is never published.
 name: nhost_dart
 publish_to: none
 homepage: https://nhost.io
