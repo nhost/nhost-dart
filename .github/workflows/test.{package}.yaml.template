@@ -112,9 +112,9 @@ jobs:
 
     # Run analysis on all packages
     - name: Analyze package
-      run: melos --depends-on=#{dart_package_name} exec -- flutter analyze --congratulate
+      run: melos --scope=#{dart_package_name} exec -- flutter analyze --no-pub --congratulate
     - name: Analyze dependent packages
-      run: melos --scope=#{dart_package_name} exec -- flutter analyze --congratulate
+      run: melos --depends-on=#{dart_package_name} exec -- flutter analyze --no-pub --congratulate
 
     # Run tests for package in question
     - name: Execute tests
