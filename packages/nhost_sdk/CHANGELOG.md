@@ -1,3 +1,11 @@
+## 0.8.0
+
+> Note: This release has breaking changes.
+
+ - **DOCS**: Update links in example READMEs to point to monorepo.
+ - **CHORE**: Update package repository URLs.
+ - **BREAKING** **REFACTOR**: Change name of public file to mirror package name.
+
 ## 0.7.0
 
 - Add method to help with completing OAuth provider logins
