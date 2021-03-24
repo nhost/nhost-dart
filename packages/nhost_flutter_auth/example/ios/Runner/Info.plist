@@ -6,15 +6,20 @@
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
-		<!-- Your scheme -->
-		<key>CFBundleURLSchemes</key>
-		<array>
-			<string>nhost</string>
-		</array>
-		<!-- Optional URL to distinguish your app from others
-		     in case of conflicting scheme name -->
-		<key>CFBundleURLName</key>
-		<string>open.example.auth.app</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>nhost-example</string>
+			</array>
+			<key>CFBundleURLName</key>
+			<string>oauth.login.success</string>
+		</dict>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>nhost-example</string>
+			</array>
+			<key>CFBundleURLName</key>
+			<string>oauth.login.failure</string>
 		</dict>
 	</array>
 

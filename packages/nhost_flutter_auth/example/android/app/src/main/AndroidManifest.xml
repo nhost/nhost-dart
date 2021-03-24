@@ -15,7 +15,12 @@
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="nhost" android:host="open.example.auth.app" />
+                <data android:scheme="nhost-example" android:host="oauth.login.success" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="nhost-example" android:host="oauth.login.failure" />
             </intent-filter>
 
             <!-- Specifies an Android theme to apply to this Activity as soon as
