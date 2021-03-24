@@ -1,7 +1,7 @@
 # Nhost GraphQL Support for Flutter
 
 [![Pub](https://img.shields.io/pub/v/nhost_flutter_graphql)](https://pub.dev/packages/nhost_flutter_graphql)
-[![Github test](https://github.com/shyndman/nhost-flutter-graphql/workflows/test/badge.svg)](https://github.com/shyndman/nhost-flutter-graphql/actions?query=test)
+[![nhost_flutter_graphql tests](https://github.com/shyndman/nhost-dart/actions/workflows/test.nhost_flutter_graphql.yaml/badge.svg)](https://github.com/shyndman/nhost-dart/actions/workflows/test.nhost_flutter_graphql.yaml)
 
 Provides [Nhost](https://nhost.io) authentication state to your Flutter app,
 making it easy to set up protected resources, and react to logins and logouts.

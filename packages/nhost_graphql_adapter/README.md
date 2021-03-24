@@ -1,7 +1,7 @@
 # Nhost GraphQL Adapter for Dart
 
 [![Pub](https://img.shields.io/pub/v/nhost_graphql_adapter)](https://pub.dev/packages/nhost_graphql_adapter)
-[![Github test](https://github.com/shyndman/nhost-dart-graphql-adapter/workflows/test/badge.svg)](https://github.com/shyndman/nhost-dart-graphql-adapter/actions?query=test)
+[![nhost_graphql_adapter tests](https://github.com/shyndman/nhost-dart/actions/workflows/test.nhost_graphql_adapter.yaml/badge.svg)](https://github.com/shyndman/nhost-dart/actions/workflows/test.nhost_graphql_adapter.yaml)
 
 [Nhost](https://nhost.io) integration with the
 [graphql](https://pub.dev/packages/graphql) package.

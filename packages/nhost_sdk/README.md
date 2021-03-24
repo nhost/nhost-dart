@@ -1,7 +1,7 @@
 # Nhost Dart SDK
 
 [![Pub](https://img.shields.io/pub/v/nhost_sdk)](https://pub.dev/packages/nhost_sdk)
-[![Github test](https://github.com/shyndman/nhost-dart-sdk/workflows/test/badge.svg)](https://github.com/shyndman/nhost-dart-sdk/actions?query=test)
+[![nhost_sdk tests](https://github.com/shyndman/nhost-dart/actions/workflows/test.nhost_sdk.yaml/badge.svg)](https://github.com/shyndman/nhost-dart/actions/workflows/test.nhost_sdk.yaml)
 
 [Nhost](https://nhost.io) authentication and file storage API clients for Dart
 and Flutter.
