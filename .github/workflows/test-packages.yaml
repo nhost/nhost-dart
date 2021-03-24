@@ -1,0 +1,123 @@
+name: Test Packages
+on:
+  push:
+  pull_request:
+  schedule:
+  # Run the quality job at 4am every day
+  - cron: '0 4 * * *'
+
+jobs:
+  # Gets the names of the packages in this repo, and outputs them as JSON to
+  # the json_names output.
+  get-package-names:
+    runs-on: ubuntu-latest
+    outputs:
+      json_names: ${{ steps.list-directories.outputs.names }}
+    steps:
+    - uses: actions/checkout@v2
+    - id: list-directories
+      run: |
+        json_names="[`ls packages --width=0 --quote-name --format=commas`]"
+        echo "::set-output name=names::$json_names"
+
+  # Ensure that the package meets a suitably high pub.dev score
+  score-package-quality:
+    needs: get-package-names
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        package-name: ${{ fromJSON(needs.get-package-names.outputs.json_names) }}
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: axel-op/dart-package-analyzer@v3
+      # Set an id for the current step, so we can reference it later
+      id: analysis
+      with:
+        githubToken: ${{ secrets.GITHUB_TOKEN }}
+        relativePath: packages/${{ matrix.package-name }}
+
+    - name: Require analysis (near) perfection
+      env:
+        # "analysis" is the id set above
+        TOTAL: ${{ steps.analysis.outputs.total }}
+        TOTAL_MAX: ${{ steps.analysis.outputs.total_max }}
+        CONVENTIONS: ${{ steps.analysis.outputs.conventions }}
+        CONVENTIONS_MAX: ${{ steps.analysis.outputs.conventions_max }}
+        PLATFORMS: ${{ steps.analysis.outputs.platforms }}
+        PLATFORMS_MAX: ${{ steps.analysis.outputs.platforms_max }}
+      run: |
+        PERCENTAGE=$((( $TOTAL - $CONVENTIONS - $PLATFORMS ) * 100 / ( $TOTAL_MAX - $CONVENTIONS_MAX - $PLATFORMS_MAX )))
+        if (( $PERCENTAGE < 100 ))
+        then
+          echo Score to low.
+          exit 1
+        fi
+
+  # Analyzes, checks formatting, and tests the packages
+  test-package:
+    needs: get-package-names
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        # We test against several Flutter versions
+        flutter_channel: [stable, beta]
+
+        # Test each package individually
+        package-name: ${{ fromJSON(needs.get-package-names.outputs.json_names) }}
+
+    steps:
+    - uses: actions/checkout@v2
+
+    # Setup the flutter environment
+    - name: Setup Dart/Flutter (specific version)
+      uses: subosito/flutter-action@v1.4.0
+      if: matrix.flutter_version != null
+      with:
+        flutter-version: ${{ matrix.flutter_version }}
+
+    # Setup the flutter environment
+    - name: Setup Dart/Flutter (specific channel)
+      uses: subosito/flutter-action@v1.4.0
+      if: matrix.flutter_version == null
+      with:
+        channel: ${{ matrix.flutter_channel }}
+
+    # Get dependent binaries
+    - name: Install tools
+      run: |
+        echo "$HOME/.pub-cache/bin" >> $GITHUB_PATH
+        pub global activate junitreport
+        pub global activate melos
+
+    - name: Bootstrap packages
+      run: melos bootstrap
+
+    # Run analysis on all packages
+    - name: Analyze Dart
+      run: melos exec -- flutter analyze --congratulate
+
+    # Run tests for package in question
+    - name: Execute tests
+      run: >
+        melos exec --scope=${{ matrix.package-name }} --
+        'flutter test --no-pub --machine --coverage | tojunit
+        > test-results.xml'
+
+    # Report test results
+    - name: Report test results
+      uses: mikepenz/action-junit-report@v2
+      with:
+        check_name: Results
+        report_paths: "packages/${{ matrix.package-name }}/test-results.xml"
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+
+    # Report coverage
+    - name: Report coverage
+      uses: zgosalvez/github-actions-report-lcov@v1
+      with:
+        artifact-name: ${{ matrix.package-name}} Coverage
+        coverage-files: packages/${{ matrix.package-name }}/coverage/*.info
+        working-directory: packages/${{ matrix.package-name }}/
+        github-token: ${{ secrets.GITHUB_TOKEN }}
