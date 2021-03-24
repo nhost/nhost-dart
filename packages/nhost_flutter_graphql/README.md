@@ -3,8 +3,22 @@
 [![Pub](https://img.shields.io/pub/v/nhost_flutter_graphql)](https://pub.dev/packages/nhost_flutter_graphql)
 [![nhost_flutter_graphql tests](https://github.com/shyndman/nhost-dart/actions/workflows/test.nhost_flutter_graphql.yaml/badge.svg)](https://github.com/shyndman/nhost-dart/actions/workflows/test.nhost_flutter_graphql.yaml)
 
-Provides [Nhost](https://nhost.io) authentication state to your Flutter app,
-making it easy to set up protected resources, and react to logins and logouts.
+## Getting Started
+### Latest Release
+
+```yaml
+dependencies:
+  nhost_flutter_graphql: ^1.0.0
+```
+
+### Flutter 1.22.4 support
+
+For people affected by the Metal jank issues on iOS.
+
+```yaml
+dependencies:
+  nhost_flutter_graphql: ^0.1.0
+```
 
 ## 🔥 More Dart & Flutter packages from Nhost
 

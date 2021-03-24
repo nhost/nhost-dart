@@ -52,7 +52,7 @@ For people affected by the Metal jank issues on iOS.
 
 ```yaml
 dependencies:
-  nhost_sdk: ^0.9.0
+  nhost_sdk: ^0.8.0
 ```
 
 ## 🔥 More Dart & Flutter packages from Nhost

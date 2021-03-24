@@ -20,7 +20,7 @@ For people affected by the Metal jank issues on iOS.
 
 ```yaml
 dependencies:
-  nhost_flutter_auth: ^0.9.0
+  nhost_flutter_auth: ^0.3.0
 ```
 
 ## 🔥 More Dart & Flutter packages from Nhost
