@@ -33,20 +33,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Setup Dart/Flutter (specific channel)
-      uses: subosito/flutter-action@v1.4.0
-      if: matrix.flutter_version == null
-      with:
-        channel: ${{ matrix.flutter_channel }}
 
-    # Get binary dependencies
-    - name: Install tools
-      run: |
-        echo "$HOME/.pub-cache/bin" >> $GITHUB_PATH
-        pub global activate melos
-
-    - name: Bootstrap packages
-      run: melos bootstrap
+    - run: .github/workflows/scripts/make-relative-pubspecs.sh
 
     - uses: axel-op/dart-package-analyzer@v3
       # Set an id for the current step, so we can reference it later
