@@ -86,16 +86,8 @@ jobs:
         key: ${{ runner.OS }}-flutter-install-cache-${{ steps.flutter-version.outputs.version }}
 
     # Setup the flutter environment
-    - name: Setup Dart/Flutter (specific version)
-      uses: subosito/flutter-action@v1.4.0
-      if: matrix.flutter_version != null
-      with:
-        flutter-version: ${{ matrix.flutter_version }}
-
-    # Setup the flutter environment
     - name: Setup Dart/Flutter (specific channel)
       uses: subosito/flutter-action@v1.4.0
-      if: matrix.flutter_version == null
       with:
         channel: ${{ matrix.flutter_channel }}
 
