@@ -1,3 +1,25 @@
+/// Generates package-specific workflows from a template.
+///
+/// The reason we want package-specific workflows at all is so we can
+///
+/// 1. Limit the workflow to only being triggered on changes to files on the
+///    package's path, and that of its dependents
+/// 2. Display a package-specific testing badge (at the time of writing, you
+///    can't request badges for matrix configurations)
+/// 3. Receive more granular notifications about failure.
+///
+/// Template file: `./github/workflows/test.{package}.yaml.template`
+/// Template variables supplied to template:
+///
+/// - `#{dart_package_name}`: The name of the package
+/// - `#{dart_package_workflow_env}`: An optional set of environment variables
+///   that is made available to the workflow, taken from a file named
+///   `.github/workflows/{dart_package_name}.env`.
+///
+/// Instantiations of the template are produced by the Melos `postbootstrap`
+/// script which can be found in `melos.yaml`.
+library generate_package_workflows;
+
 import 'dart:io';
 import 'package:dotenv/dotenv.dart';
 import 'package:path/path.dart';

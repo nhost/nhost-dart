@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# In order to run pana, we need to establish path dependencies between the
+# packages.
+
 set -e
 
 script_dir=`dirname "$BASH_SOURCE"`
