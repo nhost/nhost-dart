@@ -10,7 +10,7 @@
 # Instantiations of this template are produced by the Melos postbootstrap script
 # which can be found in `melos.yaml`.
 
-name: 'nhost_sdk: Test'
+name: 'nhost_sdk tests'
 on:
   push:
   pull_request:
@@ -18,6 +18,7 @@ on:
   # Run the quality job at 4am every day
   - cron: '0 4 * * *'
 
+env: {}
 jobs:
   # Ensure that the package meets a suitably high pub.dev score
   score-package-quality:
@@ -45,15 +46,11 @@ jobs:
         # "analysis" is the id set above
         TOTAL: ${{ steps.analysis.outputs.total }}
         TOTAL_MAX: ${{ steps.analysis.outputs.total_max }}
-        CONVENTIONS: ${{ steps.analysis.outputs.conventions }}
-        CONVENTIONS_MAX: ${{ steps.analysis.outputs.conventions_max }}
-        PLATFORMS: ${{ steps.analysis.outputs.platforms }}
-        PLATFORMS_MAX: ${{ steps.analysis.outputs.platforms_max }}
       run: |
-        PERCENTAGE=$((( $TOTAL - $CONVENTIONS - $PLATFORMS ) * 100 / ( $TOTAL_MAX - $CONVENTIONS_MAX - $PLATFORMS_MAX )))
+        PERCENTAGE=$((( $TOTAL ) * 100 / ( $TOTAL_MAX - ${MAX_PANA_MISSING_POINTS:-10} )))
         if (( $PERCENTAGE < 100 ))
         then
-          echo Score to low.
+          echo "Score to low ($TOTAL/$TOTAL_MAX)."
           exit 1
         fi
 
@@ -88,6 +85,7 @@ jobs:
     - name: Install tools
       run: |
         echo "$HOME/.pub-cache/bin" >> $GITHUB_PATH
+        pub get
         pub global activate junitreport
         pub global activate melos
 
@@ -117,7 +115,7 @@ jobs:
     - name: Report coverage
       uses: zgosalvez/github-actions-report-lcov@v1
       with:
-        artifact-name: 'Test coverage: nhost_sdk'
+        artifact-name: 'Test coverage for nhost_sdk'
         coverage-files: packages/nhost_sdk/coverage/*.info
         working-directory: packages/nhost_sdk/
         github-token: ${{ secrets.GITHUB_TOKEN }}

@@ -10,7 +10,7 @@
 # Instantiations of this template are produced by the Melos postbootstrap script
 # which can be found in `melos.yaml`.
 
-name: '{#dart_package_name}: Test'
+name: '#{dart_package_name} tests'
 on:
   push:
   pull_request:
@@ -18,6 +18,7 @@ on:
   # Run the quality job at 4am every day
   - cron: '0 4 * * *'
 
+env:#{dart_package_workflow_env}
 jobs:
   # Ensure that the package meets a suitably high pub.dev score
   score-package-quality:
@@ -38,22 +39,18 @@ jobs:
       id: analysis
       with:
         githubToken: ${{ secrets.GITHUB_TOKEN }}
-        relativePath: packages/{#dart_package_name}
+        relativePath: packages/#{dart_package_name}
 
     - name: Require analysis (near) perfection
       env:
         # "analysis" is the id set above
         TOTAL: ${{ steps.analysis.outputs.total }}
         TOTAL_MAX: ${{ steps.analysis.outputs.total_max }}
-        CONVENTIONS: ${{ steps.analysis.outputs.conventions }}
-        CONVENTIONS_MAX: ${{ steps.analysis.outputs.conventions_max }}
-        PLATFORMS: ${{ steps.analysis.outputs.platforms }}
-        PLATFORMS_MAX: ${{ steps.analysis.outputs.platforms_max }}
       run: |
-        PERCENTAGE=$((( $TOTAL - $CONVENTIONS - $PLATFORMS ) * 100 / ( $TOTAL_MAX - $CONVENTIONS_MAX - $PLATFORMS_MAX )))
+        PERCENTAGE=$((( $TOTAL ) * 100 / ( $TOTAL_MAX - ${MAX_PANA_MISSING_POINTS:-10} )))
         if (( $PERCENTAGE < 100 ))
         then
-          echo Score to low.
+          echo "Score to low ($TOTAL/$TOTAL_MAX)."
           exit 1
         fi
 
@@ -88,6 +85,7 @@ jobs:
     - name: Install tools
       run: |
         echo "$HOME/.pub-cache/bin" >> $GITHUB_PATH
+        pub get
         pub global activate junitreport
         pub global activate melos
 
@@ -101,7 +99,7 @@ jobs:
     # Run tests for package in question
     - name: Execute tests
       run: >
-        melos exec --scope={#dart_package_name} --
+        melos exec --scope=#{dart_package_name} --
         'flutter test --no-pub --machine --coverage | tojunit
         > test-results.xml'
 
@@ -109,15 +107,15 @@ jobs:
     - name: Report test results
       uses: mikepenz/action-junit-report@v2
       with:
-        check_name: 'Test results: {#dart_package_name}'
-        report_paths: "packages/{#dart_package_name}/test-results.xml"
+        check_name: 'Test results: #{dart_package_name}'
+        report_paths: "packages/#{dart_package_name}/test-results.xml"
         github_token: ${{ secrets.GITHUB_TOKEN }}
 
     # Report coverage
     - name: Report coverage
       uses: zgosalvez/github-actions-report-lcov@v1
       with:
-        artifact-name: 'Test coverage: {#dart_package_name}'
-        coverage-files: packages/{#dart_package_name}/coverage/*.info
-        working-directory: packages/{#dart_package_name}/
+        artifact-name: 'Test coverage for #{dart_package_name}'
+        coverage-files: packages/#{dart_package_name}/coverage/*.info
+        working-directory: packages/#{dart_package_name}/
         github-token: ${{ secrets.GITHUB_TOKEN }}

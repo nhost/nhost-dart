@@ -1,8 +1,9 @@
 import 'dart:io';
+import 'package:dotenv/dotenv.dart';
+import 'package:path/path.dart';
 
 const workflowTemplateFileName = 'test.{package}.yaml.template';
-const packageNameTemplatePattern = '{#dart_package_name}';
-final pathSeparator = Platform.pathSeparator;
+final templateVarPattern = RegExp(r'#{(?<binding>[^}]+)}');
 final packageWorkflowFileNamePattern = RegExp(r'^test.([a-zA-Z_\d]+).yaml$');
 
 void main() {
@@ -17,32 +18,43 @@ void main() {
 
   // Open up the template
   final workflowTemplateFile =
-      File(platformPath([workflowsDirectory.path, workflowTemplateFileName]));
+      File(join(workflowsDirectory.path, workflowTemplateFileName));
   final workflowTemplateSrc = workflowTemplateFile.readAsStringSync();
 
   // Produce one workflow per package
-  for (final entry in Directory(platformPath(['.', 'packages'])).listSync()) {
+  for (final entry in Directory(join('.', 'packages')).listSync()) {
     if (entry is! Directory) continue;
 
     final packageName = basename(entry.path);
 
-    final packageWorkflowPath =
-        platformPath([workflowsDirectory.path, 'test.$packageName.yaml']);
-    File(packageWorkflowPath)
+    // Produce variables for the template
+    final templateVars = {
+      'dart_package_name': packageName,
+    };
+
+    final envFile = File(join(workflowsDirectory.path, '$packageName.env'));
+    if (envFile.existsSync()) {
+      final envVars = Parser().parse(envFile.readAsLinesSync());
+
+      templateVars['dart_package_workflow_env'] = '\n' +
+          envVars.entries.map((e) => '  ${e.key}: ${e.value}').join('\n');
+    } else {
+      templateVars['dart_package_workflow_env'] = ' {}';
+    }
+
+    final workflowSrc = workflowTemplateSrc.replaceAllMapped(
+      templateVarPattern,
+      (match) {
+        final regexpMatch = match as RegExpMatch;
+        final binding = regexpMatch.namedGroup('binding');
+        return templateVars[binding] ?? '';
+      },
+    );
+
+    final workflowPath =
+        join(workflowsDirectory.path, 'test.$packageName.yaml');
+    File(workflowPath)
       ..createSync()
-      ..writeAsStringSync(workflowTemplateSrc.replaceAll(
-          packageNameTemplatePattern, packageName));
+      ..writeAsStringSync(workflowSrc);
   }
-}
-
-String platformPath(List<String> pathParts) =>
-    pathParts.join(Platform.pathSeparator);
-
-/// Ordinarily I'd depend on `path` to do this, but we're not in a package
-/// so we can't have dependencies
-String basename(String path) {
-  final lastSeparatorIndex = path.lastIndexOf(pathSeparator);
-  return lastSeparatorIndex != -1
-      ? path.substring(path.lastIndexOf(pathSeparator) + 1)
-      : path;
 }
