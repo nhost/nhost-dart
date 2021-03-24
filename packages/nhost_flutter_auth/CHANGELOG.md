@@ -1,3 +1,7 @@
+## 1.0.0
+
+ - 🛳🐿
+
 ## 0.3.0+2
 
  - **FIX**: Fix the OAuth provider login flow example.

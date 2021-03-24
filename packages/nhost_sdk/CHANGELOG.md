@@ -1,3 +1,7 @@
+## 1.0.0
+
+ - 🛳🐿
+
 ## 0.8.0+1
 
  - **FIX**: Correct the refresh token lookup during OAuth login.
