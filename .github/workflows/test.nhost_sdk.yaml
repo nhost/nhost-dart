@@ -111,10 +111,8 @@ jobs:
       run: melos bootstrap
 
     # Run analysis on all packages
-    - name: Analyze package
-      run: melos --scope=nhost_sdk exec -- flutter analyze --no-pub --congratulate
-    - name: Analyze dependent packages
-      run: melos --depends-on=nhost_sdk exec -- flutter analyze --no-pub --congratulate
+    - name: Analyze packages
+      run: flutter analyze --no-pub --congratulate packages/* packages/*/example
 
     # Run tests for package in question
     - name: Execute tests
