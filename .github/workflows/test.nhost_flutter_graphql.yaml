@@ -74,6 +74,18 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
+    - name: Determine Flutter version
+      id: flutter-version
+      uses: shyndman/latest-flutter-version-action@v1.0.5
+      with:
+        channel: ${{ matrix.flutter_channel }}
+
+    - name: Cache Flutter dependencies
+      uses: actions/cache@v1
+      with:
+        path: /opt/hostedtoolcache/flutter
+        key: ${{ runner.OS }}-flutter-install-cache-${{ steps.flutter-version.outputs.version }}
+
     # Setup the flutter environment
     - name: Setup Dart/Flutter (specific version)
       uses: subosito/flutter-action@v1.4.0
