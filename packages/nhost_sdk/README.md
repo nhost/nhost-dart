@@ -17,7 +17,7 @@ Includes support for:
 
 ### Sample
 ```dart
-import 'package:nhost_sdk/client.dart';
+import 'package:nhost_sdk/nhost_sdk.dart';
 
 void main() async {
   final nhost = NhostClient(baseUrl: 'https://backend-5e69d1d7.nhost.app');

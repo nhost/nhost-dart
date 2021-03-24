@@ -1,4 +1,4 @@
-import 'package:nhost_sdk/client.dart';
+import 'package:nhost_sdk/nhost_sdk.dart';
 
 /// Fill in this value with the backend URL found on your Nhost project page.
 const nhostApiUrl = 'https://backend-5e69d1d7.nhost.app';

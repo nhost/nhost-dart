@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:betamax/betamax.dart';
 import 'package:http/http.dart' as http;
-import 'package:nhost_sdk/client.dart';
+import 'package:nhost_sdk/nhost_sdk.dart';
 import 'package:path/path.dart';
 import 'package:test/test.dart';
 import 'package:test_api/src/backend/invoker.dart';

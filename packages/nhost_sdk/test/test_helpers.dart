@@ -1,4 +1,4 @@
-import 'package:nhost_sdk/client.dart';
+import 'package:nhost_sdk/nhost_sdk.dart';
 import 'package:otp/otp.dart';
 import 'package:path/path.dart';
 import 'package:stack_trace/stack_trace.dart';
