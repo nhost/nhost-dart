@@ -5,6 +5,7 @@ description: >
 version: 1.0.0
 homepage: https://nhost.io
 repository: https://github.com/nhost/nhost-dart/tree/main/packages/nhost_flutter_graphql
+issue_tracker: https://github.com/nhost/nhost-dart/issues
 
 environment:
   sdk: '>=2.12.0 <3.0.0'

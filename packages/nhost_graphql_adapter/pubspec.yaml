@@ -3,6 +3,7 @@ version: 1.0.0
 description: Easily connect to your Nhost GraphQL backend.
 homepage: https://nhost.io
 repository: https://github.com/nhost/nhost-dart/tree/main/packages/nhost_graphql_adapter
+issue_tracker: https://github.com/nhost/nhost-dart/issues
 
 environment:
   sdk: '>=2.12.0 <3.0.0'
