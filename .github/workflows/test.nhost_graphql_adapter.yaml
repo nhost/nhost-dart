@@ -1,4 +1,16 @@
-name: Test Packages
+# This is a template that is used to produce package-specific workflows
+#
+# The reason we want package-specific workflows at all is so we can
+#
+# 1. Limit the workflow to only being triggered on changes to files on the
+#    package's path, and that of its dependents
+# 2. Display a package-specific testing badge (at the time of writing, you can't
+#    request badges for matrix configurations)
+#
+# Instantiations of this template are produced by the Melos postbootstrap script
+# which can be found in `melos.yaml`.
+
+name: 'nhost_graphql_adapter: Test'
 on:
   push:
   pull_request:
@@ -7,29 +19,14 @@ on:
   - cron: '0 4 * * *'
 
 jobs:
-  # Gets the names of the packages in this repo, and outputs them as JSON to
-  # the json_names output.
-  get-package-names:
-    runs-on: ubuntu-latest
-    outputs:
-      json_names: ${{ steps.list-directories.outputs.names }}
-    steps:
-    - uses: actions/checkout@v2
-    - id: list-directories
-      run: |
-        json_names="[`ls packages --width=0 --quote-name --format=commas`]"
-        echo "::set-output name=names::$json_names"
-
   # Ensure that the package meets a suitably high pub.dev score
   score-package-quality:
-    needs: get-package-names
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
         # We test against several Flutter versions
         flutter_channel: [stable, beta]
-        package-name: ${{ fromJSON(needs.get-package-names.outputs.json_names) }}
 
     steps:
     - uses: actions/checkout@v2
@@ -41,7 +38,7 @@ jobs:
       id: analysis
       with:
         githubToken: ${{ secrets.GITHUB_TOKEN }}
-        relativePath: packages/${{ matrix.package-name }}
+        relativePath: packages/nhost_graphql_adapter
 
     - name: Require analysis (near) perfection
       env:
@@ -62,7 +59,6 @@ jobs:
 
   # Analyzes, checks formatting, and tests the packages
   test-package:
-    needs: get-package-names
     runs-on: ubuntu-latest
 
     strategy:
@@ -70,9 +66,6 @@ jobs:
       matrix:
         # We test against several Flutter versions
         flutter_channel: [stable, beta]
-
-        # Test each package individually
-        package-name: ${{ fromJSON(needs.get-package-names.outputs.json_names) }}
 
     steps:
     - uses: actions/checkout@v2
@@ -108,7 +101,7 @@ jobs:
     # Run tests for package in question
     - name: Execute tests
       run: >
-        melos exec --scope=${{ matrix.package-name }} --
+        melos exec --scope=nhost_graphql_adapter --
         'flutter test --no-pub --machine --coverage | tojunit
         > test-results.xml'
 
@@ -116,15 +109,15 @@ jobs:
     - name: Report test results
       uses: mikepenz/action-junit-report@v2
       with:
-        check_name: Results
-        report_paths: "packages/${{ matrix.package-name }}/test-results.xml"
+        check_name: 'Test results: nhost_graphql_adapter'
+        report_paths: "packages/nhost_graphql_adapter/test-results.xml"
         github_token: ${{ secrets.GITHUB_TOKEN }}
 
     # Report coverage
     - name: Report coverage
       uses: zgosalvez/github-actions-report-lcov@v1
       with:
-        artifact-name: ${{ matrix.package-name}} Coverage
-        coverage-files: packages/${{ matrix.package-name }}/coverage/*.info
-        working-directory: packages/${{ matrix.package-name }}/
+        artifact-name: 'Test coverage: nhost_graphql_adapter'
+        coverage-files: packages/nhost_graphql_adapter/coverage/*.info
+        working-directory: packages/nhost_graphql_adapter/
         github-token: ${{ secrets.GITHUB_TOKEN }}
