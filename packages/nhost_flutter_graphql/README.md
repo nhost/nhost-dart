@@ -3,6 +3,9 @@
 [![Pub](https://img.shields.io/pub/v/nhost_flutter_graphql)](https://pub.dev/packages/nhost_flutter_graphql)
 [![nhost_flutter_graphql tests](https://github.com/shyndman/nhost-dart/actions/workflows/test.nhost_flutter_graphql.yaml/badge.svg)](https://github.com/shyndman/nhost-dart/actions/workflows/test.nhost_flutter_graphql.yaml)
 
+Provides GraphQL clients to your Flutter application, automatically configured
+to work with [Nhost](https://nhost.io).
+
 ## Getting Started
 ### Latest Release
 
