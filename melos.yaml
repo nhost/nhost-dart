@@ -1,14 +1,19 @@
 name: nhost-dart
 packages:
   - packages/**
-scripts:
-  postbootstrap:
-    run: dart tool/generate_package_workflows.dart
-
-  test:
-    run: melos exec -- 'if [ -d test ]; then flutter test --reporter=expanded; fi'
 ide:
   intellij:
     false
-  vscode:
-    true
+
+scripts:
+  postbootstrap:
+    run: dart tool/generate_package_workflows.dart
+  test:
+    run: melos exec -- 'if [ -d test ]; then flutter test --reporter=expanded; fi'
+
+command:
+  version:
+    message: |
+      chore(release): Publish packages
+
+      {new_package_versions}
