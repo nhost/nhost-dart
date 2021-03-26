@@ -53,5 +53,3 @@ Future<http.Client> setUpApiTest() async {
   await Betamax.setCassette(currentTestPath);
   return client;
 }
-
-void tearDownApiTest() {}
