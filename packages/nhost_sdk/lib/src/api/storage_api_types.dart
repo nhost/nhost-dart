@@ -54,18 +54,6 @@ class FileMetadata {
               json['Metadata'] as Map<String, dynamic>),
     );
   }
-
-  Map<String, dynamic> toJson() {
-    return <String, dynamic>{
-      'Key': key,
-      'AcceptRanges': acceptRanges,
-      'LastModified': lastModified?.toIso8601String(),
-      'ContentLength': contentLength,
-      'ETag': eTag,
-      'ContentType': contentType,
-      'Metadata': nhostMetadata?.toJson(),
-    };
-  }
 }
 
 /// Additional Nhost-specific metadata associated with a [FileMetadata]
@@ -79,12 +67,6 @@ class FileNhostMetadata {
     return FileNhostMetadata(
       token: json['token'] as String?,
     );
-  }
-
-  Map<String, dynamic> toJson() {
-    return <String, dynamic>{
-      'token': token,
-    };
   }
 }
 
