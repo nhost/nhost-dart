@@ -19,6 +19,7 @@ void main() async {
 
   // This admin client has its traffic recorded for playback
   late GqlAdminTestHelper gqlAdmin;
+  late NhostClient nhost;
   late Auth auth;
 
   setUpAll(() => initializeHttpFixturesForSuite('auth'));
@@ -33,7 +34,12 @@ void main() async {
     // Create the service objects that we're going to be using to test
     gqlAdmin = GqlAdminTestHelper(
         apiUrl: apiUrl, gqlUrl: gqlUrl, httpClientOverride: httpClient);
-    auth = createApiTestClient(httpClient).auth;
+    nhost = createApiTestClient(httpClient);
+    auth = nhost.auth;
+  });
+
+  tearDown(() {
+    nhost.close();
   });
 
   group('register', () {
