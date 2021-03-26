@@ -73,7 +73,6 @@ class FileMetadata {
 class FileNhostMetadata {
   FileNhostMetadata({this.token});
 
-  /// TODO(shyndman): What is this?
   final String? token;
 
   static FileNhostMetadata fromJson(dynamic json) {

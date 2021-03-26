@@ -88,8 +88,6 @@ class Auth {
   /// `true` if the service is currently loading.
   ///
   /// While loading, the authentication state is indeterminate.
-  ///
-  /// TODO(shyndman): Evaluate whether necessary
   bool _loading;
 
   /// Currently logged-in user, or `null` if unauthenticated.
@@ -168,8 +166,6 @@ class Auth {
   Future<AuthResponse> register({
     required String email,
     required String password,
-    // TODO(shyndman): This can only be a couple things...why don't we just
-    // specify them instead of using a map.
     Map<String, String>? userData,
     String? defaultRole,
     List<String>? allowedRoles,
