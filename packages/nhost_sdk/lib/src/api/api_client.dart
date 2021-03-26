@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:meta/meta.dart';
-import 'package:nhost_sdk/src/debug.dart';
 
 import '../foundation/uri.dart';
 import '../http.dart';
@@ -166,37 +165,12 @@ class ApiClient {
             true;
     dynamic responseBody = isJson ? jsonDecode(response.body) : response.body;
 
-    // We group request and response together because the request's headers are
-    // only guaranteed available after sending.
-    if (debugPrintApiCalls) {
-      debugPrint('\nREQUEST');
-      debugPrint('${request.method} ${request.url}');
-      debugPrint(request.headers.entries
-          .map((e) => '${e.key}: ${e.value}')
-          .join('\n'));
-      if (request is http.Request) {
-        debugPrint(request.body);
-      } else if (request is http.MultipartRequest) {
-        debugPrint('files:');
-        debugPrint(request.files.map((f) => '- ${f.filename}').join('\n'));
-      }
-
-      debugPrint('\nRESPONSE');
-      debugPrint('${response.statusCode}');
-      debugPrint(response.headers.entries
-          .map((e) => '${e.key}: ${e.value}')
-          .join('\n'));
-      if (isJson) {
-        debugPrint(JsonEncoder.withIndent('  ').convert(responseBody));
-      } else {
-        debugPrint(responseBody);
-      }
-    }
-
+    // If the status is not in the success range, throw.
     if (response.statusCode < 200 || response.statusCode >= 300) {
       throw ApiException(request.url, responseBody, request, response);
     }
 
+    // Deserialize the response if requested.
     if (ResponseType == http.Response) {
       return response as ResponseType;
     } else if (responseDeserializer != null) {
