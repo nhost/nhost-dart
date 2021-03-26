@@ -244,11 +244,10 @@ typedef JsonDeserializer<ResponseType> = ResponseType Function(dynamic json);
 JsonDeserializer<List<ElementType>> listOf<ElementType>(
     JsonDeserializer<ElementType> deserializer) {
   return (dynamic json) {
-    assert(json is List);
     if (json is List) {
       return json.map((elementJson) => deserializer(elementJson)).toList();
     }
-    // TODO(shyndman): Revisit
-    throw ArgumentError();
+    throw ArgumentError.value(
+        json, 'json', 'List of $ElementType expected during deserialization');
   };
 }
