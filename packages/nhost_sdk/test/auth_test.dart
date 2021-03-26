@@ -242,6 +242,7 @@ void main() async {
           'eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNjE1NjA2MDI4fQ.'
           '1mGtlyZdk3r7htZnHLyIfYQd5Gq0Oxp3VOAtqRFK8NA',
       refreshToken: 'efgh',
+      user: User(id: 'xxxx', email: 'user-1@nhost.io'),
     );
 
     setUpAll(() {
