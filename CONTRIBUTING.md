@@ -12,8 +12,7 @@ from the repository root:
 
 ```sh
 pub get
-pub global activate melos
-melos bootstrap
+pub run melos bootstrap
 ```
 
 This will install the necessary prequisites, and establish **path** dependencies
@@ -42,13 +41,13 @@ will expand.
 ## Running tests
 
 Tests are automatically run by GitHub on every commit, but if you want to
-run them locally, run `melos run test`.
+run them locally, run `pub run melos run test`.
 
 ## Publishing
 ### Updating package versions
 
 To version all packages in this repo that have been changed since the previous
-release, just call `melos version`.
+release, just call `pub run melos version`.
 
 `melos` uses [Conventional
 Commits](https://www.conventionalcommits.org/en/v1.0.0/) to determine which
@@ -58,8 +57,8 @@ It will automatically update each package's `pubspec.yaml` and `CHANGELOG.md`
 files, create a new commit, and tag that commit with one or more version tags
 (eg. `nhost_sdk-v1.3.5`).
 
-If you want to update to pre-release versions instead, use `melos version
---prerelease`.
+If you want to update to pre-release versions instead, use
+`pub run melos version --prerelease`.
 
 ### Publishing
 
@@ -73,8 +72,8 @@ it looks:
 ```sh
 # Dry run by default. This will run a basic lint, and give you some feedback
 # so you can gut check.
-melos publish
+pub run melos publish
 
 # Publishes to pub.dev. No turning back.
-melos publish --no-dry-run
+pub run melos publish --no-dry-run
 ```

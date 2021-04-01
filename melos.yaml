@@ -2,8 +2,7 @@ name: nhost-dart
 packages:
   - packages/**
 ide:
-  intellij:
-    false
+  intellij: false
 
 scripts:
   postbootstrap:

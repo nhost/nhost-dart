@@ -8,5 +8,6 @@ environment:
   sdk: '>=2.12.0 <3.0.0'
 
 dev_dependencies:
-  path:
   dotenv: 3.0.0-nullsafety.0
+  melos: any
+  path: ^1.0.0
