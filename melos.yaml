@@ -7,6 +7,8 @@ ide:
 
 scripts:
   postbootstrap:
+    run: melos run generate_github_workflows
+  generate_github_workflows:
     run: dart tool/generate_package_workflows.dart
   test:
     run: melos exec -- 'if [ -d test ]; then flutter test --reporter=expanded; fi'
