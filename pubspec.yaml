@@ -9,5 +9,5 @@ environment:
 
 dev_dependencies:
   dotenv: 3.0.0-nullsafety.0
-  melos: any
+  melos: 0.4.10+1
   path: ^1.0.0
