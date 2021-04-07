@@ -83,8 +83,8 @@ class _OAuthExampleState extends State<OAuthExample> {
 class ExampleProtectedScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // NhostAuthProvider.of will register this widget so that it rebuilds whenever
-    // the user's authentication state changes.
+    // NhostAuthProvider.of will register this widget so that it rebuilds
+    // whenever the user's authentication state changes.
     final auth = NhostAuthProvider.of(context);
     Widget widget;
 
@@ -115,7 +115,7 @@ class ProviderLoginForm extends StatelessWidget {
             forceSafariVC: true,
           );
         } on Exception {
-          // This can occur if the user
+          // Exceptions can occur due to weirdness with redirects
         }
       },
       child: Text('Authenticate with GitHub'),
