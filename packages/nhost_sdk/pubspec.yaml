@@ -17,7 +17,7 @@ dependencies:
   pedantic: ^1.8.0
 
 dev_dependencies:
-  betamax: ^2.0.0-dev.0
+  betamax: ^1.0.0
   fake_async: ^1.0.0
   graphql: ^5.0.0-nullsafety.1
   nock: ^1.0.0

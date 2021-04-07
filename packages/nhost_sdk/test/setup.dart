@@ -3,11 +3,8 @@ import 'dart:async';
 import 'package:betamax/betamax.dart';
 import 'package:http/http.dart' as http;
 import 'package:nhost_sdk/nhost_sdk.dart';
-import 'package:path/path.dart';
 import 'package:test/test.dart';
 import 'package:test_api/src/backend/invoker.dart';
-
-import 'test_helpers.dart';
 
 const apiUrl = 'http://localhost:3000';
 const gqlUrl = 'http://localhost:8080/v1/graphql';
@@ -17,10 +14,9 @@ const recordFixturesEnvVariableName = 'RECORD_HTTP_FIXTURES';
 /// Initializes Betamax, which is responsible for HTTP fixtures
 void initializeHttpFixturesForSuite(String suiteName) {
   final recordFixtures = bool.fromEnvironment(recordFixturesEnvVariableName);
-  Betamax.configure(
+  Betamax.configureSuite(
     suiteName: suiteName,
     mode: recordFixtures ? Mode.recording : Mode.playback,
-    cassettePath: join(getTestDirectory(), 'http_fixtures'),
   );
 }
 
@@ -42,14 +38,5 @@ Future<http.Client> setUpApiTest() async {
     return http.Client();
   }
 
-  final client = Betamax.clientForTest();
-  final currentTestPath = [
-    ...currentTest.groups
-        // Skip root group
-        .skip(1)
-        .map((g) => g.name),
-    currentTest.individualName,
-  ];
-  await Betamax.setCassette(currentTestPath);
-  return client;
+  return Betamax.clientForTest();
 }
