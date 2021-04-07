@@ -15,7 +15,7 @@ pub get
 pub run melos bootstrap
 ```
 
-This will install the necessary prequisites, and establish **path** dependencies
+This will install the necessary prerequisites, and establish **path** dependencies
 between our packages.
 
 Path dependencies simplify development by taking the package repository and
