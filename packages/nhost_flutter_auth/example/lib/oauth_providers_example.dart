@@ -23,7 +23,7 @@ import 'simple_auth_example.dart';
 const nhostApiUrl = 'https://backend-5e69d1d7.nhost.app';
 const nhostGithubLoginUrl = '$nhostApiUrl/auth/providers/github/';
 
-const loginSuccessHost = 'oauth.login.failure';
+const loginSuccessHost = 'oauth.login.success';
 const loginFailureHost = 'oauth.login.failure';
 
 void main() async {
