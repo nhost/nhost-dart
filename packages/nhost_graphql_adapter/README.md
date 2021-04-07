@@ -1,7 +1,7 @@
 # Nhost GraphQL Adapter for Dart
 
 [![Pub](https://img.shields.io/pub/v/nhost_graphql_adapter)](https://pub.dev/packages/nhost_graphql_adapter)
-[![nhost_graphql_adapter tests](https://github.com/shyndman/nhost-dart/actions/workflows/test.nhost_graphql_adapter.yaml/badge.svg)](https://github.com/shyndman/nhost-dart/actions/workflows/test.nhost_graphql_adapter.yaml)
+[![nhost_graphql_adapter tests](https://github.com/nhost/nhost-dart/actions/workflows/test.nhost_graphql_adapter.yaml/badge.svg)](https://github.com/nhost/nhost-dart/actions/workflows/test.nhost_graphql_adapter.yaml)
 
 [Nhost](https://nhost.io) integration with the
 [graphql](https://pub.dev/packages/graphql) package.
@@ -19,9 +19,8 @@ dependencies:
   nhost_graphql_adapter: ^1.0.0
 ```
 
-### Flutter 1.22.4 support
-
-For people affected by the Metal jank issues on iOS.
+For people affected by the Metal jank issues on iOS, we support Flutter 1.22.4
+as well:
 
 ```yaml
 dependencies:

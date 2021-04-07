@@ -2,7 +2,7 @@
 ## Getting started
 
 This repository contains multiple Dart/Flutter packages, which can be found
-in the [`packages` directory](https://github.com/shyndman/nhost-dart/tree/main/packages).
+in the [`packages` directory](https://github.com/nhost/nhost-dart/tree/main/packages).
 
 We use a tool called [`melos`](https://pub.dev/packages/melos) to make this
 process easier.
@@ -28,12 +28,12 @@ automatically.
 ### Commit message conventions
 
 `melos` is able to automatically update the packages' version numbers and
-[CHANGELOG.md](https://github.com/shyndman/nhost-dart/blob/main/packages/nhost_sdk/CHANGELOG.md)s
+[CHANGELOG.md](https://github.com/nhost/nhost-dart/blob/main/packages/nhost_sdk/CHANGELOG.md)s
 as long as commits follow the [Conventional
 Commits](https://www.conventionalcommits.org/en/v1.0.0/) spec.
 
 We've included a [VSCode
-snippet](https://github.com/shyndman/nhost-dart/blob/main/.vscode/conventional-commits.code-snippets) with the repository that will help with the formatting.
+snippet](https://github.com/nhost/nhost-dart/blob/main/.vscode/conventional-commits.code-snippets) with the repository that will help with the formatting.
 
 Just write `ccommit` <kbd>Tab</kbd> in your commit message, and the snippet
 will expand.
