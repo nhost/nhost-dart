@@ -4,8 +4,8 @@
 This repository contains multiple Dart/Flutter packages, which can be found
 in the [`packages` directory](https://github.com/nhost/nhost-dart/tree/main/packages).
 
-We use a tool called [`melos`](https://pub.dev/packages/melos) to make this
-process easier.
+We use a tool called [`melos`](https://pub.dev/packages/melos) to make the
+process of working with multiple interdependent packages easier.
 
 After cloning the repo, the first thing you should do is run the following
 from the repository root:
