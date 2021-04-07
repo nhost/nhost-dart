@@ -1,3 +1,18 @@
+## 1.0.1
+
+ - **TEST**: Close Nhost client after each test.
+ - **TEST**: Add a stub user to the test session.
+ - **FIX**: Throw ArgumentError if list expected during deserialization.
+ - **DOCS**: Update links to point to future repo home.
+ - **DOCS**: Add issue_tracker field to all pubspecs.
+ - **DOCS**: Update repository urls in pubspecs.
+ - **DOCS**: Update all version numbers in README getting starteds.
+ - **DOCS**: Update test badge on all repos.
+ - **CHORE**: Remove unused function from tests.
+ - **CHORE**: Remove debug printing which is no longer needed.
+ - **CHORE**: Remove a couple of unnecessary toJson methods.
+ - **CHORE**: Remove several TODOs that have been answered.
+
 ## 1.0.0
 
  - 🛳🐿

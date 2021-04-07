@@ -1,3 +1,11 @@
+## 1.0.1
+
+ - **DOCS**: Update links to point to future repo home.
+ - **DOCS**: Add issue_tracker field to all pubspecs.
+ - **DOCS**: Update repository urls in pubspecs.
+ - **DOCS**: Update all version numbers in README getting starteds.
+ - **DOCS**: Update test badge on all repos.
+
 ## 1.0.0
 
  - 🛳🐿
