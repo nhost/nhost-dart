@@ -13,7 +13,7 @@ Includes support for:
 * Storage and retrieval of arbitrary files
 * Scaling and transformation of stored files
 * GraphQL authentication, via
-  [nhost_graphql_adapter](https://pub.dev/publishers/nhost/nhost_graphql_adapter)
+  [nhost_graphql_adapter](https://pub.dev/packages/nhost_graphql_adapter)
 
 ### Sample
 ```dart
@@ -56,6 +56,6 @@ dependencies:
 
 ## 🔥 More Dart & Flutter packages from Nhost
 
-* [nhost_graphql_adapter](https://pub.dev/publishers/nhost/nhost_graphql_adapter)
-* [nhost_flutter_graphql](https://pub.dev/publishers/nhost/nhost_flutter_graphql)
-* [nhost_flutter_auth](https://pub.dev/publishers/nhost/nhost_flutter_auth)
+* [nhost_graphql_adapter](https://pub.dev/packages/nhost_graphql_adapter)
+* [nhost_flutter_graphql](https://pub.dev/packages/nhost_flutter_graphql)
+* [nhost_flutter_auth](https://pub.dev/packages/nhost_flutter_auth)
