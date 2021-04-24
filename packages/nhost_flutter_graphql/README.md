@@ -24,6 +24,6 @@ dependencies:
 
 ## 🔥 More Dart & Flutter packages from Nhost
 
-* [nhost_sdk](https://pub.dev/publishers/nhost/nhost_sdk)
-* [nhost_graphql_adapter](https://pub.dev/publishers/nhost/nhost_graphql_adapter)
-* [nhost_flutter_auth](https://pub.dev/publishers/nhost/nhost_flutter_auth)
+* [nhost_sdk](https://pub.dev/packages/nhost_sdk)
+* [nhost_graphql_adapter](https://pub.dev/packages/nhost_graphql_adapter)
+* [nhost_flutter_auth](https://pub.dev/packages/nhost_flutter_auth)
