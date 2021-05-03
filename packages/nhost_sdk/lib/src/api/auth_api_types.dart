@@ -81,8 +81,8 @@ class Session {
 
   static Session fromJson(dynamic json) {
     return Session(
-      jwtToken: json['jwt_token'] as String,
-      jwtExpiresIn: durationFromMs(json['jwt_expires_in'] as int?)!,
+      jwtToken: json['jwt_token'] as String?,
+      jwtExpiresIn: durationFromMs(json['jwt_expires_in'] as int?),
       refreshToken: json['refresh_token'] as String?,
       user: json['user'] == null
           ? null
