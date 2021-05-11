@@ -1,3 +1,10 @@
+## 1.0.2
+
+ - **FIX**: Function signature in OAuth example.
+ - **FIX**: Incorrect host in OAuth example.
+ - **DOCS**: Fixed broken links in all README.md.
+ - **CHORE**: Fill in a comment.
+
 ## 1.0.1
 
  - **DOCS**: Update links to point to future repo home.
