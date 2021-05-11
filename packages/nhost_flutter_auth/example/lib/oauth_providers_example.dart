@@ -47,7 +47,7 @@ class _OAuthExampleState extends State<OAuthExample> {
     nhostClient = NhostClient(baseUrl: nhostApiUrl);
 
     appLinks = AppLinks(
-      onAppLink: (uri) async {
+      onAppLink: (uri, stringUri) async {
         if (uri.host == loginSuccessHost) {
           // ignore: unawaited_futures
           nhostClient.auth.completeOAuthProviderLogin(uri);
