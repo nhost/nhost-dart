@@ -1,3 +1,8 @@
+## 1.0.2
+
+ - **FIX**: Add nullability to Session fields.
+ - **DOCS**: Fixed broken links in all README.md.
+
 ## 1.0.1
 
  - **TEST**: Close Nhost client after each test.
