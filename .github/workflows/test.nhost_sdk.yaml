@@ -129,3 +129,4 @@ jobs:
         coverage-files: packages/nhost_sdk/coverage/*.info
         working-directory: packages/nhost_sdk/
         github-token: ${{ secrets.GITHUB_TOKEN }}
+      if: ${{ github.event_name != 'pull_request' }}

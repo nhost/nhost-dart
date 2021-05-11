@@ -130,3 +130,4 @@ jobs:
         coverage-files: packages/nhost_flutter_graphql/coverage/*.info
         working-directory: packages/nhost_flutter_graphql/
         github-token: ${{ secrets.GITHUB_TOKEN }}
+      if: ${{ github.event_name != 'pull_request' }}

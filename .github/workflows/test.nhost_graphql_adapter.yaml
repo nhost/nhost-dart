@@ -129,3 +129,4 @@ jobs:
         coverage-files: packages/nhost_graphql_adapter/coverage/*.info
         working-directory: packages/nhost_graphql_adapter/
         github-token: ${{ secrets.GITHUB_TOKEN }}
+      if: ${{ github.event_name != 'pull_request' }}

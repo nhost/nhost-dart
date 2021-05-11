@@ -129,3 +129,4 @@ jobs:
         coverage-files: packages/nhost_flutter_auth/coverage/*.info
         working-directory: packages/nhost_flutter_auth/
         github-token: ${{ secrets.GITHUB_TOKEN }}
+      if: ${{ github.event_name != 'pull_request' }}

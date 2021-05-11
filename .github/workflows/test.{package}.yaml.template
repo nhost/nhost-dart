@@ -129,3 +129,4 @@ jobs:
         coverage-files: packages/#{dart_package_name}/coverage/*.info
         working-directory: packages/#{dart_package_name}/
         github-token: ${{ secrets.GITHUB_TOKEN }}
+      if: ${{ github.event_name != 'pull_request' }}
