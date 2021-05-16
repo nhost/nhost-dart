@@ -1,6 +1,6 @@
 name: nhost_sdk_example
 description:
-private: true
+publish_to: none
 
 environment:
   sdk: '>=2.7.0 <3.0.0'
