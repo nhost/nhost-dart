@@ -1,3 +1,7 @@
+## 1.0.3-dev.2
+
+ - Update a dependency to the latest release.
+
 ## 1.0.3-dev.1
 
  - **REFACTOR**: Make use of nhost_gql_links in nhost_graphql_adapter.
