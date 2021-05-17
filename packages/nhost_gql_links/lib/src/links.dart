@@ -113,9 +113,9 @@ Link webSocketLinkForNhost(
   // If authentication state changes, we reconnect the socket, which will also
   // re-evaluate the initialPayload to provide the auth header if available.
   nhostAuth.addTokenChangedCallback(() {
-    print('nhost: Auth token changed');
+    print('[nhost] Auth token changed');
     if (channel != null) {
-      print('nost: …reconnecting web socket');
+      print('[nhost] …reconnecting web socket');
       channel?.sink.close(/* arbitrary */ 0, 'Auth changed');
     }
   });
