@@ -1,3 +1,7 @@
+## 1.0.3-dev.0
+
+ - Update a dependency to the latest release.
+
 ## 1.0.2
 
  - **FIX**: Function signature in OAuth example.
