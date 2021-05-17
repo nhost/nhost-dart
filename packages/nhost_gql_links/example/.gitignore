@@ -1,0 +1,5 @@
+*.ast.gql.dart
+*.req.gql.dart
+*.data.gql.dart
+*.var.gql.dart
+*.gql.g.dart
