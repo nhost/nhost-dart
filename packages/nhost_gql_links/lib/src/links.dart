@@ -1,5 +1,4 @@
 import 'package:gql/ast.dart';
-import 'package:gql/operation.dart';
 import 'package:gql_exec/gql_exec.dart';
 import 'package:gql_http_link/gql_http_link.dart';
 import 'package:gql_link/gql_link.dart';

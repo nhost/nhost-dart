@@ -10,7 +10,6 @@ import 'package:nock/nock.dart';
 import 'package:test/test.dart';
 
 import 'mock_web_socket.dart';
-import 'test_helpers.dart';
 
 const baseUrl = 'https://test';
 const backendEndpoint = '$baseUrl';
