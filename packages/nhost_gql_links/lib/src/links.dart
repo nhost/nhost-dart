@@ -33,12 +33,9 @@ Link combinedLinkForNhost(
       final document = request.operation.document;
       // If any of the operations in the request are subscriptions, we forward
       // the entire request along to the websocket
-      if (document is ExecutableDocument) {
-        return (document as ExecutableDocument)
-            .operations
-            .any((op) => op.type == OperationType.subscription);
-      }
-      return false;
+      return document.definitions
+          .whereType<OperationDefinitionNode>()
+          .any((def) => def.type == OperationType.subscription);
     },
     webSocketLinkForNhost(
       nhostGqlEndpointUrl,
@@ -109,20 +106,19 @@ Link webSocketLinkForNhost(
   final wsEndpointUri =
       uri.replace(scheme: uri.scheme == 'https' ? 'wss' : 'ws');
 
-  late WebSocketChannel channel;
+  WebSocketChannel? channel;
   final channelGenerator = testChannelGenerator != null
-      ? () async {
-          channel = await testChannelGenerator();
-          return channel;
-        } as ChannelGenerator
+      ? (() async => channel = await testChannelGenerator()) as ChannelGenerator
       : () => channel = WebSocketChannel.connect(wsEndpointUri);
 
   // If authentication state changes, we reconnect the socket, which will also
   // re-evaluate the initialPayload to provide the auth header if available.
   nhostAuth.addTokenChangedCallback(() {
-    print('nhost: Auth changed to ${nhostAuth.authenticationState}...'
-        'reconnecting web socket');
-    channel.sink.close(/* arbitrary */ 0, 'Auth changed');
+    print('nhost: Auth token changed');
+    if (channel != null) {
+      print('nost: …reconnecting web socket');
+      channel?.sink?.close(/* arbitrary */ 0, 'Auth changed');
+    }
   });
 
   final webSocketLink = WebSocketLink(
