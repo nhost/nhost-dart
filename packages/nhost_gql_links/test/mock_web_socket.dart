@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:async/async.dart';
 import 'package:mockito/mockito.dart';
