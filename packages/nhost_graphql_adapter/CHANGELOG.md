@@ -1,3 +1,18 @@
+## 1.0.3-dev.3
+
+ - **STYLE**: Add a newline.
+ - **REFACTOR**: Remove the old link library.
+ - **REFACTOR**: Make use of nhost_gql_links in nhost_graphql_adapter.
+ - **REFACTOR**: Make use of nhost_gql_links in nhost_graphql_adapter.
+ - **CI**: Add an empty test file to satisfy CI.
+ - **CI**: Add an empty test folder.
+ - **CHORE**: Publish packages.
+ - **CHORE**: Publish packages.
+ - **CHORE**: Publish packages.
+ - **CHORE**: Publish packages.
+ - **CHORE**: Publish packages.
+ - **CHORE**: Publish packages.
+
 ## 1.0.3-dev.2
 
  - Update a dependency to the latest release.
