@@ -27,4 +27,4 @@ dev_dependencies:
   test: ^1.6.0
 
   # Nhost packages
-  nhost_graphql_adapter: ^1.0.3-dev.1
+  nhost_graphql_adapter: ^1.0.3-dev.2
