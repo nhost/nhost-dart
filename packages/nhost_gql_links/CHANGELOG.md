@@ -1,3 +1,7 @@
+## 1.0.1-dev.2
+
+ - **FIX**: Fix issues when using real (not mock) sockets.
+
 ## 1.0.1-dev.1
 
 > Note: This release has breaking changes.
