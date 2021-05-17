@@ -1,3 +1,12 @@
+## 1.0.3-dev.1
+
+> Note: This release has breaking changes.
+
+ - **REFACTOR**: Make use of nhost_gql_links in nhost_graphql_adapter.
+ - **CHORE**: Publish packages.
+ - **CHORE**: Publish packages.
+ - **BREAKING** **FIX**: Couple build fixes.
+
 ## 1.0.3-dev.0
 
  - **FIX**: Add nullability to Session fields.
