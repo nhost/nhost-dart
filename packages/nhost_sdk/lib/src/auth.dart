@@ -586,9 +586,7 @@ class Auth {
         (jwtExpiresIn != null
             ? max(
                 Duration(seconds: 30),
-                jwtExpiresIn - Duration(seconds: 45),
-              )
-            : Duration(seconds: 30)); // 45 sec before expiry
+                jwtExpiresIn - Duration(seconds: 45), // 45 sec before expiry
 
     // Ensure that the previous timer is cancelled.
     _tokenRefreshTimer?.cancel();

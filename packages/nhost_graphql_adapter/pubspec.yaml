@@ -15,6 +15,7 @@ dependencies:
 
   # Nhost packages
   nhost_sdk: ^1.0.2
+  nhost_gql_links: ^1.0.0
 dev_dependencies:
   async: ^2.5.0
   mockito: ^5.0.2
