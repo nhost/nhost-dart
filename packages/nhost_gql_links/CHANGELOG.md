@@ -1,3 +1,8 @@
+## 1.0.1-dev.4
+
+ - **FIX**: Change socket close code to something that is known.
+ - **FIX**: Reduce reconnection timeout to 3s.
+
 ## 1.0.1-dev.3
 
 > Note: This release has breaking changes.
