@@ -98,8 +98,7 @@ Link webSocketLinkForNhost(
   Map<String, String>? defaultHeaders = const {},
   @visibleForTesting ChannelGenerator? testChannelGenerator,
   @visibleForTesting Duration? testInactivityTimeout,
-  @visibleForTesting
-      Duration testReconnectTimeout = const Duration(seconds: 10),
+  @visibleForTesting Duration testReconnectTimeout = const Duration(seconds: 3),
 }) {
   final uri = Uri.parse(nhostGqlEndpointUrl);
   final wsEndpointUri =
