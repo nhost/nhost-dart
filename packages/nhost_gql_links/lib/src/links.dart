@@ -115,7 +115,7 @@ Link webSocketLinkForNhost(
     print('[nhost] Auth token changed');
     if (channel != null) {
       print('[nhost] …reconnecting web socket');
-      channel?.sink.close(/* arbitrary */ 0, 'Auth changed');
+      channel?.sink.close(1001, 'Auth changed');
     }
   });
 
