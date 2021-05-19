@@ -1,3 +1,16 @@
+## 1.0.2
+
+ - **TEST**: Add a test to ensure socket close code is correct.
+ - **TEST**: Migrate to using FakeAsync instead of real timers in tests.
+ - **TEST**: Add a test to ensure socket close code is correct.
+ - **TEST**: Migrate to using FakeAsync instead of real timers in tests.
+ - **FIX**: Migrate to using a slightly more appropriate close code.
+ - **FIX**: Migrate to using a slightly more appropriate close code.
+ - **DOCS**: Update READMEs to include nhost_gql_links.
+ - **CHORE**: Publish packages.
+ - **CHORE**: Publish packages.
+ - **CHORE**: Publish packages.
+
 ## 1.0.1
 
  - Graduate package to a stable release. See pre-releases prior to this version for changelog entries.
