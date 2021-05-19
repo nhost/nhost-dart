@@ -109,7 +109,9 @@ jobs:
     # Run tests for package in question
     - name: Execute tests
       run: >
-        melos exec --scope=nhost_flutter_auth --
+        melos exec
+        --scope=nhost_flutter_auth
+        --dir-exists=test --
         'flutter test --no-pub --machine --coverage | tojunit
         > test-results.xml'
 
@@ -118,6 +120,7 @@ jobs:
       uses: mikepenz/action-junit-report@v2
       with:
         check_name: 'Test results: nhost_flutter_auth'
+        require_tests: false
         report_paths: "packages/nhost_flutter_auth/test-results.xml"
         github_token: ${{ secrets.GITHUB_TOKEN }}
 

@@ -109,7 +109,9 @@ jobs:
     # Run tests for package in question
     - name: Execute tests
       run: >
-        melos exec --scope=#{dart_package_name} --
+        melos exec
+        --scope=#{dart_package_name}
+        --dir-exists=test --
         'flutter test --no-pub --machine --coverage | tojunit
         > test-results.xml'
 
@@ -118,6 +120,7 @@ jobs:
       uses: mikepenz/action-junit-report@v2
       with:
         check_name: 'Test results: #{dart_package_name}'
+        require_tests: false
         report_paths: "packages/#{dart_package_name}/test-results.xml"
         github_token: ${{ secrets.GITHUB_TOKEN }}
 
