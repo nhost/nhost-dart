@@ -295,5 +295,40 @@ void main() {
         expect(nextSubscribePayload['type'], 'start');
       });
     });
+
+    test('uses a suitable close code when reconnecting on auth changes', () {
+      fakeAsync((async) {
+        // Login
+        nhost.auth.setSession(testSession);
+        async.flushMicrotasks();
+
+        late MockWebSocket mockWebSocket;
+        final nhostLink = webSocketLinkForNhost(
+          gqlEndpoint,
+          nhost.auth,
+          testChannelGenerator: () => mockWebSocket = MockWebSocket.connect(),
+          testInactivityTimeout: null,
+          // Set a very high reconnect, so we can catch the close code before
+          // the sink gets overwritten
+          testReconnectTimeout: Duration(days: 1),
+        );
+
+        // Perform a subscription query
+        nhostLink
+            .request(Request(operation: Operation(document: testSubscription)))
+            .listen((event) {});
+        async.flushMicrotasks();
+
+        // Change the auth token, which triggers a reconnection on the socket
+        nhost.auth.setSession(Session(
+          jwtToken: testJwtAlt,
+          jwtExpiresIn: Duration(days: 1),
+          refreshToken: 'abcd',
+        ));
+        async.elapse(Duration(seconds: 1));
+
+        expect(mockWebSocket.sink.lastCloseCode, webSocketNormalCloseCode);
+      });
+    });
   });
 }

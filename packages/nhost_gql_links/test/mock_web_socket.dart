@@ -35,7 +35,7 @@ class MockWebSocket extends Mock implements WebSocketChannel {
   Stream get stream => _responseController.stream;
 
   @override
-  WebSocketSink get sink => _requestSink;
+  MockWebSocketSink get sink => _requestSink;
 
   void tearDown() {
     _requestController.close();
@@ -49,10 +49,13 @@ class MockWebSocketSink extends DelegatingStreamSink implements WebSocketSink {
   MockWebSocketSink(this.sink, {required this.onClose}) : super(sink);
   final StreamSink sink;
   final Future<void> Function() onClose;
+
+  int? lastCloseCode;
   var isClosed = false;
 
   @override
   Future close([int? closeCode, String? closeReason]) {
+    lastCloseCode = closeCode;
     return super.close().then((res) async {
       await onClose();
       return res;
