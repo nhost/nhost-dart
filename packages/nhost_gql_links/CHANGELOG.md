@@ -1,3 +1,7 @@
+## 1.0.1
+
+ - Graduate package to a stable release. See pre-releases prior to this version for changelog entries.
+
 ## 1.0.1-dev.5
 
  - **TEST**: Add a test to ensure socket close code is correct.
