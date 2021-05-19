@@ -50,6 +50,14 @@ Link combinedLinkForNhost(
   );
 }
 
+/// The code sent to the server when the socket closes in order to send new
+/// authentication information.
+///
+/// This is defined in dart:io, but we want to avoid that so we can build for
+/// the web.
+@visibleForTesting
+const webSocketNormalCloseCode = 1000;
+
 /// Creates an HTTP link that configures automatically based on [nhostAuth]'s
 /// authentication state.
 ///
@@ -115,7 +123,7 @@ Link webSocketLinkForNhost(
     print('[nhost] Auth token changed');
     if (channel != null) {
       print('[nhost] …reconnecting web socket');
-      channel?.sink.close(1001, 'Auth changed');
+      channel?.sink.close(webSocketNormalCloseCode, 'Auth changed');
     }
   });
 
