@@ -22,6 +22,7 @@ dependencies:
   nhost_sdk: ^1.0.3-dev.2
 dev_dependencies:
   async: ^2.5.0
+  fake_async: ^1.2.0
   mockito: ^5.0.2
   nock: ^1.2.0
   pedantic: ^1.11.0

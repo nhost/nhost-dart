@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:fake_async/fake_async.dart';
 import 'package:gql/language.dart';
 import 'package:gql_exec/gql_exec.dart';
 import 'package:nhost_gql_links/nhost_gql_links.dart';
@@ -247,47 +248,52 @@ void main() {
       expect(lastInitPayload['payload']['headers'], {});
     });
 
-    test('recreates subscriptions on auth reconnects', () async {
-      // Login
-      await nhost.auth.setSession(testSession);
+    test('recreates subscriptions on auth reconnects', () {
+      fakeAsync((async) {
+        // Login
+        nhost.auth.setSession(testSession);
+        async.flushMicrotasks();
 
-      late MockWebSocket mockWebSocket;
-      final nhostLink = webSocketLinkForNhost(
-        gqlEndpoint,
-        nhost.auth,
-        testChannelGenerator: () => mockWebSocket = MockWebSocket.connect(),
-        testInactivityTimeout: null,
-        testReconnectTimeout: Duration(milliseconds: 16),
-      );
+        late MockWebSocket mockWebSocket;
+        final nhostLink = webSocketLinkForNhost(
+          gqlEndpoint,
+          nhost.auth,
+          testChannelGenerator: () => mockWebSocket = MockWebSocket.connect(),
+          testInactivityTimeout: null,
+          testReconnectTimeout: Duration(milliseconds: 0),
+        );
 
-      // Perform a subscription query
-      nhostLink
-          .request(Request(operation: Operation(document: testSubscription)))
-          .listen((event) {});
-      await Future.delayed(Duration(seconds: 1));
+        // Perform a subscription query
+        nhostLink
+            .request(Request(operation: Operation(document: testSubscription)))
+            .listen((event) {});
+        async.flushMicrotasks();
 
-      // Ensure that we see a subscription request as the most recent message
-      final initAuthPayload = jsonDecode(mockWebSocket.payloads.first);
-      final initSubscribePayload = jsonDecode(mockWebSocket.payloads.last);
-      expect(initSubscribePayload['type'], 'start');
+        // Ensure that we see a subscription request as the most recent message
+        final initAuthPayload = jsonDecode(mockWebSocket.payloads.first);
+        final initSubscribePayload = jsonDecode(mockWebSocket.payloads.last);
+        expect(initSubscribePayload['type'], 'start');
 
-      // Change the auth token, which triggers a reconnection on the socket
-      await nhost.auth.setSession(Session(
-        jwtToken: testJwtAlt,
-        jwtExpiresIn: Duration(days: 1),
-        refreshToken: 'abcd',
-      ));
-      await Future.delayed(Duration(seconds: 1));
+        // Change the auth token, which triggers a reconnection on the socket
+        nhost.auth.setSession(Session(
+          jwtToken: testJwtAlt,
+          jwtExpiresIn: Duration(days: 1),
+          refreshToken: 'abcd',
+        ));
+        // 1 second is arbitrary. This call flushes microtasks, and invokes
+        // the reconnection timer's callback
+        async.elapse(Duration(seconds: 1));
 
-      // Check that we are leading with a new auth request (indicating a new
-      // session), and that we have a subscription start message following it
-      // (indicating that the subscription request is new, because payloads are
-      // time ordered)
-      final nextAuthPayload = jsonDecode(mockWebSocket.payloads.first);
-      final nextSubscribePayload = jsonDecode(mockWebSocket.payloads.last);
-      expect(nextAuthPayload['payload']['headers']['Authorization'],
-          isNot(initAuthPayload['payload']['headers']['Authorization']));
-      expect(nextSubscribePayload['type'], 'start');
+        // Check that we are leading with a new auth request (indicating a new
+        // session), and that we have a subscription start message following it
+        // (indicating that the subscription request is new, because payloads are
+        // time ordered)
+        final nextAuthPayload = jsonDecode(mockWebSocket.payloads.first);
+        final nextSubscribePayload = jsonDecode(mockWebSocket.payloads.last);
+        expect(nextAuthPayload['payload']['headers']['Authorization'],
+            isNot(initAuthPayload['payload']['headers']['Authorization']));
+        expect(nextSubscribePayload['type'], 'start');
+      });
     });
   });
 }
