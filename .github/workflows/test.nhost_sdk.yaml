@@ -124,12 +124,19 @@ jobs:
         report_paths: "packages/nhost_sdk/test-results.xml"
         github_token: ${{ secrets.GITHUB_TOKEN }}
 
+    # Check if coverage was generated
+    - name: Check for coverage file
+      id: check_coverage_exists
+      uses: andstor/file-existence-action@v1
+      with:
+        files: "packages/nhost_sdk/coverage/lcov.info"
+
     # Report coverage
     - name: Report coverage
       uses: zgosalvez/github-actions-report-lcov@v1
       with:
         artifact-name: 'Test coverage for nhost_sdk'
-        coverage-files: packages/nhost_sdk/coverage/*.info
+        coverage-files: packages/nhost_sdk/coverage/lcov.info
         working-directory: packages/nhost_sdk/
         github-token: ${{ secrets.GITHUB_TOKEN }}
-      if: ${{ github.event_name != 'pull_request' }}
+      if: ${{ github.event_name != 'pull_request' && steps.check_coverage_exists.outputs.files_exists == 'true' }}

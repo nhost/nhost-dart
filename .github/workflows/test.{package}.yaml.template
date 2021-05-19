@@ -124,12 +124,19 @@ jobs:
         report_paths: "packages/#{dart_package_name}/test-results.xml"
         github_token: ${{ secrets.GITHUB_TOKEN }}
 
+    # Check if coverage was generated
+    - name: Check for coverage file
+      id: check_coverage_exists
+      uses: andstor/file-existence-action@v1
+      with:
+        files: "packages/#{dart_package_name}/coverage/lcov.info"
+
     # Report coverage
     - name: Report coverage
       uses: zgosalvez/github-actions-report-lcov@v1
       with:
         artifact-name: 'Test coverage for #{dart_package_name}'
-        coverage-files: packages/#{dart_package_name}/coverage/*.info
+        coverage-files: packages/#{dart_package_name}/coverage/lcov.info
         working-directory: packages/#{dart_package_name}/
         github-token: ${{ secrets.GITHUB_TOKEN }}
-      if: ${{ github.event_name != 'pull_request' }}
+      if: ${{ github.event_name != 'pull_request' && steps.check_coverage_exists.outputs.files_exists == 'true' }}
