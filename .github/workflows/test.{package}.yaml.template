@@ -102,6 +102,14 @@ jobs:
     - name: Bootstrap packages
       run: melos bootstrap
 
+    - name: Run build_runner if required
+      run: >
+        melos exec
+        --scope=#{dart_package_name}
+        --scope=#{dart_package_name}_example
+        --depends-on=build_runner --
+        'pub run build_runner build'
+
     # Run analysis on all packages
     - name: Analyze packages
       run: flutter analyze --no-pub --congratulate packages/* packages/*/example

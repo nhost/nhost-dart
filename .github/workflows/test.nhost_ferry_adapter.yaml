@@ -10,7 +10,7 @@
 # Instantiations of this template are produced by the Melos postbootstrap script
 # which can be found in `melos.yaml`.
 
-name: 'nhost_flutter_graphql tests'
+name: 'nhost_ferry_adapter tests'
 on:
   push:
     branches:
@@ -24,8 +24,7 @@ on:
   # Run the quality job at 4am every day
   - cron: '0 4 * * *'
 
-env:
-  MAX_PANA_MISSING_POINTS: 40
+env: {}
 jobs:
   # Ensure that the package meets a suitably high pub.dev score
   score-package-quality:
@@ -39,14 +38,14 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - run: .github/workflows/scripts/make-pana-pubspecs.sh
+    - run: .github/workflows/scripts/make-relative-pubspecs.sh
 
     - uses: axel-op/dart-package-analyzer@v3
       # Set an id for the current step, so we can reference it later
       id: analysis
       with:
         githubToken: ${{ secrets.GITHUB_TOKEN }}
-        relativePath: packages/nhost_flutter_graphql
+        relativePath: packages/nhost_ferry_adapter
 
     - name: Require analysis (near) perfection
       env:
@@ -106,8 +105,8 @@ jobs:
     - name: Run build_runner if required
       run: >
         melos exec
-        --scope=nhost_flutter_graphql
-        --scope=nhost_flutter_graphql_example
+        --scope=nhost_ferry_adapter
+        --scope=nhost_ferry_adapter_example
         --depends-on=build_runner --
         'pub run build_runner build'
 
@@ -119,7 +118,7 @@ jobs:
     - name: Execute tests
       run: >
         melos exec
-        --scope=nhost_flutter_graphql
+        --scope=nhost_ferry_adapter
         --dir-exists=test --
         'flutter test --no-pub --machine --coverage | tojunit
         > test-results.xml'
@@ -128,9 +127,9 @@ jobs:
     - name: Report test results
       uses: mikepenz/action-junit-report@v2
       with:
-        check_name: 'Test results: nhost_flutter_graphql'
+        check_name: 'Test results: nhost_ferry_adapter'
         require_tests: false
-        report_paths: "packages/nhost_flutter_graphql/test-results.xml"
+        report_paths: "packages/nhost_ferry_adapter/test-results.xml"
         github_token: ${{ secrets.GITHUB_TOKEN }}
 
     # Check if coverage was generated
@@ -138,14 +137,14 @@ jobs:
       id: check_coverage_exists
       uses: andstor/file-existence-action@v1
       with:
-        files: "packages/nhost_flutter_graphql/coverage/lcov.info"
+        files: "packages/nhost_ferry_adapter/coverage/lcov.info"
 
     # Report coverage
     - name: Report coverage
       uses: zgosalvez/github-actions-report-lcov@v1
       with:
-        artifact-name: 'Test coverage for nhost_flutter_graphql'
-        coverage-files: packages/nhost_flutter_graphql/coverage/lcov.info
-        working-directory: packages/nhost_flutter_graphql/
+        artifact-name: 'Test coverage for nhost_ferry_adapter'
+        coverage-files: packages/nhost_ferry_adapter/coverage/lcov.info
+        working-directory: packages/nhost_ferry_adapter/
         github-token: ${{ secrets.GITHUB_TOKEN }}
       if: ${{ github.event_name != 'pull_request' && steps.check_coverage_exists.outputs.files_exists == 'true' }}
