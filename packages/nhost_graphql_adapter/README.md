@@ -11,6 +11,9 @@ If you're building for Flutter, check out
 for widgets that work great with
 [graphql_flutter](https://pub.dev/packages/graphql_flutter).
 
+Are you a [Ferry](https://ferrygraphql.com/) user? Take a look at
+[nhost_ferry_adapter](https://pub.dev/packages/nhost_ferry_adapter).
+
 ## Getting Started
 ### Latest Release
 
@@ -19,16 +22,9 @@ dependencies:
   nhost_graphql_adapter: ^1.0.0
 ```
 
-For people affected by the Metal jank issues on iOS, we support Flutter 1.22.4
-as well:
-
-```yaml
-dependencies:
-  nhost_graphql_adapter: ^0.6.0
-```
-
 ## 🔥 More Dart & Flutter packages from Nhost
 
 * [nhost_sdk](https://pub.dev/packages/nhost_sdk)
+* [nhost_ferry_adapter](https://pub.dev/packages/nhost_ferry_adapter)
 * [nhost_flutter_graphql](https://pub.dev/packages/nhost_flutter_graphql)
 * [nhost_flutter_auth](https://pub.dev/packages/nhost_flutter_auth)
