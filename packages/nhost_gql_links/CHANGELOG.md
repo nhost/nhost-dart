@@ -1,3 +1,9 @@
+## 1.0.1-dev.5
+
+ - **TEST**: Add a test to ensure socket close code is correct.
+ - **TEST**: Migrate to using FakeAsync instead of real timers in tests.
+ - **FIX**: Migrate to using a slightly more appropriate close code.
+
 ## 1.0.1-dev.4
 
  - **FIX**: Change socket close code to something that is known.
