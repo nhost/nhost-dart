@@ -115,7 +115,8 @@ Link webSocketLinkForNhost(
   WebSocketChannel? channel;
   final channelGenerator = testChannelGenerator != null
       ? (() async => channel = await testChannelGenerator()) as ChannelGenerator
-      : () => channel = WebSocketChannel.connect(wsEndpointUri);
+      : () => channel =
+          WebSocketChannel.connect(wsEndpointUri, protocols: ['graphql-ws']);
 
   // If authentication state changes, we reconnect the socket, which will also
   // re-evaluate the initialPayload to provide the auth header if available.
