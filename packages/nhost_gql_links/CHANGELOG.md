@@ -1,3 +1,7 @@
+## 1.0.3
+
+ - **FIX**: Provide protocol header expected by browser.
+
 ## 1.0.2
 
  - **TEST**: Add a test to ensure socket close code is correct.
