@@ -39,7 +39,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - run: .github/workflows/scripts/make-relative-pubspecs.sh
+    - run: .github/workflows/scripts/make-pana-pubspecs.sh
 
     - uses: axel-op/dart-package-analyzer@v3
       # Set an id for the current step, so we can reference it later
