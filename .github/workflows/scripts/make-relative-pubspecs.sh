@@ -15,14 +15,17 @@ get_packages () {
 nl=$'\n'
 for target_package in $(get_packages); do
   pushd $repo_dir/packages/$target_package
+
     for dependency_package in $(get_packages); do
       if [ $target_package == $dependency_package ]; then
         continue;
       fi
+      escaped_absolute_dep_path=$(realpath "../$dependency_package" | sed 's/\//\\\//g')
+      echo "$dependency_package: rewrite to $escaped_absolute_dep_path"
 
       if egrep "$dependency_package" pubspec.yaml; then
         cat pubspec.yaml | \
-          sed "s/$dependency_package:.*/$dependency_package:\\${nl}    path: ..\/$dependency_package\//" > pubspec.new
+          sed "s/$dependency_package:.*/$dependency_package:\\${nl}    path: $escaped_absolute_dep_path/" > pubspec.new
 
         mv pubspec.new pubspec.yaml
       fi
