@@ -57,7 +57,7 @@ class Auth {
     bool? autoLogin = true,
     Duration? refreshInterval,
     required http.Client httpClient,
-  })   : _apiClient = ApiClient(Uri.parse(baseUrl), httpClient: httpClient),
+  })  : _apiClient = ApiClient(Uri.parse(baseUrl), httpClient: httpClient),
         _session = session,
         _authStore = authStore,
         _tokenRefreshInterval = refreshInterval,

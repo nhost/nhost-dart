@@ -22,7 +22,7 @@ class Storage {
     required String baseUrl,
     required UserSession session,
     required http.Client httpClient,
-  })   : _apiClient = ApiClient(Uri.parse(baseUrl), httpClient: httpClient),
+  })  : _apiClient = ApiClient(Uri.parse(baseUrl), httpClient: httpClient),
         _session = session;
 
   /// Releases the object's resources.
