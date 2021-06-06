@@ -1,3 +1,7 @@
+## 1.0.4
+
+ - **FIX**: Update dependendency on gql_websocket_link.
+
 ## 1.0.3
 
  - **FIX**: Provide protocol header expected by browser.

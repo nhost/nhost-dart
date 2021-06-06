@@ -19,7 +19,7 @@ dependencies:
   # Nhost packages
   nhost_sdk: ^1.0.3
   nhost_flutter_auth: ^1.0.3
-  nhost_graphql_adapter: ^1.0.5
+  nhost_graphql_adapter: ^1.0.6
 dev_dependencies:
   flutter_test:
     sdk: flutter
