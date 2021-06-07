@@ -1,3 +1,17 @@
+## 1.0.4
+
+ - **STYLE**: Reformat Dart files to pass CI.
+ - **FIX**: Add debug printing when token refreshes fail.
+ - **FIX**: Keep auth refresh-locked when a refresh is already in process.
+ - **CHORE**: Upgrade graphql dependency to 5.0.0-beta.2.
+ - **CHORE**: Publish packages.
+ - **CHORE**: Publish packages.
+ - **CHORE**: Publish packages.
+ - **CHORE**: Publish packages.
+ - **CHORE**: Publish packages.
+ - **CHORE**: Publish packages.
+ - **CHORE**: Publish packages.
+
 ## 1.0.3
 
  - Graduate package to a stable release. See pre-releases prior to this version for changelog entries.

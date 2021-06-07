@@ -1,3 +1,7 @@
+## 1.0.5
+
+ - Update a dependency to the latest release.
+
 ## 1.0.4
 
  - **FIX**: Update dependendency on gql_websocket_link.
