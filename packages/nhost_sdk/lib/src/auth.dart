@@ -528,15 +528,16 @@ class Auth {
       return;
     }
 
+    // Set lock to avoid two refresh token request being sent at the same time
+    // with the same token. If so, the last request will fail because the
+    // first request used the refresh token
+    if (_refreshTokenLock) {
+      debugPrint('Refresh token already in transit. Halting this request.');
+      return;
+    }
+
     Session? res;
     try {
-      // Set lock to avoid two refresh token request being sent at the same time
-      // with the same token. If so, the last request will fail because the
-      // first request used the refresh token
-      if (_refreshTokenLock) {
-        debugPrint('Refresh token already in transit. Halting this request.');
-        return;
-      }
       _refreshTokenLock = true;
 
       // Make refresh token request
