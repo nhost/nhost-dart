@@ -548,14 +548,22 @@ class Auth {
         },
         responseDeserializer: Session.fromJson,
       );
-    } on ApiException catch (e) {
+    } on ApiException catch (e, st) {
+      debugPrint('API exception during token refresh');
+      debugPrint(e);
+      debugPrint(st);
+
       if (e.statusCode == unauthorizedStatus) {
         await logout();
         return;
       } else {
         return; // Silent fail
       }
-    } catch (e) {
+    } catch (e, st) {
+      debugPrint('Exception during token refresh');
+      debugPrint(e);
+      debugPrint(st);
+
       return;
     } finally {
       // Release lock
