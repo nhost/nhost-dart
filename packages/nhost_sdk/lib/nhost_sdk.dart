@@ -1,6 +1,7 @@
 library nhost_sdk;
 
 import 'package:http/http.dart' as http;
+import 'package:nhost_sdk/src/logging.dart';
 
 import 'src/auth.dart';
 import 'src/auth_store.dart';
@@ -12,6 +13,7 @@ export 'src/api/auth_api_types.dart';
 export 'src/api/storage_api_types.dart';
 export 'src/auth.dart';
 export 'src/auth_store.dart';
+export 'src/logging.dart' show debugLogNhostErrorsToConsole;
 export 'src/storage.dart';
 
 /// API client for accessing Nhost's authentication and storage APIs.
@@ -75,7 +77,9 @@ class NhostClient {
         _refreshToken = refreshToken,
         _autoLogin = autoLogin ?? true,
         _refreshInterval = tokenRefreshInterval,
-        _httpClient = httpClientOverride;
+        _httpClient = httpClientOverride {
+    initializeLogging();
+  }
 
   /// The Nhost project's backend URL.
   final String baseUrl;

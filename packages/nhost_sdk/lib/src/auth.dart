@@ -2,11 +2,11 @@ import 'dart:async';
 
 import 'package:http/http.dart' as http;
 import 'package:meta/meta.dart';
+import 'package:nhost_sdk/src/logging.dart';
 
 import 'api/api_client.dart';
 import 'api/auth_api_types.dart';
 import 'auth_store.dart';
-import 'debug.dart';
 import 'foundation/duration.dart';
 import 'http.dart';
 import 'session.dart';
@@ -141,12 +141,16 @@ class Auth {
   }
 
   void _onTokenChanged() {
+    log.finest('Calling token change callbacks, '
+        'jwt.hashCode=${identityHashCode(jwt)}');
     for (final tokenChangedFunction in _tokenChangedFunctions) {
       tokenChangedFunction();
     }
   }
 
   void _onAuthStateChanged({required bool authenticated}) {
+    log.finest(
+        'Calling auth state change callbacks, authenticated=$authenticated');
     for (final authChangedFunction in _authChangedFunctions) {
       authChangedFunction(authenticated: authenticated);
     }
@@ -170,6 +174,8 @@ class Auth {
     String? defaultRole,
     List<String>? allowedRoles,
   }) async {
+    log.finer('Attempting user registration');
+
     userData ??= const {};
     final includeRoleOptions = defaultRole != null ||
         (allowedRoles != null && allowedRoles.isNotEmpty);
@@ -193,6 +199,7 @@ class Auth {
         },
         responseDeserializer: Session.fromJson,
       );
+      log.finer('Registration successful');
     } catch (e) {
       rethrow;
     }
@@ -220,6 +227,7 @@ class Auth {
     required String email,
     required String password,
   }) async {
+    log.finer('Attempting login');
     AuthResponse? loginRes;
     try {
       loginRes = await _apiClient.post(
@@ -231,7 +239,9 @@ class Auth {
         },
         responseDeserializer: AuthResponse.fromJson,
       );
-    } catch (e) {
+      log.finer('Login successful');
+    } catch (e, st) {
+      log.finer('Login failed', e, st);
       await _clearSession();
       rethrow;
     }
@@ -256,6 +266,7 @@ class Auth {
   Future<AuthResponse> logout({
     bool all = false,
   }) async {
+    log.finer('Attempting logout');
     final refreshToken =
         await _authStore.getString(refreshTokenClientStorageKey);
     try {
@@ -268,7 +279,10 @@ class Auth {
           'all': all,
         },
       );
-    } catch (e) {
+      log.finer('Logout successful');
+    } catch (e, st) {
+      log.finer('Logout failed', e, st);
+
       // noop
       // TODO(shyndman): This probably shouldn't be a noop. If a logout fails,
       // particularly in the ?all=true case, the user should know about it
@@ -519,11 +533,14 @@ class Auth {
   }
 
   Future<void> _refreshToken([String? initRefreshToken]) async {
+    log.finest('Session refresh requested');
+
     final refreshToken = initRefreshToken ??
         await _authStore.getString(refreshTokenClientStorageKey);
 
     // If there's no refresh token, we're all done.
     if (refreshToken == null) {
+      log.finest('No refresh token. Halting request.');
       _loading = false;
       return;
     }
@@ -532,7 +549,7 @@ class Auth {
     // with the same token. If so, the last request will fail because the
     // first request used the refresh token
     if (_refreshTokenLock) {
-      debugPrint('Refresh token already in transit. Halting this request.');
+      log.finest('Session refresh already in progress. Halting this request.');
       return;
     }
 
@@ -541,6 +558,7 @@ class Auth {
       _refreshTokenLock = true;
 
       // Make refresh token request
+      log.finest('Making session refresh request');
       res = await _apiClient.get(
         '/token/refresh',
         query: {
@@ -549,21 +567,17 @@ class Auth {
         responseDeserializer: Session.fromJson,
       );
     } on ApiException catch (e, st) {
-      debugPrint('API exception during token refresh');
-      debugPrint(e);
-      debugPrint(st);
+      log.severe('API exception during token refresh', e, st);
 
       if (e.statusCode == unauthorizedStatus) {
+        log.finest('Unauthorized refresh. Forcing logout.');
         await logout();
         return;
       } else {
         return; // Silent fail
       }
     } catch (e, st) {
-      debugPrint('Exception during token refresh');
-      debugPrint(e);
-      debugPrint(st);
-
+      log.severe('Exception during token refresh', e, st);
       return;
     } finally {
       // Release lock
@@ -581,6 +595,9 @@ class Auth {
   /// conditions.
   @visibleForTesting
   Future<void> setSession(Session session) async {
+    log.finest(
+        'Setting session, jwt.hashCode=${identityHashCode(session.jwtToken)}');
+
     final previouslyAuthenticated = authenticationState;
     _session.session = session;
     _currentUser = session.user;
@@ -603,7 +620,9 @@ class Auth {
     _tokenRefreshTimer?.cancel();
 
     // Start refresh token interval after logging in.
-    _tokenRefreshTimer = Timer.periodic(refreshTimerDuration, (_) {
+    log.finest('Creating token refresh timer, duration=$refreshTimerDuration');
+    _tokenRefreshTimer = Timer(refreshTimerDuration, () {
+      log.finest('Refresh timer elapsed');
       _refreshToken();
     });
 
@@ -622,6 +641,8 @@ class Auth {
   /// Failure to do so will result in very difficult to track down race
   /// conditions.
   Future<void> _clearSession() async {
+    log.finest('Clearing session');
+
     if (_tokenRefreshTimer != null) {
       _tokenRefreshTimer!.cancel();
       _tokenRefreshTimer = null;

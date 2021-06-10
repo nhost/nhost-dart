@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:meta/meta.dart';
+import 'package:nhost_sdk/src/logging.dart';
 
 import '../foundation/uri.dart';
 import '../http.dart';
@@ -167,6 +168,8 @@ class ApiClient {
 
     // If the status is not in the success range, throw.
     if (response.statusCode < 200 || response.statusCode >= 300) {
+      log.finer('API client encountered a failure, '
+          'url=${request.url} status=${response.statusCode}');
       throw ApiException(request.url, responseBody, request, response);
     }
 
