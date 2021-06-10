@@ -5,6 +5,7 @@ import 'package:gql_link/gql_link.dart';
 import 'package:gql_websocket_link/gql_websocket_link.dart';
 import 'package:http/http.dart' as http;
 import 'package:meta/meta.dart';
+import 'package:nhost_gql_links/src/logging.dart';
 import 'package:nhost_sdk/nhost_sdk.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
@@ -30,11 +31,16 @@ Link combinedLinkForNhost(
   return Link.split(
     (Request request) {
       final document = request.operation.document;
+      final operationDefs =
+          document.definitions.whereType<OperationDefinitionNode>().toList();
+      final operationTypes = operationDefs.map((def) => def.type).toSet();
+
+      log.finest(
+          () => 'Issuing request, operations=${operationDefs.toLogString()}');
+
       // If any of the operations in the request are subscriptions, we forward
       // the entire request along to the websocket
-      return document.definitions
-          .whereType<OperationDefinitionNode>()
-          .any((def) => def.type == OperationType.subscription);
+      return operationTypes.contains(OperationType.subscription);
     },
     webSocketLinkForNhost(
       nhostGqlEndpointUrl,
@@ -115,15 +121,17 @@ Link webSocketLinkForNhost(
   WebSocketChannel? channel;
   final channelGenerator = testChannelGenerator != null
       ? (() async => channel = await testChannelGenerator()) as ChannelGenerator
-      : () => channel =
-          WebSocketChannel.connect(wsEndpointUri, protocols: ['graphql-ws']);
+      : () {
+          log.finest('Creating GraphQL web socket, uri=$wsEndpointUri');
+          return channel = WebSocketChannel.connect(wsEndpointUri,
+              protocols: ['graphql-ws']);
+        };
 
   // If authentication state changes, we reconnect the socket, which will also
   // re-evaluate the initialPayload to provide the auth header if available.
   nhostAuth.addTokenChangedCallback(() {
-    print('[nhost] Auth token changed');
     if (channel != null) {
-      print('[nhost] …reconnecting web socket');
+      log.finest('Reconnecting GraphQL web socket as result of token change');
       channel?.sink.close(webSocketNormalCloseCode, 'Auth changed');
     }
   });
