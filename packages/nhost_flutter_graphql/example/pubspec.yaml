@@ -6,7 +6,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  graphql: ^5.0.0-beta.2
+  graphql: ^5.0.0
 
   # Nhost packages
   nhost_flutter_graphql:
