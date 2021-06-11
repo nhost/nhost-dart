@@ -20,7 +20,7 @@ dependencies:
 dev_dependencies:
   betamax: ^1.0.0
   fake_async: ^1.0.0
-  graphql: ^5.0.0-beta.2
+  graphql: ^5.0.0
   nock: ^1.0.0
   otp: '>=3.0.0-nullsafety.0 <4.0.0'
   stack_trace: ^1.0.0
