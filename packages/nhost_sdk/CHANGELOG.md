@@ -1,3 +1,7 @@
+## 1.1.0
+
+ - **FEAT**: Add use of the logging package.
+
 ## 1.0.4
 
  - **STYLE**: Reformat Dart files to pass CI.

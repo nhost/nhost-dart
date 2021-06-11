@@ -1,3 +1,7 @@
+## 1.1.0
+
+ - **FEAT**: Add use of the logging package.
+
 ## 1.0.5
 
  - Update a dependency to the latest release.
