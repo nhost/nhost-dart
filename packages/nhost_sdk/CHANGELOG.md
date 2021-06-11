@@ -1,3 +1,7 @@
+## 1.1.1
+
+ - **FIX**: Upgrade graphql dependency to 5.0.0.
+
 ## 1.1.0
 
  - **FEAT**: Add use of the logging package.

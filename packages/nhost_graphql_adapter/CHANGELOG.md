@@ -1,3 +1,7 @@
+## 1.0.9
+
+ - **FIX**: Upgrade graphql dependency to 5.0.0.
+
 ## 1.0.8
 
  - Update a dependency to the latest release.

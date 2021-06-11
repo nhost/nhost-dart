@@ -1,3 +1,8 @@
+## 1.0.6
+
+ - **FIX**: Upgrade graphql_flutter dependency to 5.0.0.
+ - **FIX**: Upgrade graphql dependency to 5.0.0.
+
 ## 1.0.5
 
  - Update a dependency to the latest release.
