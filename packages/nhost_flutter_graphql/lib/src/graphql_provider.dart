@@ -4,6 +4,8 @@ import 'package:nhost_flutter_auth/nhost_flutter_auth.dart';
 import 'package:nhost_graphql_adapter/nhost_graphql_adapter.dart';
 import 'package:nhost_sdk/nhost_sdk.dart';
 
+import 'logging.dart';
+
 /// Provides a [GraphQLProvider] to this widget's subtree, configured to access
 /// Nhost.
 ///
@@ -88,6 +90,8 @@ class _NhostGraphQLProviderState extends State<NhostGraphQLProvider> {
   void _rebuildGraphQLClientIfNecessary({bool force = false}) {
     final currentAuth = currentNhostAuth;
     if (force || _lastAuth != currentAuth) {
+      log.finest('Creating new GQL client, '
+          'auth.hashCode=${identityHashCode(currentAuth)}, force=$force');
       final client = createNhostGraphQLClientForAuth(
         widget.gqlEndpointUrl,
         _lastAuth = currentAuth,
