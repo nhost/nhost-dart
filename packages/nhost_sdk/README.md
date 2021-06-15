@@ -57,5 +57,6 @@ dependencies:
 ## 🔥 More Dart & Flutter packages from Nhost
 
 * [nhost_graphql_adapter](https://pub.dev/packages/nhost_graphql_adapter)
+* [nhost_ferry_adapter](https://pub.dev/packages/nhost_ferry_adapter)
 * [nhost_flutter_graphql](https://pub.dev/packages/nhost_flutter_graphql)
 * [nhost_flutter_auth](https://pub.dev/packages/nhost_flutter_auth)

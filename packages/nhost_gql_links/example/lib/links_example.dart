@@ -4,11 +4,11 @@ library links_example;
 
 import 'dart:async';
 
-import 'package:graphql/client.dart';
+import 'package:gql/language.dart';
+import 'package:gql_exec/gql_exec.dart';
+import 'package:gql_link/gql_link.dart';
+import 'package:nhost_gql_links/nhost_gql_links.dart';
 import 'package:nhost_sdk/nhost_sdk.dart';
-import 'package:nhost_graphql_adapter/nhost_graphql_adapter.dart';
-
-import 'todo_example.dart';
 
 // Both of these URLs can be found in your nhost.io console, under the project
 // you wish to connect to.
@@ -16,13 +16,12 @@ import 'todo_example.dart';
 const backendEndpoint = 'https://backend-5e69d1d7.nhost.app';
 const graphQLEndpoint = 'https://hasura-5e69d1d7.nhost.app/v1/graphql';
 
-final myTodosQuery = gql(r'''
+final myTodosQuery = parseString(r'''
   query {
     todos {
       id
       name
       is_completed
-      user_id
       created_at
       updated_at
     }
@@ -43,7 +42,7 @@ void main() async {
   // through it
   final loggingMiddleware = Link.function((request, [nextLink]) {
     print('REQUEST: $request');
-    return nextLink(request).transform(
+    return nextLink!(request).transform(
       StreamTransformer.fromHandlers(
         handleData: (data, sink) {
           print('RESPONSE: $data');
@@ -53,16 +52,15 @@ void main() async {
     );
   });
 
-  // Construct a GraphQL client using the composed link
-  final gqlClient = GraphQLClient(
-    link: loggingMiddleware.concat(nhostLink),
-    cache: GraphQLCache(),
-  );
+  // Combine the two links we've created into a pipeline. This is what you'd
+  // provide to your client.
+  final link = loggingMiddleware.concat(nhostLink);
 
-  // Now we query, and will see logs printed to the console
-  await gqlClient.query(QueryOptions(
-    document: todosQuery,
-  ));
+  // Query the link directly (usually this would be done through a client
+  // object)
+  await link
+      .request(Request(operation: Operation(document: myTodosQuery)))
+      .first;
 
   nhostClient.close();
 }

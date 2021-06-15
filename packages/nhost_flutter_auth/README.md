@@ -26,4 +26,5 @@ dependencies:
 
 * [nhost_sdk](https://pub.dev/packages/nhost_sdk)
 * [nhost_graphql_adapter](https://pub.dev/packages/nhost_graphql_adapter)
+* [nhost_ferry_adapter](https://pub.dev/packages/nhost_ferry_adapter)
 * [nhost_flutter_graphql](https://pub.dev/packages/nhost_flutter_graphql)
