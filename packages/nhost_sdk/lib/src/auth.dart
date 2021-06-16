@@ -19,7 +19,8 @@ typedef TokenChangedCallback = void Function();
 /// Signature for callbacks that respond to authentication changes.
 ///
 /// Registered via [Auth.addAuthStateChangedCallback].
-typedef AuthStateChangedCallback = void Function({required bool authenticated});
+typedef AuthStateChangedCallback = void Function(
+    AuthenticationState authenticationState);
 
 /// Signature for functions that remove their associated callback when called.
 typedef UnsubscribeDelegate = void Function();
@@ -148,11 +149,10 @@ class Auth {
     }
   }
 
-  void _onAuthStateChanged({required bool authenticated}) {
-    log.finest(
-        'Calling auth state change callbacks, authenticated=$authenticated');
+  void _onAuthStateChanged(AuthenticationState authState) {
+    log.finest('Calling auth state change callbacks, authState=$authState');
     for (final authChangedFunction in _authChangedFunctions) {
-      authChangedFunction(authenticated: authenticated);
+      authChangedFunction(authState);
     }
   }
 
@@ -542,6 +542,7 @@ class Auth {
     if (refreshToken == null) {
       log.finest('No refresh token. Halting request.');
       _loading = false;
+      _onAuthStateChanged(authenticationState);
       return;
     }
 
@@ -631,7 +632,7 @@ class Auth {
 
     _onTokenChanged();
     if (previouslyAuthenticated != AuthenticationState.loggedIn) {
-      _onAuthStateChanged(authenticated: true);
+      _onAuthStateChanged(AuthenticationState.loggedIn);
     }
   }
 
@@ -658,7 +659,7 @@ class Auth {
 
     _loading = false;
     _onTokenChanged();
-    _onAuthStateChanged(authenticated: false);
+    _onAuthStateChanged(AuthenticationState.loggedOut);
   }
 
   //#endregion

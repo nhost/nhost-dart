@@ -202,34 +202,33 @@ void main() async {
   });
 
   group('authentication state callbacks', () {
-    bool? authStateVar = false;
+    AuthenticationState? authStateVar;
     late UnsubscribeDelegate unsubscribe;
 
     setUp(() {
-      authStateVar = false;
-      unsubscribe =
-          auth.addAuthStateChangedCallback(({required authenticated}) {
-        authStateVar = authenticated;
+      authStateVar = AuthenticationState.inProgress;
+      unsubscribe = auth.addAuthStateChangedCallback((authState) {
+        authStateVar = authState;
       });
     });
 
     test('should be called on login', () async {
       await registerTestUser(auth);
       await auth.login(email: testEmail, password: testPassword);
-      expect(authStateVar, true);
+      expect(authStateVar, AuthenticationState.loggedIn);
     });
 
     test('should be called on logout', () async {
       await registerTestUser(auth);
       await auth.logout();
-      expect(authStateVar, false);
+      expect(authStateVar, AuthenticationState.loggedOut);
     });
 
     test('should not be called once unsubscribed', () async {
       await registerTestUser(auth);
       unsubscribe();
       await auth.login(email: testEmail, password: testPassword);
-      expect(authStateVar, false);
+      expect(authStateVar, AuthenticationState.loggedOut);
     });
   });
 
