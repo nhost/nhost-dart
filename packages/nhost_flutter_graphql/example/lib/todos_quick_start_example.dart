@@ -121,6 +121,11 @@ class TodosPage extends StatelessWidget {
       builder: (result, {fetchMore, refetch}) {
         if (result.isLoading) return Text('Loading…');
         if (!result.isConcrete) return SizedBox();
+        if (result.hasException) {
+          return Text('Error encountered while loading todos. Did you setup '
+              'your backend using the quick-start at '
+              'https://docs.nhost.io/quick-start?');
+        }
 
         final todos = (result.data['todos'] as List)
             .map((json) => Todo.fromJson(json))
