@@ -18,7 +18,7 @@ typedef TokenChangedCallback = void Function();
 
 /// Signature for callbacks that respond to authentication changes.
 ///
-/// Registered via [Auth.addTokenChangedCallback].
+/// Registered via [Auth.addAuthStateChangedCallback].
 typedef AuthStateChangedCallback = void Function({required bool authenticated});
 
 /// Signature for functions that remove their associated callback when called.
