@@ -108,7 +108,12 @@ class _NhostGraphQLProviderState extends State<NhostGraphQLProvider> {
   Widget build(BuildContext context) {
     return GraphQLProvider(
       client: clientNotifier as ValueNotifier<GraphQLClient>,
-      child: widget.child,
+      child: widget.child != null
+          ? NhostAuthProvider(
+              auth: currentNhostAuth,
+              child: widget.child!,
+            )
+          : null,
     );
   }
 }
