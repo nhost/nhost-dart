@@ -98,7 +98,7 @@ void main() {
       expect(buildCount, 1);
 
       // Emulate an auth state change, then pump the engine
-      mockAuth.triggerStateChange();
+      mockAuth.triggerStateChange(AuthenticationState.loggedOut);
       await tester.pump();
 
       // The state change should result in a second build
@@ -122,19 +122,20 @@ void main() {
 }
 
 class MockAuth extends Mock implements Auth {
-  final List<TokenChangedCallback> _tokenChangedCallbacks = [];
+  final List<AuthStateChangedCallback> _tokenChangedCallbacks = [];
 
   @override
-  UnsubscribeDelegate addTokenChangedCallback(TokenChangedCallback callback) {
+  UnsubscribeDelegate addAuthStateChangedCallback(
+      AuthStateChangedCallback callback) {
     _tokenChangedCallbacks.add(callback);
     return () {
       _tokenChangedCallbacks.removeWhere((element) => element == callback);
     };
   }
 
-  void triggerStateChange() {
+  void triggerStateChange(AuthenticationState authState) {
     for (final callback in _tokenChangedCallbacks) {
-      callback();
+      callback(authState);
     }
   }
 }
