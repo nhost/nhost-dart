@@ -1,3 +1,7 @@
+## 1.0.7
+
+ - **FIX**: Update NhostAuthProvider to rebuild on transitions from loading -> logged{In,Out}.
+
 ## 1.0.6
 
  - Update a dependency to the latest release.

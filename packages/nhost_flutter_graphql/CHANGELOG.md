@@ -1,3 +1,11 @@
+## 1.1.0
+
+ - **REFACTOR**: Display quick-start URL if todos fail to fetch.
+ - **FIX**: Supply an AuthProvider to children of the GraphQLProvider.
+ - **FEAT**: Add a little bit of logging.
+ - **CHORE**: Update pod deps for an example app.
+ - **CHORE**: Extract provider code to src.
+
 ## 1.0.6
 
  - **FIX**: Upgrade graphql_flutter dependency to 5.0.0.

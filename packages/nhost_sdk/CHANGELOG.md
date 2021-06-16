@@ -1,3 +1,11 @@
+## 2.0.0
+
+> Note: This release has breaking changes.
+
+ - **DOCS**: Update major version in README.
+ - **DOCS**: Fix an incorrect method reference in a comment.
+ - **BREAKING** **FEAT**: Update auth state callback to include loading state.
+
 ## 1.1.1
 
  - **FIX**: Upgrade graphql dependency to 5.0.0.
