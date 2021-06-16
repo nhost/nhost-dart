@@ -43,15 +43,7 @@ void main() async {
 
 ```yaml
 dependencies:
-  nhost_sdk: ^1.0.0
-```
-
-For people affected by the Metal jank issues on iOS, we support Flutter 1.22.4
-as well:
-
-```yaml
-dependencies:
-  nhost_sdk: ^0.8.0
+  nhost_sdk: ^2.0.0
 ```
 
 ## 🔥 More Dart & Flutter packages from Nhost
