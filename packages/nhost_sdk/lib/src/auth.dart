@@ -650,7 +650,10 @@ class Auth {
     }
 
     // Early exit
-    if (authenticationState != AuthenticationState.loggedIn) {
+    // There could be case when the authenticationState is inProgress and logOut is called
+    // For example, refresh token expired
+    // In that case it is important to to clear out the session and remove the refresh token from the storage
+    if (authenticationState == AuthenticationState.loggedOut) {
       return;
     }
 

@@ -171,7 +171,7 @@ void main() async {
   });
 
   group('logout', () {
-    // All logout tests log a user in first
+    // All logout tests log in a user in first
     setUp(() async {
       await registerAndLoginBasicUser(auth);
     });
