@@ -14,7 +14,7 @@ Future<void> registerTestUser(Auth auth) async {
 }
 
 // Register and logs in a basic user for test setup. The auth object will be
-// left in a logged out state.
+// left in a logged in state.
 Future<void> registerAndLoginBasicUser(Auth auth) async {
   await auth.register(email: defaultTestEmail, password: defaultTestPassword);
 }
