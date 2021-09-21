@@ -1,3 +1,7 @@
+## 1.1.1
+
+ - **REFACTOR**: Display quick-start URL if todos fail to fetch.
+
 ## 1.1.0
 
  - **REFACTOR**: Display quick-start URL if todos fail to fetch.
