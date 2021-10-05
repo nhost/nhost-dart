@@ -1,0 +1,19 @@
+name: Check for broken links
+on:
+  pull_request:
+    branches:
+    - main
+    - main-null-unsafe
+  schedule:
+  # Run the quality job at 4am every day
+  - cron: '0 4 * * *'
+
+jobs:
+  link-check:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - uses: urlstechie/urlchecker-action@master
+      with:
+        file_types: .md,.dart,.yaml
+        exclude_patterns: https://test,http://localhost,.nhost.app
