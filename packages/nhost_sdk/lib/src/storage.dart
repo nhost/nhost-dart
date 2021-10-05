@@ -92,7 +92,7 @@ class Storage {
   /// {@template nhost.api.Storage.fileToken}
   /// The [fileToken] argument must be provided if the resource is protected
   /// by a storage function that checks the file's `resource.Metadata.token`
-  /// (https://nhost.github.io/hasura-backend-plus/configuration.html#storage-rules).
+  /// (https://nhost.github.io/hasura-backend-plus/docs/storage-rules).
   /// {@endtemplate}
   ///
   /// The file is returned as an HTTP response, populated with the headers.

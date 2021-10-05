@@ -25,12 +25,9 @@ export 'src/storage.dart';
 /// Nhost Storage API: https://docs.nhost.io/storage/api-reference
 ///
 /// Additional packages for working with GraphQL and Flutter can be found at
-/// https://pub.dev/publishers/nhost
+/// https://pub.dev/publishers/nhost.io
 class NhostClient {
   /// Constructs a new Nhost client.
-  ///
-  /// For information on getting started, please visit
-  /// https://docs.nhost.io/libraries/nhost-dart-sdk#setup
   ///
   /// {@template nhost.api.NhostClient.baseUrl}
   /// [baseUrl] is the Nhost "Backend URL" that can be found on your Nhost
