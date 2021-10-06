@@ -11,9 +11,27 @@ on:
 jobs:
   link-check:
     runs-on: ubuntu-latest
+    env:
+      LYCHEE_OUT: tmp/lychee_results.md
     steps:
     - uses: actions/checkout@master
-    - uses: urlstechie/urlchecker-action@master
+    - name: Check links
+      id: check_links
+      uses: lycheeverse/lychee-action@v1.0.8
       with:
-        file_types: .md,.dart,.yaml
-        exclude_patterns: https://test,http://localhost,.nhost.app
+        args: >
+          --config .github/workflows/link_check_config.lychee.toml
+          *.md
+          *.yaml
+          packages/**/*.md
+          packages/**/*.yml
+          packages/**/*.yaml
+          packages/**/*.dart
+    # lychee-action doesn't fail outright — we need to do it ourselves.
+    - name: Fail on broken links
+      if: steps.check_links.outputs.exit_code != 0
+      env:
+        EXIT_CODE: ${{ steps.check_links.outputs.exit_code }}
+      run: |
+        cat $LYCHEE_OUT
+        exit $EXIT_CODE
