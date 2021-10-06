@@ -4,33 +4,26 @@
 This repository contains multiple Dart/Flutter packages, which can be found
 in the [`packages` directory](https://github.com/nhost/nhost-dart/tree/main/packages).
 
-We use a tool called [`melos`](https://pub.dev/packages/melos) to make the
-process of working with multiple interdependent packages easier.
+We [`melos`](https://pub.dev/packages/melos) to make building multiple packages
+easier.
 
-After cloning the repo, the first thing you should do is run the following
-from the repository root:
+After cloning the repo, run this from the repo's root directory to get
+everything set up:
 
 ```sh
 pub get
 pub run melos bootstrap
 ```
 
-This will install the necessary prerequisites, and establish **path** dependencies
-between our packages.
-
-Path dependencies simplify development by taking the package repository and
-version numbers out of the equation, meaning we can make changes freely across
-package boundaries and have those changes be recognized by dependents instantly.
-
-When it comes time to publish, `melos` will fix up the requirements
-automatically.
-
 ### Commit message conventions
 
-`melos` is able to automatically update the packages' version numbers and
-[CHANGELOG.md](https://github.com/nhost/nhost-dart/blob/main/packages/nhost_sdk/CHANGELOG.md)s
-as long as commits follow the [Conventional
-Commits](https://www.conventionalcommits.org/en/v1.0.0/) spec.
+We use [**Conventional Commits**](https://www.conventionalcommits.org/) format
+for our commit messages, and this is validated on PRs via a GitHub action.
+
+Why? Because it's machine readable, and we can automate some stuff around it
+(using [`melos`](https://pub.dev/packages/melos)).
+
+### VSCode snippet
 
 We've included a [VSCode
 snippet](https://github.com/nhost/nhost-dart/blob/main/.vscode/conventional-commits.code-snippets) with the repository that will help with the formatting.
