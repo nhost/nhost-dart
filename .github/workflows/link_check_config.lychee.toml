@@ -1,0 +1,18 @@
+# This is a configuration file used by the lychee link checker
+# https://github.com/lycheeverse/lychee
+#
+# This config is referenced in the check_broken_links.yaml workflow.
+
+# Exclude fake or inaccessible URLs that are used in code or examples
+exclude = [
+  "^https://test/$",
+  "^https://.*\\.nhost\\.app.*",
+  "^http://localhost(:\\d+)?.*",
+]
+
+# Exclude all private IPs from checking
+exclude_all_private = true
+
+# Exclude all email addresses (note that GitHub action specifiers are seen as
+# email addresses)
+exclude_mail = true
