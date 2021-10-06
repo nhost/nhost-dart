@@ -158,8 +158,25 @@ class ApiClient {
       request.headers.addAll(headers);
     }
 
-    final response =
-        await http.Response.fromStream(await _httpClient.send(request));
+    return _handleResponse(
+      await http.Response.fromStream(await _httpClient.send(request)),
+      responseDeserializer: responseDeserializer,
+    );
+  }
+
+  http.Request _newApiRequest(
+    String method,
+    String path, {
+    Map<String, String?>? query,
+  }) =>
+      http.Request(method, baseUrl.extend(path, queryParameters: query))
+        ..encoding = utf8;
+
+  ResponseType _handleResponse<ResponseType>(
+    http.Response response, {
+    JsonDeserializer<ResponseType>? responseDeserializer,
+  }) {
+    final request = response.request!;
     final contentTypeHeader = response.headers['content-type'];
     final isJson =
         contentTypeHeader?.startsWith(_noCharsetJsonContentType.toString()) ==
@@ -182,14 +199,6 @@ class ApiClient {
       return null as ResponseType;
     }
   }
-
-  http.Request _newApiRequest(
-    String method,
-    String path, {
-    Map<String, String?>? query,
-  }) =>
-      http.Request(method, baseUrl.extend(path, queryParameters: query))
-        ..encoding = utf8;
 }
 
 /// Thrown by [ApiClient] to indicate a failed API call.
