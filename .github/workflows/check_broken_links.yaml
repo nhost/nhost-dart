@@ -21,12 +21,9 @@ jobs:
       with:
         args: >
           --config .github/workflows/link_check_config.lychee.toml
-          *.md
-          *.yaml
-          packages/**/*.md
-          packages/**/*.yml
-          packages/**/*.yaml
-          packages/**/*.dart
+          **/*.md
+          **/*.yaml
+          **/*.dart
     # lychee-action doesn't fail outright — we need to do it ourselves.
     - name: Fail on broken links
       if: steps.check_links.outputs.exit_code != 0
