@@ -117,8 +117,8 @@ class ExampleRouterDelegate extends RouterDelegate<ExampleRoutePath>
   ExampleRoutePath get currentConfiguration => navigator.requestedRoutePath;
 
   @override
-  Future<void> setNewRoutePath(ExampleRoutePath routePath) {
-    navigator.requestRoutePath(routePath);
+  Future<void> setNewRoutePath(ExampleRoutePath configuration) {
+    navigator.requestRoutePath(configuration);
     return SynchronousFuture(null);
   }
 
