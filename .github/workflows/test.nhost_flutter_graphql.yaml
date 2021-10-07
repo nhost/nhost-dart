@@ -76,7 +76,7 @@ jobs:
 
     - name: Determine Flutter version
       id: flutter-version
-      uses: shyndman/latest-flutter-version-action@v1.0.5
+      uses: shyndman/latest-flutter-version-action@v1.0.6
       with:
         channel: ${{ matrix.flutter_channel }}
 
@@ -88,7 +88,7 @@ jobs:
 
     # Setup the flutter environment
     - name: Setup Dart/Flutter (specific channel)
-      uses: subosito/flutter-action@v1.4.0
+      uses: subosito/flutter-action@v1.5.3
       with:
         channel: ${{ matrix.flutter_channel }}
 
