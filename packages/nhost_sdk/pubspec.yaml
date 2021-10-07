@@ -12,10 +12,10 @@ dependencies:
   http_parser: ^4.0.0
   http: ^0.13.0
   jwt_decoder: ^2.0.0
+  lints: ^1.0.0
   logging: ^1.0.1
   meta: ^1.0.0
   path: ^1.0.0
-  pedantic: ^1.8.0
 
 dev_dependencies:
   betamax: ^1.0.0
@@ -24,8 +24,8 @@ dev_dependencies:
   nock: ^1.0.0
   otp: '>=3.0.0-nullsafety.0 <4.0.0'
   stack_trace: ^1.0.0
-  test_api: ^0.2.19
-  test: ^1.6.0
+  test_api: ^0.4.4
+  test: ^1.18.0
 
   # Nhost packages
   nhost_graphql_adapter: ^1.0.11
