@@ -3,7 +3,7 @@ description: Demonstrates usage of the nhost_gql_links package
 publish_to: none
 
 environment:
-  sdk: '>=2.12.0 <3.0.0'
+  sdk: '>=2.14.0 <3.0.0'
 
 dependencies:
   # Nhost packages
