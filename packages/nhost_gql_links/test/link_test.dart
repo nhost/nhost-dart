@@ -13,7 +13,7 @@ import 'package:test/test.dart';
 import 'mock_web_socket.dart';
 
 const baseUrl = 'https://test';
-const backendEndpoint = '$baseUrl';
+const backendEndpoint = baseUrl;
 
 const gqlEndpointPath = '/v1/graphql';
 const gqlEndpoint = '$baseUrl$gqlEndpointPath';
