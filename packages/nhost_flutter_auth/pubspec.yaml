@@ -20,5 +20,5 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  lints: ^1.0.0
   mockito: ^5.0.0
-  pedantic: ^1.9.0
