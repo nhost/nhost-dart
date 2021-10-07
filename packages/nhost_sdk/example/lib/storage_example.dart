@@ -12,7 +12,7 @@ void main() async {
       email: 'user-1@nhost.io', password: 'password-1');
 
   final fileName = 'some_text_file.txt';
-  final userPath = '/user/${client.auth.currentUser.id}/';
+  final userPath = '/user/${client.auth.currentUser!.id}/';
   final filePath = '$userPath$fileName';
 
   // Create a new file...
@@ -24,7 +24,7 @@ void main() async {
 
   // ...turn around and download its contents...
   final downloadedFileContent = await client.storage
-      .downloadFile(filePath, fileToken: fileMetadata.nhostMetadata.token);
+      .downloadFile(filePath, fileToken: fileMetadata.nhostMetadata!.token);
   print('Downloaded file contents:');
   print(downloadedFileContent.body);
 
