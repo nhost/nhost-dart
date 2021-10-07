@@ -12,7 +12,7 @@ void main() async {
       email: 'user-1@nhost.io', password: 'password-1');
 
   // Print out a few details about the current user
-  final currentUser = client.auth.currentUser;
+  final currentUser = client.auth.currentUser!;
   print('currentUser.id: ${currentUser.id}');
   print('currentUser.displayName: ${currentUser.displayName}');
   print('currentUser.email: ${currentUser.email}');
@@ -26,11 +26,12 @@ void main() async {
 
 Future<void> loginOrRegister(
   NhostClient client, {
-  String email,
-  String password,
+  required String email,
+  required String password,
 }) async {
   try {
-    return await client.auth.login(email: email, password: password);
+    await client.auth.login(email: email, password: password);
+    return;
   } on ApiException {
     // Login failed, so try to register instead
   }

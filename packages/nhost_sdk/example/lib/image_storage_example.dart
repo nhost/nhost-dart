@@ -14,7 +14,7 @@ void main() async {
       email: 'user-1@nhost.io', password: 'password-1');
 
   final fileName = 'henry.jpg';
-  final userPath = '/user/${client.auth.currentUser.id}/';
+  final userPath = '/user/${client.auth.currentUser!.id}/';
   final filePath = '$userPath$fileName';
 
   // Store a new image file...
@@ -30,11 +30,11 @@ void main() async {
   // ...turn around and download its contents, scaled...
   final downloadedImage = await client.storage.downloadImage(
     filePath,
-    fileToken: imageMetadata.nhostMetadata.token,
+    fileToken: imageMetadata.nhostMetadata!.token,
     imageTransformConfig: ImageTransformConfig(width: 100, quality: 50),
   );
   print('Downloaded transformed image');
-  print('Size: ${downloadedImage.bodyBytes.length}');
+  print('Size: ${downloadedImage!.bodyBytes.length}');
 
   // ...then delete it.
   await client.storage.delete(filePath);
