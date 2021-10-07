@@ -1,3 +1,13 @@
+## 1.0.12
+
+ - **FIX**: Fix broken URLs across packages.
+ - **DOCS**: Remove mention of older Flutter support from READMEs.
+ - **CHORE**: Upgrade to latest stable SDK.
+ - **CHORE**: Upgrade dependencies.
+ - **CHORE**: Publish packages.
+ - **CHORE**: Publish packages.
+ - **CHORE**: Publish packages.
+
 ## 1.0.11
 
  - Update a dependency to the latest release.

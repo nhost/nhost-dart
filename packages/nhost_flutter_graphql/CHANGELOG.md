@@ -1,3 +1,15 @@
+## 1.1.2
+
+ - **REFACTOR**: Display quick-start URL if todos fail to fetch.
+ - **REFACTOR**: Display quick-start URL if todos fail to fetch.
+ - **FIX**: Fix broken URLs across packages.
+ - **DOCS**: Remove mention of older Flutter support from READMEs.
+ - **CHORE**: Upgrade to latest stable SDK.
+ - **CHORE**: Upgrade dependencies.
+ - **CHORE**: Publish packages.
+ - **CHORE**: Publish packages.
+ - **CHORE**: Publish packages.
+
 ## 1.1.1
 
  - **REFACTOR**: Display quick-start URL if todos fail to fetch.

@@ -1,3 +1,13 @@
+## 1.1.4
+
+ - **FIX**: Fix broken URLs across packages.
+ - **CHORE**: Satisfy a couple of the new lints.
+ - **CHORE**: Upgrade to latest stable SDK.
+ - **CHORE**: Upgrade dependencies.
+ - **CHORE**: Publish packages.
+ - **CHORE**: Publish packages.
+ - **CHORE**: Publish packages.
+
 ## 1.1.3
 
  - Update a dependency to the latest release.

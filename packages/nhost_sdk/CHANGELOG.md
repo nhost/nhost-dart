@@ -1,3 +1,14 @@
+## 2.0.2
+
+ - **FIX**: Fix broken URLs across packages.
+ - **FIX**: Change early return condition for clear session.
+ - **DOCS**: Reformat a comment.
+ - **CHORE**: Upgrade to latest stable SDK.
+ - **CHORE**: Upgrade dependencies.
+ - **CHORE**: Publish packages.
+ - **CHORE**: Publish packages.
+ - **CHORE**: Publish packages.
+
 ## 2.0.1
 
  - **FIX**: Change early return condition for clear session.
