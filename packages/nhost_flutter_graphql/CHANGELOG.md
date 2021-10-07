@@ -1,3 +1,7 @@
+## 1.1.3
+
+ - **FIX**: Correct compilation errors after migration to null-safety.
+
 ## 1.1.2
 
  - **REFACTOR**: Display quick-start URL if todos fail to fetch.
