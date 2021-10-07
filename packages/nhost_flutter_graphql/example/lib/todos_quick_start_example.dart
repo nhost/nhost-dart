@@ -45,7 +45,7 @@ class TodosQuickStartExample extends StatelessWidget {
 class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final auth = NhostAuthProvider.of(context);
+    final auth = NhostAuthProvider.of(context)!;
 
     Widget widget;
     switch (auth.authenticationState) {
@@ -108,7 +108,7 @@ final removeCompletedTodosMutation = gql(r'''
 
 class TodosPage extends StatelessWidget {
   const TodosPage({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -127,7 +127,7 @@ class TodosPage extends StatelessWidget {
               'https://docs.nhost.io/quick-start?');
         }
 
-        final todos = (result.data['todos'] as List)
+        final todos = (result.data!['todos'] as List)
             .map((json) => Todo.fromJson(json))
             .toList();
 
@@ -159,7 +159,7 @@ class AddTodoField extends StatefulWidget {
 }
 
 class _AddTodoFieldState extends State<AddTodoField> {
-  TextEditingController _todoNameController;
+  late TextEditingController _todoNameController;
 
   @override
   void initState() {
@@ -206,8 +206,8 @@ class _AddTodoFieldState extends State<AddTodoField> {
 
 class TodoList extends StatelessWidget {
   const TodoList({
-    Key key,
-    this.todos,
+    Key? key,
+    required this.todos,
   }) : super(key: key);
 
   final List<Todo> todos;
@@ -227,7 +227,7 @@ class TodoList extends StatelessWidget {
 }
 
 class TodoTile extends StatelessWidget {
-  TodoTile({Key key, @required this.todo}) : super(key: key);
+  TodoTile({Key? key, required this.todo}) : super(key: key);
   final Todo todo;
 
   @override
@@ -247,7 +247,7 @@ class TodoTile extends StatelessWidget {
                 : null,
           ),
           value: todo.isCompleted,
-          onChanged: result.isLoading
+          onChanged: result!.isLoading
               ? null
               : (flag) async {
                   runMutation({
@@ -264,7 +264,7 @@ class TodoTile extends StatelessWidget {
 class TodoListActions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final auth = NhostAuthProvider.of(context);
+    final auth = NhostAuthProvider.of(context)!;
     return Row(
       children: [
         TextButton(
@@ -293,7 +293,11 @@ class TodoListActions extends StatelessWidget {
 }
 
 class Todo {
-  Todo({this.id, this.name, this.isCompleted});
+  Todo({
+    required this.id,
+    required this.name,
+    required this.isCompleted,
+  });
   factory Todo.fromJson(dynamic json) {
     return Todo(
       id: json['id'],
@@ -314,8 +318,8 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final formKey = GlobalKey<FormState>();
-  TextEditingController emailController;
-  TextEditingController passwordController;
+  late TextEditingController emailController;
+  late TextEditingController passwordController;
 
   @override
   void initState() {
@@ -332,7 +336,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void tryLogin() async {
-    final auth = NhostAuthProvider.of(context);
+    final auth = NhostAuthProvider.of(context)!;
 
     try {
       await auth.login(

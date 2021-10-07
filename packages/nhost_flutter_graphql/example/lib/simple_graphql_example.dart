@@ -51,14 +51,14 @@ class SimpleGqlExample extends StatelessWidget {
             ),
             builder: (result, {fetchMore, refetch}) {
               if (result.hasException) {
-                return ErrorWidget(result.exception);
+                return ErrorWidget(result.exception!);
               }
 
               if (result.isLoading) {
                 return Text('Loading…');
               }
 
-              final todosList = result.data['todos'] as List<dynamic>;
+              final todosList = result.data!['todos'] as List<dynamic>;
               if (todosList.isEmpty) {
                 return Text('No todos yet!');
               }
