@@ -38,8 +38,8 @@ class NavigatorExampleApp extends StatefulWidget {
 }
 
 class _NavigatorExampleAppState extends State<NavigatorExampleApp> {
-  NhostClient nhostClient;
-  ExampleNavigator appState;
+  late NhostClient nhostClient;
+  late ExampleNavigator appState;
 
   @override
   void initState() {
@@ -89,7 +89,7 @@ class ExampleNavigator extends ChangeNotifier {
   /// authentication and the user is not authenticated. See
   /// [ExampleRouterDelegate.build] for implementation logic.
   ExampleRoutePath get requestedRoutePath => _requestedRoutePath;
-  ExampleRoutePath _requestedRoutePath;
+  late ExampleRoutePath _requestedRoutePath;
 
   /// Called by the application to request a route change
   void requestRoutePath(ExampleRoutePath value) {
@@ -130,7 +130,7 @@ class ExampleRouterDelegate extends RouterDelegate<ExampleRoutePath>
     // In this case, if the requested route path implements `AuthRequiredPath`,
     // then it requires a logged-in Nhost user. If none exists, the user will
     // be shown the login page.
-    final auth = NhostAuthProvider.of(context);
+    final auth = NhostAuthProvider.of(context)!;
     final requestedRoutePath = navigator.requestedRoutePath;
     final isLoginPageRequested = requestedRoutePath is LoginRoutePath &&
         auth.authenticationState != AuthenticationState.loggedIn;
@@ -161,19 +161,19 @@ class ExampleRouteInformationParser
   @override
   Future<ExampleRoutePath> parseRouteInformation(
       RouteInformation routeInformation) async {
-    final uri = Uri.parse(routeInformation.location);
+    final uri = Uri.parse(routeInformation.location!);
 
     if (uri.pathSegments.isNotEmpty) {
       if (uri.pathSegments.first == 'admin') {
         return AdminRoutePath();
       } else if (uri.pathSegments.first == 'login') {
         return LoginRoutePath();
+      } else {
+        return HomeRoutePath();
       }
     } else {
       return HomeRoutePath();
     }
-
-    return null;
   }
 
   @override
@@ -187,7 +187,8 @@ class ExampleRouteInformationParser
     if (configuration is LoginRoutePath) {
       return RouteInformation(location: '/login');
     }
-    return null;
+
+    throw ('Unsupported configuration');
   }
 }
 
@@ -212,7 +213,7 @@ class LoginRoutePath extends ExampleRoutePath {}
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final auth = NhostAuthProvider.of(context);
+    final auth = NhostAuthProvider.of(context)!;
     final isAuthenticated =
         auth.authenticationState == AuthenticationState.loggedIn;
     final navigator = Provider.of<ExampleNavigator>(context);
@@ -229,11 +230,11 @@ class HomePage extends StatelessWidget {
           child: Text(
             isAuthenticated == true ? '(Authenticated)' : '(Unauthenticated)',
             style: isAuthenticated
-                ? textTheme.caption.copyWith(
+                ? textTheme.caption!.copyWith(
                     color: Colors.blue[700],
                     fontWeight: FontWeight.bold,
                   )
-                : textTheme.caption.copyWith(
+                : textTheme.caption!.copyWith(
                     color: Colors.red[700],
                     fontWeight: FontWeight.bold,
                   ),
@@ -288,7 +289,7 @@ class LoginPage extends StatelessWidget {
           if (navigator.requestedRoutePath is ProtectedRoutePath)
             Container(
               decoration: BoxDecoration(
-                border: Border.all(color: Colors.red[600]),
+                border: Border.all(color: Colors.red[600]!),
                 borderRadius: BorderRadius.circular(3),
               ),
               padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
@@ -334,15 +335,15 @@ class AdminPage extends StatelessWidget {
 
 class AppFrame extends StatelessWidget {
   const AppFrame({
-    Key key,
-    this.child,
+    Key? key,
+    required this.child,
   }) : super(key: key);
 
   final Widget child;
 
   @override
   Widget build(BuildContext context) {
-    final auth = NhostAuthProvider.of(context);
+    final auth = NhostAuthProvider.of(context)!;
     final navigator = Provider.of<ExampleNavigator>(context);
 
     return Scaffold(
@@ -375,7 +376,10 @@ class AppFrame extends StatelessWidget {
 }
 
 class ContentItem extends StatelessWidget {
-  const ContentItem({Key key, this.child}) : super(key: key);
+  const ContentItem({
+    Key? key,
+    required this.child,
+  }) : super(key: key);
   final Widget child;
 
   @override

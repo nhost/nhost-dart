@@ -30,7 +30,7 @@ class PersistentAuthExample extends StatefulWidget {
 }
 
 class _PersistentAuthExampleState extends State<PersistentAuthExample> {
-  NhostClient nhostClient;
+  late NhostClient nhostClient;
 
   @override
   void initState() {
@@ -68,7 +68,7 @@ class _PersistentAuthExampleState extends State<PersistentAuthExample> {
 /// application.
 class SharedPreferencesAuthStore implements AuthStore {
   @override
-  Future<String> getString(String key) async {
+  Future<String?> getString(String key) async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString(key);
   }

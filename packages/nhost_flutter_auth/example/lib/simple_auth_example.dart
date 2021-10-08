@@ -19,7 +19,7 @@ class SimpleAuthExample extends StatefulWidget {
 }
 
 class _SimpleAuthExampleState extends State<SimpleAuthExample> {
-  NhostClient nhostClient;
+  late NhostClient nhostClient;
 
   @override
   void initState() {
@@ -55,7 +55,7 @@ class ExampleProtectedScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     // NhostAuthProvider.of will register this widget so that it rebuilds whenever
     // the user's authentication state changes.
-    final auth = NhostAuthProvider.of(context);
+    final auth = NhostAuthProvider.of(context)!;
     Widget widget;
     switch (auth.authenticationState) {
       case AuthenticationState.loggedIn:
@@ -85,8 +85,8 @@ class LoginForm extends StatefulWidget {
 
 class _LoginFormState extends State<LoginForm> {
   final formKey = GlobalKey<FormState>();
-  TextEditingController emailController;
-  TextEditingController passwordController;
+  late TextEditingController emailController;
+  late TextEditingController passwordController;
 
   @override
   void initState() {
@@ -103,7 +103,7 @@ class _LoginFormState extends State<LoginForm> {
   }
 
   void tryLogin() async {
-    final auth = NhostAuthProvider.of(context);
+    final auth = NhostAuthProvider.of(context)!;
 
     try {
       await auth.login(
@@ -159,8 +159,8 @@ class _LoginFormState extends State<LoginForm> {
 class LoggedInUserDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final auth = NhostAuthProvider.of(context);
-    final currentUser = auth.currentUser;
+    final auth = NhostAuthProvider.of(context)!;
+    final currentUser = auth.currentUser!;
 
     final textTheme = Theme.of(context).textTheme;
     const cellPadding = EdgeInsets.all(4);
