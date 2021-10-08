@@ -51,7 +51,7 @@ void main() async {
   );
 
   // Success!
-  print(queryResult.data['todos']);
+  print(queryResult.data!['todos']);
 
   nhostClient.close();
 }
