@@ -36,8 +36,8 @@ class OAuthExample extends StatefulWidget {
 }
 
 class _OAuthExampleState extends State<OAuthExample> {
-  NhostClient nhostClient;
-  AppLinks appLinks;
+  late NhostClient nhostClient;
+  late AppLinks appLinks;
 
   @override
   void initState() {
@@ -85,7 +85,7 @@ class ExampleProtectedScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     // NhostAuthProvider.of will register this widget so that it rebuilds
     // whenever the user's authentication state changes.
-    final auth = NhostAuthProvider.of(context);
+    final auth = NhostAuthProvider.of(context)!;
     Widget widget;
 
     switch (auth.authenticationState) {

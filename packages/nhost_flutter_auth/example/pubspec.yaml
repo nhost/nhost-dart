@@ -1,7 +1,7 @@
 name: nhost_flutter_auth_example
 publish_to: 'none'
 environment:
-  sdk: ">=2.7.0 <3.0.0"
+  sdk: '>=2.14.0 <3.0.0'
 
 dependencies:
   flutter:
