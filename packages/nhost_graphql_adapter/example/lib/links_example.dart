@@ -43,7 +43,7 @@ void main() async {
   // through it
   final loggingMiddleware = Link.function((request, [nextLink]) {
     print('REQUEST: $request');
-    return nextLink(request).transform(
+    return nextLink!(request).transform(
       StreamTransformer.fromHandlers(
         handleData: (data, sink) {
           print('RESPONSE: $data');
