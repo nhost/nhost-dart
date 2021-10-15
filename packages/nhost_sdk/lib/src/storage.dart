@@ -41,6 +41,7 @@ class Storage {
     required String filePath,
     required List<int> bytes,
     String contentType = applicationOctetStreamType,
+    UploadProgressCallback? onUploadProgress,
   }) async {
     final file = http.MultipartFile.fromBytes(
       'file',
@@ -54,6 +55,7 @@ class Storage {
       headers: _session.authenticationHeaders,
       files: [file],
       responseDeserializer: FileMetadata.fromJson,
+      onUploadProgress: onUploadProgress,
     );
   }
 
@@ -68,6 +70,7 @@ class Storage {
     required String filePath,
     required String string,
     String contentType = applicationOctetStreamType,
+    UploadProgressCallback? onUploadProgress,
   }) async {
     final file = http.MultipartFile.fromString(
       'file',
@@ -80,10 +83,10 @@ class Storage {
       _objectPath(filePath),
       files: [file],
       headers: {
-        'Content-Type': 'multipart/form-data',
         ..._session.authenticationHeaders,
       },
       responseDeserializer: FileMetadata.fromJson,
+      onUploadProgress: onUploadProgress,
     );
   }
 
