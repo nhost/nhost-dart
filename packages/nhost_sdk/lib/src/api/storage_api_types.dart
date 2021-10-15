@@ -35,6 +35,12 @@ class FileMetadata {
   /// Additional Nhost-specific metadata associated with this file
   final FileNhostMetadata? nhostMetadata;
 
+  @override
+  String toString() {
+    return 'FileMetadata('
+        'key=$key, contentType=$contentType, contentLength=$contentLength)';
+  }
+
   static FileMetadata fromJson(dynamic json) {
     return FileMetadata(
       // TODO(https://github.com/nhost/hasura-backend-plus/issues/436): In
