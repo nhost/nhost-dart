@@ -1,11 +1,16 @@
 import 'dart:io';
+import 'dart:math' as math;
 
+import 'package:http/http.dart';
+import 'package:mockito/mockito.dart';
 import 'package:nhost_sdk/nhost_sdk.dart';
+import 'package:nhost_sdk/src/foundation/collection.dart';
 import 'package:nhost_sdk/src/foundation/uri.dart';
-import 'package:path/path.dart';
+import 'package:path/path.dart' show Context, Style;
 import 'package:test/test.dart';
 
 import 'admin_gql.dart';
+import 'matchers.dart';
 import 'setup.dart';
 import 'test_helpers.dart';
 
@@ -124,6 +129,38 @@ void main() async {
       expect(storedFileMimeType.mimeType, 'text/html');
       expect(storedFile.bodyBytes, fileContents);
     });
+
+    test('reports upload progress', () async {
+      final filePath = pathInUserDirectory('/test-file.bin');
+      final fileContents = List.filled(math.pow(2, 20) as int, 0x00);
+
+      final uploadCallback = UploadProgressCallbackFunctionMock();
+      await storage.uploadBytes(
+        filePath: filePath,
+        bytes: fileContents,
+        contentType: 'text/html',
+        onUploadProgress: uploadCallback,
+      );
+
+      final verificationResult =
+          verify(uploadCallback(captureAny, captureAny, captureAny));
+      final progressCallArgs =
+          chunkList(verificationResult.captured, 3).toList();
+
+      final firstRequest = progressCallArgs[0][0];
+      final firstTotalBytes = progressCallArgs[0][2] as int;
+
+      // Verify consistent request arg
+      expect(progressCallArgs.map((args) => args[0]),
+          everyElement(equals(firstRequest)));
+
+      // Verify consistent totalBytes arg
+      expect(progressCallArgs.map((args) => args[2]),
+          everyElement(equals(firstTotalBytes)));
+
+      // Verify increasing uploadedBytes
+      expect(progressCallArgs.map((args) => args[1]), isIncreasing);
+    });
   });
 
   group('stored files', () {
@@ -173,4 +210,17 @@ void main() async {
       });
     });
   });
+}
+
+abstract class UploadProgressCallbackFunction {
+  void call(BaseRequest request, int bytesUploaded, int bytesTotal);
+}
+
+class UploadProgressCallbackFunctionMock extends Mock
+    implements UploadProgressCallbackFunction {
+  @override
+  void call([BaseRequest? request, int? bytesUploaded, int? bytesTotal]) {
+    super.noSuchMethod(
+        Invocation.method(#call, [request, bytesUploaded, bytesTotal]));
+  }
 }

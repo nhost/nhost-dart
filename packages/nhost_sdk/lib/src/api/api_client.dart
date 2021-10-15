@@ -1,12 +1,28 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:meta/meta.dart';
-import 'package:nhost_sdk/src/logging.dart';
 
+import '../foundation/collection.dart';
+import '../foundation/request.dart';
 import '../foundation/uri.dart';
 import '../http.dart';
+import '../logging.dart';
+
+/// Multipart request byte streams are chunked before sending so that we can
+/// measure progress as the bytes are pulled by the socket. This is the size
+/// of those chunks, in bytes.
+const int multipartChunkSize = 64 * 1024; // 64 KB
+
+/// Signature for callbacks that receive the upload progress of
+/// [ApiClient.postMultipart] requests.
+typedef UploadProgressCallback = void Function(
+  http.MultipartRequest request,
+  int bytesUploaded,
+  int bytesTotal,
+);
 
 /// Defined here so we don't need to import dart:io (which affects quality
 /// score, because it thinks that dart:io makes using Flutter Web impossible)
@@ -123,9 +139,52 @@ class ApiClient {
     required Iterable<http.MultipartFile> files,
     Map<String, String>? headers,
     JsonDeserializer<ResponseType>? responseDeserializer,
+    UploadProgressCallback? onUploadProgress,
   }) async {
+    final url = baseUrl.extend(path);
+    final multipartRequest = http.MultipartRequest('post', url)
+      ..files.addAll(files);
+
+    http.BaseRequest requestToSend;
+    if (onUploadProgress != null) {
+      final chunkedByteStream = chunkStream(
+        multipartRequest.finalize(),
+        chunkLength: multipartChunkSize,
+      );
+
+      // Reporting upload progress isn't straightforward, so we have to jump
+      // through a few hoops to get it going.
+      //
+      // The central idea is that we create the stream representation of the
+      // request, set ourselves up to watch the stream's consumption rate, then
+      // send it over the wire. The consumed bytes are reported to the callback
+      // as the upload progress.
+      var bytesUploaded = 0;
+      final bytesTotal = multipartRequest.contentLength;
+      final observedByteStream = chunkedByteStream
+          .transform(StreamTransformer<List<int>, List<int>>.fromHandlers(
+        handleData: (data, sink) {
+          // Pass the data along the chain
+          sink.add(data);
+
+          // ...and report progress
+          bytesUploaded += data.length;
+          onUploadProgress(multipartRequest, bytesUploaded, bytesTotal);
+        },
+        handleError: (error, stackTrace, sink) =>
+            throw AsyncError(error, stackTrace),
+        handleDone: (sink) => sink.close(),
+      ));
+
+      requestToSend = StreamWrappingRequest('post', url, observedByteStream)
+        ..contentLength = multipartRequest.contentLength
+        ..headers.addAll(multipartRequest.headers);
+    } else {
+      requestToSend = multipartRequest;
+    }
+
     return send<ResponseType>(
-      http.MultipartRequest('post', baseUrl.extend(path))..files.addAll(files),
+      requestToSend,
       headers: headers,
       responseDeserializer: responseDeserializer,
     );
@@ -158,7 +217,11 @@ class ApiClient {
       request.headers.addAll(headers);
     }
 
-    return _handleResponse(
+    log.finest(() =>
+        'Sending a ${request.method.toUpperCase()} request to ${request.url}');
+
+    return _handleResponse<ResponseType>(
+      request,
       await http.Response.fromStream(await _httpClient.send(request)),
       responseDeserializer: responseDeserializer,
     );
@@ -173,10 +236,10 @@ class ApiClient {
         ..encoding = utf8;
 
   ResponseType _handleResponse<ResponseType>(
+    http.BaseRequest request,
     http.Response response, {
     JsonDeserializer<ResponseType>? responseDeserializer,
   }) {
-    final request = response.request!;
     final contentTypeHeader = response.headers['content-type'];
     final isJson =
         contentTypeHeader?.startsWith(_noCharsetJsonContentType.toString()) ==
