@@ -1,10 +1,10 @@
 {
-  "name": "auth/logout/a_logged_out_user_should_not_be_authenticated",
+  "name": "auth/logout/a_logged_out_user_should_not_be_authenticated.json",
   "interactions": [
     {
       "request": {
         "method": "post",
-        "uri": "http://localhost:3000/auth/register",
+        "uri": "http://localhost:9001/auth/register",
         "headers": {
           "content-type": "application/json; charset=utf-8"
         },
@@ -21,34 +21,34 @@
           "set-cookie": "refresh_token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT,permission_variables=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT",
           "cache-control": "no-store, no-cache, must-revalidate, proxy-revalidate",
           "x-dns-prefetch-control": "off",
-          "x-ratelimit-reset": "1615999749",
-          "date": "Wed, 17 Mar 2021 16:49:08 GMT",
+          "x-ratelimit-reset": "1634525484",
+          "date": "Mon, 18 Oct 2021 02:37:45 GMT",
           "x-ratelimit-limit": "1000",
           "vary": "Origin",
           "strict-transport-security": "max-age=15552000; includeSubDomains",
-          "x-ratelimit-remaining": "994",
+          "x-ratelimit-remaining": "956",
           "content-type": "application/json; charset=utf-8",
           "pragma": "no-cache",
           "x-xss-protection": "1; mode=block",
           "access-control-allow-credentials": "true",
           "keep-alive": "timeout=5",
-          "content-length": "527",
+          "content-length": "612",
           "x-download-options": "noopen",
-          "etag": "W/\"20f-GEp1HwHradSNhQMQTIyO8CW7gb0\"",
+          "etag": "W/\"264-ipgB8Qc1qT9cA8rb6PM0OPWvIII\"",
           "x-frame-options": "SAMEORIGIN",
           "x-content-type-options": "nosniff",
           "expires": "0"
         },
         "body": {
           "encoding": "utf-8",
-          "string": "{\"jwt_token\":\"eyJhbGciOiJIUzI1NiJ9.eyJodHRwczovL2hhc3VyYS5pby9qd3QvY2xhaW1zIjp7IngtaGFzdXJhLXVzZXItaWQiOiJiYTgwMzExOC01MzNjLTRlZmItOGJiOC0zZTA3ZTdlMWZiYzAiLCJ4LWhhc3VyYS1hbGxvd2VkLXJvbGVzIjpbInVzZXIiXSwieC1oYXN1cmEtZGVmYXVsdC1yb2xlIjoidXNlciJ9LCJpYXQiOjE2MTU5OTk3NDgsImV4cCI6MTYxNjAwMDY0OH0.UUB4egWTE1v85lx0urAJh8eHJl80DcF65bBTzLhUSrI\",\"jwt_expires_in\":900000,\"user\":{\"id\":\"ba803118-533c-4efb-8bb8-3e07e7e1fbc0\",\"display_name\":\"user-1@nhost.io\",\"email\":\"user-1@nhost.io\"},\"refresh_token\":\"7dad16b3-793a-44d4-b5f3-e2acb31fe972\"}"
+          "string": "{\"jwt_token\":\"eyJhbGciOiJIUzI1NiJ9.eyJodHRwczovL2hhc3VyYS5pby9qd3QvY2xhaW1zIjp7IngtaGFzdXJhLXVzZXItaWQiOiJjYWVkYzExMS01N2ZiLTRmY2ItOTJiNi1iYTlhMzJjYjY1NGEiLCJ4LWhhc3VyYS1hbGxvd2VkLXJvbGVzIjpbInVzZXIiLCJtZSJdLCJ4LWhhc3VyYS1kZWZhdWx0LXJvbGUiOiJ1c2VyIn0sInN1YiI6ImNhZWRjMTExLTU3ZmItNGZjYi05MmI2LWJhOWEzMmNiNjU0YSIsImlzcyI6Im5ob3N0IiwiaWF0IjoxNjM0NTI0NjY1LCJleHAiOjE2MzQ1MjU1NjV9.CuJO1vsbvOi5dVEro8qy4o_HSDfzf4m6r1iJT1qSC9k\",\"jwt_expires_in\":900000,\"user\":{\"id\":\"caedc111-57fb-4fcb-92b6-ba9a32cb654a\",\"display_name\":\"user-1@nhost.io\",\"email\":\"user-1@nhost.io\"},\"refresh_token\":\"51fa13c2-b26a-4411-92b5-eb31a48d88e3\"}"
         }
       }
     },
     {
       "request": {
         "method": "post",
-        "uri": "http://localhost:3000/auth/logout?refresh_token=7dad16b3-793a-44d4-b5f3-e2acb31fe972",
+        "uri": "http://localhost:9001/auth/logout?refresh_token=51fa13c2-b26a-4411-92b5-eb31a48d88e3",
         "headers": {
           "content-type": "application/json; charset=utf-8"
         },
@@ -62,15 +62,14 @@
         "headers": {
           "connection": "keep-alive",
           "surrogate-control": "no-store",
-          "set-cookie": "refresh_token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT,permission_variables=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT",
           "cache-control": "no-store, no-cache, must-revalidate, proxy-revalidate",
           "x-dns-prefetch-control": "off",
-          "x-ratelimit-reset": "1615999750",
-          "date": "Wed, 17 Mar 2021 16:49:08 GMT",
+          "x-ratelimit-reset": "1634525484",
+          "date": "Mon, 18 Oct 2021 02:37:45 GMT",
           "x-ratelimit-limit": "1000",
           "vary": "Origin",
           "strict-transport-security": "max-age=15552000; includeSubDomains",
-          "x-ratelimit-remaining": "999",
+          "x-ratelimit-remaining": "955",
           "pragma": "no-cache",
           "x-xss-protection": "1; mode=block",
           "access-control-allow-credentials": "true",

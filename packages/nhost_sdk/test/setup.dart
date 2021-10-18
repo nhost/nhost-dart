@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:betamax/betamax.dart';
 import 'package:http/http.dart' as http;
@@ -6,14 +7,15 @@ import 'package:nhost_sdk/nhost_sdk.dart';
 import 'package:test/test.dart';
 import 'package:test_api/src/backend/invoker.dart';
 
-const apiUrl = 'http://localhost:3000';
+const apiUrl = 'http://localhost:9001';
 const gqlUrl = 'http://localhost:8080/v1/graphql';
 
 const recordFixturesEnvVariableName = 'RECORD_HTTP_FIXTURES';
 
 /// Initializes Betamax, which is responsible for HTTP fixtures
 void initializeHttpFixturesForSuite(String suiteName) {
-  final recordFixtures = bool.fromEnvironment(recordFixturesEnvVariableName);
+  final recordFixtures =
+      Platform.environment[recordFixturesEnvVariableName] == 'true';
   Betamax.configureSuite(
     suiteName: suiteName,
     mode: recordFixtures ? Mode.recording : Mode.playback,

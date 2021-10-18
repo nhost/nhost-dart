@@ -63,7 +63,7 @@ void main() async {
       expect(fileMetadata.contentType, applicationOctetStreamType);
     });
 
-    test('works with strings', () async {
+    test('can write strings', () async {
       final filePath = pathInUserDirectory('/test-file.txt');
       final fileContents = 'text file contents';
       final fileMetadata = await storage.uploadString(
@@ -85,7 +85,7 @@ void main() async {
     });
 
     test('can write bytes', () async {
-      final filePath = pathInUserDirectory('/test-file.txt');
+      final filePath = pathInUserDirectory('/test-file.bin');
       final fileContents = [
         0x74,
         0x68,

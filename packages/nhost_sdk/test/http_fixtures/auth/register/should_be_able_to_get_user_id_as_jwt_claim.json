@@ -1,10 +1,10 @@
 {
-  "name": "auth/register/should_be_able_to_get_user_id_as_jwt_claim",
+  "name": "auth/register/should_be_able_to_get_user_id_as_jwt_claim.json",
   "interactions": [
     {
       "request": {
         "method": "post",
-        "uri": "http://localhost:3000/auth/register",
+        "uri": "http://localhost:9001/auth/register",
         "headers": {
           "content-type": "application/json; charset=utf-8"
         },
@@ -21,27 +21,27 @@
           "set-cookie": "refresh_token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT,permission_variables=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT",
           "cache-control": "no-store, no-cache, must-revalidate, proxy-revalidate",
           "x-dns-prefetch-control": "off",
-          "x-ratelimit-reset": "1615999745",
-          "date": "Wed, 17 Mar 2021 16:49:03 GMT",
+          "x-ratelimit-reset": "1634525484",
+          "date": "Mon, 18 Oct 2021 02:37:40 GMT",
           "x-ratelimit-limit": "1000",
           "vary": "Origin",
           "strict-transport-security": "max-age=15552000; includeSubDomains",
-          "x-ratelimit-remaining": "999",
+          "x-ratelimit-remaining": "983",
           "content-type": "application/json; charset=utf-8",
           "pragma": "no-cache",
           "x-xss-protection": "1; mode=block",
           "access-control-allow-credentials": "true",
           "keep-alive": "timeout=5",
-          "content-length": "527",
+          "content-length": "612",
           "x-download-options": "noopen",
-          "etag": "W/\"20f-ZxkcilR2/eiKWJqDKxJDRqGuGBw\"",
+          "etag": "W/\"264-Rrgk8m1X2WIz+LiUZXIxIASdOag\"",
           "x-frame-options": "SAMEORIGIN",
           "x-content-type-options": "nosniff",
           "expires": "0"
         },
         "body": {
           "encoding": "utf-8",
-          "string": "{\"jwt_token\":\"eyJhbGciOiJIUzI1NiJ9.eyJodHRwczovL2hhc3VyYS5pby9qd3QvY2xhaW1zIjp7IngtaGFzdXJhLXVzZXItaWQiOiIwMzc4MTk3NS00M2E0LTQ1MTYtYjJlYi1mN2NmNTIwZGM3OTYiLCJ4LWhhc3VyYS1hbGxvd2VkLXJvbGVzIjpbInVzZXIiXSwieC1oYXN1cmEtZGVmYXVsdC1yb2xlIjoidXNlciJ9LCJpYXQiOjE2MTU5OTk3NDMsImV4cCI6MTYxNjAwMDY0M30.4gmKOEH4869LFi47nmsONsFoRq1BpbtEPfU9mveVNqQ\",\"jwt_expires_in\":900000,\"user\":{\"id\":\"03781975-43a4-4516-b2eb-f7cf520dc796\",\"display_name\":\"user-1@nhost.io\",\"email\":\"user-1@nhost.io\"},\"refresh_token\":\"10a83d5a-2aab-4dab-bbe2-cc9cdc0ae3cd\"}"
+          "string": "{\"jwt_token\":\"eyJhbGciOiJIUzI1NiJ9.eyJodHRwczovL2hhc3VyYS5pby9qd3QvY2xhaW1zIjp7IngtaGFzdXJhLXVzZXItaWQiOiJiN2Q3MjQxNy1hMTc0LTQ1N2UtYjBmOC1jNGI4MmMyMmI5OTIiLCJ4LWhhc3VyYS1hbGxvd2VkLXJvbGVzIjpbInVzZXIiLCJtZSJdLCJ4LWhhc3VyYS1kZWZhdWx0LXJvbGUiOiJ1c2VyIn0sInN1YiI6ImI3ZDcyNDE3LWExNzQtNDU3ZS1iMGY4LWM0YjgyYzIyYjk5MiIsImlzcyI6Im5ob3N0IiwiaWF0IjoxNjM0NTI0NjYwLCJleHAiOjE2MzQ1MjU1NjB9.h4pNmbRWCyVFm3qxLSZElnkpLSOi3gYL2t-GODO0lXY\",\"jwt_expires_in\":900000,\"user\":{\"id\":\"b7d72417-a174-457e-b0f8-c4b82c22b992\",\"display_name\":\"user-1@nhost.io\",\"email\":\"user-1@nhost.io\"},\"refresh_token\":\"524196f3-a118-4b3b-83a9-aac83c2da2d9\"}"
         }
       }
     }

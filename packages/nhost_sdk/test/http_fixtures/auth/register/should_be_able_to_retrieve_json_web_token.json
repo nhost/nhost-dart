@@ -1,10 +1,10 @@
 {
-  "name": "auth/register/should_be_able_to_retrieve_json_web_token",
+  "name": "auth/register/should_be_able_to_retrieve_json_web_token.json",
   "interactions": [
     {
       "request": {
         "method": "post",
-        "uri": "http://localhost:3000/auth/register",
+        "uri": "http://localhost:9001/auth/register",
         "headers": {
           "content-type": "application/json; charset=utf-8"
         },
@@ -21,27 +21,27 @@
           "set-cookie": "refresh_token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT,permission_variables=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT",
           "cache-control": "no-store, no-cache, must-revalidate, proxy-revalidate",
           "x-dns-prefetch-control": "off",
-          "x-ratelimit-reset": "1615999744",
-          "date": "Wed, 17 Mar 2021 16:49:02 GMT",
+          "x-ratelimit-reset": "1634525484",
+          "date": "Mon, 18 Oct 2021 02:37:40 GMT",
           "x-ratelimit-limit": "1000",
           "vary": "Origin",
           "strict-transport-security": "max-age=15552000; includeSubDomains",
-          "x-ratelimit-remaining": "992",
+          "x-ratelimit-remaining": "984",
           "content-type": "application/json; charset=utf-8",
           "pragma": "no-cache",
           "x-xss-protection": "1; mode=block",
           "access-control-allow-credentials": "true",
           "keep-alive": "timeout=5",
-          "content-length": "527",
+          "content-length": "612",
           "x-download-options": "noopen",
-          "etag": "W/\"20f-++ojC6w5TWWmTlIZ676r7IVdYeo\"",
+          "etag": "W/\"264-CTn7yNeGsuRx8C5mKCOLuebHM2w\"",
           "x-frame-options": "SAMEORIGIN",
           "x-content-type-options": "nosniff",
           "expires": "0"
         },
         "body": {
           "encoding": "utf-8",
-          "string": "{\"jwt_token\":\"eyJhbGciOiJIUzI1NiJ9.eyJodHRwczovL2hhc3VyYS5pby9qd3QvY2xhaW1zIjp7IngtaGFzdXJhLXVzZXItaWQiOiIxMDlhNWEyMi01ODY1LTQ5ZmQtOWExZC1kYzNmMTE3M2NhZGQiLCJ4LWhhc3VyYS1hbGxvd2VkLXJvbGVzIjpbInVzZXIiXSwieC1oYXN1cmEtZGVmYXVsdC1yb2xlIjoidXNlciJ9LCJpYXQiOjE2MTU5OTk3NDMsImV4cCI6MTYxNjAwMDY0M30.hkbW8wgbBJsQUpwhohSFv67etEtHB17eoahQ-_9_RIU\",\"jwt_expires_in\":900000,\"user\":{\"id\":\"109a5a22-5865-49fd-9a1d-dc3f1173cadd\",\"display_name\":\"user-1@nhost.io\",\"email\":\"user-1@nhost.io\"},\"refresh_token\":\"12d425d5-0614-4427-8f5a-a10b375990ce\"}"
+          "string": "{\"jwt_token\":\"eyJhbGciOiJIUzI1NiJ9.eyJodHRwczovL2hhc3VyYS5pby9qd3QvY2xhaW1zIjp7IngtaGFzdXJhLXVzZXItaWQiOiJkYmNmNWNiNy0wODE4LTQyMWMtOTcxZC00OGEwZmVlZGVlZDciLCJ4LWhhc3VyYS1hbGxvd2VkLXJvbGVzIjpbInVzZXIiLCJtZSJdLCJ4LWhhc3VyYS1kZWZhdWx0LXJvbGUiOiJ1c2VyIn0sInN1YiI6ImRiY2Y1Y2I3LTA4MTgtNDIxYy05NzFkLTQ4YTBmZWVkZWVkNyIsImlzcyI6Im5ob3N0IiwiaWF0IjoxNjM0NTI0NjYwLCJleHAiOjE2MzQ1MjU1NjB9.bSI3fZqhTesvWbJ9oc8dtsXTCgT1FEam5Wt5GK-40ss\",\"jwt_expires_in\":900000,\"user\":{\"id\":\"dbcf5cb7-0818-421c-971d-48a0feedeed7\",\"display_name\":\"user-1@nhost.io\",\"email\":\"user-1@nhost.io\"},\"refresh_token\":\"1d7f4430-b930-4818-b097-454948a575f5\"}"
         }
       }
     }
