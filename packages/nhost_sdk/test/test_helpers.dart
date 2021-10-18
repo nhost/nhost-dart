@@ -31,6 +31,11 @@ Future<String> registerMfaUser(Auth auth, {bool logout = true}) async {
 
 /// Creates a new time-based one-time-pass based on the provided secret and the
 /// current time.
-String totpFromSecret(String otpSecret) => OTP
-    .generateTOTPCode(otpSecret, DateTime.now().millisecondsSinceEpoch)
-    .toString();
+String totpFromSecret(String otpSecret) {
+  return OTP.generateTOTPCodeString(
+    otpSecret,
+    DateTime.now().millisecondsSinceEpoch,
+    algorithm: Algorithm.SHA1,
+    isGoogle: true,
+  );
+}

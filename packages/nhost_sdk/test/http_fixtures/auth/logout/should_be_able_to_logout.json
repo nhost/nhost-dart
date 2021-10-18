@@ -1,10 +1,10 @@
 {
-  "name": "auth/logout/should_be_able_to_logout",
+  "name": "auth/logout/should_be_able_to_logout.json",
   "interactions": [
     {
       "request": {
         "method": "post",
-        "uri": "http://localhost:3000/auth/register",
+        "uri": "http://localhost:9001/auth/register",
         "headers": {
           "content-type": "application/json; charset=utf-8"
         },
@@ -21,8 +21,8 @@
           "set-cookie": "refresh_token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT,permission_variables=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT",
           "cache-control": "no-store, no-cache, must-revalidate, proxy-revalidate",
           "x-dns-prefetch-control": "off",
-          "x-ratelimit-reset": "1615999749",
-          "date": "Wed, 17 Mar 2021 16:49:07 GMT",
+          "x-ratelimit-reset": "1634620892",
+          "date": "Tue, 19 Oct 2021 05:10:50 GMT",
           "x-ratelimit-limit": "1000",
           "vary": "Origin",
           "strict-transport-security": "max-age=15552000; includeSubDomains",
@@ -32,23 +32,23 @@
           "x-xss-protection": "1; mode=block",
           "access-control-allow-credentials": "true",
           "keep-alive": "timeout=5",
-          "content-length": "527",
+          "content-length": "612",
           "x-download-options": "noopen",
-          "etag": "W/\"20f-uJ6CSJnfPm1graPJtgAOfI2Y5/A\"",
+          "etag": "W/\"264-AqTa0KMdAi5YGehJGyQsbD1P9ds\"",
           "x-frame-options": "SAMEORIGIN",
           "x-content-type-options": "nosniff",
           "expires": "0"
         },
         "body": {
           "encoding": "utf-8",
-          "string": "{\"jwt_token\":\"eyJhbGciOiJIUzI1NiJ9.eyJodHRwczovL2hhc3VyYS5pby9qd3QvY2xhaW1zIjp7IngtaGFzdXJhLXVzZXItaWQiOiJmMWY2NzQxYy1jYWNkLTQ4ZTMtODAzMC1mYzMyYTc1YjcyMDQiLCJ4LWhhc3VyYS1hbGxvd2VkLXJvbGVzIjpbInVzZXIiXSwieC1oYXN1cmEtZGVmYXVsdC1yb2xlIjoidXNlciJ9LCJpYXQiOjE2MTU5OTk3NDcsImV4cCI6MTYxNjAwMDY0N30.BbPzxDqxdvYkZQZM84nYX1FSmsk5IKMa_RuX1f_oldY\",\"jwt_expires_in\":900000,\"user\":{\"id\":\"f1f6741c-cacd-48e3-8030-fc32a75b7204\",\"display_name\":\"user-1@nhost.io\",\"email\":\"user-1@nhost.io\"},\"refresh_token\":\"f4c3faba-1bba-41c3-8bde-0383861348aa\"}"
+          "string": "{\"jwt_token\":\"eyJhbGciOiJIUzI1NiJ9.eyJodHRwczovL2hhc3VyYS5pby9qd3QvY2xhaW1zIjp7IngtaGFzdXJhLXVzZXItaWQiOiI3YmRjMmNiMC1kMmY2LTQzYmEtYmZiYy1kMWI1ZGNlYmVkOGEiLCJ4LWhhc3VyYS1hbGxvd2VkLXJvbGVzIjpbInVzZXIiLCJtZSJdLCJ4LWhhc3VyYS1kZWZhdWx0LXJvbGUiOiJ1c2VyIn0sInN1YiI6IjdiZGMyY2IwLWQyZjYtNDNiYS1iZmJjLWQxYjVkY2ViZWQ4YSIsImlzcyI6Im5ob3N0IiwiaWF0IjoxNjM0NjIwMjUwLCJleHAiOjE2MzQ2MjExNTB9.Y-lc0YoQGzePYRhyAKfK_mCqeKBnlsT1pNaB5y3Wzf8\",\"jwt_expires_in\":900000,\"user\":{\"id\":\"7bdc2cb0-d2f6-43ba-bfbc-d1b5dcebed8a\",\"display_name\":\"user-1@nhost.io\",\"email\":\"user-1@nhost.io\"},\"refresh_token\":\"7a3bd688-86ce-4f01-bff4-544f1464765a\"}"
         }
       }
     },
     {
       "request": {
         "method": "post",
-        "uri": "http://localhost:3000/auth/logout?refresh_token=f4c3faba-1bba-41c3-8bde-0383861348aa",
+        "uri": "http://localhost:9001/auth/logout?refresh_token=7a3bd688-86ce-4f01-bff4-544f1464765a",
         "headers": {
           "content-type": "application/json; charset=utf-8"
         },
@@ -62,11 +62,10 @@
         "headers": {
           "connection": "keep-alive",
           "surrogate-control": "no-store",
-          "set-cookie": "refresh_token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT,permission_variables=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT",
           "cache-control": "no-store, no-cache, must-revalidate, proxy-revalidate",
           "x-dns-prefetch-control": "off",
-          "x-ratelimit-reset": "1615999749",
-          "date": "Wed, 17 Mar 2021 16:49:07 GMT",
+          "x-ratelimit-reset": "1634620892",
+          "date": "Tue, 19 Oct 2021 05:10:50 GMT",
           "x-ratelimit-limit": "1000",
           "vary": "Origin",
           "strict-transport-security": "max-age=15552000; includeSubDomains",

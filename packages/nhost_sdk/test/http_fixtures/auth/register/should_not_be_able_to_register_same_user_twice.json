@@ -1,16 +1,16 @@
 {
-  "name": "auth/register/should_not_be_able_to_register_same_user_twice",
+  "name": "auth/register/should_not_be_able_to_register_same_user_twice.json",
   "interactions": [
     {
       "request": {
         "method": "post",
-        "uri": "http://localhost:3000/auth/register",
+        "uri": "http://localhost:9001/auth/register",
         "headers": {
           "content-type": "application/json; charset=utf-8"
         },
         "body": {
           "encoding": "utf-8",
-          "string": "{\"email\":\"user-1@nhost.io\",\"password\":\"password-2\",\"user_data\":{},\"cookie\":false}"
+          "string": "{\"email\":\"user-1@nhost.io\",\"password\":\"password-1\",\"user_data\":{},\"cookie\":false}"
         }
       },
       "response": {
@@ -21,40 +21,40 @@
           "set-cookie": "refresh_token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT,permission_variables=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT",
           "cache-control": "no-store, no-cache, must-revalidate, proxy-revalidate",
           "x-dns-prefetch-control": "off",
-          "x-ratelimit-reset": "1615999744",
-          "date": "Wed, 17 Mar 2021 16:49:02 GMT",
+          "x-ratelimit-reset": "1634525484",
+          "date": "Mon, 18 Oct 2021 02:37:39 GMT",
           "x-ratelimit-limit": "1000",
           "vary": "Origin",
           "strict-transport-security": "max-age=15552000; includeSubDomains",
-          "x-ratelimit-remaining": "999",
+          "x-ratelimit-remaining": "991",
           "content-type": "application/json; charset=utf-8",
           "pragma": "no-cache",
           "x-xss-protection": "1; mode=block",
           "access-control-allow-credentials": "true",
           "keep-alive": "timeout=5",
-          "content-length": "527",
+          "content-length": "612",
           "x-download-options": "noopen",
-          "etag": "W/\"20f-5Pno/UZBWYZToAnaWnev6TMSOzI\"",
+          "etag": "W/\"264-EKoMktK0pjT+b3EHPL0Me8EghpI\"",
           "x-frame-options": "SAMEORIGIN",
           "x-content-type-options": "nosniff",
           "expires": "0"
         },
         "body": {
           "encoding": "utf-8",
-          "string": "{\"jwt_token\":\"eyJhbGciOiJIUzI1NiJ9.eyJodHRwczovL2hhc3VyYS5pby9qd3QvY2xhaW1zIjp7IngtaGFzdXJhLXVzZXItaWQiOiJjMzI2YzAxZC03NTI4LTQ3ZjEtYTZkNy0yMWY3YWJkYjZkMzYiLCJ4LWhhc3VyYS1hbGxvd2VkLXJvbGVzIjpbInVzZXIiXSwieC1oYXN1cmEtZGVmYXVsdC1yb2xlIjoidXNlciJ9LCJpYXQiOjE2MTU5OTk3NDIsImV4cCI6MTYxNjAwMDY0Mn0.o9dqlxbW2AvkGgodNyaFG_dxXq0URP44s-5TOEIomgE\",\"jwt_expires_in\":900000,\"user\":{\"id\":\"c326c01d-7528-47f1-a6d7-21f7abdb6d36\",\"display_name\":\"user-1@nhost.io\",\"email\":\"user-1@nhost.io\"},\"refresh_token\":\"e60d4366-c8ed-4605-b67f-5ee38ba228da\"}"
+          "string": "{\"jwt_token\":\"eyJhbGciOiJIUzI1NiJ9.eyJodHRwczovL2hhc3VyYS5pby9qd3QvY2xhaW1zIjp7IngtaGFzdXJhLXVzZXItaWQiOiI3YzViODQ5Yi1kZmJkLTQ1MTItOWNjYy1iYjA3ZWQ4MzgwZTkiLCJ4LWhhc3VyYS1hbGxvd2VkLXJvbGVzIjpbInVzZXIiLCJtZSJdLCJ4LWhhc3VyYS1kZWZhdWx0LXJvbGUiOiJ1c2VyIn0sInN1YiI6IjdjNWI4NDliLWRmYmQtNDUxMi05Y2NjLWJiMDdlZDgzODBlOSIsImlzcyI6Im5ob3N0IiwiaWF0IjoxNjM0NTI0NjU5LCJleHAiOjE2MzQ1MjU1NTl9.U1c9imt09bmD2_LzIqag3fuz5DygQUVK_gOh3OPhTO0\",\"jwt_expires_in\":900000,\"user\":{\"id\":\"7c5b849b-dfbd-4512-9ccc-bb07ed8380e9\",\"display_name\":\"user-1@nhost.io\",\"email\":\"user-1@nhost.io\"},\"refresh_token\":\"d396b98b-7082-4494-8126-740e6ec2049f\"}"
         }
       }
     },
     {
       "request": {
         "method": "post",
-        "uri": "http://localhost:3000/auth/register",
+        "uri": "http://localhost:9001/auth/register",
         "headers": {
           "content-type": "application/json; charset=utf-8"
         },
         "body": {
           "encoding": "utf-8",
-          "string": "{\"email\":\"user-1@nhost.io\",\"password\":\"password-2\",\"user_data\":{},\"cookie\":false}"
+          "string": "{\"email\":\"user-1@nhost.io\",\"password\":\"password-1\",\"user_data\":{},\"cookie\":false}"
         }
       },
       "response": {
@@ -64,12 +64,12 @@
           "surrogate-control": "no-store",
           "cache-control": "no-store, no-cache, must-revalidate, proxy-revalidate",
           "x-dns-prefetch-control": "off",
-          "x-ratelimit-reset": "1615999744",
-          "date": "Wed, 17 Mar 2021 16:49:02 GMT",
+          "x-ratelimit-reset": "1634525484",
+          "date": "Mon, 18 Oct 2021 02:37:39 GMT",
           "x-ratelimit-limit": "1000",
           "vary": "Origin",
           "strict-transport-security": "max-age=15552000; includeSubDomains",
-          "x-ratelimit-remaining": "998",
+          "x-ratelimit-remaining": "990",
           "content-type": "application/json; charset=utf-8",
           "pragma": "no-cache",
           "x-xss-protection": "1; mode=block",

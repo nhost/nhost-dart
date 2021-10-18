@@ -14,7 +14,7 @@ class GqlAdminTestHelper {
       gqlUrl,
       NhostClient(baseUrl: apiUrl),
       defaultHeaders: {
-        'X-Hasura-Admin-Secret': 'hejsan',
+        'X-Hasura-Admin-Secret': '123456',
       },
       httpClientOverride: httpClientOverride,
     );

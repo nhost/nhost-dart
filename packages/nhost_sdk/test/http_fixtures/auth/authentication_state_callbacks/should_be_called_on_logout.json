@@ -1,10 +1,10 @@
 {
-  "name": "auth/authentication_state_callbacks/should_be_called_on_logout",
+  "name": "auth/authentication_state_callbacks/should_be_called_on_logout.json",
   "interactions": [
     {
       "request": {
         "method": "post",
-        "uri": "http://localhost:3000/auth/register",
+        "uri": "http://localhost:9001/auth/register",
         "headers": {
           "content-type": "application/json; charset=utf-8"
         },
@@ -21,34 +21,34 @@
           "set-cookie": "refresh_token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT,permission_variables=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT",
           "cache-control": "no-store, no-cache, must-revalidate, proxy-revalidate",
           "x-dns-prefetch-control": "off",
-          "x-ratelimit-reset": "1615999751",
-          "date": "Wed, 17 Mar 2021 16:49:09 GMT",
+          "x-ratelimit-reset": "1634525484",
+          "date": "Mon, 18 Oct 2021 02:37:46 GMT",
           "x-ratelimit-limit": "1000",
           "vary": "Origin",
           "strict-transport-security": "max-age=15552000; includeSubDomains",
-          "x-ratelimit-remaining": "999",
+          "x-ratelimit-remaining": "947",
           "content-type": "application/json; charset=utf-8",
           "pragma": "no-cache",
           "x-xss-protection": "1; mode=block",
           "access-control-allow-credentials": "true",
           "keep-alive": "timeout=5",
-          "content-length": "527",
+          "content-length": "612",
           "x-download-options": "noopen",
-          "etag": "W/\"20f-6SQB6xqSKJ1b8pbunRgTmzAsGtw\"",
+          "etag": "W/\"264-DnZnMVPEIkiMBewrnsNqYTHEPB0\"",
           "x-frame-options": "SAMEORIGIN",
           "x-content-type-options": "nosniff",
           "expires": "0"
         },
         "body": {
           "encoding": "utf-8",
-          "string": "{\"jwt_token\":\"eyJhbGciOiJIUzI1NiJ9.eyJodHRwczovL2hhc3VyYS5pby9qd3QvY2xhaW1zIjp7IngtaGFzdXJhLXVzZXItaWQiOiJkNzExYWYxOC0wZGU1LTRhNTgtOWRhYy1kY2E3ZWFhZDM1NDAiLCJ4LWhhc3VyYS1hbGxvd2VkLXJvbGVzIjpbInVzZXIiXSwieC1oYXN1cmEtZGVmYXVsdC1yb2xlIjoidXNlciJ9LCJpYXQiOjE2MTU5OTk3NDksImV4cCI6MTYxNjAwMDY0OX0.Qqb9GEvyk3r2YhW90jrRi4HRcm24_anHCj2ZPPQAf14\",\"jwt_expires_in\":900000,\"user\":{\"id\":\"d711af18-0de5-4a58-9dac-dca7eaad3540\",\"display_name\":\"user-1@nhost.io\",\"email\":\"user-1@nhost.io\"},\"refresh_token\":\"571cd078-b987-4971-a6cd-ea9d60276725\"}"
+          "string": "{\"jwt_token\":\"eyJhbGciOiJIUzI1NiJ9.eyJodHRwczovL2hhc3VyYS5pby9qd3QvY2xhaW1zIjp7IngtaGFzdXJhLXVzZXItaWQiOiIyNjkyODdlMi03NWUyLTQ3NjYtODA2NC05YWJhN2E3MTczYTMiLCJ4LWhhc3VyYS1hbGxvd2VkLXJvbGVzIjpbInVzZXIiLCJtZSJdLCJ4LWhhc3VyYS1kZWZhdWx0LXJvbGUiOiJ1c2VyIn0sInN1YiI6IjI2OTI4N2UyLTc1ZTItNDc2Ni04MDY0LTlhYmE3YTcxNzNhMyIsImlzcyI6Im5ob3N0IiwiaWF0IjoxNjM0NTI0NjY2LCJleHAiOjE2MzQ1MjU1NjZ9.YTucAtDHkc0ic0ZnFJpgqN70SGVE_APGEZntz12Bceo\",\"jwt_expires_in\":900000,\"user\":{\"id\":\"269287e2-75e2-4766-8064-9aba7a7173a3\",\"display_name\":\"user-1@nhost.io\",\"email\":\"user-1@nhost.io\"},\"refresh_token\":\"1876298b-40e7-49b0-a7fc-4c5135366461\"}"
         }
       }
     },
     {
       "request": {
         "method": "post",
-        "uri": "http://localhost:3000/auth/logout?refresh_token=571cd078-b987-4971-a6cd-ea9d60276725",
+        "uri": "http://localhost:9001/auth/logout?refresh_token=1876298b-40e7-49b0-a7fc-4c5135366461",
         "headers": {
           "content-type": "application/json; charset=utf-8"
         },
@@ -62,15 +62,14 @@
         "headers": {
           "connection": "keep-alive",
           "surrogate-control": "no-store",
-          "set-cookie": "refresh_token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT,permission_variables=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT",
           "cache-control": "no-store, no-cache, must-revalidate, proxy-revalidate",
           "x-dns-prefetch-control": "off",
-          "x-ratelimit-reset": "1615999751",
-          "date": "Wed, 17 Mar 2021 16:49:09 GMT",
+          "x-ratelimit-reset": "1634525484",
+          "date": "Mon, 18 Oct 2021 02:37:47 GMT",
           "x-ratelimit-limit": "1000",
           "vary": "Origin",
           "strict-transport-security": "max-age=15552000; includeSubDomains",
-          "x-ratelimit-remaining": "998",
+          "x-ratelimit-remaining": "946",
           "pragma": "no-cache",
           "x-xss-protection": "1; mode=block",
           "access-control-allow-credentials": "true",
@@ -89,7 +88,7 @@
     {
       "request": {
         "method": "post",
-        "uri": "http://localhost:3000/auth/logout?refresh_token",
+        "uri": "http://localhost:9001/auth/logout?refresh_token",
         "headers": {
           "content-type": "application/json; charset=utf-8"
         },
@@ -99,30 +98,32 @@
         }
       },
       "response": {
-        "status": 204,
+        "status": 200,
         "headers": {
           "connection": "keep-alive",
           "surrogate-control": "no-store",
-          "set-cookie": "refresh_token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT,permission_variables=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT",
           "cache-control": "no-store, no-cache, must-revalidate, proxy-revalidate",
           "x-dns-prefetch-control": "off",
-          "x-ratelimit-reset": "1615999751",
-          "date": "Wed, 17 Mar 2021 16:49:09 GMT",
+          "x-ratelimit-reset": "1634525484",
+          "date": "Mon, 18 Oct 2021 02:37:47 GMT",
           "x-ratelimit-limit": "1000",
           "vary": "Origin",
           "strict-transport-security": "max-age=15552000; includeSubDomains",
-          "x-ratelimit-remaining": "997",
+          "x-ratelimit-remaining": "945",
+          "content-type": "application/json; charset=utf-8",
           "pragma": "no-cache",
           "x-xss-protection": "1; mode=block",
           "access-control-allow-credentials": "true",
           "keep-alive": "timeout=5",
+          "content-length": "87",
           "x-download-options": "noopen",
+          "etag": "W/\"57-7sqDUpOZBOlBSOKcAmIyHN86Akc\"",
           "x-frame-options": "SAMEORIGIN",
           "x-content-type-options": "nosniff",
           "expires": "0"
         },
         "body": {
-          "encoding": "iso-8859-1",
+          "encoding": "utf-8",
           "string": ""
         }
       }

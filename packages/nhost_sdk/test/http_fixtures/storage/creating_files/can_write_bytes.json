@@ -1,10 +1,10 @@
 {
-  "name": "storage/creating_files/can_write_bytes",
+  "name": "storage/creating_files/can_write_bytes.json",
   "interactions": [
     {
       "request": {
         "method": "post",
-        "uri": "http://localhost:3000/auth/register",
+        "uri": "http://localhost:9001/auth/register",
         "headers": {
           "content-type": "application/json; charset=utf-8"
         },
@@ -21,36 +21,36 @@
           "set-cookie": "refresh_token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT,permission_variables=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT",
           "cache-control": "no-store, no-cache, must-revalidate, proxy-revalidate",
           "x-dns-prefetch-control": "off",
-          "x-ratelimit-reset": "1615999761",
-          "date": "Wed, 17 Mar 2021 16:49:19 GMT",
+          "x-ratelimit-reset": "1634445674",
+          "date": "Sun, 17 Oct 2021 04:39:20 GMT",
           "x-ratelimit-limit": "1000",
           "vary": "Origin",
           "strict-transport-security": "max-age=15552000; includeSubDomains",
-          "x-ratelimit-remaining": "999",
+          "x-ratelimit-remaining": "968",
           "content-type": "application/json; charset=utf-8",
           "pragma": "no-cache",
           "x-xss-protection": "1; mode=block",
           "access-control-allow-credentials": "true",
           "keep-alive": "timeout=5",
-          "content-length": "527",
+          "content-length": "612",
           "x-download-options": "noopen",
-          "etag": "W/\"20f-Unh2LyyroQWyN3sjlxFhSTdxl/E\"",
+          "etag": "W/\"264-ZdspG7xg/6Dh6BDQ8KTMcs8IAjg\"",
           "x-frame-options": "SAMEORIGIN",
           "x-content-type-options": "nosniff",
           "expires": "0"
         },
         "body": {
           "encoding": "utf-8",
-          "string": "{\"jwt_token\":\"eyJhbGciOiJIUzI1NiJ9.eyJodHRwczovL2hhc3VyYS5pby9qd3QvY2xhaW1zIjp7IngtaGFzdXJhLXVzZXItaWQiOiIxNmY0M2YxYS0xNzU5LTQ0MDItYTVhMi03MmNmNmRmMmFlY2YiLCJ4LWhhc3VyYS1hbGxvd2VkLXJvbGVzIjpbInVzZXIiXSwieC1oYXN1cmEtZGVmYXVsdC1yb2xlIjoidXNlciJ9LCJpYXQiOjE2MTU5OTk3NTksImV4cCI6MTYxNjAwMDY1OX0.NhyZ3mROraRmb1GEC4PecUc1LK3-UkoZ8Dl4dWxK50E\",\"jwt_expires_in\":900000,\"user\":{\"id\":\"16f43f1a-1759-4402-a5a2-72cf6df2aecf\",\"display_name\":\"user-1@nhost.io\",\"email\":\"user-1@nhost.io\"},\"refresh_token\":\"a87465ea-67df-4c54-9cf4-77b16f08d8f9\"}"
+          "string": "{\"jwt_token\":\"eyJhbGciOiJIUzI1NiJ9.eyJodHRwczovL2hhc3VyYS5pby9qd3QvY2xhaW1zIjp7IngtaGFzdXJhLXVzZXItaWQiOiI1OGVkMzg1My05NDRiLTRjZGItOTA3ZC0wMWY2YmNlMGFhNDMiLCJ4LWhhc3VyYS1hbGxvd2VkLXJvbGVzIjpbInVzZXIiLCJtZSJdLCJ4LWhhc3VyYS1kZWZhdWx0LXJvbGUiOiJ1c2VyIn0sInN1YiI6IjU4ZWQzODUzLTk0NGItNGNkYi05MDdkLTAxZjZiY2UwYWE0MyIsImlzcyI6Im5ob3N0IiwiaWF0IjoxNjM0NDQ1NTYwLCJleHAiOjE2MzQ0NDY0NjB9.YUSX999lTspGhmj7ik4ny095mgjiemsPvk_W5vYcRv8\",\"jwt_expires_in\":900000,\"user\":{\"id\":\"58ed3853-944b-4cdb-907d-01f6bce0aa43\",\"display_name\":\"user-1@nhost.io\",\"email\":\"user-1@nhost.io\"},\"refresh_token\":\"5056280e-4012-4206-9ec3-a2b5c02c9bdb\"}"
         }
       }
     },
     {
       "request": {
         "method": "get",
-        "uri": "http://localhost:3000/storage/m/user/16f43f1a-1759-4402-a5a2-72cf6df2aecf/",
+        "uri": "http://localhost:9001/storage/m/user/58ed3853-944b-4cdb-907d-01f6bce0aa43/",
         "headers": {
-          "authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJodHRwczovL2hhc3VyYS5pby9qd3QvY2xhaW1zIjp7IngtaGFzdXJhLXVzZXItaWQiOiIxNmY0M2YxYS0xNzU5LTQ0MDItYTVhMi03MmNmNmRmMmFlY2YiLCJ4LWhhc3VyYS1hbGxvd2VkLXJvbGVzIjpbInVzZXIiXSwieC1oYXN1cmEtZGVmYXVsdC1yb2xlIjoidXNlciJ9LCJpYXQiOjE2MTU5OTk3NTksImV4cCI6MTYxNjAwMDY1OX0.NhyZ3mROraRmb1GEC4PecUc1LK3-UkoZ8Dl4dWxK50E"
+          "authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJodHRwczovL2hhc3VyYS5pby9qd3QvY2xhaW1zIjp7IngtaGFzdXJhLXVzZXItaWQiOiI1OGVkMzg1My05NDRiLTRjZGItOTA3ZC0wMWY2YmNlMGFhNDMiLCJ4LWhhc3VyYS1hbGxvd2VkLXJvbGVzIjpbInVzZXIiLCJtZSJdLCJ4LWhhc3VyYS1kZWZhdWx0LXJvbGUiOiJ1c2VyIn0sInN1YiI6IjU4ZWQzODUzLTk0NGItNGNkYi05MDdkLTAxZjZiY2UwYWE0MyIsImlzcyI6Im5ob3N0IiwiaWF0IjoxNjM0NDQ1NTYwLCJleHAiOjE2MzQ0NDY0NjB9.YUSX999lTspGhmj7ik4ny095mgjiemsPvk_W5vYcRv8"
         },
         "body": null
       },
@@ -59,12 +59,12 @@
         "headers": {
           "connection": "keep-alive",
           "x-dns-prefetch-control": "off",
-          "x-ratelimit-reset": "1615999761",
-          "date": "Wed, 17 Mar 2021 16:49:19 GMT",
+          "x-ratelimit-reset": "1634445674",
+          "date": "Sun, 17 Oct 2021 04:39:20 GMT",
           "x-ratelimit-limit": "1000",
           "vary": "Origin",
           "strict-transport-security": "max-age=15552000; includeSubDomains",
-          "x-ratelimit-remaining": "998",
+          "x-ratelimit-remaining": "967",
           "content-type": "application/json; charset=utf-8",
           "x-xss-protection": "1; mode=block",
           "access-control-allow-credentials": "true",
@@ -83,14 +83,14 @@
     {
       "request": {
         "method": "post",
-        "uri": "http://localhost:3000/storage/o/user/16f43f1a-1759-4402-a5a2-72cf6df2aecf/test-file.txt",
+        "uri": "http://localhost:9001/storage/o/user/58ed3853-944b-4cdb-907d-01f6bce0aa43/test-file.bin",
         "headers": {
-          "authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJodHRwczovL2hhc3VyYS5pby9qd3QvY2xhaW1zIjp7IngtaGFzdXJhLXVzZXItaWQiOiIxNmY0M2YxYS0xNzU5LTQ0MDItYTVhMi03MmNmNmRmMmFlY2YiLCJ4LWhhc3VyYS1hbGxvd2VkLXJvbGVzIjpbInVzZXIiXSwieC1oYXN1cmEtZGVmYXVsdC1yb2xlIjoidXNlciJ9LCJpYXQiOjE2MTU5OTk3NTksImV4cCI6MTYxNjAwMDY1OX0.NhyZ3mROraRmb1GEC4PecUc1LK3-UkoZ8Dl4dWxK50E",
-          "content-type": "multipart/form-data; boundary=dart-http-boundary-ZLNSETW3IMEh4l225vWe-ldF9FiG+uPuRM.Z-M+3iSZqEsjJEhc"
+          "authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJodHRwczovL2hhc3VyYS5pby9qd3QvY2xhaW1zIjp7IngtaGFzdXJhLXVzZXItaWQiOiI1OGVkMzg1My05NDRiLTRjZGItOTA3ZC0wMWY2YmNlMGFhNDMiLCJ4LWhhc3VyYS1hbGxvd2VkLXJvbGVzIjpbInVzZXIiLCJtZSJdLCJ4LWhhc3VyYS1kZWZhdWx0LXJvbGUiOiJ1c2VyIn0sInN1YiI6IjU4ZWQzODUzLTk0NGItNGNkYi05MDdkLTAxZjZiY2UwYWE0MyIsImlzcyI6Im5ob3N0IiwiaWF0IjoxNjM0NDQ1NTYwLCJleHAiOjE2MzQ0NDY0NjB9.YUSX999lTspGhmj7ik4ny095mgjiemsPvk_W5vYcRv8",
+          "content-type": "multipart/form-data; boundary=dart-http-boundary-PGgEjYF.nfcvKTg8AdUkX7n0YwQHZ2gs7N5yZpXqmglc0bLjJu4"
         },
         "body": {
           "encoding": "iso-8859-1",
-          "string": "--dart-http-boundary-ZLNSETW3IMEh4l225vWe-ldF9FiG+uPuRM.Z-M+3iSZqEsjJEhc\r\ncontent-type: text/html\r\ncontent-disposition: form-data; name=\"file\"; filename=\"user/16f43f1a-1759-4402-a5a2-72cf6df2aecf/test-file.txt\"\r\n\r\nthis is a test file\r\n--dart-http-boundary-ZLNSETW3IMEh4l225vWe-ldF9FiG+uPuRM.Z-M+3iSZqEsjJEhc--\r\n"
+          "string": "--dart-http-boundary-PGgEjYF.nfcvKTg8AdUkX7n0YwQHZ2gs7N5yZpXqmglc0bLjJu4\r\ncontent-type: text/html\r\ncontent-disposition: form-data; name=\"file\"; filename=\"user/58ed3853-944b-4cdb-907d-01f6bce0aa43/test-file.bin\"\r\n\r\nthis is a test file\r\n--dart-http-boundary-PGgEjYF.nfcvKTg8AdUkX7n0YwQHZ2gs7N5yZpXqmglc0bLjJu4--\r\n"
         }
       },
       "response": {
@@ -98,34 +98,34 @@
         "headers": {
           "connection": "keep-alive",
           "x-dns-prefetch-control": "off",
-          "x-ratelimit-reset": "1615999761",
-          "date": "Wed, 17 Mar 2021 16:49:19 GMT",
+          "x-ratelimit-reset": "1634445674",
+          "date": "Sun, 17 Oct 2021 04:39:20 GMT",
           "x-ratelimit-limit": "1000",
           "vary": "Origin",
           "strict-transport-security": "max-age=15552000; includeSubDomains",
-          "x-ratelimit-remaining": "997",
+          "x-ratelimit-remaining": "966",
           "content-type": "application/json; charset=utf-8",
           "x-xss-protection": "1; mode=block",
           "access-control-allow-credentials": "true",
           "keep-alive": "timeout=5",
           "content-length": "281",
           "x-download-options": "noopen",
-          "etag": "W/\"119-CPU1AF1avomdP/Me0Ip+w9Aj+cI\"",
+          "etag": "W/\"119-GC2lOzD4uJInv0Mr/BPzG4fkWso\"",
           "x-frame-options": "SAMEORIGIN",
           "x-content-type-options": "nosniff"
         },
         "body": {
           "encoding": "utf-8",
-          "string": "{\"key\":\"user/16f43f1a-1759-4402-a5a2-72cf6df2aecf/test-file.txt\",\"AcceptRanges\":\"bytes\",\"LastModified\":\"2021-03-17T16:49:19.000Z\",\"ContentLength\":19,\"ETag\":\"\\\"a5890ace30a3e84d9118196c161aeec2\\\"\",\"ContentType\":\"text/html\",\"Metadata\":{\"token\":\"6a689d11-0671-4102-b371-f5f1b92e0130\"}}"
+          "string": "{\"key\":\"user/58ed3853-944b-4cdb-907d-01f6bce0aa43/test-file.bin\",\"AcceptRanges\":\"bytes\",\"LastModified\":\"2021-10-17T04:39:20.000Z\",\"ContentLength\":19,\"ETag\":\"\\\"a5890ace30a3e84d9118196c161aeec2\\\"\",\"ContentType\":\"text/html\",\"Metadata\":{\"token\":\"d2c89fb0-6002-440f-9ea8-dec427ba0873\"}}"
         }
       }
     },
     {
       "request": {
         "method": "get",
-        "uri": "http://localhost:3000/storage/o/user/16f43f1a-1759-4402-a5a2-72cf6df2aecf/test-file.txt",
+        "uri": "http://localhost:9001/storage/o/user/58ed3853-944b-4cdb-907d-01f6bce0aa43/test-file.bin",
         "headers": {
-          "authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJodHRwczovL2hhc3VyYS5pby9qd3QvY2xhaW1zIjp7IngtaGFzdXJhLXVzZXItaWQiOiIxNmY0M2YxYS0xNzU5LTQ0MDItYTVhMi03MmNmNmRmMmFlY2YiLCJ4LWhhc3VyYS1hbGxvd2VkLXJvbGVzIjpbInVzZXIiXSwieC1oYXN1cmEtZGVmYXVsdC1yb2xlIjoidXNlciJ9LCJpYXQiOjE2MTU5OTk3NTksImV4cCI6MTYxNjAwMDY1OX0.NhyZ3mROraRmb1GEC4PecUc1LK3-UkoZ8Dl4dWxK50E"
+          "authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJodHRwczovL2hhc3VyYS5pby9qd3QvY2xhaW1zIjp7IngtaGFzdXJhLXVzZXItaWQiOiI1OGVkMzg1My05NDRiLTRjZGItOTA3ZC0wMWY2YmNlMGFhNDMiLCJ4LWhhc3VyYS1hbGxvd2VkLXJvbGVzIjpbInVzZXIiLCJtZSJdLCJ4LWhhc3VyYS1kZWZhdWx0LXJvbGUiOiJ1c2VyIn0sInN1YiI6IjU4ZWQzODUzLTk0NGItNGNkYi05MDdkLTAxZjZiY2UwYWE0MyIsImlzcyI6Im5ob3N0IiwiaWF0IjoxNjM0NDQ1NTYwLCJleHAiOjE2MzQ0NDY0NjB9.YUSX999lTspGhmj7ik4ny095mgjiemsPvk_W5vYcRv8"
         },
         "body": null
       },
@@ -133,15 +133,15 @@
         "status": 200,
         "headers": {
           "connection": "keep-alive",
-          "cache-control": "public, max-age=3w1557600",
-          "last-modified": "Wed Mar 17 2021 16:49:19 GMT+0000 (Coordinated Universal Time)",
+          "cache-control": "public, max-age=31557600",
+          "last-modified": "Sun, 17 Oct 2021 04:39:20 GMT",
           "x-dns-prefetch-control": "off",
-          "x-ratelimit-reset": "1615999761",
-          "date": "Wed, 17 Mar 2021 16:49:19 GMT",
+          "x-ratelimit-reset": "1634445674",
+          "date": "Sun, 17 Oct 2021 04:39:20 GMT",
           "x-ratelimit-limit": "1000",
           "vary": "Origin",
           "strict-transport-security": "max-age=15552000; includeSubDomains",
-          "x-ratelimit-remaining": "996",
+          "x-ratelimit-remaining": "965",
           "content-type": "text/html; charset=utf-8",
           "x-xss-protection": "1; mode=block",
           "content-disposition": "inline;",

@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:otp/otp.dart';
 import 'package:fake_async/fake_async.dart';
 import 'package:nhost_sdk/nhost_sdk.dart';
 import 'package:nock/nock.dart';
@@ -178,11 +177,6 @@ void main() async {
 
     test('should be able to logout', () async {
       expect(auth.logout(), completes);
-    });
-
-    test('should be able to logout twice', () async {
-      await expectLater(auth.logout(), completes);
-      await expectLater(auth.logout(), completes);
     });
 
     test('a logged out user should not be authenticated', () async {
@@ -426,8 +420,7 @@ void main() async {
       // Ask the backend to generate MFA configuration, and from that, generate
       // a time-based OTP.
       final mfaConfiguration = await auth.generateMfa();
-      final totp = OTP.generateTOTPCodeString(
-          mfaConfiguration.otpSecret, DateTime.now().millisecondsSinceEpoch);
+      final totp = totpFromSecret(mfaConfiguration.otpSecret);
 
       expect(
         auth.enableMfa(totp),
