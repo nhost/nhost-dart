@@ -19,10 +19,10 @@ export 'src/storage.dart';
 /// API client for accessing Nhost's authentication and storage APIs.
 ///
 /// User authentication and management is provided by the [auth] service, which
-/// implements the Nhost Auth API: https://docs.nhost.io/storage/api-reference
+/// implements the Nhost Auth API.
 ///
 /// File storage is provided by the [storage] service, which implements the
-/// Nhost Storage API: https://docs.nhost.io/storage/api-reference
+/// Nhost Storage API.
 ///
 /// Additional packages for working with GraphQL and Flutter can be found at
 /// https://pub.dev/publishers/nhost.io

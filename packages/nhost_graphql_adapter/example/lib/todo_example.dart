@@ -1,5 +1,5 @@
 /// A simple example that queries the "todos" table created in the Nhost Quick
-/// Start (https://docs.nhost.io/quick-start).
+/// Start (https://docs.nhost.io/get-started).
 library simple_example;
 
 import 'package:graphql/client.dart';

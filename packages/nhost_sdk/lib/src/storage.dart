@@ -12,8 +12,6 @@ const applicationOctetStreamType = 'application/octet-stream';
 /// The Nhost storage service.
 ///
 /// Supports the storage and retrieval of files on the backend.
-///
-/// See https://docs.nhost.io/storage/api-reference for more info.
 class Storage {
   final ApiClient _apiClient;
   final UserSession _session;
@@ -35,8 +33,6 @@ class Storage {
   /// If not provided, [contentType] defaults to `application/octet-stream`.
   ///
   /// Throws an [ApiException] if the upload fails.
-  ///
-  /// https://docs.nhost.io/storage/api-reference#upload-file
   Future<FileMetadata> uploadBytes({
     required String filePath,
     required List<int> bytes,
@@ -64,8 +60,6 @@ class Storage {
   /// If not provided, [contentType] defaults to `application/octet-stream`.
   ///
   /// Throws an [ApiException] if the upload fails.
-  ///
-  /// https://docs.nhost.io/storage/api-reference#upload-file
   Future<FileMetadata> uploadString({
     required String filePath,
     required String string,
@@ -135,8 +129,6 @@ class Storage {
   /// Deletes a file on the backend.
   ///
   /// Throws an [ApiException] if the deletion fails.
-  ///
-  /// https://docs.nhost.io/storage/api-reference#delete-file
   Future<void> delete(String filePath) async {
     await _apiClient.delete(
       _objectPath(filePath),
@@ -149,8 +141,6 @@ class Storage {
   /// {@macro nhost.api.Storage.fileToken}
   ///
   /// Throws an [ApiException] if the metadata retrieval fails.
-  ///
-  /// https://docs.nhost.io/storage/api-reference#get-file-metadata
   Future<FileMetadata> getFileMetadata(
     String filePath, {
     String? fileToken,
@@ -170,8 +160,6 @@ class Storage {
   /// Retrieves a directory's contents' metadata from the backend.
   ///
   /// Throws an [ApiException] if the metadata retrieval fails.
-  ///
-  /// https://docs.nhost.io/storage/api-reference#get-directory-metadata
   Future<List<FileMetadata>> getDirectoryMetadata(String directoryPath) async {
     assert(
         directoryPath.endsWith('/'),

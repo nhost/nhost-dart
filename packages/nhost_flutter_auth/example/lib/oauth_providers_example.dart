@@ -3,8 +3,7 @@
 ///
 /// This example depends on the `url_launcher` and `app_links` packages
 /// (https://pub.dev/packages/flutter_appauth), and requires that you set up a
-/// GitHub OAuth application using the instructions at
-/// https://docs.nhost.io/auth/oauth-providers/github
+/// GitHub OAuth application.
 ///
 /// Then, in your Nhost project's "Sign-In" settings, set:
 ///
