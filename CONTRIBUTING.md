@@ -11,8 +11,8 @@ After cloning the repo, run this from the repo's root directory to get
 everything set up:
 
 ```sh
-pub get
-pub run melos bootstrap
+dart pub get
+dart run melos bootstrap
 ```
 
 ### Commit message conventions
@@ -34,13 +34,13 @@ will expand.
 ## Running tests
 
 Tests are automatically run by GitHub on every commit, but if you want to
-run them locally, run `pub run melos run test`.
+run them locally, run `dart run melos run test`.
 
 ## Publishing
 ### Updating package versions
 
 To version all packages in this repo that have been changed since the previous
-release, just call `pub run melos version`.
+release, just call `dart run melos version`.
 
 `melos` uses [Conventional
 Commits](https://www.conventionalcommits.org/en/v1.0.0/) to determine which
@@ -51,7 +51,7 @@ files, create a new commit, and tag that commit with one or more version tags
 (eg. `nhost_sdk-v1.3.5`).
 
 If you want to update to pre-release versions instead, use
-`pub run melos version --prerelease`.
+`dart run melos version --prerelease`.
 
 ### Publishing
 
@@ -65,8 +65,8 @@ it looks:
 ```sh
 # Dry run by default. This will run a basic lint, and give you some feedback
 # so you can gut check.
-pub run melos publish
+dart run melos publish
 
 # Publishes to pub.dev. No turning back.
-pub run melos publish --no-dry-run
+dart run melos publish --no-dry-run
 ```
