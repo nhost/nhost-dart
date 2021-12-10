@@ -1,3 +1,7 @@
+## 1.0.10
+
+ - Update a dependency to the latest release.
+
 ## 1.0.9
 
  - **FIX**: Fix broken URLs across packages.

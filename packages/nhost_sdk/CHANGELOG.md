@@ -1,3 +1,11 @@
+## 2.1.0
+
+ - **TEST**: Fix tests to run against a local Nhost instance.
+ - **REFACTOR**: Extract response handling logic into its own method.
+ - **FEAT**: Add support for reporting file upload progress.
+ - **FEAT**: Add FileMetadata.toString() method.
+ - **CHORE**: Update example to null-safety.
+
 ## 2.0.2
 
  - **FIX**: Fix broken URLs across packages.

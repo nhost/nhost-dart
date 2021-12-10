@@ -1,3 +1,7 @@
+## 1.1.4
+
+ - Update a dependency to the latest release.
+
 ## 1.1.3
 
  - **FIX**: Correct compilation errors after migration to null-safety.
