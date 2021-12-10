@@ -1,3 +1,7 @@
+## 2.1.1
+
+ - **FIX**: Remove outdated links.
+
 ## 2.1.0
 
  - **TEST**: Fix tests to run against a local Nhost instance.

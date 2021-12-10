@@ -1,3 +1,7 @@
+## 1.0.14
+
+ - **FIX**: Remove outdated links.
+
 ## 1.0.13
 
  - Update a dependency to the latest release.

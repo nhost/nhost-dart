@@ -1,3 +1,8 @@
+## 1.0.11
+
+ - **FIX**: Remove outdated links.
+ - **FIX**: Remove unneeded imports across the board.
+
 ## 1.0.10
 
  - Update a dependency to the latest release.
