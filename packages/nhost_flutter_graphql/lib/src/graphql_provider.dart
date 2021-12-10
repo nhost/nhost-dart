@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:nhost_flutter_auth/nhost_flutter_auth.dart';
 import 'package:nhost_graphql_adapter/nhost_graphql_adapter.dart';
-import 'package:nhost_sdk/nhost_sdk.dart';
 
 import 'logging.dart';
 
