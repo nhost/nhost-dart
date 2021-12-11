@@ -11,7 +11,7 @@ making it easy to set up protected resources, and react to logins and logouts.
 
 ```yaml
 dependencies:
-  nhost_flutter_auth: ^1.0.0
+  nhost_flutter_auth: ^2.0.0-beta.0
 ```
 
 ## 🔥 More Dart & Flutter packages from Nhost

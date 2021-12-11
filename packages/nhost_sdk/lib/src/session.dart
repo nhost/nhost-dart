@@ -12,7 +12,7 @@ class UserSession {
   Session? _session;
   Map<String, dynamic>? _hasuraClaims;
 
-  String? get jwt => session?.jwtToken;
+  String? get jwt => session?.accessToken;
 
   String? getClaim(String claim) =>
       _hasuraClaims != null ? _hasuraClaims![claim] : null;
@@ -30,10 +30,10 @@ class UserSession {
 
   Session? get session => _session;
   set session(Session? session) {
-    if (session != null && session.jwtToken != null) {
+    if (session != null && session.accessToken != null) {
       _session = session;
 
-      final decodedToken = JwtDecoder.decode(session.jwtToken!);
+      final decodedToken = JwtDecoder.decode(session.accessToken!);
       _hasuraClaims =
           decodedToken[_hasuraClaimsNamespace] as Map<String, dynamic>?;
     } else {

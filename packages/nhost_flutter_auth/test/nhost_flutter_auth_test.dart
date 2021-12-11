@@ -97,7 +97,7 @@ void main() {
       expect(buildCount, 1);
 
       // Emulate an auth state change, then pump the engine
-      mockAuth.triggerStateChange(AuthenticationState.loggedOut);
+      mockAuth.triggerStateChange(AuthenticationState.signedOut);
       await tester.pump();
 
       // The state change should result in a second build

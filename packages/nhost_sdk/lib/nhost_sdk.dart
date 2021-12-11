@@ -5,6 +5,7 @@ import 'package:nhost_sdk/src/logging.dart';
 
 import 'src/auth.dart';
 import 'src/auth_store.dart';
+import 'src/functions.dart';
 import 'src/session.dart';
 import 'src/storage.dart';
 
@@ -13,6 +14,7 @@ export 'src/api/auth_api_types.dart';
 export 'src/api/storage_api_types.dart';
 export 'src/auth.dart';
 export 'src/auth_store.dart';
+export 'src/functions.dart';
 export 'src/logging.dart' show debugLogNhostErrorsToConsole;
 export 'src/storage.dart';
 
@@ -30,7 +32,7 @@ class NhostClient {
   /// Constructs a new Nhost client.
   ///
   /// {@template nhost.api.NhostClient.baseUrl}
-  /// [baseUrl] is the Nhost "Backend URL" that can be found on your Nhost
+  /// [backendUrl] is the Nhost "Backend URL" that can be found on your Nhost
   /// project page.
   /// {@endtemplate}
   ///
@@ -63,7 +65,7 @@ class NhostClient {
   /// configuration and debugging.
   /// {@endtemplate}
   NhostClient({
-    required this.baseUrl,
+    required this.backendUrl,
     AuthStore? authStore,
     String? refreshToken,
     bool? autoLogin = true,
@@ -79,7 +81,7 @@ class NhostClient {
   }
 
   /// The Nhost project's backend URL.
-  final String baseUrl;
+  final String backendUrl;
 
   /// Persists authentication information between restarts of the app.
   final AuthStore _authStore;
@@ -92,21 +94,38 @@ class NhostClient {
   http.Client get httpClient => _httpClient ??= http.Client();
   http.Client? _httpClient;
 
+  /// The GraphQL endpoint URL.
+  String get gqlEndpointUrl => '$backendUrl/v1/graphql';
+
   /// The Nhost authentication service.
+  ///
+  /// https://docs.nhost.io/platform/authentication
   Auth get auth => _auth ??= Auth(
-        baseUrl: '$baseUrl/auth',
+        baseUrl: '$backendUrl/v1/auth',
         authStore: _authStore,
         refreshToken: _refreshToken,
-        autoLogin: _autoLogin,
+        autoSignIn: _autoLogin,
         refreshInterval: _refreshInterval,
         session: _session,
         httpClient: httpClient,
       );
   Auth? _auth;
 
+  /// The Nhost serverless functions service.
+  ///
+  /// https://docs.nhost.io/platform/serverless-functions
+  Functions get functions => _functions ??= Functions(
+        baseUrl: '$backendUrl/v1/functions',
+        session: _session,
+        httpClient: httpClient,
+      );
+  Functions? _functions;
+
   /// The Nhost file storage service.
+  ///
+  /// https://docs.nhost.io/platform/storage
   Storage get storage => _storage ??= Storage(
-        baseUrl: '$baseUrl/storage',
+        baseUrl: '$backendUrl/v1/storage',
         httpClient: httpClient,
         session: _session,
       );

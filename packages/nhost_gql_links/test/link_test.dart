@@ -27,8 +27,8 @@ const testJwtAlt = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.'
     'eyJodHRwczovL2hhc3VyYS5pby9qd3QvY2xhaW1zIjp7IngtaGFzdXJhLXVzZXItaWQiOiJmMmZhMWJjNS1kZGRkZGQtNGNiOC05ODk3LTJlZDEyOGI3YjViOSIsIngtaGFzdXJhLWFsbG93ZWQtcm9sZXMiOlsidXNlciJdLCJ4LWhhc3VyYS1kZWZhdWx0LXJvbGUiOiJ1c2VyIn0sImlhdCI6MTYxNTk5OTc0OSwiZXhwIjoxNjIxMjQ5Njk0LCJqdGkiOiI3YjRjODYxNC1hZTk0LTQ0Y2QtYTdmZS0yMmMwNDlkZDdmNzQifQ.'
     'MyXIMqgjw9k4YE_64ea7Z6WDdHJ0v1H6qkjdxSFi2xk';
 final testSession = Session(
-  jwtToken: testJwt,
-  jwtExpiresIn: Duration(days: 1),
+  accessToken: testJwt,
+  accessTokenExpiresIn: Duration(days: 1),
   refreshToken: 'abcd',
 );
 
@@ -37,7 +37,7 @@ const emptyResponse = '{"data": {}}';
 void main() {
   late NhostClient nhost;
   setUp(() {
-    nhost = NhostClient(baseUrl: backendEndpoint);
+    nhost = NhostClient(backendUrl: backendEndpoint);
   });
 
   tearDown(() {
@@ -71,7 +71,7 @@ void main() {
       await nhost.auth.setSession(testSession);
 
       // Perform a query
-      final gqlClient = combinedLinkForNhost(gqlEndpoint, nhost.auth);
+      final gqlClient = combinedLinkForNhost(nhost);
 
       await gqlClient
           .request(Request(operation: Operation(document: testQuery)))
@@ -93,7 +93,7 @@ void main() {
         ..reply(200, emptyResponse);
 
       // Perform a query
-      final gqlClient = combinedLinkForNhost(gqlEndpoint, nhost.auth);
+      final gqlClient = combinedLinkForNhost(nhost);
       await gqlClient
           .request(Request(operation: Operation(document: testQuery)))
           .first;
@@ -114,8 +114,7 @@ void main() {
 
       // Perform a query
       final gqlClient = combinedLinkForNhost(
-        gqlEndpoint,
-        nhost.auth,
+        nhost,
         defaultHeaders: expectedHeaders,
       );
       await gqlClient
@@ -238,7 +237,7 @@ void main() {
       });
 
       // Logout
-      await nhost.auth.logout();
+      await nhost.auth.signOut();
 
       // Wait longer than the test inactivity timeout
       await Future.delayed(Duration(seconds: 2));
@@ -276,8 +275,8 @@ void main() {
 
         // Change the auth token, which triggers a reconnection on the socket
         nhost.auth.setSession(Session(
-          jwtToken: testJwtAlt,
-          jwtExpiresIn: Duration(days: 1),
+          accessToken: testJwtAlt,
+          accessTokenExpiresIn: Duration(days: 1),
           refreshToken: 'abcd',
         ));
         // 1 second is arbitrary. This call flushes microtasks, and invokes
@@ -321,8 +320,8 @@ void main() {
 
         // Change the auth token, which triggers a reconnection on the socket
         nhost.auth.setSession(Session(
-          jwtToken: testJwtAlt,
-          jwtExpiresIn: Duration(days: 1),
+          accessToken: testJwtAlt,
+          accessTokenExpiresIn: Duration(days: 1),
           refreshToken: 'abcd',
         ));
         async.elapse(Duration(seconds: 1));

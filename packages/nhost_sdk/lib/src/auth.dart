@@ -2,13 +2,13 @@ import 'dart:async';
 
 import 'package:http/http.dart' as http;
 import 'package:meta/meta.dart';
-import 'package:nhost_sdk/src/logging.dart';
 
 import 'api/api_client.dart';
 import 'api/auth_api_types.dart';
 import 'auth_store.dart';
 import 'foundation/duration.dart';
 import 'http.dart';
+import 'logging.dart';
 import 'session.dart';
 
 /// Signature for callbacks that respond to token changes.
@@ -32,7 +32,7 @@ const refreshTokenClientStorageKey = 'nhostRefreshToken';
 /// provider-based logins.
 const refreshTokenQueryParamName = 'refresh_token';
 
-/// The Nhost Auth service.
+/// The Nhost authentication service.
 ///
 /// Supports user authentication, MFA, OTP, and various user management
 /// functions.
@@ -45,7 +45,7 @@ class Auth {
   ///
   /// {@macro nhost.api.NhostClient.refreshToken}
   ///
-  /// {@macro nhost.api.NhostClient.autoLogin}
+  /// {@macro nhost.api.NhostClient.autoSignIn}
   ///
   /// {@macro nhost.api.NhostClient.tokenRefreshInterval}
   ///
@@ -55,7 +55,7 @@ class Auth {
     required UserSession session,
     required AuthStore authStore,
     String? refreshToken,
-    bool? autoLogin = true,
+    bool? autoSignIn = true,
     Duration? refreshInterval,
     required http.Client httpClient,
   })  : _apiClient = ApiClient(Uri.parse(baseUrl), httpClient: httpClient),
@@ -64,8 +64,8 @@ class Auth {
         _tokenRefreshInterval = refreshInterval,
         _refreshTokenLock = false,
         _loading = true,
-        _autoLogin = autoLogin ?? true {
-    if (_autoLogin) {
+        _autoSignIn = autoSignIn ?? true {
+    if (_autoSignIn) {
       _refreshToken(refreshToken);
     } else if (refreshToken != null) {
       _authStore.setString(refreshTokenClientStorageKey, refreshToken);
@@ -77,7 +77,7 @@ class Auth {
   final ApiClient _apiClient;
   final AuthStore _authStore;
   final UserSession /*?*/ _session;
-  final bool _autoLogin;
+  final bool _autoSignIn;
 
   final List<TokenChangedCallback> _tokenChangedFunctions = [];
   final List<AuthStateChangedCallback> _authChangedFunctions = [];
@@ -99,8 +99,8 @@ class Auth {
   AuthenticationState get authenticationState {
     if (_loading) return AuthenticationState.inProgress;
     return _session.session != null
-        ? AuthenticationState.loggedIn
-        : AuthenticationState.loggedOut;
+        ? AuthenticationState.signedIn
+        : AuthenticationState.signedOut;
   }
 
   /// The currently logged-in user's Json Web Token, or `null` if
@@ -165,49 +165,49 @@ class Auth {
   /// activate their account by clicking an activation link sent to their email.
   ///
   /// Throws an [ApiException] if registration fails.
-  Future<AuthResponse> register({
+  Future<AuthResponse> signUp({
     required String email,
     required String password,
-    Map<String, String>? userData,
+    String? locale,
     String? defaultRole,
-    List<String>? allowedRoles,
+    List<String>? roles,
+    String? displayName,
+    String? redirectTo,
   }) async {
     log.finer('Attempting user registration');
 
-    userData ??= const {};
-    final includeRoleOptions = defaultRole != null ||
-        (allowedRoles != null && allowedRoles.isNotEmpty);
-    final registerOptions = includeRoleOptions
-        ? {
-            'default_role': defaultRole,
-            'allowed_roles': allowedRoles,
-          }
-        : null;
+    final includeRoleOptions =
+        defaultRole != null || (roles != null && roles.isNotEmpty);
+    final options = {
+      if (locale != null) 'locale': locale,
+      if (includeRoleOptions) 'defaultRole': defaultRole,
+      if (includeRoleOptions) 'roles': roles,
+      if (displayName != null) 'displayName': displayName,
+      if (redirectTo != null) 'redirectTo': redirectTo,
+    };
 
-    Session? sessionRes;
     try {
-      sessionRes = await _apiClient.post(
-        '/register',
-        data: {
+      final res = await _apiClient.post(
+        '/signup/email-password',
+        jsonBody: {
           'email': email,
           'password': password,
-          'user_data': userData,
-          'cookie': false,
-          if (registerOptions != null) 'register_options': registerOptions,
+          if (options.isNotEmpty) 'options': options,
         },
-        responseDeserializer: Session.fromJson,
+        responseDeserializer: AuthResponse.fromJson,
       );
       log.finer('Registration successful');
-    } catch (e) {
-      rethrow;
-    }
 
-    if (sessionRes!.jwtToken != null) {
-      await setSession(sessionRes);
-      return AuthResponse(session: sessionRes, user: sessionRes.user);
-    } else {
-      // if AUTO_ACTIVATE_NEW_USERS is false
-      return AuthResponse(session: null, user: sessionRes.user);
+      if (res.session?.accessToken != null) {
+        await setSession(res.session!);
+        return res;
+      } else {
+        // if AUTO_ACTIVATE_NEW_USERS is false
+        return AuthResponse(session: null, user: null);
+      }
+    } catch (e) {
+      log.finer('Registration failed');
+      rethrow;
     }
   }
 
@@ -215,11 +215,11 @@ class Auth {
   ///
   /// If the user has multi-factor authentication enabled, the returned
   /// [AuthResponse] will only have its [AuthResponse.mfa] field set, which can
-  /// then be used to complete the login via [completeMfaLogin] alongside the user's
+  /// then be used to complete the login via [completeMfaSignIn] alongside the user's
   /// one-time-password.
   ///
   /// Throws an [ApiException] if login fails.
-  Future<AuthResponse> login({
+  Future<AuthResponse> signIn({
     required String email,
     required String password,
   }) async {
@@ -227,25 +227,27 @@ class Auth {
     AuthResponse? loginRes;
     try {
       loginRes = await _apiClient.post(
-        '/login',
-        data: {
+        '/signin/email-password',
+        jsonBody: {
           'email': email,
           'password': password,
-          'cookie': false,
         },
         responseDeserializer: AuthResponse.fromJson,
       );
-      log.finer('Login successful');
     } catch (e, st) {
-      log.finer('Login failed', e, st);
+      log.finer('Sign in failed', e, st);
       await _clearSession();
       rethrow;
     }
 
+    // If multi-factor is enabled, a second step is required before we've fully
+    // logged in.
     if (loginRes!.mfa != null) {
+      log.finer('Sign in requires MFA');
       return loginRes;
     }
 
+    log.finer('Sign in successful');
     await setSession(loginRes.session!);
     return loginRes;
   }
@@ -256,46 +258,32 @@ class Auth {
   ///
   /// Returns an [AuthResponse] with its fields unset.
   ///
-  /// Throws an [ApiException] if logout fails.
-  Future<AuthResponse> logout({
+  /// Throws an [ApiException] if sign out fails.
+  Future<AuthResponse> signOut({
     bool all = false,
   }) async {
-    log.finer('Attempting logout');
+    log.finer('Attempting sign out');
     final refreshToken =
         await _authStore.getString(refreshTokenClientStorageKey);
     try {
       await _apiClient.post(
-        '/logout',
-        query: {
-          'refresh_token': refreshToken,
-        },
-        data: {
+        '/signout',
+        jsonBody: {
+          'refreshToken': refreshToken,
           'all': all,
         },
       );
-      log.finer('Logout successful');
+      log.finer('Sign out successful');
     } catch (e, st) {
-      log.finer('Logout failed', e, st);
+      log.finer('Sign out failed', e, st);
 
       // noop
-      // TODO(shyndman): This probably shouldn't be a noop. If a logout fails,
+      // TODO(shyndman): This probably shouldn't be a noop. If a signout fails,
       // particularly in the ?all=true case, the user should know about it
     }
 
     await _clearSession();
     return AuthResponse(session: null, user: null);
-  }
-
-  /// Activates a user.
-  ///
-  /// This is only required if Nhost is configured to require manual user
-  /// activation.
-  ///
-  /// Throws an [ApiException] if activation fails.
-  Future<void> activate(String ticket) async {
-    await _apiClient.get('/activate', query: {
-      'ticket': ticket,
-    });
   }
 
   //#region Email and password changes
@@ -308,90 +296,42 @@ class Auth {
   /// Throws an [ApiException] if changing emails fails.
   Future<void> changeEmail(String newEmail) async {
     await _apiClient.post(
-      '/change-email/',
-      data: {
-        'new_email': newEmail,
+      '/user/email/change',
+      jsonBody: {
+        'newEmail': newEmail,
       },
       headers: _session.authenticationHeaders,
     );
   }
 
-  /// Requests an email change for the logging in user.
-  ///
-  /// The backend will send an email to the new email address with an activation
-  /// link.
-  ///
-  /// NOTE: This function requires that your project is configured with "NEW
-  /// EMAIL VERIFICATION" turned ON.
-  ///
-  /// Throws an [ApiException] if requesting the email change fails.
-  Future<void> requestEmailChange({required String newEmail}) async {
-    await _apiClient.post(
-      '/change-email/request',
-      data: {
-        'new_email': newEmail,
-      },
-      headers: _session.authenticationHeaders,
-    );
-  }
-
-  /// Confirms an email change.
-  ///
-  /// [ticket] is the server-generated value that was sent to the user's
-  /// old email address via [requestEmailChange].
-  ///
-  /// Throws an [ApiException] if confirming the email change fails.
-  ///
-  /// NOTE: This function requires that your project is configured with "NEW
-  /// EMAIL VERIFICATION" turned ON.
-  Future<void> confirmEmailChange({required String ticket}) async {
-    await _apiClient.post('/change-email/change', data: {
-      'ticket': ticket,
-    });
-  }
-
-  /// Changes the password of a logged in user who knows their current password.
+  /// Changes the password of the logged in user.
   ///
   /// Throws an [ApiException] if changing passwords fails.
   Future<void> changePassword({
-    required String oldPassword,
     required String newPassword,
   }) async {
     await _apiClient.post(
-      '/change-password',
-      data: {
-        'old_password': oldPassword,
-        'new_password': newPassword,
+      '/user/password',
+      jsonBody: {
+        'newPassword': newPassword,
       },
       headers: _session.authenticationHeaders,
     );
   }
 
-  /// Requests a password change for a user.
-  ///
-  /// The backend will send an email to [email] with a ticket that can be used
-  /// to confirm the password change, via [confirmPasswordChange].
+  /// Resets a user's password.
   ///
   /// Throws an [ApiException] if requesting the password change fails.
-  Future<void> requestPasswordChange({required String email}) async {
-    await _apiClient.post('/change-password/request', data: {
-      'email': email,
-    });
-  }
-
-  /// Confirms an password change.
-  ///
-  /// [ticket] is the server-generated value that was sent to the user's email
-  /// address via [requestPasswordChange].
-  ///
-  /// Throws an [ApiException] if confirming the password change fails.
-  Future<void> confirmPasswordChange({
-    required String newPassword,
-    required String? ticket,
+  Future<void> resetPassword({
+    required String email,
+    String? redirectTo,
   }) async {
-    await _apiClient.post('/change-password/change', data: {
-      'new_password': newPassword,
-      'ticket': ticket,
+    await _apiClient.post('/user/password/reset', jsonBody: {
+      'email': email,
+      if (redirectTo != null)
+        'options': {
+          'redirectTo': redirectTo,
+        },
     });
   }
 
@@ -410,11 +350,9 @@ class Auth {
   ///
   /// Throws an [ApiException] if MFA generation fails.
   Future<MultiFactorAuthResponse> generateMfa() async {
-    return await _apiClient.post(
-      '/mfa/generate',
+    return await _apiClient.get(
+      '/mfa/totp/generate',
       headers: _session.authenticationHeaders,
-      // This empty map is required by the server, otherwise it fails
-      data: {},
       responseDeserializer: MultiFactorAuthResponse.fromJson,
     );
   }
@@ -427,10 +365,11 @@ class Auth {
   /// Throws an [ApiException] if enabling MFA fails.
   Future<void> enableMfa(String totp) async {
     await _apiClient.post(
-      '/mfa/enable',
+      '/user/mfa',
       headers: _session.authenticationHeaders,
-      data: {
+      jsonBody: {
         'code': totp,
+        'activeMfaType': 'totp',
       },
     );
   }
@@ -442,9 +381,10 @@ class Auth {
   /// Throws an [ApiException] if disabling MFA fails.
   Future<void> disableMfa(String code) async {
     await _apiClient.post(
-      '/mfa/disable',
-      data: {
+      '/user/mfa',
+      jsonBody: {
         'code': code,
+        'activeMfaType': null,
       },
       headers: _session.authenticationHeaders,
     );
@@ -454,25 +394,25 @@ class Auth {
   ///
   /// This is only necessary if the user has MFA enabled.
   ///
-  /// [code] is the OTP generated by the user's password manager, and [ticket]
-  /// is the [AuthResponse.mfa.ticket] returned by a preceding call to [login].
+  /// [otp] is the OTP generated by the user's password manager, and [ticket]
+  /// is the [AuthResponse.mfa.ticket] returned by a preceding call to [signIn].
   ///
   /// Throws an [ApiException] if logging in via MFA fails.
-  Future<AuthResponse> completeMfaLogin({
-    required String code,
+  Future<AuthResponse> completeMfaSignIn({
+    required String otp,
     required String ticket,
   }) async {
-    final res = await _apiClient.post<Session>(
-      '/mfa/totp',
-      data: {
-        'code': code,
+    final res = await _apiClient.post<AuthResponse>(
+      '/signin/mfa/totp',
+      jsonBody: {
+        'otp': otp,
         'ticket': ticket,
       },
-      responseDeserializer: Session.fromJson,
+      responseDeserializer: AuthResponse.fromJson,
     );
 
-    await setSession(res);
-    return AuthResponse(session: res, user: res.user);
+    await setSession(res.session!);
+    return res;
   }
 
   //#endregion
@@ -487,7 +427,7 @@ class Auth {
   ///
   /// For an example of this in practice, see the `nhost_flutter_auth` package's
   /// OAuthProvider example.
-  Future<void> completeOAuthProviderLogin(Uri redirectUrl) async {
+  Future<void> completeOAuthProviderSignIn(Uri redirectUrl) async {
     final queryArgs = redirectUrl.queryParameters;
     if (!queryArgs.containsKey(refreshTokenQueryParamName)) {
       return;
@@ -532,22 +472,21 @@ class Auth {
 
       // Make refresh token request
       log.finest('Making session refresh request');
-      res = await _apiClient.get(
-        '/token/refresh',
-        query: {
-          'refresh_token': refreshToken,
+      res = await _apiClient.post(
+        '/token',
+        jsonBody: {
+          'refreshToken': refreshToken,
         },
         responseDeserializer: Session.fromJson,
       );
     } on ApiException catch (e, st) {
-      log.severe('API exception during token refresh', e, st);
-
       if (e.statusCode == unauthorizedStatus) {
-        log.finest('Unauthorized refresh. Forcing logout.');
-        await logout();
+        log.finest('Unauthorized refresh token. Forcing signout.');
+        await signOut();
         return;
       } else {
-        return; // Silent fail
+        log.severe('API exception during token refresh', e, st);
+        return;
       }
     } catch (e, st) {
       log.severe('Exception during token refresh', e, st);
@@ -569,7 +508,7 @@ class Auth {
     // conditions.
 
     log.finest(
-        'Setting session, jwt.hashCode=${identityHashCode(session.jwtToken)}');
+        'Setting session, jwt.hashCode=${identityHashCode(session.accessToken)}');
 
     final previouslyAuthenticated = authenticationState;
     _session.session = session;
@@ -580,7 +519,7 @@ class Auth {
           refreshTokenClientStorageKey, session.refreshToken!);
     }
 
-    final jwtExpiresIn = session.jwtExpiresIn;
+    final jwtExpiresIn = session.accessTokenExpiresIn;
     final refreshTimerDuration = _tokenRefreshInterval ??
         (jwtExpiresIn != null
             ? max(
@@ -603,8 +542,8 @@ class Auth {
     _loading = false;
 
     _onTokenChanged();
-    if (previouslyAuthenticated != AuthenticationState.loggedIn) {
-      _onAuthStateChanged(AuthenticationState.loggedIn);
+    if (previouslyAuthenticated != AuthenticationState.signedIn) {
+      _onAuthStateChanged(AuthenticationState.signedIn);
     }
   }
 
@@ -623,11 +562,11 @@ class Auth {
 
     // Early exit
     //
-    // There could be case when the authenticationState is inProgress and logout
+    // There could be case when the authenticationState is inProgress and signout
     // is called. For example, if the refresh token has expired. In that case it
     // is important to to clear out the session and remove the refresh token
     // from storage.
-    if (authenticationState == AuthenticationState.loggedOut) {
+    if (authenticationState == AuthenticationState.signedOut) {
       return;
     }
 
@@ -636,7 +575,7 @@ class Auth {
 
     _loading = false;
     _onTokenChanged();
-    _onAuthStateChanged(AuthenticationState.loggedOut);
+    _onAuthStateChanged(AuthenticationState.signedOut);
   }
 
   //#endregion
@@ -644,6 +583,6 @@ class Auth {
 
 enum AuthenticationState {
   inProgress,
-  loggedIn,
-  loggedOut,
+  signedIn,
+  signedOut,
 }

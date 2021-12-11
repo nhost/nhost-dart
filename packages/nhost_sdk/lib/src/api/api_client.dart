@@ -108,15 +108,16 @@ class ApiClient {
   /// {@macro nhost.api.ApiClient.responseDeserializer}
   Future<ResponseType> post<ResponseType>(
     String path, {
-    Map<String, String?> query = const {},
-    Map<String, dynamic>? data,
+    Map<String, String?>? query,
+    dynamic jsonBody,
     Map<String, String>? headers,
     JsonDeserializer<ResponseType>? responseDeserializer,
   }) async {
+    query ??= const {};
     final request = _newApiRequest('post', path, query: query);
-    if (data != null) {
+    if (jsonBody != null) {
       request
-        ..body = jsonEncode(data)
+        ..body = jsonEncode(jsonBody)
         ..headers.addAll({
           contentTypeHeader: _jsonContentType.toString(),
         });
@@ -246,7 +247,7 @@ class ApiClient {
             true;
     dynamic responseBody = isJson ? jsonDecode(response.body) : response.body;
 
-    // If the status is not in the success range, throw.
+    // If the status is not in the success range,  throw.
     if (response.statusCode < 200 || response.statusCode >= 300) {
       log.finer('API client encountered a failure, '
           'url=${request.url} status=${response.statusCode}');

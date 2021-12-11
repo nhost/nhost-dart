@@ -9,14 +9,10 @@ import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:nhost_flutter_graphql/nhost_flutter_graphql.dart';
 
-// IMPORTANT: Fill in these values with the Backend and GraphQL URL found on
-// your Nhost project page.
-
-const nhostApiUrl = 'https://backend-5e69d1d7.nhost.app';
-const nhostGraphQLUrl = 'https://hasura-5e69d1d7.nhost.app/v1/graphql';
+import 'config.dart';
 
 /// Client used to authenticate GraphQL requests
-final nhostClient = NhostClient(baseUrl: nhostApiUrl);
+final nhostClient = NhostClient(backendUrl: nhostUrl);
 
 void main() {
   runApp(SimpleGqlExample());
@@ -29,7 +25,6 @@ class SimpleGqlExample extends StatelessWidget {
     // to `graphql_flutter` widgets in its subtree.
     return NhostGraphQLProvider(
       nhostClient: nhostClient,
-      gqlEndpointUrl: nhostGraphQLUrl,
       child: MaterialApp(
         title: 'Nhost.io Simple Flutter GraphQL Example',
         debugShowCheckedModeBanner: false,

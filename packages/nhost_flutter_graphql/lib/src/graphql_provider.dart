@@ -20,10 +20,12 @@ import 'logging.dart';
 class NhostGraphQLProvider extends StatefulWidget {
   NhostGraphQLProvider({
     Key? key,
-    required this.gqlEndpointUrl,
     this.nhostClient,
+    String? gqlEndpointUrl,
     this.child,
-  }) : super(key: key);
+  })  : assert(nhostClient != null || gqlEndpointUrl != null),
+        gqlEndpointUrl = gqlEndpointUrl ?? nhostClient!.gqlEndpointUrl,
+        super(key: key);
 
   /// The Nhost GQL URL
   final String gqlEndpointUrl;

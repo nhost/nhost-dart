@@ -10,11 +10,7 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:nhost_flutter_auth/nhost_flutter_auth.dart';
 import 'package:nhost_flutter_graphql/nhost_flutter_graphql.dart';
 
-// Fill in these values with the Backend and GraphQL URL found on your Nhost
-// project page.
-
-const nhostApiUrl = 'https://backend-5e69d1d7.nhost.app';
-const nhostGraphQLUrl = 'https://hasura-5e69d1d7.nhost.app/v1/graphql';
+import 'config.dart';
 
 void main() {
   runApp(TodosQuickStartExample());
@@ -26,8 +22,7 @@ class TodosQuickStartExample extends StatelessWidget {
     // The NhostGraphQLProvider automatically provides connection information
     // to `graphql_flutter` widgets in its subtree.
     return NhostGraphQLProvider(
-      nhostClient: NhostClient(baseUrl: nhostApiUrl),
-      gqlEndpointUrl: nhostGraphQLUrl,
+      nhostClient: NhostClient(backendUrl: nhostUrl),
       child: MaterialApp(
         title: 'Nhost.io Todos Quick Start',
         debugShowCheckedModeBanner: false,
@@ -48,10 +43,10 @@ class App extends StatelessWidget {
 
     Widget widget;
     switch (auth.authenticationState) {
-      case AuthenticationState.loggedIn:
+      case AuthenticationState.signedIn:
         widget = TodosPage();
         break;
-      case AuthenticationState.loggedOut:
+      case AuthenticationState.signedOut:
         widget = LoginPage();
         break;
       default:
@@ -219,7 +214,10 @@ class TodoList extends StatelessWidget {
 
     return ListView(
       children: [
-        for (final todo in todos) TodoTile(todo: todo),
+        for (final todo in todos)
+          if (!todo.isCompleted) TodoTile(todo: todo),
+        for (final todo in todos)
+          if (todo.isCompleted) TodoTile(todo: todo),
       ],
     );
   }
@@ -268,7 +266,7 @@ class TodoListActions extends StatelessWidget {
       children: [
         TextButton(
           onPressed: () {
-            auth.logout();
+            auth.signOut();
           },
           child: Text('Logout'),
         ),
@@ -323,8 +321,8 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
-    emailController = TextEditingController();
-    passwordController = TextEditingController();
+    emailController = TextEditingController(text: 'user-1@nhost.io');
+    passwordController = TextEditingController(text: 'password-1');
   }
 
   @override
@@ -338,7 +336,7 @@ class _LoginPageState extends State<LoginPage> {
     final auth = NhostAuthProvider.of(context)!;
 
     try {
-      await auth.login(
+      await auth.signIn(
           email: emailController.text, password: passwordController.text);
     } on ApiException {
       ScaffoldMessenger.of(context).showSnackBar(

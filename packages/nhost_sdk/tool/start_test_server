@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+set -e
+set -o pipefail
+
+if ! command -v nhost &> /dev/null; then
+  echo 'Error: Nhost CLI required to run test backend'
+  echo 'https://github.com/nhost/cli#installation'
+  exit 1
+fi
+
+TOOLS_PATH="$(dirname "$0")"
+PACKAGE_PATH="$(realpath $TOOLS_PATH/..)"
+TEST_SERVER_PATH="$PACKAGE_PATH/test/server"
+
+pushd $TEST_SERVER_PATH
+nhost -d dev --no-browser
+popd

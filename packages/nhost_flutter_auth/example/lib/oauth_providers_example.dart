@@ -11,16 +11,16 @@
 /// Failure redirect URL: `nhost-example://oauth.login.failure`.
 library oauth_providers_example;
 
+import 'package:app_links/app_links.dart';
 import 'package:flutter/material.dart';
 import 'package:nhost_flutter_auth/nhost_flutter_auth.dart';
 import 'package:url_launcher/url_launcher.dart' as url_launcher;
-import 'package:app_links/app_links.dart';
 
+import 'config.dart';
 import 'simple_auth_example.dart';
 
 /// Fill in this value with the backend URL found on your Nhost project page.
-const nhostApiUrl = 'https://backend-5e69d1d7.nhost.app';
-const nhostGithubLoginUrl = '$nhostApiUrl/auth/providers/github/';
+const nhostGithubLoginUrl = '$nhostUrl/v1/auth/providers/github/';
 
 const loginSuccessHost = 'oauth.login.success';
 const loginFailureHost = 'oauth.login.failure';
@@ -43,13 +43,13 @@ class _OAuthExampleState extends State<OAuthExample> {
     super.initState();
 
     // Create a new Nhost client using your project's backend URL.
-    nhostClient = NhostClient(baseUrl: nhostApiUrl);
+    nhostClient = NhostClient(backendUrl: nhostUrl);
 
     appLinks = AppLinks(
       onAppLink: (uri, stringUri) async {
         if (uri.host == loginSuccessHost) {
           // ignore: unawaited_futures
-          nhostClient.auth.completeOAuthProviderLogin(uri);
+          nhostClient.auth.completeOAuthProviderSignIn(uri);
         }
         await url_launcher.closeWebView();
       },
@@ -72,7 +72,6 @@ class _OAuthExampleState extends State<OAuthExample> {
           body: SafeArea(
             child: ExampleProtectedScreen(),
           ),
-          // ExampleProtectedScreen(),
         ),
       ),
     );
@@ -88,7 +87,7 @@ class ExampleProtectedScreen extends StatelessWidget {
     Widget widget;
 
     switch (auth.authenticationState) {
-      case AuthenticationState.loggedIn:
+      case AuthenticationState.signedIn:
         widget = LoggedInUserDetails();
         break;
       default:

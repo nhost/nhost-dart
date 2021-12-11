@@ -1,0 +1,26 @@
+{
+  "name": "functions/function_client/fails_on_non-existent_functions.json",
+  "interactions": [
+    {
+      "request": {
+        "method": "post",
+        "uri": "http://localhost:1337/v1/functions/no_such_function",
+        "headers": {},
+        "body": null
+      },
+      "response": {
+        "status": 404,
+        "headers": {
+          "content-type": "text/plain; charset=utf-8",
+          "x-content-type-options": "nosniff",
+          "date": "Thu, 27 Jan 2022 05:06:36 GMT",
+          "content-length": "10"
+        },
+        "body": {
+          "encoding": "utf-8",
+          "string": "Not Found\n"
+        }
+      }
+    }
+  ]
+}

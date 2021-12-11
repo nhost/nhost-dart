@@ -1,8 +1,7 @@
 import 'package:graphql/client.dart';
 import 'package:http/http.dart' as http;
-import 'package:nhost_sdk/nhost_sdk.dart';
-
 import 'package:nhost_gql_links/nhost_gql_links.dart';
+import 'package:nhost_sdk/nhost_sdk.dart';
 
 /// Constructs a GQL client for accessing Nhost.io's backend.
 ///
@@ -26,14 +25,13 @@ import 'package:nhost_gql_links/nhost_gql_links.dart';
 /// and debugging.
 /// {@endtemplate}
 GraphQLClient createNhostGraphQLClient(
-  String nhostGqlEndpointUrl,
   NhostClient nhostClient, {
   GraphQLCache? gqlCache,
   Map<String, String>? defaultHeaders,
   http.Client? httpClientOverride,
 }) {
   return createNhostGraphQLClientForAuth(
-    nhostGqlEndpointUrl,
+    nhostClient.gqlEndpointUrl,
     nhostClient.auth,
     gqlCache: gqlCache,
     defaultHeaders: defaultHeaders,
@@ -45,6 +43,8 @@ GraphQLClient createNhostGraphQLClient(
 ///
 /// The connection will be configured to automatically reflect the logged in
 /// state of [nhostAuth], and will change over time.
+///
+/// [nhostGqlEndpointUrl] can be found at [NhostClient.gqlEndpointUrl].
 ///
 /// {@macro nhost.graphqlClient.gqlCache}
 ///
@@ -59,7 +59,7 @@ GraphQLClient createNhostGraphQLClientForAuth(
   http.Client? httpClientOverride,
 }) {
   return GraphQLClient(
-    link: combinedLinkForNhost(
+    link: combinedLinkForNhostAuth(
       nhostGqlEndpointUrl,
       nhostAuth,
       defaultHeaders: defaultHeaders,

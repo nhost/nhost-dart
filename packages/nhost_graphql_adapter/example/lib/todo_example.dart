@@ -3,14 +3,10 @@
 library simple_example;
 
 import 'package:graphql/client.dart';
-import 'package:nhost_sdk/nhost_sdk.dart';
 import 'package:nhost_graphql_adapter/nhost_graphql_adapter.dart';
+import 'package:nhost_sdk/nhost_sdk.dart';
 
-// Both of these URLs can be found in your nhost.io console, under the project
-// you wish to connect to.
-
-const backendEndpoint = 'https://backend-5e69d1d7.nhost.app';
-const graphQLEndpoint = 'https://hasura-5e69d1d7.nhost.app/v1/graphql';
+import 'config.dart';
 
 final todosQuery = gql(r'''
   query {
@@ -27,11 +23,8 @@ final todosQuery = gql(r'''
 
 void main() async {
   // Set up the Nhost and GraphQL clients
-  final nhostClient = NhostClient(baseUrl: backendEndpoint);
-  final graphqlClient = createNhostGraphQLClient(
-    graphQLEndpoint,
-    nhostClient,
-  );
+  final nhostClient = NhostClient(backendUrl: nhostUrl);
+  final graphqlClient = createNhostGraphQLClient(nhostClient);
 
   // Run a query, unauthenticated
   var queryResult = await graphqlClient.query(
@@ -43,7 +36,7 @@ void main() async {
 
   // Now authenticate...
   await nhostClient.auth
-      .login(email: 'scott@madewithfelt.com', password: 'foofoo');
+      .signIn(email: 'scott@madewithfelt.com', password: 'foofoo');
 
   // ...and try again, authenticated
   queryResult = await graphqlClient.query(

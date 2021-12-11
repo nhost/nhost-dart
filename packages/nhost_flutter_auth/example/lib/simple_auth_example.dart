@@ -2,11 +2,12 @@
 /// resource.
 library simple_auth_example;
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:nhost_flutter_auth/nhost_flutter_auth.dart';
 
-/// Fill in this value with the backend URL found on your Nhost project page.
-const nhostApiUrl = 'https://backend-5e69d1d7.nhost.app';
+import 'config.dart';
 
 void main() {
   runApp(SimpleAuthExample());
@@ -24,7 +25,7 @@ class _SimpleAuthExampleState extends State<SimpleAuthExample> {
   void initState() {
     super.initState();
     // Create a new Nhost client using your project's backend URL.
-    nhostClient = NhostClient(baseUrl: nhostApiUrl);
+    nhostClient = NhostClient(backendUrl: nhostUrl);
   }
 
   @override
@@ -57,10 +58,10 @@ class ExampleProtectedScreen extends StatelessWidget {
     final auth = NhostAuthProvider.of(context)!;
     Widget widget;
     switch (auth.authenticationState) {
-      case AuthenticationState.loggedIn:
+      case AuthenticationState.signedIn:
         widget = LoggedInUserDetails();
         break;
-      case AuthenticationState.loggedOut:
+      case AuthenticationState.signedOut:
         widget = LoginForm();
         break;
       default:
@@ -90,8 +91,8 @@ class _LoginFormState extends State<LoginForm> {
   @override
   void initState() {
     super.initState();
-    emailController = TextEditingController();
-    passwordController = TextEditingController();
+    emailController = TextEditingController(text: 'user-1@nhost.io');
+    passwordController = TextEditingController(text: 'password-1');
   }
 
   @override
@@ -105,12 +106,18 @@ class _LoginFormState extends State<LoginForm> {
     final auth = NhostAuthProvider.of(context)!;
 
     try {
-      await auth.login(
+      await auth.signIn(
           email: emailController.text, password: passwordController.text);
     } on ApiException {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Login Failed'),
+        ),
+      );
+    } on SocketException {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Network Failed'),
         ),
       );
     }
@@ -196,7 +203,7 @@ class LoggedInUserDetails extends StatelessWidget {
           rowSpacing,
           ElevatedButton(
             onPressed: () {
-              auth.logout();
+              auth.signOut();
             },
             child: Text('Logout'),
           ),

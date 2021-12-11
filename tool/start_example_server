@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+set -e
+
+if ! command -v nhost &> /dev/null; then
+  echo 'Error: Nhost CLI required to run the example server'
+  echo 'https://github.com/nhost/cli#installation'
+  exit 1
+fi
+
+if ! command -v nhost &> /dev/null; then
+  echo 'Error: NPM and Node are required to run the example server'
+  exit 1
+fi
+
+TOOLS_PATH="$(dirname "$0")"
+SERVER_PATH="$TOOLS_PATH/example_server"
+SERVER_FUNCTIONS_PATH="$SERVER_PATH/functions"
+
+pushd $SERVER_FUNCTIONS_PATH
+npm install > /dev/null
+popd
+
+pushd $SERVER_PATH
+nhost -d dev --no-browser
+popd

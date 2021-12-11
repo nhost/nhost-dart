@@ -3,19 +3,36 @@ import 'dart:io';
 
 import 'package:betamax/betamax.dart';
 import 'package:http/http.dart' as http;
+import 'package:logging/logging.dart';
 import 'package:nhost_sdk/nhost_sdk.dart';
 import 'package:test/test.dart';
 import 'package:test_api/src/backend/invoker.dart';
 
-const apiUrl = 'http://localhost:9001';
-const gqlUrl = 'http://localhost:8080/v1/graphql';
+const backendUrl = 'http://localhost:1337';
+const gqlUrl = '$backendUrl/v1/graphql';
 
+const enableLoggingEnvVariableName = 'LOGGING';
 const recordFixturesEnvVariableName = 'RECORD_HTTP_FIXTURES';
+
+/// Sets up logging if the appropriate env variable is set
+void initLogging() {
+  if (Platform.environment[enableLoggingEnvVariableName] == 'true') {
+    Logger.root
+      ..onRecord.listen((event) {
+        print(event);
+      })
+      ..level = Level.ALL;
+  }
+}
 
 /// Initializes Betamax, which is responsible for HTTP fixtures
 void initializeHttpFixturesForSuite(String suiteName) {
   final recordFixtures =
       Platform.environment[recordFixturesEnvVariableName] == 'true';
+  print(recordFixtures
+      ? '[$suiteName] Recording HTTP'
+      : '[$suiteName] Playing back HTTP fixtures');
+
   Betamax.configureSuite(
     suiteName: suiteName,
     mode: recordFixtures ? Mode.recording : Mode.playback,
@@ -27,7 +44,7 @@ void initializeHttpFixturesForSuite(String suiteName) {
 /// This method must be called from a test's [setUp] method, or a test body.
 NhostClient createApiTestClient(http.Client httpClient) {
   return NhostClient(
-    baseUrl: apiUrl,
+    backendUrl: backendUrl,
     httpClientOverride: httpClient,
   );
 }
