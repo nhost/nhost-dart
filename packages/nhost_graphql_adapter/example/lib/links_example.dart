@@ -5,16 +5,11 @@ library links_example;
 import 'dart:async';
 
 import 'package:graphql/client.dart';
-import 'package:nhost_sdk/nhost_sdk.dart';
 import 'package:nhost_graphql_adapter/nhost_graphql_adapter.dart';
+import 'package:nhost_graphql_example/config.dart';
+import 'package:nhost_sdk/nhost_sdk.dart';
 
 import 'todo_example.dart';
-
-// Both of these URLs can be found in your nhost.io console, under the project
-// you wish to connect to.
-
-const backendEndpoint = 'https://backend-5e69d1d7.nhost.app';
-const graphQLEndpoint = 'https://hasura-5e69d1d7.nhost.app/v1/graphql';
 
 final myTodosQuery = gql(r'''
   query {
@@ -30,14 +25,11 @@ final myTodosQuery = gql(r'''
 ''');
 
 void main() async {
-  final nhostClient = NhostClient(baseUrl: backendEndpoint);
+  final nhostClient = NhostClient(backendUrl: nhostUrl);
 
   // The Nhost "terminating link" (the point at which requests are sent). We're
   // going to build links that execute on requests before this point is reached.
-  final nhostLink = combinedLinkForNhost(
-    graphQLEndpoint,
-    nhostClient.auth,
-  );
+  final nhostLink = combinedLinkForNhost(nhostClient);
 
   // Create a new custom link that logs all requests and responses passing
   // through it

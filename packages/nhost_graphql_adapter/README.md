@@ -16,7 +16,7 @@ for widgets that work great with
 
 ```yaml
 dependencies:
-  nhost_graphql_adapter: ^1.0.0
+  nhost_graphql_adapter: ^2.0.0-beta.0
 ```
 
 ## 🔥 More Dart & Flutter packages from Nhost

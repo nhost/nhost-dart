@@ -11,10 +11,9 @@ class GqlAdminTestHelper {
   }) {
     // Used to verify, retrieve, or clear backend state.
     client = createNhostGraphQLClient(
-      gqlUrl,
-      NhostClient(baseUrl: apiUrl),
+      NhostClient(backendUrl: apiUrl),
       defaultHeaders: {
-        'X-Hasura-Admin-Secret': '123456',
+        'X-Hasura-Admin-Secret': 'nhost-admin-secret',
       },
       httpClientOverride: httpClientOverride,
     );
@@ -24,38 +23,55 @@ class GqlAdminTestHelper {
 
   /// Clears the users table in the test backend
   Future<QueryResult> clearUsers() async {
-    return await client.mutate(clearUsersMutation);
+    return client.mutate(clearUsersMutation);
   }
 
-  Future<String> getChangeTicketForUser(String userId) async {
-    final result = await client.query(
-      QueryOptions(
-        document: queryChangeTicketForUser,
-        variables: {
-          'userId': userId,
-        },
-      ),
-    );
-    return result.data!['users'].first['account']['ticket'];
+  Future<FileMetadata?> getFileInfo(String id) async {
+    final result = await client.query(QueryOptions(
+      document: getFileByIdQuery,
+      variables: {'id': id},
+      fetchPolicy: FetchPolicy.networkOnly,
+    ));
+
+    final fileJson = result.data?['file'];
+    return fileJson != null ? FileMetadata.fromJson(fileJson) : null;
+  }
+
+  Future<QueryResult> clearFiles() async {
+    return client.mutate(clearFilesMutation);
   }
 }
 
 final clearUsersMutation = MutationOptions(
   document: gql('''
     mutation clear_users {
-      delete_users(where: {}) {
+      deleteUsers(where: {}) {
         affected_rows
       }
     }
   '''),
 );
 
-final queryChangeTicketForUser = gql(r'''
-  query ChangeTickerForUser($userId: uuid!) {
-    users(where: {id: {_eq: $userId}}) {
-      account {
-        ticket
-      }
+final getFileByIdQuery = gql(r'''
+  query ($id: uuid!) {
+    file(id: $id) {
+      id
+      bucketId
+      name
+      size
+      etag
+      mimeType
+      createdAt
     }
   }
 ''');
+
+final clearFilesMutation = MutationOptions(
+  document: gql('''
+    mutation clear_files {
+      deleteFiles(where: {}) {
+        affected_rows
+      }
+    }
+  '''),
+);

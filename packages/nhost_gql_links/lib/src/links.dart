@@ -23,6 +23,30 @@ import 'package:web_socket_channel/web_socket_channel.dart';
 /// request, such as to configure proxies, introduce interceptors, etc.
 /// {@endtemplate}
 Link combinedLinkForNhost(
+  NhostClient nhostClient, {
+  Map<String, String>? defaultHeaders,
+  http.Client? httpClientOverride,
+}) {
+  return combinedLinkForNhostAuth(
+    nhostClient.gqlEndpointUrl,
+    nhostClient.auth,
+    defaultHeaders: defaultHeaders,
+    httpClientOverride: httpClientOverride,
+  );
+}
+
+/// Creates a link that that configures automatically based on [nhostAuth]'s
+/// authentication state. The returned link will select HTTP or Web Socket
+/// transport as appropriate based on the GQL operation type.
+///
+/// {@template nhost.links.nhostGqlEndpointUrl}
+/// [nhostGqlEndpointUrl] can be found at [NhostClient.gqlEndpointUrl].
+/// {@endtemplate}
+///
+/// {@macro nhost.links.defaultHeaders}
+///
+/// {@macro nhost.links.httpClientOverride}
+Link combinedLinkForNhostAuth(
   String nhostGqlEndpointUrl,
   Auth nhostAuth, {
   Map<String, String>? defaultHeaders,
@@ -67,6 +91,8 @@ const webSocketNormalCloseCode = 1000;
 /// Creates an HTTP link that configures automatically based on [nhostAuth]'s
 /// authentication state.
 ///
+/// {@macro nhost.links.nhostGqlEndpointUrl}
+///
 /// {@macro nhost.links.defaultHeaders}
 ///
 /// {@macro nhost.links.httpClientOverride}
@@ -84,7 +110,7 @@ Link httpLinkForNhost(
 
   // Introduce an Authorization header
   final addAuthenticationLink = Link.function((request, [forward]) {
-    if (nhostAuth.authenticationState == AuthenticationState.loggedIn) {
+    if (nhostAuth.authenticationState == AuthenticationState.signedIn) {
       request = request.updateContextEntry<HttpLinkHeaders>(
         (entry) => HttpLinkHeaders(
           headers: {
@@ -103,6 +129,8 @@ Link httpLinkForNhost(
 
 /// Creates a web socket link that configures (and reconfigures) automatically
 /// based on [nhostAuth]'s authentication state.
+///
+/// {@macro nhost.links.nhostGqlEndpointUrl}
 ///
 /// [defaultHeaders] (optional) A set of headers that will be provided in the
 /// initial payload when opening the socket.
@@ -143,7 +171,7 @@ Link webSocketLinkForNhost(
     initialPayload: () => {
       'headers': {
         ...?defaultHeaders,
-        if (nhostAuth.authenticationState == AuthenticationState.loggedIn)
+        if (nhostAuth.authenticationState == AuthenticationState.signedIn)
           'Authorization': 'Bearer ${nhostAuth.jwt}',
       },
     },

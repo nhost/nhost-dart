@@ -17,10 +17,8 @@ import 'package:flutter/material.dart';
 import 'package:nhost_flutter_auth/nhost_flutter_auth.dart';
 import 'package:provider/provider.dart';
 
+import 'config.dart';
 import 'simple_auth_example.dart';
-
-/// Fill in this value with the backend URL found on your Nhost project page.
-const nhostApiUrl = 'https://backend-5e69d1d7.nhost.app';
 
 void main() {
   configurePackages();
@@ -44,7 +42,7 @@ class _NavigatorExampleAppState extends State<NavigatorExampleApp> {
   void initState() {
     super.initState();
     // Create a new Nhost client using your project's backend URL.
-    nhostClient = NhostClient(baseUrl: nhostApiUrl);
+    nhostClient = NhostClient(backendUrl: nhostUrl);
     appState = ExampleNavigator();
   }
 
@@ -88,7 +86,7 @@ class ExampleNavigator extends ChangeNotifier {
   /// authentication and the user is not authenticated. See
   /// [ExampleRouterDelegate.build] for implementation logic.
   ExampleRoutePath get requestedRoutePath => _requestedRoutePath;
-  late ExampleRoutePath _requestedRoutePath;
+  ExampleRoutePath _requestedRoutePath = HomeRoutePath();
 
   /// Called by the application to request a route change
   void requestRoutePath(ExampleRoutePath value) {
@@ -132,9 +130,9 @@ class ExampleRouterDelegate extends RouterDelegate<ExampleRoutePath>
     final auth = NhostAuthProvider.of(context)!;
     final requestedRoutePath = navigator.requestedRoutePath;
     final isLoginPageRequested = requestedRoutePath is LoginRoutePath &&
-        auth.authenticationState != AuthenticationState.loggedIn;
+        auth.authenticationState != AuthenticationState.signedIn;
     final needsLogin = requestedRoutePath is ProtectedRoutePath &&
-        auth.authenticationState != AuthenticationState.loggedIn;
+        auth.authenticationState != AuthenticationState.signedIn;
 
     return Navigator(
       key: navigatorKey,
@@ -214,7 +212,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final auth = NhostAuthProvider.of(context)!;
     final isAuthenticated =
-        auth.authenticationState == AuthenticationState.loggedIn;
+        auth.authenticationState == AuthenticationState.signedIn;
     final navigator = Provider.of<ExampleNavigator>(context);
 
     final textTheme = Theme.of(context).textTheme;
@@ -240,7 +238,7 @@ class HomePage extends StatelessWidget {
           ),
         ),
         ContentItem(child: Text('This content is visible to everyone.')),
-        if (auth.authenticationState == AuthenticationState.loggedIn)
+        if (auth.authenticationState == AuthenticationState.signedIn)
           ContentItem(
             child: Text(
               'This additional content is only visible to authenticated '
@@ -256,17 +254,17 @@ class HomePage extends StatelessWidget {
               child: Text('Admin Page (Protected)'),
             ),
             SizedBox(width: 8),
-            if (auth.authenticationState == AuthenticationState.loggedOut)
+            if (auth.authenticationState == AuthenticationState.signedOut)
               ElevatedButton(
                 onPressed: () {
                   navigator.requestRoutePath(LoginRoutePath());
                 },
                 child: Text('Login'),
               ),
-            if (auth.authenticationState == AuthenticationState.loggedIn)
+            if (auth.authenticationState == AuthenticationState.signedIn)
               ElevatedButton(
                 onPressed: () {
-                  auth.logout();
+                  auth.signOut();
                 },
                 child: Text('Logout'),
               ),
@@ -349,18 +347,18 @@ class AppFrame extends StatelessWidget {
       appBar: AppBar(
         title: Text('Nhost Navigator 2.0 Example'),
         actions: [
-          if (auth.authenticationState == AuthenticationState.loggedOut)
+          if (auth.authenticationState == AuthenticationState.signedOut)
             IconButton(
               icon: Icon(Icons.login),
               onPressed: () {
                 navigator.requestRoutePath(LoginRoutePath());
               },
             ),
-          if (auth.authenticationState == AuthenticationState.loggedIn)
+          if (auth.authenticationState == AuthenticationState.signedIn)
             IconButton(
               icon: Icon(Icons.logout),
               onPressed: () {
-                auth.logout();
+                auth.signOut();
                 navigator.requestRoutePath(HomeRoutePath());
               },
             ),

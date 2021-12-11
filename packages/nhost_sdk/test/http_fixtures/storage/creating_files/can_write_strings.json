@@ -4,13 +4,13 @@
     {
       "request": {
         "method": "post",
-        "uri": "http://localhost:9001/auth/register",
+        "uri": "http://localhost:1337/v1/auth/signup/email-password",
         "headers": {
           "content-type": "application/json; charset=utf-8"
         },
         "body": {
           "encoding": "utf-8",
-          "string": "{\"email\":\"user-1@nhost.io\",\"password\":\"password-1\",\"user_data\":{},\"cookie\":false}"
+          "string": "{\"email\":\"user-1@nhost.io\",\"password\":\"password-1\"}"
         }
       },
       "response": {
@@ -18,143 +18,85 @@
         "headers": {
           "connection": "keep-alive",
           "surrogate-control": "no-store",
-          "set-cookie": "refresh_token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT,permission_variables=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT",
           "cache-control": "no-store, no-cache, must-revalidate, proxy-revalidate",
           "x-dns-prefetch-control": "off",
-          "x-ratelimit-reset": "1634445674",
-          "date": "Sun, 17 Oct 2021 04:39:20 GMT",
-          "x-ratelimit-limit": "1000",
-          "vary": "Origin",
+          "date": "Fri, 28 Jan 2022 06:54:31 GMT",
+          "access-control-allow-origin": "*",
           "strict-transport-security": "max-age=15552000; includeSubDomains",
-          "x-ratelimit-remaining": "972",
           "content-type": "application/json; charset=utf-8",
           "pragma": "no-cache",
           "x-xss-protection": "1; mode=block",
-          "access-control-allow-credentials": "true",
-          "keep-alive": "timeout=5",
-          "content-length": "612",
+          "content-length": "913",
           "x-download-options": "noopen",
-          "etag": "W/\"264-EBL0sGVE4BmQLowx4iu6ZOKj4ms\"",
+          "etag": "W/\"391-SolEoC5aEw/w03KxSfOemceK9B4\"",
           "x-frame-options": "SAMEORIGIN",
           "x-content-type-options": "nosniff",
           "expires": "0"
         },
         "body": {
           "encoding": "utf-8",
-          "string": "{\"jwt_token\":\"eyJhbGciOiJIUzI1NiJ9.eyJodHRwczovL2hhc3VyYS5pby9qd3QvY2xhaW1zIjp7IngtaGFzdXJhLXVzZXItaWQiOiI5MTA1OGIxYi0zN2I1LTQ1NmUtOGU5My03OTg3NzUyODI4OTYiLCJ4LWhhc3VyYS1hbGxvd2VkLXJvbGVzIjpbInVzZXIiLCJtZSJdLCJ4LWhhc3VyYS1kZWZhdWx0LXJvbGUiOiJ1c2VyIn0sInN1YiI6IjkxMDU4YjFiLTM3YjUtNDU2ZS04ZTkzLTc5ODc3NTI4Mjg5NiIsImlzcyI6Im5ob3N0IiwiaWF0IjoxNjM0NDQ1NTYwLCJleHAiOjE2MzQ0NDY0NjB9.OrGdzBxcnhpbWvoYEUbcTv7XqJEk3keqfvwM1ZuoNJ4\",\"jwt_expires_in\":900000,\"user\":{\"id\":\"91058b1b-37b5-456e-8e93-798775282896\",\"display_name\":\"user-1@nhost.io\",\"email\":\"user-1@nhost.io\"},\"refresh_token\":\"242dd69c-a416-462e-8545-54b74a00ceab\"}"
-        }
-      }
-    },
-    {
-      "request": {
-        "method": "get",
-        "uri": "http://localhost:9001/storage/m/user/91058b1b-37b5-456e-8e93-798775282896/",
-        "headers": {
-          "authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJodHRwczovL2hhc3VyYS5pby9qd3QvY2xhaW1zIjp7IngtaGFzdXJhLXVzZXItaWQiOiI5MTA1OGIxYi0zN2I1LTQ1NmUtOGU5My03OTg3NzUyODI4OTYiLCJ4LWhhc3VyYS1hbGxvd2VkLXJvbGVzIjpbInVzZXIiLCJtZSJdLCJ4LWhhc3VyYS1kZWZhdWx0LXJvbGUiOiJ1c2VyIn0sInN1YiI6IjkxMDU4YjFiLTM3YjUtNDU2ZS04ZTkzLTc5ODc3NTI4Mjg5NiIsImlzcyI6Im5ob3N0IiwiaWF0IjoxNjM0NDQ1NTYwLCJleHAiOjE2MzQ0NDY0NjB9.OrGdzBxcnhpbWvoYEUbcTv7XqJEk3keqfvwM1ZuoNJ4"
-        },
-        "body": null
-      },
-      "response": {
-        "status": 200,
-        "headers": {
-          "connection": "keep-alive",
-          "x-dns-prefetch-control": "off",
-          "x-ratelimit-reset": "1634445674",
-          "date": "Sun, 17 Oct 2021 04:39:20 GMT",
-          "x-ratelimit-limit": "1000",
-          "vary": "Origin",
-          "strict-transport-security": "max-age=15552000; includeSubDomains",
-          "x-ratelimit-remaining": "971",
-          "content-type": "application/json; charset=utf-8",
-          "x-xss-protection": "1; mode=block",
-          "access-control-allow-credentials": "true",
-          "keep-alive": "timeout=5",
-          "content-length": "2",
-          "x-download-options": "noopen",
-          "etag": "W/\"2-l9Fw4VUO7kr8CvBlt4zaMCqXZ0w\"",
-          "x-content-type-options": "nosniff"
-        },
-        "body": {
-          "encoding": "utf-8",
-          "string": "[]"
+          "string": "{\"session\":{\"accessToken\":\"eyJhbGciOiJIUzI1NiJ9.eyJodHRwczovL2hhc3VyYS5pby9qd3QvY2xhaW1zIjp7IngtaGFzdXJhLWFsbG93ZWQtcm9sZXMiOlsidXNlciIsIm1lIl0sIngtaGFzdXJhLWRlZmF1bHQtcm9sZSI6InVzZXIiLCJ4LWhhc3VyYS11c2VyLWlkIjoiNmMyYTc0MzMtMzk3OS00M2U5LWE1MGItMDVkZGI4NzMxMzhmIiwieC1oYXN1cmEtdXNlci1pc0Fub255bW91cyI6ImZhbHNlIn0sInN1YiI6IjZjMmE3NDMzLTM5NzktNDNlOS1hNTBiLTA1ZGRiODczMTM4ZiIsImlzcyI6Imhhc3VyYS1hdXRoIiwiaWF0IjoxNjQzMzUyODcxLCJleHAiOjE2NDMzNTM3NzF9.PyWfIAVBhq6kiYywRGaxHFbE_TQFiycTitV4BWjK07E\",\"accessTokenExpiresIn\":900,\"refreshToken\":\"ea2f05d2-abc4-497d-a8c8-d2454d0c9364\",\"user\":{\"id\":\"6c2a7433-3979-43e9-a50b-05ddb873138f\",\"createdAt\":\"2022-01-28T06:54:31.795763+00:00\",\"displayName\":\"user-1@nhost.io\",\"avatarUrl\":\"https://s.gravatar.com/avatar/d86c12c3233e91ec90869a1f874cdf0e?r=g&default=blank\",\"locale\":\"en\",\"email\":\"user-1@nhost.io\",\"isAnonymous\":false,\"defaultRole\":\"user\",\"roles\":[\"user\",\"me\"]}},\"mfa\":null}"
         }
       }
     },
     {
       "request": {
         "method": "post",
-        "uri": "http://localhost:9001/storage/o/user/91058b1b-37b5-456e-8e93-798775282896/test-file.txt",
+        "uri": "http://localhost:1337/v1/storage/files",
         "headers": {
-          "authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJodHRwczovL2hhc3VyYS5pby9qd3QvY2xhaW1zIjp7IngtaGFzdXJhLXVzZXItaWQiOiI5MTA1OGIxYi0zN2I1LTQ1NmUtOGU5My03OTg3NzUyODI4OTYiLCJ4LWhhc3VyYS1hbGxvd2VkLXJvbGVzIjpbInVzZXIiLCJtZSJdLCJ4LWhhc3VyYS1kZWZhdWx0LXJvbGUiOiJ1c2VyIn0sInN1YiI6IjkxMDU4YjFiLTM3YjUtNDU2ZS04ZTkzLTc5ODc3NTI4Mjg5NiIsImlzcyI6Im5ob3N0IiwiaWF0IjoxNjM0NDQ1NTYwLCJleHAiOjE2MzQ0NDY0NjB9.OrGdzBxcnhpbWvoYEUbcTv7XqJEk3keqfvwM1ZuoNJ4",
-          "content-type": "multipart/form-data; boundary=dart-http-boundary--E9N0UJj0g5D-Qiqy-+qE6PD24ItJDglU3KTI8iUkLjrnloQpmv"
+          "authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJodHRwczovL2hhc3VyYS5pby9qd3QvY2xhaW1zIjp7IngtaGFzdXJhLWFsbG93ZWQtcm9sZXMiOlsidXNlciIsIm1lIl0sIngtaGFzdXJhLWRlZmF1bHQtcm9sZSI6InVzZXIiLCJ4LWhhc3VyYS11c2VyLWlkIjoiNmMyYTc0MzMtMzk3OS00M2U5LWE1MGItMDVkZGI4NzMxMzhmIiwieC1oYXN1cmEtdXNlci1pc0Fub255bW91cyI6ImZhbHNlIn0sInN1YiI6IjZjMmE3NDMzLTM5NzktNDNlOS1hNTBiLTA1ZGRiODczMTM4ZiIsImlzcyI6Imhhc3VyYS1hdXRoIiwiaWF0IjoxNjQzMzUyODcxLCJleHAiOjE2NDMzNTM3NzF9.PyWfIAVBhq6kiYywRGaxHFbE_TQFiycTitV4BWjK07E",
+          "x-nhost-file-name": "test-file.txt",
+          "content-type": "multipart/form-data; boundary=dart-http-boundary-8pR85-rmo.srTK+gpS.8Jv6olbKMQP+K0lgh-k.BU+QoQZkT1Vv"
         },
         "body": {
           "encoding": "iso-8859-1",
-          "string": "--dart-http-boundary--E9N0UJj0g5D-Qiqy-+qE6PD24ItJDglU3KTI8iUkLjrnloQpmv\r\ncontent-type: text/plain; charset=utf-8\r\ncontent-disposition: form-data; name=\"file\"; filename=\"user/91058b1b-37b5-456e-8e93-798775282896/test-file.txt\"\r\n\r\ntext file contents\r\n--dart-http-boundary--E9N0UJj0g5D-Qiqy-+qE6PD24ItJDglU3KTI8iUkLjrnloQpmv--\r\n"
+          "string": "--dart-http-boundary-8pR85-rmo.srTK+gpS.8Jv6olbKMQP+K0lgh-k.BU+QoQZkT1Vv\r\ncontent-type: text/plain; charset=utf-8\r\ncontent-disposition: form-data; name=\"file\"; filename=\"test-file.txt\"\r\n\r\ntext file contents\r\n--dart-http-boundary-8pR85-rmo.srTK+gpS.8Jv6olbKMQP+K0lgh-k.BU+QoQZkT1Vv--\r\n"
         }
       },
       "response": {
-        "status": 200,
+        "status": 201,
         "headers": {
           "connection": "keep-alive",
-          "x-dns-prefetch-control": "off",
-          "x-ratelimit-reset": "1634445674",
-          "date": "Sun, 17 Oct 2021 04:39:20 GMT",
-          "x-ratelimit-limit": "1000",
-          "vary": "Origin",
-          "strict-transport-security": "max-age=15552000; includeSubDomains",
-          "x-ratelimit-remaining": "970",
           "content-type": "application/json; charset=utf-8",
-          "x-xss-protection": "1; mode=block",
-          "access-control-allow-credentials": "true",
-          "keep-alive": "timeout=5",
-          "content-length": "282",
-          "x-download-options": "noopen",
-          "etag": "W/\"11a-mkTDv6rVypSIoSZezZAIUlawB7Y\"",
-          "x-frame-options": "SAMEORIGIN",
-          "x-content-type-options": "nosniff"
+          "date": "Fri, 28 Jan 2022 06:54:32 GMT",
+          "access-control-allow-origin": "*",
+          "vary": "Origin",
+          "content-length": "216"
         },
         "body": {
           "encoding": "utf-8",
-          "string": "{\"key\":\"user/91058b1b-37b5-456e-8e93-798775282896/test-file.txt\",\"AcceptRanges\":\"bytes\",\"LastModified\":\"2021-10-17T04:39:20.000Z\",\"ContentLength\":18,\"ETag\":\"\\\"e060f216c2b7dd7be3b2d1a0d9fd0207\\\"\",\"ContentType\":\"text/plain\",\"Metadata\":{\"token\":\"53eee32a-93c5-477d-9a4e-64d82efaa9bc\"}}"
+          "string": "{\"id\":\"38fe27a5-d6fc-44e7-be88-f77c6e802eb8\",\"name\":\"test-file.txt\",\"size\":18,\"mimeType\":\"text/plain\",\"etag\":\"\\\"e060f216c2b7dd7be3b2d1a0d9fd0207\\\"\",\"createdAt\":\"2022-01-28T06:54:31.965072+00:00\",\"bucketId\":\"default\"}"
         }
       }
     },
     {
       "request": {
-        "method": "get",
-        "uri": "http://localhost:9001/storage/o/user/91058b1b-37b5-456e-8e93-798775282896/test-file.txt",
+        "method": "post",
+        "uri": "http://localhost:1337/v1/graphql",
         "headers": {
-          "authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJodHRwczovL2hhc3VyYS5pby9qd3QvY2xhaW1zIjp7IngtaGFzdXJhLXVzZXItaWQiOiI5MTA1OGIxYi0zN2I1LTQ1NmUtOGU5My03OTg3NzUyODI4OTYiLCJ4LWhhc3VyYS1hbGxvd2VkLXJvbGVzIjpbInVzZXIiLCJtZSJdLCJ4LWhhc3VyYS1kZWZhdWx0LXJvbGUiOiJ1c2VyIn0sInN1YiI6IjkxMDU4YjFiLTM3YjUtNDU2ZS04ZTkzLTc5ODc3NTI4Mjg5NiIsImlzcyI6Im5ob3N0IiwiaWF0IjoxNjM0NDQ1NTYwLCJleHAiOjE2MzQ0NDY0NjB9.OrGdzBxcnhpbWvoYEUbcTv7XqJEk3keqfvwM1ZuoNJ4"
+          "content-type": "application/json",
+          "Accept": "*/*",
+          "X-Hasura-Admin-Secret": "nhost-admin-secret"
         },
-        "body": null
+        "body": {
+          "encoding": "iso-8859-1",
+          "string": "{\"operationName\":null,\"variables\":{\"id\":\"38fe27a5-d6fc-44e7-be88-f77c6e802eb8\"},\"query\":\"query($id: uuid!) {\\n  __typename\\n  file(id: $id) {\\n    __typename\\n    id\\n    bucketId\\n    name\\n    size\\n    etag\\n    mimeType\\n    createdAt\\n  }\\n}\"}"
+        }
       },
       "response": {
         "status": 200,
         "headers": {
           "connection": "keep-alive",
-          "cache-control": "public, max-age=31557600",
-          "last-modified": "Sun, 17 Oct 2021 04:39:20 GMT",
-          "x-dns-prefetch-control": "off",
-          "x-ratelimit-reset": "1634445674",
-          "date": "Sun, 17 Oct 2021 04:39:20 GMT",
-          "x-ratelimit-limit": "1000",
-          "vary": "Origin",
-          "strict-transport-security": "max-age=15552000; includeSubDomains",
-          "x-ratelimit-remaining": "969",
-          "content-type": "text/plain; charset=utf-8",
-          "x-xss-protection": "1; mode=block",
-          "content-disposition": "inline;",
-          "access-control-allow-credentials": "true",
-          "keep-alive": "timeout=5",
-          "content-length": "18",
-          "x-download-options": "noopen",
-          "etag": "\"e060f216c2b7dd7be3b2d1a0d9fd0207\"",
-          "x-content-type-options": "nosniff"
+          "date": "Fri, 28 Jan 2022 06:54:31 GMT",
+          "transfer-encoding": "chunked",
+          "content-encoding": "gzip",
+          "content-type": "application/json; charset=utf-8",
+          "server": "Warp/3.3.14",
+          "x-request-id": "4be6e965-5ea2-4d94-96fc-1bca5f1d7615"
         },
         "body": {
           "encoding": "utf-8",
-          "string": "text file contents"
+          "string": "{\"data\":{\"__typename\":\"query_root\",\"file\":{\"__typename\":\"files\",\"id\":\"38fe27a5-d6fc-44e7-be88-f77c6e802eb8\",\"bucketId\":\"default\",\"name\":\"test-file.txt\",\"size\":18,\"etag\":\"\\\"e060f216c2b7dd7be3b2d1a0d9fd0207\\\"\",\"mimeType\":\"text/plain\",\"createdAt\":\"2022-01-28T06:54:31.965072+00:00\"}}}"
         }
       }
     }
