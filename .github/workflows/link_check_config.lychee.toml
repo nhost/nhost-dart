@@ -3,6 +3,10 @@
 #
 # This config is referenced in the check_broken_links.yaml workflow.
 
+# Bump up timeouts and retries to avoid flakes
+max_retries = 5
+timeout = 40
+
 # Exclude fake or inaccessible URLs that are used in code or examples
 exclude = [
   "^https://test/$",

@@ -17,18 +17,12 @@ jobs:
     - uses: actions/checkout@master
     - name: Check links
       id: check_links
-      uses: lycheeverse/lychee-action@v1.0.8
+      uses: lycheeverse/lychee-action@v1.2.0
       with:
+        format: detailed
+        fail: true # Fail the action if the link check fails
         args: >
           --config .github/workflows/link_check_config.lychee.toml
           **/*.md
           **/*.yaml
           **/*.dart
-    # lychee-action doesn't fail outright — we need to do it ourselves.
-    - name: Fail on broken links
-      if: steps.check_links.outputs.exit_code != 0
-      env:
-        EXIT_CODE: ${{ steps.check_links.outputs.exit_code }}
-      run: |
-        cat $LYCHEE_OUT
-        exit $EXIT_CODE
