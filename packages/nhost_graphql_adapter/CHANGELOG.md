@@ -1,3 +1,11 @@
+## 2.0.0-beta.0
+
+> Note: This release has breaking changes.
+
+Migrate (partially) to the Nhost v2 backend.
+
+ - **FEAT** Slightly nicer GQL client creation (fewer parameters)
+
 ## 1.0.14
 
  - **FIX**: Remove outdated links.

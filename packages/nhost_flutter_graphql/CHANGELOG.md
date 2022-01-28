@@ -1,3 +1,9 @@
+## 2.0.0-beta.0
+
+> Note: This release has breaking changes.
+
+ - **BREAKING** **FEAT**: Migrate to the Nhost v2 backend.
+
 ## 1.1.5
 
  - **FIX**: Remove outdated links.

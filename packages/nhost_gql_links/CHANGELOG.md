@@ -1,3 +1,11 @@
+## 2.0.0-beta.0
+
+> Note: This release has breaking changes.
+
+Migrate (partially) to the Nhost v2 backend.
+
+ - **FEAT** Slightly nicer GQL link creation (one fewer parameters)
+
 ## 1.1.6
 
  - **FIX**: Remove outdated links.
@@ -111,4 +119,3 @@
 ## 1.0.1-dev.0
 
  - Update a dependency to the latest release.
-

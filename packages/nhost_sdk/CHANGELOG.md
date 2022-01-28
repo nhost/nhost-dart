@@ -1,3 +1,18 @@
+## 3.0.0-beta.0
+
+> Note: This release has breaking changes.
+
+  Migrate (partially) to the Nhost v2 backend.
+
+ - **FEAT** Single URL configuration of `NhostClient`s
+ - **FEAT** Serverless function calls, via `NhostClient.functions`
+ - **FEAT** GraphQL-based storage of file metadata
+ - **FEAT** Pre-signed URLs for sharing of protected files `Storage.getPresignedUrl`
+ - **FEAT** Additional image transformation parameters in `Storage.downloadImage`
+ - **REFACTOR** Dev server scripts/configs for running the examples
+ - **TEST** Improved testability with a new test dev server, HTTP proxy support in
+   testing environments, and environment-driven logging
+
 ## 2.1.1
 
  - **FIX**: Remove outdated links.
