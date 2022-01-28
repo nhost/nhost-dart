@@ -7,11 +7,12 @@
 max_retries = 5
 timeout = 40
 
-# Exclude fake or inaccessible URLs that are used in code or examples
+# Exclude fake, inaccessible, or unchanging URLs that are used in code or examples
 exclude = [
   "^https://test/$",
   "^https://.*\\.nhost\\.app.*",
   "^http://localhost(:\\d+)?.*",
+  "^https://nhost.io/$",
 ]
 
 # Exclude all private IPs from checking
