@@ -73,11 +73,13 @@ class ApiClient {
   /// {@endtemplate}
   Future<ResponseType?> delete<ResponseType>(
     String path, {
+    Map<String, String>? query,
     Map<String, String>? headers,
     JsonDeserializer<ResponseType>? responseDeserializer,
   }) async {
+    query ??= const {};
     return send<ResponseType>(
-      _newApiRequest('delete', path),
+      _newApiRequest('delete', path, query: query),
       headers: headers,
       responseDeserializer: responseDeserializer,
     );
@@ -90,10 +92,11 @@ class ApiClient {
   /// {@macro nhost.api.ApiClient.responseDeserializer}
   Future<ResponseType> get<ResponseType>(
     String path, {
-    Map<String, String> query = const {},
+    Map<String, String>? query,
     Map<String, String>? headers,
     JsonDeserializer<ResponseType>? responseDeserializer,
   }) async {
+    query ??= const {};
     return send<ResponseType>(
       _newApiRequest('get', path, query: query),
       headers: headers,
