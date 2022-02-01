@@ -26,7 +26,7 @@ class FunctionsClient {
   /// The HTTP method used for the call can be overridden via [httpMethod].
   ///
   /// Throws an [ApiException] if a failure occurs.
-  Future<http.Response> invoke(
+  Future<http.Response> callFunction(
     String url, {
     Map<String, String?>? query,
     Map<String, dynamic>? jsonBody,

@@ -7,6 +7,6 @@ void main() async {
 
   print('Running serverless function /hello');
   final helloResponse =
-      await functions.invoke('/hello', query: {'name': 'Universe'});
+      await functions.callFunction('/hello', query: {'name': 'Universe'});
   print('Response: ${helloResponse.body}');
 }
