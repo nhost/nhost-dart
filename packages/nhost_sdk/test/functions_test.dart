@@ -25,18 +25,23 @@ void main() async {
     functions = client.functions;
   });
 
-  group('function client', () {
-    test('sends data via the body and query string', () async {
-      final res = await functions.invoke(
-        '/test_function',
-        query: {'arg': 'query content'},
-        jsonBody: {'arg': 'body content'},
-      );
-      final jsonRes = jsonDecode(res.body) as Map<String, dynamic>;
-      expect(
-        jsonRes['receivedArgs'],
-        equals(['body content', 'query content']),
-      );
+  group('functions client', () {
+    test('receives expected result with every HTTP method', () async {
+      for (final method in ['get', 'put', 'post', 'delete']) {
+        final res = await functions.callFunction(
+          '/test_function',
+          httpMethod: method,
+          query: {'arg': 'query content'},
+          jsonBody: {'arg': 'body content'},
+        );
+
+        expect(res.request?.method, method);
+        final jsonRes = jsonDecode(res.body) as Map<String, dynamic>;
+        expect(
+          jsonRes['receivedArgs'],
+          equals(['body content', 'query content']),
+        );
+      }
     });
 
     test('fails on non-existent functions', () {
