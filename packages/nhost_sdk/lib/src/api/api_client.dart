@@ -117,17 +117,9 @@ class ApiClient {
     JsonDeserializer<ResponseType>? responseDeserializer,
   }) async {
     query ??= const {};
-    final request = _newApiRequest('post', path, query: query);
-    if (jsonBody != null) {
-      request
-        ..body = jsonEncode(jsonBody)
-        ..headers.addAll({
-          contentTypeHeader: _jsonContentType.toString(),
-        });
-    }
-
+    final req = _newApiRequest('post', path, query: query, jsonBody: jsonBody);
     return send<ResponseType>(
-      request,
+      req,
       headers: headers,
       responseDeserializer: responseDeserializer,
     );
@@ -201,11 +193,31 @@ class ApiClient {
   /// {@macro nhost.api.ApiClient.responseDeserializer}
   Future<ResponseType> put<ResponseType>(
     String path, {
+    Map<String, String?>? query,
+    dynamic jsonBody,
     Map<String, String>? headers,
     JsonDeserializer<ResponseType>? responseDeserializer,
   }) async {
+    query ??= const {};
     return send<ResponseType>(
-      _newApiRequest('put', path),
+      _newApiRequest('put', path, query: query, jsonBody: jsonBody),
+      headers: headers,
+      responseDeserializer: responseDeserializer,
+    );
+  }
+
+  /// Performs an HTTP request of the specified method.
+  Future<ResponseType> request<ResponseType>(
+    String method,
+    String path, {
+    Map<String, String?>? query,
+    dynamic jsonBody,
+    Map<String, String>? headers,
+    JsonDeserializer<ResponseType>? responseDeserializer,
+  }) async {
+    query ??= const {};
+    return send<ResponseType>(
+      _newApiRequest(method, path, query: query, jsonBody: jsonBody),
       headers: headers,
       responseDeserializer: responseDeserializer,
     );
@@ -235,9 +247,20 @@ class ApiClient {
     String method,
     String path, {
     Map<String, String?>? query,
-  }) =>
-      http.Request(method, baseUrl.extend(path, queryParameters: query))
-        ..encoding = utf8;
+    dynamic jsonBody,
+  }) {
+    final req =
+        http.Request(method, baseUrl.extend(path, queryParameters: query))
+          ..encoding = utf8;
+    if (jsonBody != null) {
+      req
+        ..body = jsonEncode(jsonBody)
+        ..headers.addAll({
+          contentTypeHeader: _jsonContentType.toString(),
+        });
+    }
+    return req;
+  }
 
   ResponseType _handleResponse<ResponseType>(
     http.BaseRequest request,
