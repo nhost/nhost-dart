@@ -20,18 +20,22 @@ class FunctionsClient {
 
   /// Invokes the serverless function at [url].
   ///
-  /// The serverless function is invoked using an HTTP POST, so both a request
-  /// body and query variables can be provided.
+  /// By default, the serverless function is invoked using an HTTP POST, so both
+  /// a request body and query variables can be provided.
+  ///
+  /// The HTTP method used for the call can be overridden via [httpMethod].
   ///
   /// Throws an [ApiException] if a failure occurs.
   Future<http.Response> invoke(
     String url, {
     Map<String, String?>? query,
     Map<String, dynamic>? jsonBody,
+    String httpMethod = 'post',
   }) async {
     log.finer('Calling function, url=$url');
 
-    return _apiClient.post<http.Response>(
+    return _apiClient.request<http.Response>(
+      httpMethod,
       url,
       query: query,
       jsonBody: jsonBody,

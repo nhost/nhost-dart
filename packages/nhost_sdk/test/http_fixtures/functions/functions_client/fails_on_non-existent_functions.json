@@ -1,5 +1,5 @@
 {
-  "name": "functions/function_client/fails_on_non-existent_functions.json",
+  "name": "functions/functions_client/fails_on_non-existent_functions.json",
   "interactions": [
     {
       "request": {
@@ -13,7 +13,7 @@
         "headers": {
           "content-type": "text/plain; charset=utf-8",
           "x-content-type-options": "nosniff",
-          "date": "Thu, 27 Jan 2022 05:06:36 GMT",
+          "date": "Tue, 01 Feb 2022 08:53:09 GMT",
           "content-length": "10"
         },
         "body": {

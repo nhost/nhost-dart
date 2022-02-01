@@ -1,0 +1,29 @@
+{
+  "name": "functions/functions_client/fails_if_the_function_throws.json",
+  "interactions": [
+    {
+      "request": {
+        "method": "post",
+        "uri": "http://localhost:1337/v1/functions/throwing_function",
+        "headers": {},
+        "body": null
+      },
+      "response": {
+        "status": 500,
+        "headers": {
+          "access-control-allow-headers": "origin,Accept,Authorization,Content-Type",
+          "access-control-allow-origin": "*",
+          "date": "Tue, 01 Feb 2022 08:53:09 GMT",
+          "content-length": "1682",
+          "content-type": "text/html; charset=utf-8",
+          "x-content-type-options": "nosniff",
+          "content-security-policy": "default-src 'none'"
+        },
+        "body": {
+          "encoding": "utf-8",
+          "string": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n<meta charset=\"utf-8\">\n<title>Error</title>\n</head>\n<body>\n<pre>Error: Test error<br> &nbsp; &nbsp;at throwing_function_default (/private/var/folders/yf/kth8gkwd4c575jh7z4jc7d9h0000gn/T/998666568/2501913393.js:1:337)<br> &nbsp; &nbsp;at Layer.handle [as handle_request] (/Users/shyndman/dev/nhost/nhost-dart/packages/nhost_sdk/test/server/functions/node_modules/express/lib/router/layer.js:95:5)<br> &nbsp; &nbsp;at next (/Users/shyndman/dev/nhost/nhost-dart/packages/nhost_sdk/test/server/functions/node_modules/express/lib/router/route.js:137:13)<br> &nbsp; &nbsp;at next (/Users/shyndman/dev/nhost/nhost-dart/packages/nhost_sdk/test/server/functions/node_modules/express/lib/router/route.js:131:14)<br> &nbsp; &nbsp;at next (/Users/shyndman/dev/nhost/nhost-dart/packages/nhost_sdk/test/server/functions/node_modules/express/lib/router/route.js:131:14)<br> &nbsp; &nbsp;at next (/Users/shyndman/dev/nhost/nhost-dart/packages/nhost_sdk/test/server/functions/node_modules/express/lib/router/route.js:131:14)<br> &nbsp; &nbsp;at next (/Users/shyndman/dev/nhost/nhost-dart/packages/nhost_sdk/test/server/functions/node_modules/express/lib/router/route.js:131:14)<br> &nbsp; &nbsp;at next (/Users/shyndman/dev/nhost/nhost-dart/packages/nhost_sdk/test/server/functions/node_modules/express/lib/router/route.js:131:14)<br> &nbsp; &nbsp;at next (/Users/shyndman/dev/nhost/nhost-dart/packages/nhost_sdk/test/server/functions/node_modules/express/lib/router/route.js:131:14)<br> &nbsp; &nbsp;at next (/Users/shyndman/dev/nhost/nhost-dart/packages/nhost_sdk/test/server/functions/node_modules/express/lib/router/route.js:131:14)</pre>\n</body>\n</html>\n"
+        }
+      }
+    }
+  ]
+}
