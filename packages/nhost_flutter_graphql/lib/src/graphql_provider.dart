@@ -41,14 +41,14 @@ class NhostGraphQLProvider extends StatefulWidget {
 
 class _NhostGraphQLProviderState extends State<NhostGraphQLProvider> {
   ValueNotifier<GraphQLClient>? clientNotifier;
-  Auth? _lastAuth;
+  AuthClient? _lastAuth;
 
   @override
   void initState() {
     super.initState();
   }
 
-  Auth get currentNhostAuth {
+  AuthClient get currentNhostAuth {
     final auth = widget.nhostClient?.auth ?? NhostAuthProvider.of(context);
 
     assert(() {

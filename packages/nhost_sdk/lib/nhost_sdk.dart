@@ -100,7 +100,7 @@ class NhostClient {
   /// The Nhost authentication service.
   ///
   /// https://docs.nhost.io/platform/authentication
-  Auth get auth => _auth ??= Auth(
+  AuthClient get auth => _auth ??= AuthClient(
         baseUrl: '$backendUrl/v1/auth',
         authStore: _authStore,
         refreshToken: _refreshToken,
@@ -109,27 +109,27 @@ class NhostClient {
         session: _session,
         httpClient: httpClient,
       );
-  Auth? _auth;
+  AuthClient? _auth;
 
   /// The Nhost serverless functions service.
   ///
   /// https://docs.nhost.io/platform/serverless-functions
-  Functions get functions => _functions ??= Functions(
+  FunctionsClient get functions => _functions ??= FunctionsClient(
         baseUrl: '$backendUrl/v1/functions',
         session: _session,
         httpClient: httpClient,
       );
-  Functions? _functions;
+  FunctionsClient? _functions;
 
   /// The Nhost file storage service.
   ///
   /// https://docs.nhost.io/platform/storage
-  Storage get storage => _storage ??= Storage(
+  StorageClient get storage => _storage ??= StorageClient(
         baseUrl: '$backendUrl/v1/storage',
         httpClient: httpClient,
         session: _session,
       );
-  Storage? _storage;
+  StorageClient? _storage;
 
   /// Releases the resources used by this client.
   void close() {

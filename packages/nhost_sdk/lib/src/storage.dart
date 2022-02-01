@@ -11,11 +11,11 @@ const applicationOctetStreamType = 'application/octet-stream';
 /// The Nhost storage service.
 ///
 /// Supports the storage and retrieval of files on the backend.
-class Storage {
+class StorageClient {
   final ApiClient _apiClient;
   final UserSession _session;
 
-  Storage({
+  StorageClient({
     required String baseUrl,
     required UserSession session,
     required http.Client httpClient,

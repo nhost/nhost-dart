@@ -13,19 +13,19 @@ import 'session.dart';
 
 /// Signature for callbacks that respond to token changes.
 ///
-/// Registered via [Auth.addTokenChangedCallback].
+/// Registered via [AuthClient.addTokenChangedCallback].
 typedef TokenChangedCallback = void Function();
 
 /// Signature for callbacks that respond to authentication changes.
 ///
-/// Registered via [Auth.addAuthStateChangedCallback].
+/// Registered via [AuthClient.addAuthStateChangedCallback].
 typedef AuthStateChangedCallback = void Function(
     AuthenticationState authenticationState);
 
 /// Signature for functions that remove their associated callback when called.
 typedef UnsubscribeDelegate = void Function();
 
-/// Identifies the refresh token in the [Auth]'s [AuthStore] instance.
+/// Identifies the refresh token in the [AuthClient]'s [AuthStore] instance.
 const refreshTokenClientStorageKey = 'nhostRefreshToken';
 
 /// The query parameter name for the refresh token provided during OAuth
@@ -38,7 +38,7 @@ const refreshTokenQueryParamName = 'refresh_token';
 /// functions.
 ///
 /// See https://docs.nhost.io/reference/sdk/authentication for more info.
-class Auth {
+class AuthClient {
   /// {@macro nhost.api.NhostClient.baseUrl}
   ///
   /// {@macro nhost.api.NhostClient.authStore}
@@ -50,7 +50,7 @@ class Auth {
   /// {@macro nhost.api.NhostClient.tokenRefreshInterval}
   ///
   /// {@macro nhost.api.NhostClient.httpClientOverride}
-  Auth({
+  AuthClient({
     required String baseUrl,
     required UserSession session,
     required AuthStore authStore,
@@ -499,7 +499,7 @@ class Auth {
     await setSession(res!);
   }
 
-  /// Updates the [Auth] to begin identifying as the user described by
+  /// Updates the [AuthClient] to begin identifying as the user described by
   /// [session].
   @visibleForTesting
   Future<void> setSession(Session session) async {

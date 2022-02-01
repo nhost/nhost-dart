@@ -48,7 +48,7 @@ Link combinedLinkForNhost(
 /// {@macro nhost.links.httpClientOverride}
 Link combinedLinkForNhostAuth(
   String nhostGqlEndpointUrl,
-  Auth nhostAuth, {
+  AuthClient nhostAuth, {
   Map<String, String>? defaultHeaders,
   http.Client? httpClientOverride,
 }) {
@@ -98,7 +98,7 @@ const webSocketNormalCloseCode = 1000;
 /// {@macro nhost.links.httpClientOverride}
 Link httpLinkForNhost(
   String nhostGqlEndpointUrl,
-  Auth nhostAuth, {
+  AuthClient nhostAuth, {
   http.Client? httpClientOverride,
   Map<String, String>? defaultHeaders = const {},
 }) {
@@ -136,7 +136,7 @@ Link httpLinkForNhost(
 /// initial payload when opening the socket.
 Link webSocketLinkForNhost(
   String nhostGqlEndpointUrl,
-  Auth nhostAuth, {
+  AuthClient nhostAuth, {
   Map<String, String>? defaultHeaders = const {},
   @visibleForTesting ChannelGenerator? testChannelGenerator,
   @visibleForTesting Duration? testInactivityTimeout,

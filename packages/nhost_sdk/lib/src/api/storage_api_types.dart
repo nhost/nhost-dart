@@ -108,7 +108,7 @@ class ImageTransform {
 
 /// The corner radius applied to an image.
 ///
-/// Used with [Storage.downloadImage].
+/// Used with [StorageClient.downloadImage].
 class ImageCornerRadius {
   /// Applies the maximum amount of corner radius possible, based on the size
   /// of the image being transformed.
