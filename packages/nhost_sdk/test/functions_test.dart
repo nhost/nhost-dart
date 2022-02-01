@@ -46,7 +46,7 @@ void main() async {
 
     test('fails on non-existent functions', () {
       expect(
-        () => functions.invoke('/no_such_function'),
+        () => functions.callFunction('/no_such_function'),
         throwsA(isA<ApiException>()
             .having((err) => err.statusCode, 'statusCode', 404)),
       );
@@ -54,7 +54,7 @@ void main() async {
 
     test('fails if the function throws', () {
       expect(
-        () => functions.invoke('/throwing_function'),
+        () => functions.callFunction('/throwing_function'),
         throwsA(isA<ApiException>()
             .having((err) => err.statusCode, 'statusCode', 500)),
       );
