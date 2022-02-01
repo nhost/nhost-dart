@@ -19,7 +19,7 @@ void main() async {
 
   // This admin client has its traffic recorded for playback
   late NhostClient nhost;
-  late Auth auth;
+  late AuthClient auth;
 
   setUpAll(() {
     initLogging();

@@ -9,7 +9,7 @@ void main() {
         (tester) async {
       final mockAuth = MockAuth();
 
-      Auth? actualAuth;
+      AuthClient? actualAuth;
       await tester.pumpWidget(
         NhostAuthProvider(
           auth: mockAuth,
@@ -107,7 +107,7 @@ void main() {
     testWidgets('.of() returns null if no authentication found',
         (tester) async {
       // We set it to a value to ensure it gets changed
-      Auth? auth = MockAuth();
+      AuthClient? auth = MockAuth();
       await tester.pumpWidget(
         Builder(builder: (context) {
           auth = NhostAuthProvider.of(context);
@@ -120,7 +120,7 @@ void main() {
   });
 }
 
-class MockAuth extends Mock implements Auth {
+class MockAuth extends Mock implements AuthClient {
   final List<AuthStateChangedCallback> _tokenChangedCallbacks = [];
 
   @override

@@ -53,7 +53,7 @@ GraphQLClient createNhostGraphQLClient(
 /// {@macro nhost.graphqlClient.httpClientOverride}
 GraphQLClient createNhostGraphQLClientForAuth(
   String nhostGqlEndpointUrl,
-  Auth nhostAuth, {
+  AuthClient nhostAuth, {
   GraphQLCache? gqlCache,
   Map<String, String>? defaultHeaders,
   http.Client? httpClientOverride,

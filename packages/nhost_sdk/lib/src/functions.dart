@@ -4,14 +4,14 @@ import 'api/api_client.dart';
 import 'logging.dart';
 import 'session.dart';
 
-/// The Nhost serverless function service.
+/// Client for calling Nhost serverless functions.
 ///
 /// See https://docs.nhost.io/platform/serverless-functions for more info.
-class Functions {
+class FunctionsClient {
   final ApiClient _apiClient;
   final UserSession _session;
 
-  Functions({
+  FunctionsClient({
     required String baseUrl,
     required UserSession session,
     required http.Client httpClient,
