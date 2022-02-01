@@ -1,3 +1,9 @@
+## 2.0.0-beta.1
+
+> Note: This release has breaking changes.
+
+ - **BREAKING** **REFACTOR**: Change client names to include the word client.
+
 ## 2.0.0-beta.0
 
 > Note: This release has breaking changes.

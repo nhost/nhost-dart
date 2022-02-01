@@ -1,3 +1,13 @@
+## 3.0.0-beta.1
+
+> Note: This release has breaking changes.
+
+ - **REFACTOR**: Add an ApiClient.request method for sending general requests.
+ - **FEAT**: Support additional HTTP methods on function calls.
+ - **FEAT**: Add a query string param to ApiClient.delete.
+ - **BREAKING** **REFACTOR**: Rename NhostFunctionsClient.{invoke, callFunction}.
+ - **BREAKING** **REFACTOR**: Change client names to include the word client.
+
 ## 3.0.0-beta.0
 
 > Note: This release has breaking changes.
