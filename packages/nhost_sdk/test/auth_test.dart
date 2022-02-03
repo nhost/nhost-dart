@@ -107,7 +107,7 @@ void main() async {
 
     test('should be able to retrieve JSON Web Token', () async {
       await auth.signUp(email: testEmail, password: testPassword);
-      expect(auth.jwt, isA<String>());
+      expect(auth.accessToken, isA<String>());
     });
 
     test('should be able to get user id as JWT claim', () async {
@@ -161,7 +161,7 @@ void main() async {
 
     test('should be able to retreive JWT Token', () async {
       await auth.signIn(email: testEmail, password: testPassword);
-      expect(auth.jwt, isA<String>());
+      expect(auth.accessToken, isA<String>());
     });
 
     test('should be able to get user id as JWT claim', () async {
@@ -187,7 +187,7 @@ void main() async {
 
     test('should not be able to retreive JWT token after signOut', () async {
       await auth.signOut();
-      expect(auth.jwt, isNull);
+      expect(auth.accessToken, isNull);
     });
 
     test('should not be able to retreive JWT claim after signOut', () async {
@@ -296,7 +296,7 @@ void main() async {
       );
 
       expect(tokenEndpointRefreshMock.isDone, isTrue);
-      expect(nhostClient.auth.jwt, mockNextSession.accessToken);
+      expect(nhostClient.auth.accessToken, mockNextSession.accessToken);
     }, tags: noHttpFixturesTag);
 
     test('should occur after a user-provided interval, if specified', () {
@@ -312,7 +312,7 @@ void main() async {
       );
 
       expect(tokenEndpointRefreshMock.isDone, isTrue);
-      expect(nhostClient.auth.jwt, mockNextSession.accessToken);
+      expect(nhostClient.auth.accessToken, mockNextSession.accessToken);
     }, tags: noHttpFixturesTag);
   });
 
@@ -425,7 +425,7 @@ void main() async {
           await auth.signIn(email: testEmail, password: testPassword);
       expect(firstFactorAuthResult.user, isNull);
       expect(auth.authenticationState, AuthenticationState.signedOut);
-      expect(auth.jwt, isNull);
+      expect(auth.accessToken, isNull);
 
       final secondFactorAuthResult = await auth.completeMfaSignIn(
         otp: totpFromSecret(otpSecret),
@@ -433,7 +433,7 @@ void main() async {
       );
       expect(secondFactorAuthResult.user, isNotNull);
       expect(auth.authenticationState, AuthenticationState.signedIn);
-      expect(auth.jwt, isNotNull);
+      expect(auth.accessToken, isNotNull);
     });
 
     test('can be disabled', () async {

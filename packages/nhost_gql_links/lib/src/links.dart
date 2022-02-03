@@ -115,7 +115,7 @@ Link httpLinkForNhost(
         (entry) => HttpLinkHeaders(
           headers: {
             ...?entry?.headers,
-            'Authorization': 'Bearer ${nhostAuth.jwt}',
+            'Authorization': 'Bearer ${nhostAuth.accessToken}',
           },
         ),
       );
@@ -172,7 +172,7 @@ Link webSocketLinkForNhost(
       'headers': {
         ...?defaultHeaders,
         if (nhostAuth.authenticationState == AuthenticationState.signedIn)
-          'Authorization': 'Bearer ${nhostAuth.jwt}',
+          'Authorization': 'Bearer ${nhostAuth.accessToken}',
       },
     },
     inactivityTimeout: testInactivityTimeout,
