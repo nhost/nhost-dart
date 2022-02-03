@@ -7,17 +7,16 @@ import 'core_codec.dart';
 /// Many authorization-related API calls return instances of this class. The
 /// details of which can be found on specific methods of [Auth].
 class AuthResponse {
-  AuthResponse({this.session, this.user, this.mfa});
+  AuthResponse({this.session, this.mfa});
+
   final Session? session;
-  final User? user;
   final MultiFactorAuthenticationInfo? mfa;
+  User? get user => session?.user;
 
   static AuthResponse fromJson(dynamic json) {
-    final session =
-        json['session'] != null ? Session.fromJson(json['session']) : null;
     return AuthResponse(
-      session: session,
-      user: session?.user,
+      session:
+          json['session'] != null ? Session.fromJson(json['session']) : null,
       mfa: json['mfa'] != null
           ? MultiFactorAuthenticationInfo.fromJson(json['mfa'])
           : null,

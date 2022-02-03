@@ -206,7 +206,7 @@ class AuthClient {
         return res;
       } else {
         // if AUTO_ACTIVATE_NEW_USERS is false
-        return AuthResponse(session: null, user: null);
+        return AuthResponse(session: null);
       }
     } catch (e) {
       log.finer('Registration failed');
@@ -286,7 +286,7 @@ class AuthClient {
     }
 
     await _clearSession();
-    return AuthResponse(session: null, user: null);
+    return AuthResponse(session: null);
   }
 
   //#region Email and password changes
