@@ -22,6 +22,8 @@ void initLogging() {
         print(event);
       })
       ..level = Level.ALL;
+  } else {
+    Logger.root.level = Level.OFF;
   }
 }
 
@@ -42,10 +44,14 @@ void initializeHttpFixturesForSuite(String suiteName) {
 /// Creates an Nhost client for a single test.
 ///
 /// This method must be called from a test's [setUp] method, or a test body.
-NhostClient createApiTestClient(http.Client httpClient) {
+NhostClient createApiTestClient(
+  http.Client httpClient, {
+  AuthStore? authStore,
+}) {
   return NhostClient(
     backendUrl: backendUrl,
     httpClientOverride: httpClient,
+    authStore: authStore,
   );
 }
 
