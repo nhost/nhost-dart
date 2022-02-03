@@ -22,7 +22,7 @@ export 'src/storage.dart';
 /// API client for accessing Nhost's authentication and storage APIs.
 ///
 /// User authentication and management is provided by the [auth] service, which
-/// implements the Nhost Auth API.
+/// implements the Nhost Authentication API.
 ///
 /// File storage is provided by the [storage] service, which implements the
 /// Nhost Storage API.
@@ -43,17 +43,6 @@ class NhostClient {
   /// persisted.
   /// {@endtemplate}
   ///
-  /// {@template nhost.api.NhostClient.refreshToken}
-  /// [refreshToken] (optional) is the result of a previously successful login,
-  /// and is used to initialize this client into a logged-in state.
-  /// {@endtemplate}
-  ///
-  /// {@template nhost.api.NhostClient.autoLogin}
-  /// [autoLogin] (optional) indicates whether the client should attempt to
-  /// login automatically using [refreshToken], or information pulled from
-  /// the [authStore] (if available).
-  /// {@endtemplate}
-  ///
   /// {@template nhost.api.NhostClient.tokenRefreshInterval}
   /// [tokenRefreshInterval] (optional) is the amount of time the client will
   /// wait between refreshing its authentication tokens. If not provided, will
@@ -68,14 +57,10 @@ class NhostClient {
   NhostClient({
     required this.backendUrl,
     AuthStore? authStore,
-    String? refreshToken,
-    bool? autoLogin = true,
     Duration? tokenRefreshInterval,
     http.Client? httpClientOverride,
   })  : _session = UserSession(),
         _authStore = authStore ?? InMemoryAuthStore(),
-        _refreshToken = refreshToken,
-        _autoLogin = autoLogin ?? true,
         _refreshInterval = tokenRefreshInterval,
         _httpClient = httpClientOverride {
     initializeLogging();
@@ -86,10 +71,8 @@ class NhostClient {
 
   /// Persists authentication information between restarts of the app.
   final AuthStore _authStore;
-  final String? _refreshToken;
   final Duration? _refreshInterval;
   final UserSession _session;
-  final bool _autoLogin;
 
   /// The HTTP client used by this client's services.
   http.Client get httpClient => _httpClient ??= http.Client();
@@ -104,9 +87,7 @@ class NhostClient {
   AuthClient get auth => _auth ??= AuthClient(
         baseUrl: '$backendUrl/v1/auth',
         authStore: _authStore,
-        refreshToken: _refreshToken,
-        autoSignIn: _autoLogin,
-        refreshInterval: _refreshInterval,
+        tokenRefreshInterval: _refreshInterval,
         session: _session,
         httpClient: httpClient,
       );
