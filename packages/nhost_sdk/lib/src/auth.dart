@@ -614,6 +614,7 @@ class AuthClient {
 
     _session.clear();
     await _authStore.removeItem(refreshTokenClientStorageKey);
+    _currentUser = null;
 
     _loading = false;
     _onTokenChanged();

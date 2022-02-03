@@ -174,15 +174,21 @@ void main() async {
     // All signOut tests log a user in first
     setUp(() async {
       await registerAndLoginBasicUser(auth);
+      assert(auth.currentUser != null);
     });
 
     test('should be able to signOut', () async {
       expect(auth.signOut(), completes);
     });
 
-    test('a signed out user should not be authenticated', () async {
+    test('a signed out client should not be authenticated', () async {
       await auth.signOut();
       expect(auth.authenticationState, AuthenticationState.signedOut);
+    });
+
+    test('a signed out client should not have a user', () async {
+      await auth.signOut();
+      expect(auth.currentUser, isNull);
     });
 
     test('should not be able to retreive JWT token after signOut', () async {
