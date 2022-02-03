@@ -499,13 +499,13 @@ class AuthClient {
       log.finest('Session refresh already in progress. Halting this request.');
       // Return a future that will resolve to a session when the existing
       // request completes.
+      _sessionCompleter ??= Completer();
       return _sessionCompleter!.future;
     }
 
     Session? res;
     try {
       _refreshTokenLock = true;
-      _sessionCompleter = Completer();
 
       // Make refresh token request
       log.finest('Making session refresh request');
@@ -518,7 +518,7 @@ class AuthClient {
       );
 
       await setSession(res!);
-      _sessionCompleter!.complete(res);
+      _sessionCompleter?.complete(res);
       return res;
     } on Exception catch (e, st) {
       if (e is ApiException && e.statusCode == unauthorizedStatus) {
@@ -527,7 +527,7 @@ class AuthClient {
       }
 
       log.severe('Exception during token refresh', e, st);
-      _sessionCompleter!.completeError(e, st);
+      _sessionCompleter?.completeError(e, st);
 
       // Inform subscribers of the failure. If there are none, rethrow the
       // exception.
