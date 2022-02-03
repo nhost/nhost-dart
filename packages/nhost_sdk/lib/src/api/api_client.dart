@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:meta/meta.dart';
 
+import '../errors.dart';
 import '../foundation/collection.dart';
 import '../foundation/request.dart';
 import '../foundation/uri.dart';
@@ -295,7 +296,7 @@ class ApiClient {
 ///
 /// An API call is considered failed if its [response]'s [statusCode] falls
 /// outside the 2xx range.
-class ApiException {
+class ApiException extends NhostException {
   ApiException(this.url, this.body, this.request, this.response);
 
   final Uri url;
