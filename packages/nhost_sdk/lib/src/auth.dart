@@ -255,7 +255,7 @@ class AuthClient {
       );
     } catch (e, st) {
       log.finer('Sign in failed', e, st);
-      await _clearSession();
+      await clearSession();
       rethrow;
     }
 
@@ -319,7 +319,7 @@ class AuthClient {
       // particularly in the ?all=true case, the user should know about it
     }
 
-    await _clearSession();
+    await clearSession();
     return AuthResponse(session: null);
   }
 
@@ -593,7 +593,8 @@ class AuthClient {
   /// It is CRITICAL that this function be awaited before returning to the user.
   /// Failure to do so will result in very difficult to track down race
   /// conditions.
-  Future<void> _clearSession() async {
+  @visibleForTesting
+  Future<void> clearSession() async {
     log.finest('Clearing session');
 
     if (_tokenRefreshTimer != null) {
