@@ -19,7 +19,7 @@
           "surrogate-control": "no-store",
           "cache-control": "no-store, no-cache, must-revalidate, proxy-revalidate",
           "x-dns-prefetch-control": "off",
-          "date": "Fri, 28 Jan 2022 06:08:57 GMT",
+          "date": "Thu, 03 Feb 2022 08:55:14 GMT",
           "access-control-allow-origin": "*",
           "strict-transport-security": "max-age=15552000; includeSubDomains",
           "content-type": "application/json; charset=utf-8",
@@ -27,14 +27,14 @@
           "x-xss-protection": "1; mode=block",
           "content-length": "913",
           "x-download-options": "noopen",
-          "etag": "W/\"391-2/A8T2TGXZXmr1ormoAOeOdocQo\"",
+          "etag": "W/\"391-WKpuRwWPEwtfI3vXXQLeqr56wG0\"",
           "x-frame-options": "SAMEORIGIN",
           "x-content-type-options": "nosniff",
           "expires": "0"
         },
         "body": {
           "encoding": "utf-8",
-          "string": "{\"session\":{\"accessToken\":\"eyJhbGciOiJIUzI1NiJ9.eyJodHRwczovL2hhc3VyYS5pby9qd3QvY2xhaW1zIjp7IngtaGFzdXJhLWFsbG93ZWQtcm9sZXMiOlsidXNlciIsIm1lIl0sIngtaGFzdXJhLWRlZmF1bHQtcm9sZSI6InVzZXIiLCJ4LWhhc3VyYS11c2VyLWlkIjoiOTZmN2EyZWYtNDQ1OS00Yzk1LTkzYWQtYjVlZTFkYmYwYzY1IiwieC1oYXN1cmEtdXNlci1pc0Fub255bW91cyI6ImZhbHNlIn0sInN1YiI6Ijk2ZjdhMmVmLTQ0NTktNGM5NS05M2FkLWI1ZWUxZGJmMGM2NSIsImlzcyI6Imhhc3VyYS1hdXRoIiwiaWF0IjoxNjQzMzUwMTM3LCJleHAiOjE2NDMzNTEwMzd9.f7qAyX7B4UWBw4qBsv4UobVVoZJMhQ7PwCq2TMVGqlw\",\"accessTokenExpiresIn\":900,\"refreshToken\":\"c9b1e817-1d15-4a0d-b691-4f10ee6e8388\",\"user\":{\"id\":\"96f7a2ef-4459-4c95-93ad-b5ee1dbf0c65\",\"createdAt\":\"2022-01-28T06:08:57.002217+00:00\",\"displayName\":\"user-1@nhost.io\",\"avatarUrl\":\"https://s.gravatar.com/avatar/d86c12c3233e91ec90869a1f874cdf0e?r=g&default=blank\",\"locale\":\"en\",\"email\":\"user-1@nhost.io\",\"isAnonymous\":false,\"defaultRole\":\"user\",\"roles\":[\"user\",\"me\"]}},\"mfa\":null}"
+          "string": "{\"session\":{\"accessToken\":\"eyJhbGciOiJIUzI1NiJ9.eyJodHRwczovL2hhc3VyYS5pby9qd3QvY2xhaW1zIjp7IngtaGFzdXJhLWFsbG93ZWQtcm9sZXMiOlsidXNlciIsIm1lIl0sIngtaGFzdXJhLWRlZmF1bHQtcm9sZSI6InVzZXIiLCJ4LWhhc3VyYS11c2VyLWlkIjoiZDIwNDI0NDctMDY5Zi00MTc2LWFmYTUtOTMxNmJhM2Y3YjNiIiwieC1oYXN1cmEtdXNlci1pc0Fub255bW91cyI6ImZhbHNlIn0sInN1YiI6ImQyMDQyNDQ3LTA2OWYtNDE3Ni1hZmE1LTkzMTZiYTNmN2IzYiIsImlzcyI6Imhhc3VyYS1hdXRoIiwiaWF0IjoxNjQzODc4NTE0LCJleHAiOjE2NDM4Nzk0MTR9.8JD_iLgYJQn0iUYgr6cdHuMUoVRa4cCBn9iU1mGVBUk\",\"accessTokenExpiresIn\":900,\"refreshToken\":\"52589dd2-cddd-4551-b740-6edf4d3c779e\",\"user\":{\"id\":\"d2042447-069f-4176-afa5-9316ba3f7b3b\",\"createdAt\":\"2022-02-03T08:55:14.616264+00:00\",\"displayName\":\"user-1@nhost.io\",\"avatarUrl\":\"https://s.gravatar.com/avatar/d86c12c3233e91ec90869a1f874cdf0e?r=g&default=blank\",\"locale\":\"en\",\"email\":\"user-1@nhost.io\",\"isAnonymous\":false,\"defaultRole\":\"user\",\"roles\":[\"user\",\"me\"]}},\"mfa\":null}"
         }
       }
     },
@@ -47,7 +47,7 @@
         },
         "body": {
           "encoding": "utf-8",
-          "string": "{\"refreshToken\":\"c9b1e817-1d15-4a0d-b691-4f10ee6e8388\",\"all\":false}"
+          "string": "{\"refreshToken\":\"52589dd2-cddd-4551-b740-6edf4d3c779e\",\"all\":false}"
         }
       },
       "response": {
@@ -56,7 +56,7 @@
           "surrogate-control": "no-store",
           "cache-control": "no-store, no-cache, must-revalidate, proxy-revalidate",
           "x-dns-prefetch-control": "off",
-          "date": "Fri, 28 Jan 2022 06:08:57 GMT",
+          "date": "Thu, 03 Feb 2022 08:55:14 GMT",
           "access-control-allow-origin": "*",
           "strict-transport-security": "max-age=15552000; includeSubDomains",
           "content-type": "text/html; charset=utf-8",
@@ -93,7 +93,7 @@
           "surrogate-control": "no-store",
           "cache-control": "no-store, no-cache, must-revalidate, proxy-revalidate",
           "x-dns-prefetch-control": "off",
-          "date": "Fri, 28 Jan 2022 06:08:57 GMT",
+          "date": "Thu, 03 Feb 2022 08:55:14 GMT",
           "access-control-allow-origin": "*",
           "strict-transport-security": "max-age=15552000; includeSubDomains",
           "content-type": "application/json; charset=utf-8",
@@ -101,14 +101,14 @@
           "x-xss-protection": "1; mode=block",
           "content-length": "913",
           "x-download-options": "noopen",
-          "etag": "W/\"391-Y8BwUQ1KLqvo5snnKznWN2Bfwsk\"",
+          "etag": "W/\"391-Cb9Sl6OxJAzHXl3hibuW66mXqsM\"",
           "x-frame-options": "SAMEORIGIN",
           "x-content-type-options": "nosniff",
           "expires": "0"
         },
         "body": {
           "encoding": "utf-8",
-          "string": "{\"session\":{\"accessToken\":\"eyJhbGciOiJIUzI1NiJ9.eyJodHRwczovL2hhc3VyYS5pby9qd3QvY2xhaW1zIjp7IngtaGFzdXJhLWFsbG93ZWQtcm9sZXMiOlsidXNlciIsIm1lIl0sIngtaGFzdXJhLWRlZmF1bHQtcm9sZSI6InVzZXIiLCJ4LWhhc3VyYS11c2VyLWlkIjoiOTZmN2EyZWYtNDQ1OS00Yzk1LTkzYWQtYjVlZTFkYmYwYzY1IiwieC1oYXN1cmEtdXNlci1pc0Fub255bW91cyI6ImZhbHNlIn0sInN1YiI6Ijk2ZjdhMmVmLTQ0NTktNGM5NS05M2FkLWI1ZWUxZGJmMGM2NSIsImlzcyI6Imhhc3VyYS1hdXRoIiwiaWF0IjoxNjQzMzUwMTM3LCJleHAiOjE2NDMzNTEwMzd9.f7qAyX7B4UWBw4qBsv4UobVVoZJMhQ7PwCq2TMVGqlw\",\"accessTokenExpiresIn\":900,\"refreshToken\":\"cb943a7b-71ff-48a0-9fd7-2282bad3a999\",\"user\":{\"id\":\"96f7a2ef-4459-4c95-93ad-b5ee1dbf0c65\",\"createdAt\":\"2022-01-28T06:08:57.002217+00:00\",\"displayName\":\"user-1@nhost.io\",\"avatarUrl\":\"https://s.gravatar.com/avatar/d86c12c3233e91ec90869a1f874cdf0e?r=g&default=blank\",\"locale\":\"en\",\"email\":\"user-1@nhost.io\",\"isAnonymous\":false,\"defaultRole\":\"user\",\"roles\":[\"user\",\"me\"]}},\"mfa\":null}"
+          "string": "{\"session\":{\"accessToken\":\"eyJhbGciOiJIUzI1NiJ9.eyJodHRwczovL2hhc3VyYS5pby9qd3QvY2xhaW1zIjp7IngtaGFzdXJhLWFsbG93ZWQtcm9sZXMiOlsidXNlciIsIm1lIl0sIngtaGFzdXJhLWRlZmF1bHQtcm9sZSI6InVzZXIiLCJ4LWhhc3VyYS11c2VyLWlkIjoiZDIwNDI0NDctMDY5Zi00MTc2LWFmYTUtOTMxNmJhM2Y3YjNiIiwieC1oYXN1cmEtdXNlci1pc0Fub255bW91cyI6ImZhbHNlIn0sInN1YiI6ImQyMDQyNDQ3LTA2OWYtNDE3Ni1hZmE1LTkzMTZiYTNmN2IzYiIsImlzcyI6Imhhc3VyYS1hdXRoIiwiaWF0IjoxNjQzODc4NTE0LCJleHAiOjE2NDM4Nzk0MTR9.8JD_iLgYJQn0iUYgr6cdHuMUoVRa4cCBn9iU1mGVBUk\",\"accessTokenExpiresIn\":900,\"refreshToken\":\"7ba5e050-e57a-4c1f-b84e-d6c6d07b175b\",\"user\":{\"id\":\"d2042447-069f-4176-afa5-9316ba3f7b3b\",\"createdAt\":\"2022-02-03T08:55:14.616264+00:00\",\"displayName\":\"user-1@nhost.io\",\"avatarUrl\":\"https://s.gravatar.com/avatar/d86c12c3233e91ec90869a1f874cdf0e?r=g&default=blank\",\"locale\":\"en\",\"email\":\"user-1@nhost.io\",\"isAnonymous\":false,\"defaultRole\":\"user\",\"roles\":[\"user\",\"me\"]}},\"mfa\":null}"
         }
       }
     }

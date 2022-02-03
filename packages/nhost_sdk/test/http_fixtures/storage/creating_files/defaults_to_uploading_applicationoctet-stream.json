@@ -16,11 +16,10 @@
       "response": {
         "status": 200,
         "headers": {
-          "connection": "keep-alive",
           "surrogate-control": "no-store",
           "cache-control": "no-store, no-cache, must-revalidate, proxy-revalidate",
           "x-dns-prefetch-control": "off",
-          "date": "Fri, 28 Jan 2022 06:53:32 GMT",
+          "date": "Thu, 03 Feb 2022 08:55:18 GMT",
           "access-control-allow-origin": "*",
           "strict-transport-security": "max-age=15552000; includeSubDomains",
           "content-type": "application/json; charset=utf-8",
@@ -28,14 +27,14 @@
           "x-xss-protection": "1; mode=block",
           "content-length": "913",
           "x-download-options": "noopen",
-          "etag": "W/\"391-+6zOcK50HIiGR0IpRfq7P0BiUrQ\"",
+          "etag": "W/\"391-TG8iHueY7FJCbiNrGLuAC2AvqYQ\"",
           "x-frame-options": "SAMEORIGIN",
           "x-content-type-options": "nosniff",
           "expires": "0"
         },
         "body": {
           "encoding": "utf-8",
-          "string": "{\"session\":{\"accessToken\":\"eyJhbGciOiJIUzI1NiJ9.eyJodHRwczovL2hhc3VyYS5pby9qd3QvY2xhaW1zIjp7IngtaGFzdXJhLWFsbG93ZWQtcm9sZXMiOlsidXNlciIsIm1lIl0sIngtaGFzdXJhLWRlZmF1bHQtcm9sZSI6InVzZXIiLCJ4LWhhc3VyYS11c2VyLWlkIjoiZjVkM2UyZDgtYTk1OS00NzIxLTliMjYtNjMxYWQ2NzZiNDQwIiwieC1oYXN1cmEtdXNlci1pc0Fub255bW91cyI6ImZhbHNlIn0sInN1YiI6ImY1ZDNlMmQ4LWE5NTktNDcyMS05YjI2LTYzMWFkNjc2YjQ0MCIsImlzcyI6Imhhc3VyYS1hdXRoIiwiaWF0IjoxNjQzMzUyODEyLCJleHAiOjE2NDMzNTM3MTJ9.idl7DYWq7mGZpjq-Fzeurf_H7S1pigwTW_AD0kS8f7k\",\"accessTokenExpiresIn\":900,\"refreshToken\":\"8c6a9eba-20e3-4fb5-83a9-d5bb9ea7c809\",\"user\":{\"id\":\"f5d3e2d8-a959-4721-9b26-631ad676b440\",\"createdAt\":\"2022-01-28T06:53:32.770266+00:00\",\"displayName\":\"user-1@nhost.io\",\"avatarUrl\":\"https://s.gravatar.com/avatar/d86c12c3233e91ec90869a1f874cdf0e?r=g&default=blank\",\"locale\":\"en\",\"email\":\"user-1@nhost.io\",\"isAnonymous\":false,\"defaultRole\":\"user\",\"roles\":[\"user\",\"me\"]}},\"mfa\":null}"
+          "string": "{\"session\":{\"accessToken\":\"eyJhbGciOiJIUzI1NiJ9.eyJodHRwczovL2hhc3VyYS5pby9qd3QvY2xhaW1zIjp7IngtaGFzdXJhLWFsbG93ZWQtcm9sZXMiOlsidXNlciIsIm1lIl0sIngtaGFzdXJhLWRlZmF1bHQtcm9sZSI6InVzZXIiLCJ4LWhhc3VyYS11c2VyLWlkIjoiODVjOWE2YjMtM2Y1Zi00YzUzLTk4NDUtMTY5N2U2NzU3MGE2IiwieC1oYXN1cmEtdXNlci1pc0Fub255bW91cyI6ImZhbHNlIn0sInN1YiI6Ijg1YzlhNmIzLTNmNWYtNGM1My05ODQ1LTE2OTdlNjc1NzBhNiIsImlzcyI6Imhhc3VyYS1hdXRoIiwiaWF0IjoxNjQzODc4NTE3LCJleHAiOjE2NDM4Nzk0MTd9.FvGlqmZlAI0i_DIr-UKaF60o2JcXLFOKBdmYedxzlRA\",\"accessTokenExpiresIn\":900,\"refreshToken\":\"f37608b2-f175-49da-98c9-8d9b8d2423f6\",\"user\":{\"id\":\"85c9a6b3-3f5f-4c53-9845-1697e67570a6\",\"createdAt\":\"2022-02-03T08:55:17.949863+00:00\",\"displayName\":\"user-1@nhost.io\",\"avatarUrl\":\"https://s.gravatar.com/avatar/d86c12c3233e91ec90869a1f874cdf0e?r=g&default=blank\",\"locale\":\"en\",\"email\":\"user-1@nhost.io\",\"isAnonymous\":false,\"defaultRole\":\"user\",\"roles\":[\"user\",\"me\"]}},\"mfa\":null}"
         }
       }
     },
@@ -44,28 +43,27 @@
         "method": "post",
         "uri": "http://localhost:1337/v1/storage/files",
         "headers": {
-          "authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJodHRwczovL2hhc3VyYS5pby9qd3QvY2xhaW1zIjp7IngtaGFzdXJhLWFsbG93ZWQtcm9sZXMiOlsidXNlciIsIm1lIl0sIngtaGFzdXJhLWRlZmF1bHQtcm9sZSI6InVzZXIiLCJ4LWhhc3VyYS11c2VyLWlkIjoiZjVkM2UyZDgtYTk1OS00NzIxLTliMjYtNjMxYWQ2NzZiNDQwIiwieC1oYXN1cmEtdXNlci1pc0Fub255bW91cyI6ImZhbHNlIn0sInN1YiI6ImY1ZDNlMmQ4LWE5NTktNDcyMS05YjI2LTYzMWFkNjc2YjQ0MCIsImlzcyI6Imhhc3VyYS1hdXRoIiwiaWF0IjoxNjQzMzUyODEyLCJleHAiOjE2NDMzNTM3MTJ9.idl7DYWq7mGZpjq-Fzeurf_H7S1pigwTW_AD0kS8f7k",
+          "authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJodHRwczovL2hhc3VyYS5pby9qd3QvY2xhaW1zIjp7IngtaGFzdXJhLWFsbG93ZWQtcm9sZXMiOlsidXNlciIsIm1lIl0sIngtaGFzdXJhLWRlZmF1bHQtcm9sZSI6InVzZXIiLCJ4LWhhc3VyYS11c2VyLWlkIjoiODVjOWE2YjMtM2Y1Zi00YzUzLTk4NDUtMTY5N2U2NzU3MGE2IiwieC1oYXN1cmEtdXNlci1pc0Fub255bW91cyI6ImZhbHNlIn0sInN1YiI6Ijg1YzlhNmIzLTNmNWYtNGM1My05ODQ1LTE2OTdlNjc1NzBhNiIsImlzcyI6Imhhc3VyYS1hdXRoIiwiaWF0IjoxNjQzODc4NTE3LCJleHAiOjE2NDM4Nzk0MTd9.FvGlqmZlAI0i_DIr-UKaF60o2JcXLFOKBdmYedxzlRA",
           "x-nhost-file-name": "/test-file.txt",
-          "content-type": "multipart/form-data; boundary=dart-http-boundary-Ox.A6+.UuIUqCYXUM-Hx-WeZ3bExKuHCpFPxM9H6UjeKMwTvDY+"
+          "content-type": "multipart/form-data; boundary=dart-http-boundary-5yGYNJT60TSVbDmps06mNvVFcpNfiDD+-h9qNlnFhuH-GzXcHhB"
         },
         "body": {
           "encoding": "iso-8859-1",
-          "string": "--dart-http-boundary-Ox.A6+.UuIUqCYXUM-Hx-WeZ3bExKuHCpFPxM9H6UjeKMwTvDY+\r\ncontent-type: application/octet-stream; charset=utf-8\r\ncontent-disposition: form-data; name=\"file\"; filename=\"/test-file.txt\"\r\n\r\ntext file contents\r\n--dart-http-boundary-Ox.A6+.UuIUqCYXUM-Hx-WeZ3bExKuHCpFPxM9H6UjeKMwTvDY+--\r\n"
+          "string": "--dart-http-boundary-5yGYNJT60TSVbDmps06mNvVFcpNfiDD+-h9qNlnFhuH-GzXcHhB\r\ncontent-type: application/octet-stream; charset=utf-8\r\ncontent-disposition: form-data; name=\"file\"; filename=\"/test-file.txt\"\r\n\r\ntext file contents\r\n--dart-http-boundary-5yGYNJT60TSVbDmps06mNvVFcpNfiDD+-h9qNlnFhuH-GzXcHhB--\r\n"
         }
       },
       "response": {
         "status": 201,
         "headers": {
-          "connection": "keep-alive",
           "content-type": "application/json; charset=utf-8",
-          "date": "Fri, 28 Jan 2022 06:53:33 GMT",
+          "date": "Thu, 03 Feb 2022 08:55:18 GMT",
           "access-control-allow-origin": "*",
           "vary": "Origin",
           "content-length": "231"
         },
         "body": {
           "encoding": "utf-8",
-          "string": "{\"id\":\"51cb4fe1-8312-42a1-a303-27d40ab581e3\",\"name\":\"/test-file.txt\",\"size\":18,\"mimeType\":\"application/octet-stream\",\"etag\":\"\\\"e060f216c2b7dd7be3b2d1a0d9fd0207\\\"\",\"createdAt\":\"2022-01-28T06:53:32.996159+00:00\",\"bucketId\":\"default\"}"
+          "string": "{\"id\":\"79c1e044-6f73-4cb3-804d-8f33c941e1ea\",\"name\":\"/test-file.txt\",\"size\":18,\"mimeType\":\"application/octet-stream\",\"etag\":\"\\\"e060f216c2b7dd7be3b2d1a0d9fd0207\\\"\",\"createdAt\":\"2022-02-03T08:55:18.102621+00:00\",\"bucketId\":\"default\"}"
         }
       }
     }

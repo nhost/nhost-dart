@@ -16,11 +16,10 @@
       "response": {
         "status": 200,
         "headers": {
-          "connection": "keep-alive",
           "surrogate-control": "no-store",
           "cache-control": "no-store, no-cache, must-revalidate, proxy-revalidate",
           "x-dns-prefetch-control": "off",
-          "date": "Fri, 28 Jan 2022 06:53:34 GMT",
+          "date": "Thu, 03 Feb 2022 08:55:18 GMT",
           "access-control-allow-origin": "*",
           "strict-transport-security": "max-age=15552000; includeSubDomains",
           "content-type": "application/json; charset=utf-8",
@@ -28,14 +27,14 @@
           "x-xss-protection": "1; mode=block",
           "content-length": "913",
           "x-download-options": "noopen",
-          "etag": "W/\"391-9eWgMcno85aRbojuhKYDJrRmBSg\"",
+          "etag": "W/\"391-VFVgZH/pGV2i5HhLKBoEf1K3+ao\"",
           "x-frame-options": "SAMEORIGIN",
           "x-content-type-options": "nosniff",
           "expires": "0"
         },
         "body": {
           "encoding": "utf-8",
-          "string": "{\"session\":{\"accessToken\":\"eyJhbGciOiJIUzI1NiJ9.eyJodHRwczovL2hhc3VyYS5pby9qd3QvY2xhaW1zIjp7IngtaGFzdXJhLWFsbG93ZWQtcm9sZXMiOlsidXNlciIsIm1lIl0sIngtaGFzdXJhLWRlZmF1bHQtcm9sZSI6InVzZXIiLCJ4LWhhc3VyYS11c2VyLWlkIjoiMzczMWRhYjgtNGU1ZS00ZjkxLWEyYWQtMDQxMzJhY2FkMWZjIiwieC1oYXN1cmEtdXNlci1pc0Fub255bW91cyI6ImZhbHNlIn0sInN1YiI6IjM3MzFkYWI4LTRlNWUtNGY5MS1hMmFkLTA0MTMyYWNhZDFmYyIsImlzcyI6Imhhc3VyYS1hdXRoIiwiaWF0IjoxNjQzMzUyODE0LCJleHAiOjE2NDMzNTM3MTR9.oMcu9ckrD1Am2hTmT5wURzgoIGQPjsYKXUZ4y-CHIlw\",\"accessTokenExpiresIn\":900,\"refreshToken\":\"ba30b35f-5861-416f-8b90-adfe9b721238\",\"user\":{\"id\":\"3731dab8-4e5e-4f91-a2ad-04132acad1fc\",\"createdAt\":\"2022-01-28T06:53:34.233171+00:00\",\"displayName\":\"user-1@nhost.io\",\"avatarUrl\":\"https://s.gravatar.com/avatar/d86c12c3233e91ec90869a1f874cdf0e?r=g&default=blank\",\"locale\":\"en\",\"email\":\"user-1@nhost.io\",\"isAnonymous\":false,\"defaultRole\":\"user\",\"roles\":[\"user\",\"me\"]}},\"mfa\":null}"
+          "string": "{\"session\":{\"accessToken\":\"eyJhbGciOiJIUzI1NiJ9.eyJodHRwczovL2hhc3VyYS5pby9qd3QvY2xhaW1zIjp7IngtaGFzdXJhLWFsbG93ZWQtcm9sZXMiOlsidXNlciIsIm1lIl0sIngtaGFzdXJhLWRlZmF1bHQtcm9sZSI6InVzZXIiLCJ4LWhhc3VyYS11c2VyLWlkIjoiZDk3MjJjZDEtZDVkOS00YzQ0LThhN2ItZjMxZjc0NzdiYjkwIiwieC1oYXN1cmEtdXNlci1pc0Fub255bW91cyI6ImZhbHNlIn0sInN1YiI6ImQ5NzIyY2QxLWQ1ZDktNGM0NC04YTdiLWYzMWY3NDc3YmI5MCIsImlzcyI6Imhhc3VyYS1hdXRoIiwiaWF0IjoxNjQzODc4NTE4LCJleHAiOjE2NDM4Nzk0MTh9.UYri7dM00EtMncMIgySMlTYR2b_rmV7hyOo6w0lSDK0\",\"accessTokenExpiresIn\":900,\"refreshToken\":\"67947048-de7f-41e6-ad90-1026682094de\",\"user\":{\"id\":\"d9722cd1-d5d9-4c44-8a7b-f31f7477bb90\",\"createdAt\":\"2022-02-03T08:55:18.764886+00:00\",\"displayName\":\"user-1@nhost.io\",\"avatarUrl\":\"https://s.gravatar.com/avatar/d86c12c3233e91ec90869a1f874cdf0e?r=g&default=blank\",\"locale\":\"en\",\"email\":\"user-1@nhost.io\",\"isAnonymous\":false,\"defaultRole\":\"user\",\"roles\":[\"user\",\"me\"]}},\"mfa\":null}"
         }
       }
     },
@@ -44,28 +43,27 @@
         "method": "post",
         "uri": "http://localhost:1337/v1/storage/files",
         "headers": {
-          "authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJodHRwczovL2hhc3VyYS5pby9qd3QvY2xhaW1zIjp7IngtaGFzdXJhLWFsbG93ZWQtcm9sZXMiOlsidXNlciIsIm1lIl0sIngtaGFzdXJhLWRlZmF1bHQtcm9sZSI6InVzZXIiLCJ4LWhhc3VyYS11c2VyLWlkIjoiMzczMWRhYjgtNGU1ZS00ZjkxLWEyYWQtMDQxMzJhY2FkMWZjIiwieC1oYXN1cmEtdXNlci1pc0Fub255bW91cyI6ImZhbHNlIn0sInN1YiI6IjM3MzFkYWI4LTRlNWUtNGY5MS1hMmFkLTA0MTMyYWNhZDFmYyIsImlzcyI6Imhhc3VyYS1hdXRoIiwiaWF0IjoxNjQzMzUyODE0LCJleHAiOjE2NDMzNTM3MTR9.oMcu9ckrD1Am2hTmT5wURzgoIGQPjsYKXUZ4y-CHIlw",
+          "authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJodHRwczovL2hhc3VyYS5pby9qd3QvY2xhaW1zIjp7IngtaGFzdXJhLWFsbG93ZWQtcm9sZXMiOlsidXNlciIsIm1lIl0sIngtaGFzdXJhLWRlZmF1bHQtcm9sZSI6InVzZXIiLCJ4LWhhc3VyYS11c2VyLWlkIjoiZDk3MjJjZDEtZDVkOS00YzQ0LThhN2ItZjMxZjc0NzdiYjkwIiwieC1oYXN1cmEtdXNlci1pc0Fub255bW91cyI6ImZhbHNlIn0sInN1YiI6ImQ5NzIyY2QxLWQ1ZDktNGM0NC04YTdiLWYzMWY3NDc3YmI5MCIsImlzcyI6Imhhc3VyYS1hdXRoIiwiaWF0IjoxNjQzODc4NTE4LCJleHAiOjE2NDM4Nzk0MTh9.UYri7dM00EtMncMIgySMlTYR2b_rmV7hyOo6w0lSDK0",
           "x-nhost-file-name": "test-file.bin",
-          "content-type": "multipart/form-data; boundary=dart-http-boundary-v4+qZAIw.vsZnjGFyYegkAOz8ixHPXKIF4-wP7Zov1GdxMc8cgy"
+          "content-type": "multipart/form-data; boundary=dart-http-boundary-D2v9m0v2SZ5eNXJvNqCxjYfA2pX0G0zKNK63.WqKabP8Si7mN7g"
         },
         "body": {
           "encoding": "iso-8859-1",
-          "string": "--dart-http-boundary-v4+qZAIw.vsZnjGFyYegkAOz8ixHPXKIF4-wP7Zov1GdxMc8cgy\r\ncontent-type: text/html\r\ncontent-disposition: form-data; name=\"file\"; filename=\"test-file.bin\"\r\n\r\nthis is a test file\r\n--dart-http-boundary-v4+qZAIw.vsZnjGFyYegkAOz8ixHPXKIF4-wP7Zov1GdxMc8cgy--\r\n"
+          "string": "--dart-http-boundary-D2v9m0v2SZ5eNXJvNqCxjYfA2pX0G0zKNK63.WqKabP8Si7mN7g\r\ncontent-type: text/html\r\ncontent-disposition: form-data; name=\"file\"; filename=\"test-file.bin\"\r\n\r\nthis is a test file\r\n--dart-http-boundary-D2v9m0v2SZ5eNXJvNqCxjYfA2pX0G0zKNK63.WqKabP8Si7mN7g--\r\n"
         }
       },
       "response": {
         "status": 201,
         "headers": {
-          "connection": "keep-alive",
           "content-type": "application/json; charset=utf-8",
-          "date": "Fri, 28 Jan 2022 06:53:34 GMT",
+          "date": "Thu, 03 Feb 2022 08:55:18 GMT",
           "access-control-allow-origin": "*",
           "vary": "Origin",
           "content-length": "215"
         },
         "body": {
           "encoding": "utf-8",
-          "string": "{\"id\":\"f35c0d77-a413-4e35-8206-9c296ce0cb93\",\"name\":\"test-file.bin\",\"size\":19,\"mimeType\":\"text/html\",\"etag\":\"\\\"a5890ace30a3e84d9118196c161aeec2\\\"\",\"createdAt\":\"2022-01-28T06:53:34.363035+00:00\",\"bucketId\":\"default\"}"
+          "string": "{\"id\":\"a8c7a58e-dee1-477a-8208-84215856ebb0\",\"name\":\"test-file.bin\",\"size\":19,\"mimeType\":\"text/html\",\"etag\":\"\\\"a5890ace30a3e84d9118196c161aeec2\\\"\",\"createdAt\":\"2022-02-03T08:55:18.900451+00:00\",\"bucketId\":\"default\"}"
         }
       }
     },
@@ -80,23 +78,22 @@
         },
         "body": {
           "encoding": "iso-8859-1",
-          "string": "{\"operationName\":null,\"variables\":{\"id\":\"f35c0d77-a413-4e35-8206-9c296ce0cb93\"},\"query\":\"query($id: uuid!) {\\n  __typename\\n  file(id: $id) {\\n    __typename\\n    id\\n    bucketId\\n    name\\n    size\\n    etag\\n    mimeType\\n    createdAt\\n  }\\n}\"}"
+          "string": "{\"operationName\":null,\"variables\":{\"id\":\"a8c7a58e-dee1-477a-8208-84215856ebb0\"},\"query\":\"query($id: uuid!) {\\n  __typename\\n  file(id: $id) {\\n    __typename\\n    id\\n    bucketId\\n    name\\n    size\\n    etag\\n    mimeType\\n    createdAt\\n  }\\n}\"}"
         }
       },
       "response": {
         "status": 200,
         "headers": {
-          "connection": "keep-alive",
-          "date": "Fri, 28 Jan 2022 06:53:34 GMT",
-          "transfer-encoding": "chunked",
-          "content-encoding": "gzip",
           "content-type": "application/json; charset=utf-8",
+          "transfer-encoding": "chunked",
+          "date": "Thu, 03 Feb 2022 08:55:18 GMT",
+          "content-encoding": "gzip",
           "server": "Warp/3.3.14",
-          "x-request-id": "d0be0291-3cd0-4eb0-a205-6fa4741e97cf"
+          "x-request-id": "f7315434-a846-4bf1-a4f8-9ea8cb20cf25"
         },
         "body": {
           "encoding": "utf-8",
-          "string": "{\"data\":{\"__typename\":\"query_root\",\"file\":{\"__typename\":\"files\",\"id\":\"f35c0d77-a413-4e35-8206-9c296ce0cb93\",\"bucketId\":\"default\",\"name\":\"test-file.bin\",\"size\":19,\"etag\":\"\\\"a5890ace30a3e84d9118196c161aeec2\\\"\",\"mimeType\":\"text/html\",\"createdAt\":\"2022-01-28T06:53:34.363035+00:00\"}}}"
+          "string": "{\"data\":{\"__typename\":\"query_root\",\"file\":{\"__typename\":\"files\",\"id\":\"a8c7a58e-dee1-477a-8208-84215856ebb0\",\"bucketId\":\"default\",\"name\":\"test-file.bin\",\"size\":19,\"etag\":\"\\\"a5890ace30a3e84d9118196c161aeec2\\\"\",\"mimeType\":\"text/html\",\"createdAt\":\"2022-02-03T08:55:18.900451+00:00\"}}}"
         }
       }
     }
