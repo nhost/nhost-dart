@@ -214,8 +214,7 @@ void main() async {
 
     group('with refresh token', () {
       test('sets state when successful', () async {
-        await authStore.setString(refreshTokenClientStorageKey, refreshToken);
-        await auth.signInWithStoredCredentials();
+        await auth.signInWithRefreshToken(invalidRefreshToken);
 
         expect(auth.authenticationState, AuthenticationState.signedIn);
         expect(auth.currentUser, isNotNull);
