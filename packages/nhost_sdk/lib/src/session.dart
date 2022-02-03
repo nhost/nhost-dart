@@ -12,14 +12,14 @@ class UserSession {
   Session? _session;
   Map<String, dynamic>? _hasuraClaims;
 
-  String? get jwt => session?.accessToken;
+  String? get accessToken => session?.accessToken;
 
   String? getClaim(String claim) =>
       _hasuraClaims != null ? _hasuraClaims![claim] : null;
 
   Map<String, String> get authenticationHeaders {
     return {
-      if (jwt != null) authorizationHeader: 'Bearer $jwt',
+      if (accessToken != null) authorizationHeader: 'Bearer $accessToken',
     };
   }
 

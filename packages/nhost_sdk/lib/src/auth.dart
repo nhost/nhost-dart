@@ -105,8 +105,10 @@ class AuthClient {
 
   /// The currently logged-in user's Json Web Token, or `null` if
   /// unauthenticated.
-  String? get jwt => _session.jwt;
+  String? get accessToken => _session.accessToken;
 
+  /// Gets the value of a JWT claim named [jwtClaim] associated with the current
+  /// authentication session, or `null` if not found/unauthenticated.
   String? getClaim(String jwtClaim) => _session.getClaim(jwtClaim);
 
   /// Releases the service's resources.
@@ -143,7 +145,7 @@ class AuthClient {
 
   void _onTokenChanged() {
     log.finest('Calling token change callbacks, '
-        'jwt.hashCode=${identityHashCode(jwt)}');
+        'jwt.hashCode=${identityHashCode(accessToken)}');
     for (final tokenChangedFunction in _tokenChangedFunctions) {
       tokenChangedFunction();
     }
@@ -223,10 +225,10 @@ class AuthClient {
     required String email,
     required String password,
   }) async {
-    log.finer('Attempting login');
-    AuthResponse? loginRes;
+    log.finer('Attempting sign in');
+    AuthResponse? res;
     try {
-      loginRes = await _apiClient.post(
+      res = await _apiClient.post(
         '/signin/email-password',
         jsonBody: {
           'email': email,
@@ -242,14 +244,14 @@ class AuthClient {
 
     // If multi-factor is enabled, a second step is required before we've fully
     // logged in.
-    if (loginRes!.mfa != null) {
+    if (res!.mfa != null) {
       log.finer('Sign in requires MFA');
-      return loginRes;
+      return res;
     }
 
     log.finer('Sign in successful');
-    await setSession(loginRes.session!);
-    return loginRes;
+    await setSession(res.session!);
+    return res;
   }
 
   /// Logs out the current user.
@@ -507,8 +509,8 @@ class AuthClient {
     // user. Failure to do so will result in very difficult to track down race
     // conditions.
 
-    log.finest(
-        'Setting session, jwt.hashCode=${identityHashCode(session.accessToken)}');
+    log.finest('Setting session, accessToken.hashCode='
+        '${identityHashCode(session.accessToken)}');
 
     final previouslyAuthenticated = authenticationState;
     _session.session = session;
@@ -519,12 +521,12 @@ class AuthClient {
           refreshTokenClientStorageKey, session.refreshToken!);
     }
 
-    final jwtExpiresIn = session.accessTokenExpiresIn;
+    final accessTokenExpiresIn = session.accessTokenExpiresIn;
     final refreshTimerDuration = _tokenRefreshInterval ??
-        (jwtExpiresIn != null
+        (accessTokenExpiresIn != null
             ? max(
                 Duration(seconds: 30),
-                jwtExpiresIn - Duration(seconds: 45),
+                accessTokenExpiresIn - Duration(seconds: 45),
               )
             : Duration(seconds: 30)); // 45 sec before expiry
 
