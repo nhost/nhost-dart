@@ -28,8 +28,9 @@ Future<void> registerTestUser(AuthClient auth) async {
 
 // Register and logs in a basic user for test setup. The auth object will be
 // left in a logged in state.
-Future<void> registerAndLoginBasicUser(AuthClient auth) async {
-  await auth.signUp(email: defaultTestEmail, password: defaultTestPassword);
+Future<AuthResponse> registerAndLoginBasicUser(AuthClient auth) async {
+  return await auth.signUp(
+      email: defaultTestEmail, password: defaultTestPassword);
 }
 
 // Registers an MFA user for test setup, logs them out, and returns the OTP

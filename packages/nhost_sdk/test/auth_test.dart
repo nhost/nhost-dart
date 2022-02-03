@@ -14,12 +14,11 @@ const testEmail = 'user-1@nhost.io';
 const testPassword = 'password-1';
 
 void main() async {
-  final gqlAdmin =
-      GqlAdminTestHelper(apiUrl: backendUrl, gqlUrl: gqlUrl);
+  final gqlAdmin = GqlAdminTestHelper(apiUrl: backendUrl, gqlUrl: gqlUrl);
 
-  // This admin client has its traffic recorded for playback
   late NhostClient nhost;
   late AuthClient auth;
+  late AuthStore authStore;
 
   setUpAll(() {
     initLogging();
@@ -34,7 +33,10 @@ void main() async {
     final httpClient = await setUpApiTest();
 
     // Create the service objects that we're going to be using to test
-    nhost = createApiTestClient(httpClient);
+    nhost = createApiTestClient(
+      httpClient,
+      authStore: authStore = InMemoryAuthStore(),
+    );
     auth = nhost.auth;
   });
 
@@ -122,9 +124,13 @@ void main() async {
   });
 
   group('signIn', () {
+    late String refreshToken;
     // Each tests registers a basic user, and leaves auth in a logged out state
     setUp(() async {
-      await registerTestUser(auth);
+      final res = await registerAndLoginBasicUser(auth);
+      refreshToken = res.session!.refreshToken!;
+      // Don't log out, so we can keep a valid refresh token
+      await auth.clearSession();
       assert(auth.authenticationState == AuthenticationState.signedOut);
     });
 
@@ -150,7 +156,11 @@ void main() async {
     test('should not be able to signIn with wrong password', () async {
       expect(
         auth.signIn(email: testEmail, password: 'wrong-password-1'),
-        throwsA(anything),
+        throwsA(isA<ApiException>().having(
+          (e) => e.statusCode,
+          'statusCode',
+          equals(HttpStatus.unauthorized),
+        )),
       );
     });
 
@@ -167,6 +177,60 @@ void main() async {
     test('should be able to get user id as JWT claim', () async {
       await auth.signIn(email: testEmail, password: testPassword);
       expect(auth.getClaim('x-hasura-user-id'), isA<String>());
+    });
+
+    const invalidRefreshToken = '10b27fd6-a606-42f4-9063-d6bd9d7866c8';
+
+    group('with stored credentials', () {
+      test('sets state when successful', () async {
+        await authStore.setString(refreshTokenClientStorageKey, refreshToken);
+        expect(auth.currentUser, isNull);
+        await auth.signInWithStoredCredentials();
+
+        expect(auth.authenticationState, AuthenticationState.signedIn);
+        expect(auth.currentUser, isNotNull);
+      });
+
+      test('throws when the stored token is invalid', () async {
+        await authStore.setString(
+            refreshTokenClientStorageKey, invalidRefreshToken);
+        expect(
+          auth.signInWithStoredCredentials(),
+          throwsA(isA<ApiException>().having(
+            (e) => e.statusCode,
+            'statusCode',
+            HttpStatus.unauthorized,
+          )),
+        );
+      });
+
+      test('throws when no refresh token exists in AuthStore', () async {
+        expect(
+          () => auth.signInWithStoredCredentials(),
+          throwsA(isA<AuthException>()),
+        );
+      });
+    });
+
+    group('with refresh token', () {
+      test('sets state when successful', () async {
+        await authStore.setString(refreshTokenClientStorageKey, refreshToken);
+        await auth.signInWithStoredCredentials();
+
+        expect(auth.authenticationState, AuthenticationState.signedIn);
+        expect(auth.currentUser, isNotNull);
+      });
+
+      test('throws when the token is invalid', () async {
+        expect(
+          auth.signInWithRefreshToken(invalidRefreshToken),
+          throwsA(isA<ApiException>().having(
+            (e) => e.statusCode,
+            'statusCode',
+            HttpStatus.unauthorized,
+          )),
+        );
+      });
     });
   });
 
