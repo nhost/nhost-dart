@@ -23,6 +23,12 @@ typedef TokenChangedCallback = void Function();
 typedef AuthStateChangedCallback = void Function(
     AuthenticationState authenticationState);
 
+/// Signature for callbacks that respond to session refresh failures.
+///
+/// Registered via [AuthClient.addSessionRefreshFailedCallback].
+typedef SessionRefreshFailedCallback = void Function(
+    Exception error, StackTrace stackTrace);
+
 /// Signature for functions that remove their associated callback when called.
 typedef UnsubscribeDelegate = void Function();
 
@@ -55,37 +61,27 @@ class AuthClient {
     required String baseUrl,
     required UserSession session,
     required AuthStore authStore,
-    String? refreshToken,
-    bool? autoSignIn = true,
-    Duration? refreshInterval,
+    Duration? tokenRefreshInterval,
     required http.Client httpClient,
   })  : _apiClient = ApiClient(Uri.parse(baseUrl), httpClient: httpClient),
         _session = session,
         _authStore = authStore,
-        _tokenRefreshInterval = refreshInterval,
+        _tokenRefreshInterval = tokenRefreshInterval,
         _refreshTokenLock = false,
-        _loading = true,
-        _autoSignIn = autoSignIn ?? true {
-    if (_autoSignIn) {
-      _refreshToken(refreshToken);
-    } else if (refreshToken != null) {
-      _authStore.setString(refreshTokenClientStorageKey, refreshToken);
-    } else {
-      _loading = false;
-    }
-  }
+        _loading = false;
 
   final ApiClient _apiClient;
   final AuthStore _authStore;
-  final UserSession /*?*/ _session;
-  final bool _autoSignIn;
+  final UserSession _session;
 
-  final List<TokenChangedCallback> _tokenChangedFunctions = [];
-  final List<AuthStateChangedCallback> _authChangedFunctions = [];
+  final List<TokenChangedCallback> _tokenChangedCallbacks = [];
+  final List<AuthStateChangedCallback> _authChangedCallbacks = [];
+  final List<SessionRefreshFailedCallback> _sessionRefreshFailedCallbacks = [];
 
   Timer? _tokenRefreshTimer;
   final Duration? _tokenRefreshInterval;
   bool _refreshTokenLock;
+  Completer<Session>? _sessionCompleter;
 
   /// `true` if the service is currently loading.
   ///
@@ -126,9 +122,9 @@ class AuthClient {
   ///
   /// The returned function will remove the callback when called.
   UnsubscribeDelegate addTokenChangedCallback(TokenChangedCallback callback) {
-    _tokenChangedFunctions.add(callback);
+    _tokenChangedCallbacks.add(callback);
     return () {
-      _tokenChangedFunctions.removeWhere((element) => element == callback);
+      _tokenChangedCallbacks.removeWhere((element) => element == callback);
     };
   }
 
@@ -138,24 +134,44 @@ class AuthClient {
   /// The returned function will remove the callback when called.
   UnsubscribeDelegate addAuthStateChangedCallback(
       AuthStateChangedCallback callback) {
-    _authChangedFunctions.add(callback);
+    _authChangedCallbacks.add(callback);
     return () {
-      _authChangedFunctions.removeWhere((element) => element == callback);
+      _authChangedCallbacks.removeWhere((element) => element == callback);
+    };
+  }
+
+  /// Add a callback that will be invoked when the service fails to refresh
+  /// its session.
+  ///
+  /// The returned function will remove the callback when called.
+  UnsubscribeDelegate addSessionRefreshFailedCallback(
+      SessionRefreshFailedCallback callback) {
+    _sessionRefreshFailedCallbacks.add(callback);
+    return () {
+      _sessionRefreshFailedCallbacks
+          .removeWhere((element) => element == callback);
     };
   }
 
   void _onTokenChanged() {
     log.finest('Calling token change callbacks, '
         'jwt.hashCode=${identityHashCode(accessToken)}');
-    for (final tokenChangedFunction in _tokenChangedFunctions) {
+    for (final tokenChangedFunction in _tokenChangedCallbacks) {
       tokenChangedFunction();
     }
   }
 
   void _onAuthStateChanged(AuthenticationState authState) {
     log.finest('Calling auth state change callbacks, authState=$authState');
-    for (final authChangedFunction in _authChangedFunctions) {
+    for (final authChangedFunction in _authChangedCallbacks) {
       authChangedFunction(authState);
+    }
+  }
+
+  void _onTokenRefreshFailure(Exception e, StackTrace st) {
+    log.finest('Calling token refresh failure callbacks');
+    for (final fn in _sessionRefreshFailedCallbacks) {
+      fn(e, st);
     }
   }
 
@@ -253,6 +269,24 @@ class AuthClient {
     log.finer('Sign in successful');
     await setSession(res.session!);
     return res;
+  }
+
+  /// Attempts a sign in using the credentials stored in the [AuthStore]
+  /// provided during construction.
+  ///
+  /// Throws an [NhostException] if sign in fails.
+  Future<AuthResponse> signInWithStoredCredentials() async {
+    return AuthResponse(session: await _refreshSession());
+  }
+
+  /// Attempts a sign in using a [refreshToken] from a previously sign in.
+  ///
+  /// After logging in, the refresh token is available at
+  /// [Session.refreshToken].
+  ///
+  /// Throws an [NhostException] if sign in fails.
+  Future<AuthResponse> signInWithRefreshToken(String refreshToken) async {
+    return AuthResponse(session: await _refreshSession(refreshToken));
   }
 
   /// Logs out the current user.
@@ -436,18 +470,14 @@ class AuthClient {
       return;
     }
 
-    await _refreshToken(queryArgs[refreshTokenQueryParamName]);
+    await _refreshSession(queryArgs[refreshTokenQueryParamName]);
   }
 
   //#endregion
 
   //#region Token and session Handling
 
-  Future<void> refreshSession() async {
-    return _refreshToken();
-  }
-
-  Future<void> _refreshToken([String? initRefreshToken]) async {
+  Future<Session> _refreshSession([String? initRefreshToken]) async {
     log.finest('Session refresh requested');
 
     final refreshToken = initRefreshToken ??
@@ -458,20 +488,24 @@ class AuthClient {
       log.finest('No refresh token. Halting request.');
       _loading = false;
       _onAuthStateChanged(authenticationState);
-      return;
+      throw AuthException(
+          'No refresh token in AuthStore. Cannot authenticate.');
     }
 
     // Set lock to avoid two refresh token request being sent at the same time
-    // with the same token. If so, the last request will fail because the
-    // first request used the refresh token
+    // with the same token. If that were to happen, the last request will fail
+    // because the first request used the refresh token.
     if (_refreshTokenLock) {
       log.finest('Session refresh already in progress. Halting this request.');
-      return;
+      // Return a future that will resolve to a session when the existing
+      // request completes.
+      return _sessionCompleter!.future;
     }
 
     Session? res;
     try {
       _refreshTokenLock = true;
+      _sessionCompleter = Completer();
 
       // Make refresh token request
       log.finest('Making session refresh request');
@@ -482,24 +516,28 @@ class AuthClient {
         },
         responseDeserializer: Session.fromJson,
       );
-    } on ApiException catch (e, st) {
-      if (e.statusCode == unauthorizedStatus) {
+
+      await setSession(res!);
+      _sessionCompleter!.complete(res);
+      return res;
+    } on Exception catch (e, st) {
+      if (e is ApiException && e.statusCode == unauthorizedStatus) {
         log.finest('Unauthorized refresh token. Forcing signout.');
         await signOut();
-        return;
-      } else {
-        log.severe('API exception during token refresh', e, st);
-        return;
       }
-    } catch (e, st) {
+
       log.severe('Exception during token refresh', e, st);
-      return;
+      _sessionCompleter!.completeError(e, st);
+
+      // Inform subscribers of the failure. If there are none, rethrow the
+      // exception.
+      _onTokenRefreshFailure(e, st);
+      rethrow;
     } finally {
       // Release lock
       _refreshTokenLock = false;
+      _sessionCompleter = null;
     }
-
-    await setSession(res!);
   }
 
   /// Updates the [AuthClient] to begin identifying as the user described by
@@ -538,7 +576,7 @@ class AuthClient {
     log.finest('Creating token refresh timer, duration=$refreshTimerDuration');
     _tokenRefreshTimer = Timer(refreshTimerDuration, () {
       log.finest('Refresh timer elapsed');
-      _refreshToken();
+      _refreshSession();
     });
 
     // We're ready!
@@ -565,10 +603,10 @@ class AuthClient {
 
     // Early exit
     //
-    // There could be case when the authenticationState is inProgress and signout
-    // is called. For example, if the refresh token has expired. In that case it
-    // is important to to clear out the session and remove the refresh token
-    // from storage.
+    // There could be case when the authenticationState is inProgress and
+    // signout is called. For example, if the refresh token has expired. In that
+    // case it is important to to clear out the session and remove the refresh
+    // token from storage.
     if (authenticationState == AuthenticationState.signedOut) {
       return;
     }
@@ -588,4 +626,16 @@ enum AuthenticationState {
   inProgress,
   signedIn,
   signedOut,
+}
+
+class AuthException implements NhostException {
+  AuthException([this.message]);
+  final dynamic message;
+
+  @override
+  String toString() {
+    Object? message = this.message;
+    if (message == null) return "AuthException";
+    return "AuthException: $message";
+  }
 }
