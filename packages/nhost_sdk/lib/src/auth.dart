@@ -488,7 +488,7 @@ class AuthClient {
       log.finest('No refresh token. Halting request.');
       _loading = false;
       _onAuthStateChanged(authenticationState);
-      throw AuthException(
+      throw AuthServiceException(
           'No refresh token in AuthStore. Cannot authenticate.');
     }
 
@@ -630,14 +630,14 @@ enum AuthenticationState {
   signedOut,
 }
 
-class AuthException implements NhostException {
-  AuthException([this.message]);
+class AuthServiceException implements NhostException {
+  AuthServiceException([this.message]);
   final dynamic message;
 
   @override
   String toString() {
     Object? message = this.message;
-    if (message == null) return "AuthException";
-    return "AuthException: $message";
+    if (message == null) return "AuthServiceException";
+    return "AuthServiceException: $message";
   }
 }
