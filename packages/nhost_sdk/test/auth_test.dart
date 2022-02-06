@@ -207,7 +207,7 @@ void main() async {
       test('throws when no refresh token exists in AuthStore', () async {
         expect(
           () => auth.signInWithStoredCredentials(),
-          throwsA(isA<AuthException>()),
+          throwsA(isA<NhostException>()),
         );
       });
     });

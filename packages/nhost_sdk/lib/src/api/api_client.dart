@@ -309,8 +309,8 @@ class ApiException extends NhostException {
 
   @override
   String toString() {
-    return 'ApiException('
-        'apiUrl=$url, statusCode=$statusCode, responseBody=$responseBody)';
+    return 'ApiException: '
+        'apiUrl=$url, statusCode=$statusCode, responseBody=$responseBody';
   }
 }
 
