@@ -1,3 +1,16 @@
+## 3.0.0-beta.2
+
+> Note: This release has breaking changes.
+
+ - **REFACTOR**: Change all instances of login to sign in.
+ - **REFACTOR**: Only create the session completer if required.
+ - **REFACTOR**: Remove AuthResponse's user parameter.
+ - **REFACTOR**: Add an exception base class.
+ - **FIX**: Null out the current user after the session is cleared.
+ - **BREAKING** **REFACTOR**: Rename signIn -> signInEmailPassword.
+ - **BREAKING** **REFACTOR**: Improve refresh-token based authentication.
+ - **BREAKING** **REFACTOR**: Rename all occurrences of jwt to accessToken.
+
 ## 3.0.0-beta.1
 
 > Note: This release has breaking changes.

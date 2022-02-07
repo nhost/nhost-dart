@@ -1,3 +1,10 @@
+## 2.0.0-beta.2
+
+> Note: This release has breaking changes.
+
+ - **REFACTOR**: Change all instances of login to sign in.
+ - **BREAKING** **REFACTOR**: Rename all occurrences of jwt to accessToken.
+
 ## 2.0.0-beta.1
 
 > Note: This release has breaking changes.
