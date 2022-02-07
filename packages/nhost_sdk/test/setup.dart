@@ -55,6 +55,7 @@ NhostClient createApiTestClient(
   );
 }
 
+/// Tests tagged with this value will not record fixtures
 const noHttpFixturesTag = 'no-http-fixtures';
 
 Future<http.Client> setUpApiTest() async {

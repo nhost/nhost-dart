@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
@@ -12,6 +13,8 @@ import 'test_helpers.dart';
 
 const testEmail = 'user-1@nhost.io';
 const testPassword = 'password-1';
+
+const invalidRefreshToken = '10b27fd6-a606-42f4-9063-d6bd9d7866c8';
 
 void main() async {
   final gqlAdmin = GqlAdminTestHelper(apiUrl: backendUrl, gqlUrl: gqlUrl);
@@ -179,8 +182,6 @@ void main() async {
       expect(auth.getClaim('x-hasura-user-id'), isA<String>());
     });
 
-    const invalidRefreshToken = '10b27fd6-a606-42f4-9063-d6bd9d7866c8';
-
     group('with stored credentials', () {
       test('sets state when successful', () async {
         await authStore.setString(refreshTokenClientStorageKey, refreshToken);
@@ -214,7 +215,7 @@ void main() async {
 
     group('with refresh token', () {
       test('sets state when successful', () async {
-        await auth.signInWithRefreshToken(invalidRefreshToken);
+        await auth.signInWithRefreshToken(refreshToken);
 
         expect(auth.authenticationState, AuthenticationState.signedIn);
         expect(auth.currentUser, isNotNull);
@@ -296,6 +297,30 @@ void main() async {
     });
   });
 
+  group('session refresh failure callbacks', () {
+    test('are called when refresh tokens are invalid', () async {
+      final _callbackCompleter = Completer();
+      auth.addSessionRefreshFailedCallback((error, stackTrace) {
+        _callbackCompleter.completeError(error, stackTrace);
+      });
+
+      final unauthorizedMatcher = throwsA(isA<ApiException>().having(
+        (e) => e.statusCode,
+        'statusCode',
+        HttpStatus.unauthorized,
+      ));
+
+      expect(
+        _callbackCompleter.future,
+        unauthorizedMatcher,
+      );
+      expect(
+        auth.signInWithRefreshToken(invalidRefreshToken),
+        unauthorizedMatcher,
+      );
+    });
+  });
+
   group('authentication tokens refreshes', () {
     final mockFirstSession = Session(
       accessToken:
@@ -366,7 +391,7 @@ void main() async {
 
       expect(tokenEndpointRefreshMock.isDone, isTrue);
       expect(nhostClient.auth.accessToken, mockNextSession.accessToken);
-    }, tags: noHttpFixturesTag);
+    }, tags: noHttpFixturesTag); // Don't record fixtures
 
     test('should occur after a user-provided interval, if specified', () {
       final testRefreshInterval = Duration(minutes: 10);
@@ -382,7 +407,7 @@ void main() async {
 
       expect(tokenEndpointRefreshMock.isDone, isTrue);
       expect(nhostClient.auth.accessToken, mockNextSession.accessToken);
-    }, tags: noHttpFixturesTag);
+    }, tags: noHttpFixturesTag); // Don't record fixtures
   });
 
   group('email change', () {
