@@ -140,8 +140,12 @@ class AuthClient {
     };
   }
 
-  /// Add a callback that will be invoked when the service fails to refresh
-  /// its session.
+  /// Add a callback that will be invoked when the service fails to refresh its
+  /// session.
+  ///
+  /// Session refreshes happen periodically based on settings configured in the
+  /// Nhost console, and also through [signInWithRefreshToken] and
+  /// [signInWithStoredCredentials].
   ///
   /// The returned function will remove the callback when called.
   UnsubscribeDelegate addSessionRefreshFailedCallback(
