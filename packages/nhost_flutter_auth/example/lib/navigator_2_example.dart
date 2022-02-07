@@ -7,7 +7,7 @@
 ///
 /// When the router delegate is requested to navigate to a [ProtectedRoutePath],
 /// it will first check to see if the user is authenticated. If they are,
-/// navigation will proceed. If not, they will be forwarded to the login page,
+/// navigation will proceed. If not, they will be forwarded to the sign in page,
 /// where they can authenticate, and upon success proceed to their requested
 /// route.
 library simple_auth_example;
@@ -126,21 +126,21 @@ class ExampleRouterDelegate extends RouterDelegate<ExampleRoutePath>
     //
     // In this case, if the requested route path implements `AuthRequiredPath`,
     // then it requires a logged-in Nhost user. If none exists, the user will
-    // be shown the login page.
+    // be shown the sign in page.
     final auth = NhostAuthProvider.of(context)!;
     final requestedRoutePath = navigator.requestedRoutePath;
-    final isLoginPageRequested = requestedRoutePath is LoginRoutePath &&
+    final isSignInPageRequested = requestedRoutePath is SignInRoutePath &&
         auth.authenticationState != AuthenticationState.signedIn;
-    final needsLogin = requestedRoutePath is ProtectedRoutePath &&
+    final needsSignIn = requestedRoutePath is ProtectedRoutePath &&
         auth.authenticationState != AuthenticationState.signedIn;
 
     return Navigator(
       key: navigatorKey,
       pages: [
         MaterialPage(child: AppFrame(child: HomePage())),
-        if (isLoginPageRequested || needsLogin)
-          MaterialPage(child: AppFrame(child: LoginPage())),
-        if (requestedRoutePath is AdminRoutePath && !needsLogin)
+        if (isSignInPageRequested || needsSignIn)
+          MaterialPage(child: AppFrame(child: SignInPage())),
+        if (requestedRoutePath is AdminRoutePath && !needsSignIn)
           MaterialPage(child: AppFrame(child: AdminPage())),
       ],
       onPopPage: (route, result) {
@@ -163,8 +163,8 @@ class ExampleRouteInformationParser
     if (uri.pathSegments.isNotEmpty) {
       if (uri.pathSegments.first == 'admin') {
         return AdminRoutePath();
-      } else if (uri.pathSegments.first == 'login') {
-        return LoginRoutePath();
+      } else if (uri.pathSegments.first == 'signin') {
+        return SignInRoutePath();
       } else {
         return HomeRoutePath();
       }
@@ -181,8 +181,8 @@ class ExampleRouteInformationParser
     if (configuration is AdminRoutePath) {
       return RouteInformation(location: '/admin');
     }
-    if (configuration is LoginRoutePath) {
-      return RouteInformation(location: '/login');
+    if (configuration is SignInRoutePath) {
+      return RouteInformation(location: '/signin');
     }
 
     throw ('Unsupported configuration');
@@ -204,8 +204,8 @@ class AdminRoutePath extends ExampleRoutePath implements ProtectedRoutePath {}
 /// The home page's route, accessible to both admin and anonymous users
 class HomeRoutePath extends ExampleRoutePath {}
 
-/// The login page's route
-class LoginRoutePath extends ExampleRoutePath {}
+/// The sign in page's route
+class SignInRoutePath extends ExampleRoutePath {}
 
 class HomePage extends StatelessWidget {
   @override
@@ -257,9 +257,9 @@ class HomePage extends StatelessWidget {
             if (auth.authenticationState == AuthenticationState.signedOut)
               ElevatedButton(
                 onPressed: () {
-                  navigator.requestRoutePath(LoginRoutePath());
+                  navigator.requestRoutePath(SignInRoutePath());
                 },
-                child: Text('Login'),
+                child: Text('Sign In'),
               ),
             if (auth.authenticationState == AuthenticationState.signedIn)
               ElevatedButton(
@@ -275,7 +275,7 @@ class HomePage extends StatelessWidget {
   }
 }
 
-class LoginPage extends StatelessWidget {
+class SignInPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final navigator = Provider.of<ExampleNavigator>(context);
@@ -301,7 +301,7 @@ class LoginPage extends StatelessWidget {
             ),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-            child: LoginForm(),
+            child: SignInForm(),
           ),
         ],
       ),
@@ -351,7 +351,7 @@ class AppFrame extends StatelessWidget {
             IconButton(
               icon: Icon(Icons.login),
               onPressed: () {
-                navigator.requestRoutePath(LoginRoutePath());
+                navigator.requestRoutePath(SignInRoutePath());
               },
             ),
           if (auth.authenticationState == AuthenticationState.signedIn)

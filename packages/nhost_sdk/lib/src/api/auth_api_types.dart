@@ -1,5 +1,6 @@
 import 'dart:core';
 
+import '../auth.dart';
 import 'core_codec.dart';
 
 /// Describes the client's authorization state.
@@ -143,12 +144,12 @@ class User {
   }
 }
 
-/// Describes information required to perform an MFA login.
+/// Describes information required to perform an MFA sign in.
 class MultiFactorAuthenticationInfo {
   MultiFactorAuthenticationInfo({required this.ticket});
 
-  /// Ticket string to be provided to [Auth.completeMfaLogin] in order to continue the
-  /// login process
+  /// Ticket string to be provided to [AuthClient.completeMfaSignIn] in order
+  /// to continue the sign in process
   final String ticket;
 
   static MultiFactorAuthenticationInfo fromJson(dynamic json) {

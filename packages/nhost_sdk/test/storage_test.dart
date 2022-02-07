@@ -42,7 +42,7 @@ void main() async {
     client = createApiTestClient(httpClient);
 
     // Register the basic user
-    await registerAndLoginBasicUser(client.auth);
+    await registerAndSignInBasicUser(client.auth);
 
     // Provide a few values to tests
     storage = client.storage;

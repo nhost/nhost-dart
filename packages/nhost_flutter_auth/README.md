@@ -4,7 +4,8 @@
 [![nhost_flutter_auth tests](https://github.com/nhost/nhost-dart/actions/workflows/test.nhost_flutter_auth.yaml/badge.svg)](https://github.com/nhost/nhost-dart/actions/workflows/test.nhost_flutter_auth.yaml)
 
 Provides [Nhost](https://nhost.io) authentication state to your Flutter app,
-making it easy to set up protected resources, and react to logins and logouts.
+making it easy to set up protected resources, and react to sign ins and sign
+outs.
 
 ## Getting Started
 ### Latest Release

@@ -8,7 +8,7 @@ and Flutter.
 
 Includes support for:
 
-* User login and registration, including multi-factor authentication
+* User sign in and registration, including multi-factor authentication
 * Email and password changes, either directly or via email confirmation
 * Storage and retrieval of arbitrary files
 * Scaling and transformation of stored files

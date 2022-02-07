@@ -19,22 +19,22 @@
           "surrogate-control": "no-store",
           "cache-control": "no-store, no-cache, must-revalidate, proxy-revalidate",
           "x-dns-prefetch-control": "off",
-          "date": "Thu, 03 Feb 2022 08:55:12 GMT",
+          "date": "Mon, 07 Feb 2022 02:31:17 GMT",
           "access-control-allow-origin": "*",
           "strict-transport-security": "max-age=15552000; includeSubDomains",
           "content-type": "application/json; charset=utf-8",
           "pragma": "no-cache",
           "x-xss-protection": "1; mode=block",
-          "content-length": "913",
+          "content-length": "912",
           "x-download-options": "noopen",
-          "etag": "W/\"391-BzNPbQVK1XTI/CfR/wg0yJL3di8\"",
+          "etag": "W/\"390-klKhCM9oFvbJ1dJX9Ib8mgOFu6U\"",
           "x-frame-options": "SAMEORIGIN",
           "x-content-type-options": "nosniff",
           "expires": "0"
         },
         "body": {
           "encoding": "utf-8",
-          "string": "{\"session\":{\"accessToken\":\"eyJhbGciOiJIUzI1NiJ9.eyJodHRwczovL2hhc3VyYS5pby9qd3QvY2xhaW1zIjp7IngtaGFzdXJhLWFsbG93ZWQtcm9sZXMiOlsidXNlciIsIm1lIl0sIngtaGFzdXJhLWRlZmF1bHQtcm9sZSI6InVzZXIiLCJ4LWhhc3VyYS11c2VyLWlkIjoiM2JkMjZjZjQtMzRkNi00ZjcxLTlkOTItZWZkZTJhN2NlN2Q5IiwieC1oYXN1cmEtdXNlci1pc0Fub255bW91cyI6ImZhbHNlIn0sInN1YiI6IjNiZDI2Y2Y0LTM0ZDYtNGY3MS05ZDkyLWVmZGUyYTdjZTdkOSIsImlzcyI6Imhhc3VyYS1hdXRoIiwiaWF0IjoxNjQzODc4NTEyLCJleHAiOjE2NDM4Nzk0MTJ9.qexKdy7XhTsi1j37hgu2fQJOIq22zavoSKb-wqgJ8QY\",\"accessTokenExpiresIn\":900,\"refreshToken\":\"73845d48-6fdd-4990-b335-04f504d1cf5b\",\"user\":{\"id\":\"3bd26cf4-34d6-4f71-9d92-efde2a7ce7d9\",\"createdAt\":\"2022-02-03T08:55:12.672785+00:00\",\"displayName\":\"user-1@nhost.io\",\"avatarUrl\":\"https://s.gravatar.com/avatar/d86c12c3233e91ec90869a1f874cdf0e?r=g&default=blank\",\"locale\":\"en\",\"email\":\"user-1@nhost.io\",\"isAnonymous\":false,\"defaultRole\":\"user\",\"roles\":[\"user\",\"me\"]}},\"mfa\":null}"
+          "string": "{\"session\":{\"accessToken\":\"eyJhbGciOiJIUzI1NiJ9.eyJodHRwczovL2hhc3VyYS5pby9qd3QvY2xhaW1zIjp7IngtaGFzdXJhLWFsbG93ZWQtcm9sZXMiOlsidXNlciIsIm1lIl0sIngtaGFzdXJhLWRlZmF1bHQtcm9sZSI6InVzZXIiLCJ4LWhhc3VyYS11c2VyLWlkIjoiNDcwOWM3ZTktODRlYy00MjdiLTk1MDItOTBjMThjZmM3YjFhIiwieC1oYXN1cmEtdXNlci1pc0Fub255bW91cyI6ImZhbHNlIn0sInN1YiI6IjQ3MDljN2U5LTg0ZWMtNDI3Yi05NTAyLTkwYzE4Y2ZjN2IxYSIsImlzcyI6Imhhc3VyYS1hdXRoIiwiaWF0IjoxNjQ0MjAxMDc3LCJleHAiOjE2NDQyMDE5Nzd9.VIFy2XK6ADrkWpTZTRAVo4TOn9J8-cGYex_5wUpVN4w\",\"accessTokenExpiresIn\":900,\"refreshToken\":\"cbe3bd59-e3d3-4c48-8176-e192287ca441\",\"user\":{\"id\":\"4709c7e9-84ec-427b-9502-90c18cfc7b1a\",\"createdAt\":\"2022-02-07T02:31:17.92026+00:00\",\"displayName\":\"user-1@nhost.io\",\"avatarUrl\":\"https://s.gravatar.com/avatar/d86c12c3233e91ec90869a1f874cdf0e?r=g&default=blank\",\"locale\":\"en\",\"email\":\"user-1@nhost.io\",\"isAnonymous\":false,\"defaultRole\":\"user\",\"roles\":[\"user\",\"me\"]}},\"mfa\":null}"
         }
       }
     },
@@ -56,7 +56,7 @@
           "surrogate-control": "no-store",
           "cache-control": "no-store, no-cache, must-revalidate, proxy-revalidate",
           "x-dns-prefetch-control": "off",
-          "date": "Thu, 03 Feb 2022 08:55:12 GMT",
+          "date": "Mon, 07 Feb 2022 02:31:18 GMT",
           "access-control-allow-origin": "*",
           "strict-transport-security": "max-age=15552000; includeSubDomains",
           "content-type": "application/json; charset=utf-8",
@@ -93,7 +93,7 @@
           "surrogate-control": "no-store",
           "cache-control": "no-store, no-cache, must-revalidate, proxy-revalidate",
           "x-dns-prefetch-control": "off",
-          "date": "Thu, 03 Feb 2022 08:55:12 GMT",
+          "date": "Mon, 07 Feb 2022 02:31:18 GMT",
           "access-control-allow-origin": "*",
           "strict-transport-security": "max-age=15552000; includeSubDomains",
           "content-type": "text/plain; charset=utf-8",

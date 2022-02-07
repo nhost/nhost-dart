@@ -47,7 +47,7 @@ class App extends StatelessWidget {
         widget = TodosPage();
         break;
       case AuthenticationState.signedOut:
-        widget = LoginPage();
+        widget = SignInPage();
         break;
       default:
         widget = SizedBox();
@@ -308,12 +308,12 @@ class Todo {
   final bool isCompleted;
 }
 
-class LoginPage extends StatefulWidget {
+class SignInPage extends StatefulWidget {
   @override
-  _LoginPageState createState() => _LoginPageState();
+  _SignInPageState createState() => _SignInPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _SignInPageState extends State<SignInPage> {
   final formKey = GlobalKey<FormState>();
   late TextEditingController emailController;
   late TextEditingController passwordController;
@@ -332,7 +332,7 @@ class _LoginPageState extends State<LoginPage> {
     passwordController.dispose();
   }
 
-  void tryLogin() async {
+  void trySignIn() async {
     final auth = NhostAuthProvider.of(context)!;
 
     try {
@@ -341,7 +341,7 @@ class _LoginPageState extends State<LoginPage> {
     } on ApiException {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Login Failed'),
+          content: Text('Sign in Failed'),
         ),
       );
     }
@@ -363,7 +363,7 @@ class _LoginPageState extends State<LoginPage> {
                 border: OutlineInputBorder(),
               ),
               autofocus: true,
-              onFieldSubmitted: (_) => tryLogin(),
+              onFieldSubmitted: (_) => trySignIn(),
             ),
             const SizedBox(height: 12),
             TextFormField(
@@ -373,11 +373,11 @@ class _LoginPageState extends State<LoginPage> {
                 border: OutlineInputBorder(),
               ),
               obscureText: true,
-              onFieldSubmitted: (_) => tryLogin(),
+              onFieldSubmitted: (_) => trySignIn(),
             ),
             const SizedBox(height: 20),
             ElevatedButton(
-              onPressed: tryLogin,
+              onPressed: trySignIn,
               child: Text('Submit'),
             )
           ],

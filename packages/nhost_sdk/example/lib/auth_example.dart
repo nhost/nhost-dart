@@ -5,7 +5,7 @@ import 'config.dart';
 void main() async {
   // Setup
   final client = NhostClient(backendUrl: nhostUrl);
-  await loginOrRegister(client,
+  await signInOrSignUp(client,
       email: 'user-1@nhost.io', password: 'password-1');
 
   // Print out a few details about the current user
@@ -21,7 +21,7 @@ void main() async {
   client.close();
 }
 
-Future<void> loginOrRegister(
+Future<void> signInOrSignUp(
   NhostClient client, {
   required String email,
   required String password,
@@ -30,7 +30,7 @@ Future<void> loginOrRegister(
     await client.auth.signIn(email: email, password: password);
     return;
   } on ApiException {
-    // Login failed, so try to register instead
+    // Sign in failed, so try to register instead
   }
   await client.auth.signUp(email: email, password: password);
 }

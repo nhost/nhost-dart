@@ -36,7 +36,7 @@ typedef UnsubscribeDelegate = void Function();
 const refreshTokenClientStorageKey = 'nhostRefreshToken';
 
 /// The query parameter name for the refresh token provided during OAuth
-/// provider-based logins.
+/// provider-based sign-ins.
 const refreshTokenQueryParamName = 'refresh_token';
 
 /// The Nhost authentication service.
@@ -92,7 +92,7 @@ class AuthClient {
   User? get currentUser => _currentUser;
   User? _currentUser;
 
-  /// Whether a user is logged in, not logged in, or if a login is in process.
+  /// Whether a user is logged in, not logged in, or if a sign-in is in process.
   AuthenticationState get authenticationState {
     if (_loading) return AuthenticationState.inProgress;
     return _session.session != null
@@ -386,8 +386,7 @@ class AuthClient {
   /// the QR-code with their password manager.
   ///
   /// The password manager will return a code (one-time password) that will be
-  /// used to [enableMfa] and [disableMfa] for the user and login the user using
-  /// TOTP login.
+  /// used to [enableMfa] and [disableMfa].
   ///
   /// Throws an [NhostException] if MFA generation fails.
   Future<MultiFactorAuthResponse> generateMfa() async {
@@ -431,7 +430,7 @@ class AuthClient {
     );
   }
 
-  /// Complete an MFA login using a time-based one-time password.
+  /// Complete an MFA sign in using a time-based one-time password.
   ///
   /// This is only necessary if the user has MFA enabled.
   ///
@@ -460,7 +459,7 @@ class AuthClient {
 
   //#region OAuth providers
 
-  /// Completes an OAuth provider login, given the Nhost OAuth provider's
+  /// Completes an OAuth provider sign in, given the Nhost OAuth provider's
   /// [redirectUrl].
   ///
   /// For more information on redirect URLs, see

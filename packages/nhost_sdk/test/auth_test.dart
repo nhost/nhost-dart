@@ -130,7 +130,7 @@ void main() async {
     late String refreshToken;
     // Each tests registers a basic user, and leaves auth in a logged out state
     setUp(() async {
-      final res = await registerAndLoginBasicUser(auth);
+      final res = await registerAndSignInBasicUser(auth);
       refreshToken = res.session!.refreshToken!;
       // Don't log out, so we can keep a valid refresh token
       await auth.clearSession();
@@ -237,7 +237,7 @@ void main() async {
   group('signOut', () {
     // All signOut tests log a user in first
     setUp(() async {
-      await registerAndLoginBasicUser(auth);
+      await registerAndSignInBasicUser(auth);
       assert(auth.currentUser != null);
     });
 
@@ -277,13 +277,13 @@ void main() async {
       });
     });
 
-    test('should be called on login', () async {
+    test('should be called on sign in', () async {
       await registerTestUser(auth);
       await auth.signIn(email: testEmail, password: testPassword);
       expect(authStateVar, AuthenticationState.signedIn);
     });
 
-    test('should be called on signOut', () async {
+    test('should be called on sign out', () async {
       await registerTestUser(auth);
       await auth.signOut();
       expect(authStateVar, AuthenticationState.signedOut);
@@ -412,7 +412,7 @@ void main() async {
 
   group('email change', () {
     setUp(() async {
-      await registerAndLoginBasicUser(auth);
+      await registerAndSignInBasicUser(auth);
     });
 
     // This should be tested, but requires a server configured with
@@ -457,7 +457,7 @@ void main() async {
 
   group('password change', () {
     setUp(() async {
-      await registerAndLoginBasicUser(auth);
+      await registerAndSignInBasicUser(auth);
     });
 
     test('should be able to change password directly', () async {
@@ -499,7 +499,7 @@ void main() async {
 
   group('multi-factor authentication', () {
     test('can be enabled on a user', () async {
-      await registerAndLoginBasicUser(auth);
+      await registerAndSignInBasicUser(auth);
 
       // Ask the backend to generate MFA configuration, and from that, generate
       // a time-based OTP.
@@ -512,7 +512,7 @@ void main() async {
       );
     });
 
-    test('should require TOTP for login once enabled', () async {
+    test('should require TOTP for sign in once enabled', () async {
       final otpSecret = await registerMfaUser(auth);
 
       final firstFactorAuthResult =

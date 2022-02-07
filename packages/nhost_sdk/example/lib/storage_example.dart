@@ -6,7 +6,7 @@ import 'config.dart';
 void main() async {
   // Setup
   final client = NhostClient(backendUrl: nhostUrl);
-  await loginOrRegister(client,
+  await signInOrSignUp(client,
       email: 'user-1@nhost.io', password: 'password-1');
 
   // Create a new file...

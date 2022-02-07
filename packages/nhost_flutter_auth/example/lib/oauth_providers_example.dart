@@ -1,5 +1,5 @@
-/// This example demonstrates the ability to login using an OAuth 2.0 provider,
-/// on Android and iOS.
+/// This example demonstrates the ability to sign in using an OAuth 2.0
+/// provider, on Android and iOS.
 ///
 /// This example depends on the `url_launcher` and `app_links` packages
 /// (https://pub.dev/packages/flutter_appauth), and requires that you set up a
@@ -20,10 +20,10 @@ import 'config.dart';
 import 'simple_auth_example.dart';
 
 /// Fill in this value with the backend URL found on your Nhost project page.
-const nhostGithubLoginUrl = '$nhostUrl/v1/auth/providers/github/';
+const nhostGithubSignInUrl = '$nhostUrl/v1/auth/providers/github/';
 
-const loginSuccessHost = 'oauth.login.success';
-const loginFailureHost = 'oauth.login.failure';
+const signInSuccessHost = 'oauth.login.success';
+const signInFailureHost = 'oauth.login.failure';
 
 void main() async {
   runApp(OAuthExample());
@@ -47,7 +47,7 @@ class _OAuthExampleState extends State<OAuthExample> {
 
     appLinks = AppLinks(
       onAppLink: (uri, stringUri) async {
-        if (uri.host == loginSuccessHost) {
+        if (uri.host == signInSuccessHost) {
           // ignore: unawaited_futures
           nhostClient.auth.completeOAuthProviderSignIn(uri);
         }
@@ -91,7 +91,7 @@ class ExampleProtectedScreen extends StatelessWidget {
         widget = LoggedInUserDetails();
         break;
       default:
-        widget = ProviderLoginForm();
+        widget = ProviderSignInForm();
         break;
     }
 
@@ -102,14 +102,14 @@ class ExampleProtectedScreen extends StatelessWidget {
   }
 }
 
-class ProviderLoginForm extends StatelessWidget {
+class ProviderSignInForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextButton(
       onPressed: () async {
         try {
           await url_launcher.launch(
-            nhostGithubLoginUrl,
+            nhostGithubSignInUrl,
             forceSafariVC: true,
           );
         } on Exception {

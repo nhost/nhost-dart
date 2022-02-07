@@ -1,0 +1,116 @@
+{
+  "name": "auth/authentication_state_callbacks/should_be_called_on_sign_in.json",
+  "interactions": [
+    {
+      "request": {
+        "method": "post",
+        "uri": "http://localhost:1337/v1/auth/signup/email-password",
+        "headers": {
+          "content-type": "application/json; charset=utf-8"
+        },
+        "body": {
+          "encoding": "utf-8",
+          "string": "{\"email\":\"user-1@nhost.io\",\"password\":\"password-1\"}"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "surrogate-control": "no-store",
+          "cache-control": "no-store, no-cache, must-revalidate, proxy-revalidate",
+          "x-dns-prefetch-control": "off",
+          "date": "Mon, 07 Feb 2022 02:31:19 GMT",
+          "access-control-allow-origin": "*",
+          "strict-transport-security": "max-age=15552000; includeSubDomains",
+          "content-type": "application/json; charset=utf-8",
+          "pragma": "no-cache",
+          "x-xss-protection": "1; mode=block",
+          "content-length": "913",
+          "x-download-options": "noopen",
+          "etag": "W/\"391-bBTMUGC3XBb4536D2aHZbFhSlBo\"",
+          "x-frame-options": "SAMEORIGIN",
+          "x-content-type-options": "nosniff",
+          "expires": "0"
+        },
+        "body": {
+          "encoding": "utf-8",
+          "string": "{\"session\":{\"accessToken\":\"eyJhbGciOiJIUzI1NiJ9.eyJodHRwczovL2hhc3VyYS5pby9qd3QvY2xhaW1zIjp7IngtaGFzdXJhLWFsbG93ZWQtcm9sZXMiOlsidXNlciIsIm1lIl0sIngtaGFzdXJhLWRlZmF1bHQtcm9sZSI6InVzZXIiLCJ4LWhhc3VyYS11c2VyLWlkIjoiNGY1OTVhMTUtMGYyMy00YTAxLWExNTQtOGI0MTU2YzE2YTYwIiwieC1oYXN1cmEtdXNlci1pc0Fub255bW91cyI6ImZhbHNlIn0sInN1YiI6IjRmNTk1YTE1LTBmMjMtNGEwMS1hMTU0LThiNDE1NmMxNmE2MCIsImlzcyI6Imhhc3VyYS1hdXRoIiwiaWF0IjoxNjQ0MjAxMDc5LCJleHAiOjE2NDQyMDE5Nzl9.mGvW55g9xpI2eBU_ougMf2nfW8UJM1voTqQLut4fjd0\",\"accessTokenExpiresIn\":900,\"refreshToken\":\"c851edab-535d-45d9-ba8e-91208f1c8029\",\"user\":{\"id\":\"4f595a15-0f23-4a01-a154-8b4156c16a60\",\"createdAt\":\"2022-02-07T02:31:19.567376+00:00\",\"displayName\":\"user-1@nhost.io\",\"avatarUrl\":\"https://s.gravatar.com/avatar/d86c12c3233e91ec90869a1f874cdf0e?r=g&default=blank\",\"locale\":\"en\",\"email\":\"user-1@nhost.io\",\"isAnonymous\":false,\"defaultRole\":\"user\",\"roles\":[\"user\",\"me\"]}},\"mfa\":null}"
+        }
+      }
+    },
+    {
+      "request": {
+        "method": "post",
+        "uri": "http://localhost:1337/v1/auth/signout",
+        "headers": {
+          "content-type": "application/json; charset=utf-8"
+        },
+        "body": {
+          "encoding": "utf-8",
+          "string": "{\"refreshToken\":\"c851edab-535d-45d9-ba8e-91208f1c8029\",\"all\":false}"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "surrogate-control": "no-store",
+          "cache-control": "no-store, no-cache, must-revalidate, proxy-revalidate",
+          "x-dns-prefetch-control": "off",
+          "date": "Mon, 07 Feb 2022 02:31:19 GMT",
+          "access-control-allow-origin": "*",
+          "strict-transport-security": "max-age=15552000; includeSubDomains",
+          "content-type": "text/html; charset=utf-8",
+          "pragma": "no-cache",
+          "x-xss-protection": "1; mode=block",
+          "content-length": "2",
+          "x-download-options": "noopen",
+          "etag": "W/\"2-nOO9QiTIwXgNtWtBJezz8kv3SLc\"",
+          "x-frame-options": "SAMEORIGIN",
+          "x-content-type-options": "nosniff",
+          "expires": "0"
+        },
+        "body": {
+          "encoding": "utf-8",
+          "string": "OK"
+        }
+      }
+    },
+    {
+      "request": {
+        "method": "post",
+        "uri": "http://localhost:1337/v1/auth/signin/email-password",
+        "headers": {
+          "content-type": "application/json; charset=utf-8"
+        },
+        "body": {
+          "encoding": "utf-8",
+          "string": "{\"email\":\"user-1@nhost.io\",\"password\":\"password-1\"}"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "surrogate-control": "no-store",
+          "cache-control": "no-store, no-cache, must-revalidate, proxy-revalidate",
+          "x-dns-prefetch-control": "off",
+          "date": "Mon, 07 Feb 2022 02:31:19 GMT",
+          "access-control-allow-origin": "*",
+          "strict-transport-security": "max-age=15552000; includeSubDomains",
+          "content-type": "application/json; charset=utf-8",
+          "pragma": "no-cache",
+          "x-xss-protection": "1; mode=block",
+          "content-length": "913",
+          "x-download-options": "noopen",
+          "etag": "W/\"391-eWUf3dXonbPhA7Sfn5f/suKXQ2s\"",
+          "x-frame-options": "SAMEORIGIN",
+          "x-content-type-options": "nosniff",
+          "expires": "0"
+        },
+        "body": {
+          "encoding": "utf-8",
+          "string": "{\"session\":{\"accessToken\":\"eyJhbGciOiJIUzI1NiJ9.eyJodHRwczovL2hhc3VyYS5pby9qd3QvY2xhaW1zIjp7IngtaGFzdXJhLWFsbG93ZWQtcm9sZXMiOlsidXNlciIsIm1lIl0sIngtaGFzdXJhLWRlZmF1bHQtcm9sZSI6InVzZXIiLCJ4LWhhc3VyYS11c2VyLWlkIjoiNGY1OTVhMTUtMGYyMy00YTAxLWExNTQtOGI0MTU2YzE2YTYwIiwieC1oYXN1cmEtdXNlci1pc0Fub255bW91cyI6ImZhbHNlIn0sInN1YiI6IjRmNTk1YTE1LTBmMjMtNGEwMS1hMTU0LThiNDE1NmMxNmE2MCIsImlzcyI6Imhhc3VyYS1hdXRoIiwiaWF0IjoxNjQ0MjAxMDc5LCJleHAiOjE2NDQyMDE5Nzl9.mGvW55g9xpI2eBU_ougMf2nfW8UJM1voTqQLut4fjd0\",\"accessTokenExpiresIn\":900,\"refreshToken\":\"d9df1145-59b4-473f-a0de-b53955e27a91\",\"user\":{\"id\":\"4f595a15-0f23-4a01-a154-8b4156c16a60\",\"createdAt\":\"2022-02-07T02:31:19.567376+00:00\",\"displayName\":\"user-1@nhost.io\",\"avatarUrl\":\"https://s.gravatar.com/avatar/d86c12c3233e91ec90869a1f874cdf0e?r=g&default=blank\",\"locale\":\"en\",\"email\":\"user-1@nhost.io\",\"isAnonymous\":false,\"defaultRole\":\"user\",\"roles\":[\"user\",\"me\"]}},\"mfa\":null}"
+        }
+      }
+    }
+  ]
+}

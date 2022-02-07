@@ -1,4 +1,4 @@
-/// Demonstrates login, logout, and requiring authentication to access a
+/// Demonstrates sign in, logout, and requiring authentication to access a
 /// resource.
 library simple_auth_example;
 
@@ -62,7 +62,7 @@ class ExampleProtectedScreen extends StatelessWidget {
         widget = LoggedInUserDetails();
         break;
       case AuthenticationState.signedOut:
-        widget = LoginForm();
+        widget = SignInForm();
         break;
       default:
         widget = SizedBox();
@@ -78,12 +78,12 @@ class ExampleProtectedScreen extends StatelessWidget {
 
 const rowSpacing = SizedBox(height: 12);
 
-class LoginForm extends StatefulWidget {
+class SignInForm extends StatefulWidget {
   @override
-  _LoginFormState createState() => _LoginFormState();
+  _SignInFormState createState() => _SignInFormState();
 }
 
-class _LoginFormState extends State<LoginForm> {
+class _SignInFormState extends State<SignInForm> {
   final formKey = GlobalKey<FormState>();
   late TextEditingController emailController;
   late TextEditingController passwordController;
@@ -102,7 +102,7 @@ class _LoginFormState extends State<LoginForm> {
     passwordController.dispose();
   }
 
-  void tryLogin() async {
+  void trySignIn() async {
     final auth = NhostAuthProvider.of(context)!;
 
     try {
@@ -111,7 +111,7 @@ class _LoginFormState extends State<LoginForm> {
     } on ApiException {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Login Failed'),
+          content: Text('Sign in Failed'),
         ),
       );
     } on SocketException {
@@ -138,7 +138,7 @@ class _LoginFormState extends State<LoginForm> {
                 hintText: 'Email',
                 border: OutlineInputBorder(),
               ),
-              onFieldSubmitted: (_) => tryLogin(),
+              onFieldSubmitted: (_) => trySignIn(),
             ),
             rowSpacing,
             TextFormField(
@@ -148,11 +148,11 @@ class _LoginFormState extends State<LoginForm> {
                 border: OutlineInputBorder(),
               ),
               obscureText: true,
-              onFieldSubmitted: (_) => tryLogin(),
+              onFieldSubmitted: (_) => trySignIn(),
             ),
             const SizedBox(height: 20),
             ElevatedButton(
-              onPressed: tryLogin,
+              onPressed: trySignIn,
               child: Text('Submit'),
             )
           ],

@@ -223,7 +223,7 @@ void main() {
       expect(connectionCount, 1);
       expect(initPayload['payload']['headers'], {});
 
-      // Fake a login
+      // Fake a sign in
       await nhost.auth.setSession(testSession);
 
       // Wait longer than the test inactivity timeout
