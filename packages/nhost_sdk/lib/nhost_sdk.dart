@@ -3,21 +3,21 @@ library nhost_sdk;
 import 'package:http/http.dart' as http;
 import 'package:nhost_sdk/src/logging.dart';
 
-import 'src/auth.dart';
+import 'src/auth_client.dart';
 import 'src/auth_store.dart';
-import 'src/functions.dart';
+import 'src/functions_client.dart';
 import 'src/session.dart';
-import 'src/storage.dart';
+import 'src/storage_client.dart';
 
 export 'src/api/api_client.dart' show ApiException;
 export 'src/api/auth_api_types.dart';
 export 'src/api/storage_api_types.dart';
 export 'src/auth_store.dart';
-export 'src/auth.dart';
+export 'src/auth_client.dart';
 export 'src/errors.dart';
-export 'src/functions.dart';
+export 'src/functions_client.dart';
 export 'src/logging.dart' show debugLogNhostErrorsToConsole;
-export 'src/storage.dart';
+export 'src/storage_client.dart';
 
 /// API client for accessing Nhost's authentication and storage APIs.
 ///

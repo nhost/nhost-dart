@@ -1,4 +1,4 @@
-import '../storage.dart';
+import '../storage_client.dart';
 
 /// Describes a file stored by Nhost.
 ///
