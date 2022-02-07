@@ -36,7 +36,7 @@ void main() async {
 
   // Now authenticate...
   await nhostClient.auth
-      .signIn(email: 'scott@madewithfelt.com', password: 'foofoo');
+      .signInEmailPassword(email: 'scott@madewithfelt.com', password: 'foofoo');
 
   // ...and try again, authenticated
   queryResult = await graphqlClient.query(

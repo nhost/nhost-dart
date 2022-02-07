@@ -27,7 +27,7 @@ Future<void> signInOrSignUp(
   required String password,
 }) async {
   try {
-    await client.auth.signIn(email: email, password: password);
+    await client.auth.signInEmailPassword(email: email, password: password);
     return;
   } on ApiException {
     // Sign in failed, so try to register instead

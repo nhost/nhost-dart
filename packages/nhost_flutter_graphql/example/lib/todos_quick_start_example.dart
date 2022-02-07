@@ -336,7 +336,7 @@ class _SignInPageState extends State<SignInPage> {
     final auth = NhostAuthProvider.of(context)!;
 
     try {
-      await auth.signIn(
+      await auth.signInEmailPassword(
           email: emailController.text, password: passwordController.text);
     } on ApiException {
       ScaffoldMessenger.of(context).showSnackBar(

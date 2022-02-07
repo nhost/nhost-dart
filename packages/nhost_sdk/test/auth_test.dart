@@ -139,26 +139,26 @@ void main() async {
 
     test('should be able to signIn with the correct password', () async {
       expect(
-        auth.signIn(email: testEmail, password: testPassword),
+        auth.signInEmailPassword(email: testEmail, password: testPassword),
         completes,
       );
     });
 
     test('should be able to signOut and signIn', () async {
       await expectLater(
-        auth.signIn(email: testEmail, password: testPassword),
+        auth.signInEmailPassword(email: testEmail, password: testPassword),
         completes,
       );
       await auth.signOut();
       expect(
-        auth.signIn(email: testEmail, password: testPassword),
+        auth.signInEmailPassword(email: testEmail, password: testPassword),
         completes,
       );
     });
 
     test('should not be able to signIn with wrong password', () async {
       expect(
-        auth.signIn(email: testEmail, password: 'wrong-password-1'),
+        auth.signInEmailPassword(email: testEmail, password: 'wrong-password-1'),
         throwsA(isA<ApiException>().having(
           (e) => e.statusCode,
           'statusCode',
@@ -168,17 +168,17 @@ void main() async {
     });
 
     test('should be authenticated', () async {
-      await auth.signIn(email: testEmail, password: testPassword);
+      await auth.signInEmailPassword(email: testEmail, password: testPassword);
       expect(auth.authenticationState, AuthenticationState.signedIn);
     });
 
     test('should be able to retreive JWT Token', () async {
-      await auth.signIn(email: testEmail, password: testPassword);
+      await auth.signInEmailPassword(email: testEmail, password: testPassword);
       expect(auth.accessToken, isA<String>());
     });
 
     test('should be able to get user id as JWT claim', () async {
-      await auth.signIn(email: testEmail, password: testPassword);
+      await auth.signInEmailPassword(email: testEmail, password: testPassword);
       expect(auth.getClaim('x-hasura-user-id'), isA<String>());
     });
 
@@ -279,7 +279,7 @@ void main() async {
 
     test('should be called on sign in', () async {
       await registerTestUser(auth);
-      await auth.signIn(email: testEmail, password: testPassword);
+      await auth.signInEmailPassword(email: testEmail, password: testPassword);
       expect(authStateVar, AuthenticationState.signedIn);
     });
 
@@ -292,7 +292,7 @@ void main() async {
     test('should not be called once unsubscribed', () async {
       await registerTestUser(auth);
       unsubscribe();
-      await auth.signIn(email: testEmail, password: testPassword);
+      await auth.signInEmailPassword(email: testEmail, password: testPassword);
       expect(authStateVar, AuthenticationState.signedOut);
     });
   });
@@ -472,7 +472,7 @@ void main() async {
       // Now signOut, and try with the new pass
       await auth.signOut();
       expect(
-        auth.signIn(email: testEmail, password: newPassword),
+        auth.signInEmailPassword(email: testEmail, password: newPassword),
         completes,
       );
     });
@@ -516,7 +516,7 @@ void main() async {
       final otpSecret = await registerMfaUser(auth);
 
       final firstFactorAuthResult =
-          await auth.signIn(email: testEmail, password: testPassword);
+          await auth.signInEmailPassword(email: testEmail, password: testPassword);
       expect(firstFactorAuthResult.user, isNull);
       expect(auth.authenticationState, AuthenticationState.signedOut);
       expect(auth.accessToken, isNull);
