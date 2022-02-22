@@ -246,7 +246,7 @@ class AuthClient {
     required String email,
     required String password,
   }) async {
-    log.finer('Attempting sign in');
+    log.finer('Attempting sign in (email-password)');
     AuthResponse? res;
     try {
       res = await _apiClient.post(
@@ -280,6 +280,7 @@ class AuthClient {
   ///
   /// Throws an [NhostException] if sign in fails.
   Future<AuthResponse> signInWithStoredCredentials() async {
+    log.finer('Attempting sign in (stored credentials)');
     return AuthResponse(session: await _refreshSession());
   }
 
@@ -290,6 +291,7 @@ class AuthClient {
   ///
   /// Throws an [NhostException] if sign in fails.
   Future<AuthResponse> signInWithRefreshToken(String refreshToken) async {
+    log.finer('Attempting sign in (token)');
     return AuthResponse(session: await _refreshSession(refreshToken));
   }
 
