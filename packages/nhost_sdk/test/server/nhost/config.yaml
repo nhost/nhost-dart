@@ -12,14 +12,14 @@ auth:
       blocked_emails: ""
     url:
       allowed_redirect_urls: ""
-  anonymous_users_enabled: false
+  anonymous_users_enabled: true
   client_url: http://localhost:3000
   disable_new_users: false
   mfa_enabled: true
   email:
     enabled: false
     passwordless:
-      enabled: false
+      enabled: true
     signin_email_verified_required: false
     template_fetch_url: ""
   gravatar:
@@ -98,7 +98,7 @@ auth:
   sms:
     enabled: false
     passwordless:
-      enabled: false
+      enabled: true
     provider:
       twilio:
         account_sid: ""

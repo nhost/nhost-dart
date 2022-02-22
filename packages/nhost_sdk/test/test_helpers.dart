@@ -2,6 +2,7 @@ import 'package:nhost_sdk/nhost_sdk.dart';
 import 'package:otp/otp.dart';
 
 const defaultTestEmail = 'user-1@nhost.io';
+const defaultTestPhone = '289-289-2899';
 const defaultTestPassword = 'password-1';
 final defaultCreatedAt = DateTime(1983);
 

@@ -44,7 +44,7 @@ void main() async {
   });
 
   tearDown(() {
-    nhost.close();
+    // nhost.close();
   });
 
   group('sign up', () {
@@ -181,6 +181,20 @@ void main() async {
     test('should be able to get user id as JWT claim', () async {
       await auth.signInEmailPassword(email: testEmail, password: testPassword);
       expect(auth.getClaim('x-hasura-user-id'), isA<String>());
+    });
+
+    group('passwordless', () {
+      group('email passwordless', () {
+        test('should be able to sign in', () async {
+          // Can't be tested meaningfully at the moment
+        });
+      });
+
+      group('SMS passwordless', () {
+        test('should be able to sign in with the OTP', () async {
+          // Can't be tested meaningfully at the moment
+        });
+      });
     });
 
     group('with stored credentials', () {

@@ -40,7 +40,22 @@ class GqlAdminTestHelper {
   Future<QueryResult> clearFiles() async {
     return client.mutate(clearFilesMutation);
   }
+
+  Future<String> getLatestUserOtpHash() async {
+    final result = await client.query(QueryOptions(
+      document: _getLatestUserOtpHashDoc,
+    ));
+    return result.data!['users'][0]['otpHash'] as String;
+  }
 }
+
+final _getLatestUserOtpHashDoc = gql(r'''
+  query {
+    users(order_by: {createdAt: desc}, limit: 1) {
+      otpHash
+    }
+  }
+''');
 
 final clearUsersMutation = MutationOptions(
   document: gql('''

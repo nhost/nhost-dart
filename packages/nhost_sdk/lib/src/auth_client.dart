@@ -275,6 +275,63 @@ class AuthClient {
     return res;
   }
 
+  /// Signs in a user with a magic link.
+  ///
+  /// An email will be sent to the [email] with a link. When the user
+  /// clicks on the link the user will be automatically redirected to
+  /// [redirectTo] with a refresh token as a hash argument. This value can then
+  /// be used to sign in via [signInWithRefreshToken].
+  ///
+  /// Throws an [NhostException] if sign in fails.
+  Future<void> signInWithEmailPasswordless(
+    String email, {
+    String? redirectTo,
+  }) async {
+    log.finer('Attempting sign in (passwordless email)');
+    return _apiClient.post(
+      '/signin/passwordless/email',
+      jsonBody: {
+        'email': email,
+        if (redirectTo != null)
+          'options': {
+            'redirectTo': redirectTo,
+          },
+      },
+    );
+  }
+
+  /// Authenticates a user using a [phoneNumber].
+  ///
+  /// The returned [AuthResponse] will only have its [AuthResponse.mfa] field
+  /// set, which can then be used to complete the sign in via
+  /// [completeSmsPasswordlessSignIn] alongside the user's one-time-password.
+  ///
+  /// Throws an [NhostException] if sign in fails.
+  Future<void> signInWithSmsPasswordless(String phoneNumber) async {
+    log.finer('Attempting sign in (passwordless SMS)');
+    await _apiClient.post(
+      '/signin/passwordless/sms',
+      jsonBody: {
+        'phoneNumber': phoneNumber,
+      },
+    );
+  }
+
+  Future<AuthResponse> completeSmsPasswordlessSignIn(
+    String phoneNumber,
+    String otp,
+  ) async {
+    final res = await _apiClient.post(
+      '/signin/passwordless/sms/otp',
+      jsonBody: {'phoneNumber': phoneNumber, 'otp': otp},
+      responseDeserializer: AuthResponse.fromJson,
+    );
+
+    log.finer('Sign in successful');
+    await setSession(res.session!);
+    return res;
+  }
+
   /// Attempts a sign in using the credentials stored in the [AuthStore]
   /// provided during construction.
   ///
