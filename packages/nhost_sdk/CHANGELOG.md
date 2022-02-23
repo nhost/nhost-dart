@@ -1,3 +1,7 @@
+## 3.0.0-beta.3
+
+ - **FEAT**: Add endpoint for resending verification email.
+
 ## 3.0.0-beta.2
 
 > Note: This release has breaking changes.
