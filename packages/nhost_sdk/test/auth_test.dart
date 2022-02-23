@@ -158,7 +158,8 @@ void main() async {
 
     test('should not be able to signIn with wrong password', () async {
       expect(
-        auth.signInEmailPassword(email: testEmail, password: 'wrong-password-1'),
+        auth.signInEmailPassword(
+            email: testEmail, password: 'wrong-password-1'),
         throwsA(isA<ApiException>().having(
           (e) => e.statusCode,
           'statusCode',
@@ -263,6 +264,23 @@ void main() async {
     test('should not be able to retreive JWT claim after signOut', () async {
       await auth.signOut();
       expect(auth.getClaim('x-hasura-user-id'), isNull);
+    });
+  });
+
+  group('sending verification email', () {
+    test('should fail when the user does not exist', () {
+      expect(
+        auth.sendVerificationEmail(email: 'foo@bar.com'),
+        throwsA(anything),
+      );
+    });
+
+    test('succeeds if the user exists', () async {
+      await registerTestUser(auth);
+      expect(
+        auth.sendVerificationEmail(email: defaultTestEmail),
+        completes,
+      );
     });
   });
 
@@ -515,8 +533,8 @@ void main() async {
     test('should require TOTP for sign in once enabled', () async {
       final otpSecret = await registerMfaUser(auth);
 
-      final firstFactorAuthResult =
-          await auth.signInEmailPassword(email: testEmail, password: testPassword);
+      final firstFactorAuthResult = await auth.signInEmailPassword(
+          email: testEmail, password: testPassword);
       expect(firstFactorAuthResult.user, isNull);
       expect(auth.authenticationState, AuthenticationState.signedOut);
       expect(auth.accessToken, isNull);
