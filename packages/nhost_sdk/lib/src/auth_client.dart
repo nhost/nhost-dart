@@ -329,6 +329,25 @@ class AuthClient {
     return AuthResponse(session: null);
   }
 
+  /// Resends the sign-up verification email to the user with the specified
+  /// [email].
+  Future<void> sendVerificationEmail({
+    required String email,
+    String? redirectTo,
+  }) async {
+    await _apiClient.post<void>(
+      '/user/email/send-verification-email',
+      jsonBody: {
+        'email': email,
+        if (redirectTo != null)
+          'options': {
+            'redirectTo': redirectTo,
+          },
+      },
+      headers: _session.authenticationHeaders,
+    );
+  }
+
   //#region Email and password changes
 
   /// Changes the email address of a logged in user.
