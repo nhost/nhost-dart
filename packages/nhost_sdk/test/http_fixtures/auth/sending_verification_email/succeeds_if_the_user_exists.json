@@ -19,7 +19,7 @@
           "surrogate-control": "no-store",
           "cache-control": "no-store, no-cache, must-revalidate, proxy-revalidate",
           "x-dns-prefetch-control": "off",
-          "date": "Wed, 23 Feb 2022 20:56:36 GMT",
+          "date": "Fri, 11 Mar 2022 05:10:58 GMT",
           "access-control-allow-origin": "*",
           "strict-transport-security": "max-age=15552000; includeSubDomains",
           "content-type": "application/json; charset=utf-8",
@@ -27,14 +27,14 @@
           "x-xss-protection": "1; mode=block",
           "content-length": "927",
           "x-download-options": "noopen",
-          "etag": "W/\"39f-IZsCGqJM5fq+0PcjvBP7FtF29ek\"",
+          "etag": "W/\"39f-Csjx2Br4fOcwzK93krVSWJLOJVM\"",
           "x-frame-options": "SAMEORIGIN",
           "x-content-type-options": "nosniff",
           "expires": "0"
         },
         "body": {
           "encoding": "utf-8",
-          "string": "{\"session\":{\"accessToken\":\"eyJhbGciOiJIUzI1NiJ9.eyJodHRwczovL2hhc3VyYS5pby9qd3QvY2xhaW1zIjp7IngtaGFzdXJhLWFsbG93ZWQtcm9sZXMiOlsidXNlciIsIm1lIl0sIngtaGFzdXJhLWRlZmF1bHQtcm9sZSI6InVzZXIiLCJ4LWhhc3VyYS11c2VyLWlkIjoiNzIyOWZlZTAtNzgxZC00MjdjLWEyNzQtMzhmNWM0MTkzMDViIiwieC1oYXN1cmEtdXNlci1pc0Fub255bW91cyI6ImZhbHNlIn0sInN1YiI6IjcyMjlmZWUwLTc4MWQtNDI3Yy1hMjc0LTM4ZjVjNDE5MzA1YiIsImlzcyI6Imhhc3VyYS1hdXRoIiwiaWF0IjoxNjQ1NjQ5Nzk2LCJleHAiOjE2NDU2NTA2OTZ9.8ckiq-toArcBnkwaPb6rEdN9Y2lbXpgJxoSFp1jYfmc\",\"accessTokenExpiresIn\":900,\"refreshToken\":\"376cf4c8-065a-4acb-857d-abccc643adfd\",\"user\":{\"id\":\"7229fee0-781d-427c-a274-38f5c419305b\",\"createdAt\":\"2022-02-23T20:56:36.918383+00:00\",\"displayName\":\"user-1@nhost.io\",\"avatarUrl\":\"https://s.gravatar.com/avatar/d86c12c3233e91ec90869a1f874cdf0e?r=g&default=blank\",\"locale\":\"en\",\"email\":\"user-1@nhost.io\",\"isAnonymous\":false,\"defaultRole\":\"user\",\"roles\":[\"user\",\"me\"],\"metadata\":{}}},\"mfa\":null}"
+          "string": "{\"session\":{\"accessToken\":\"eyJhbGciOiJIUzI1NiJ9.eyJodHRwczovL2hhc3VyYS5pby9qd3QvY2xhaW1zIjp7IngtaGFzdXJhLWFsbG93ZWQtcm9sZXMiOlsidXNlciIsIm1lIl0sIngtaGFzdXJhLWRlZmF1bHQtcm9sZSI6InVzZXIiLCJ4LWhhc3VyYS11c2VyLWlkIjoiM2NhZTIxN2ItM2NhOC00OTUxLTkxMTYtZTQ4NGY2NWM5NDBiIiwieC1oYXN1cmEtdXNlci1pc0Fub255bW91cyI6ImZhbHNlIn0sInN1YiI6IjNjYWUyMTdiLTNjYTgtNDk1MS05MTE2LWU0ODRmNjVjOTQwYiIsImlzcyI6Imhhc3VyYS1hdXRoIiwiaWF0IjoxNjQ2OTc1NDU4LCJleHAiOjE2NDY5NzYzNTh9.wdJUnF-HMb2jD6zKCYwk_yNpzXHYOd0KTDXPFbv9-fU\",\"accessTokenExpiresIn\":900,\"refreshToken\":\"047f509d-76d6-4783-89a2-fc7442f0a903\",\"user\":{\"id\":\"3cae217b-3ca8-4951-9116-e484f65c940b\",\"createdAt\":\"2022-03-11T05:10:58.026056+00:00\",\"displayName\":\"user-1@nhost.io\",\"avatarUrl\":\"https://s.gravatar.com/avatar/d86c12c3233e91ec90869a1f874cdf0e?r=g&default=blank\",\"locale\":\"en\",\"email\":\"user-1@nhost.io\",\"isAnonymous\":false,\"defaultRole\":\"user\",\"roles\":[\"user\",\"me\"],\"metadata\":{}}},\"mfa\":null}"
         }
       }
     },
@@ -47,7 +47,7 @@
         },
         "body": {
           "encoding": "utf-8",
-          "string": "{\"refreshToken\":\"376cf4c8-065a-4acb-857d-abccc643adfd\",\"all\":false}"
+          "string": "{\"refreshToken\":\"047f509d-76d6-4783-89a2-fc7442f0a903\",\"all\":false}"
         }
       },
       "response": {
@@ -56,7 +56,7 @@
           "surrogate-control": "no-store",
           "cache-control": "no-store, no-cache, must-revalidate, proxy-revalidate",
           "x-dns-prefetch-control": "off",
-          "date": "Wed, 23 Feb 2022 20:56:37 GMT",
+          "date": "Fri, 11 Mar 2022 05:10:58 GMT",
           "access-control-allow-origin": "*",
           "strict-transport-security": "max-age=15552000; includeSubDomains",
           "content-type": "text/html; charset=utf-8",
@@ -93,7 +93,7 @@
           "surrogate-control": "no-store",
           "cache-control": "no-store, no-cache, must-revalidate, proxy-revalidate",
           "x-dns-prefetch-control": "off",
-          "date": "Wed, 23 Feb 2022 20:56:37 GMT",
+          "date": "Fri, 11 Mar 2022 05:10:58 GMT",
           "access-control-allow-origin": "*",
           "strict-transport-security": "max-age=15552000; includeSubDomains",
           "content-type": "text/html; charset=utf-8",
