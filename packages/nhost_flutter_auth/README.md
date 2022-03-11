@@ -12,7 +12,7 @@ outs.
 
 ```yaml
 dependencies:
-  nhost_flutter_auth: ^2.0.0-beta.0
+  nhost_flutter_auth: ^2.0.0
 ```
 
 ## 🔥 More Dart & Flutter packages from Nhost

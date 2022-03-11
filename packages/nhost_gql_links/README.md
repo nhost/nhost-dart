@@ -13,7 +13,7 @@ and generally isn't meant for use directly.
 
 ```yaml
 dependencies:
-  nhost_gql_links: ^2.0.0-beta.0
+  nhost_gql_links: ^2.0.0
 ```
 
 ## 🔥 More Dart & Flutter packages from Nhost
