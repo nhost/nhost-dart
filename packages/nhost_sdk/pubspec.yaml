@@ -18,7 +18,7 @@ dependencies:
   path: ^1.0.0
 
 dev_dependencies:
-  betamax: ^1.0.7
+  betamax: ^2.0.0
   fake_async: ^1.0.0
   graphql: ^5.0.0
   mockito: ^5.0.0
