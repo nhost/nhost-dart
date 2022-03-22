@@ -1,0 +1,41 @@
+{
+  "name": "auth/sign_up/should_not_be_able_to_sign_up_without_an_email.json",
+  "interactions": [
+    {
+      "request": {
+        "method": "post",
+        "uri": "http://localhost:1337/v1/auth/signup/email-password",
+        "headers": {
+          "content-type": "application/json; charset=utf-8"
+        },
+        "body": {
+          "encoding": "utf-8",
+          "string": "{\"email\":\"\",\"password\":\"password\"}"
+        }
+      },
+      "response": {
+        "status": 400,
+        "headers": {
+          "surrogate-control": "no-store",
+          "cache-control": "no-store, no-cache, must-revalidate, proxy-revalidate",
+          "x-dns-prefetch-control": "off",
+          "date": "Fri, 11 Mar 2022 05:10:47 GMT",
+          "access-control-allow-origin": "*",
+          "strict-transport-security": "max-age=15552000; includeSubDomains",
+          "content-type": "text/plain; charset=utf-8",
+          "pragma": "no-cache",
+          "x-xss-protection": "1; mode=block",
+          "content-length": "66",
+          "x-download-options": "noopen",
+          "x-frame-options": "SAMEORIGIN",
+          "x-content-type-options": "nosniff",
+          "expires": "0"
+        },
+        "body": {
+          "encoding": "utf-8",
+          "string": "Error validating request body. \"email\" is not allowed to be empty."
+        }
+      }
+    }
+  ]
+}

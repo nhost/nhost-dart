@@ -15,10 +15,8 @@ import 'package:flutter/material.dart';
 import 'package:nhost_flutter_auth/nhost_flutter_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'config.dart';
 import 'simple_auth_example.dart';
-
-/// Fill in this value with the backend URL found on your Nhost project page.
-const nhostApiUrl = 'https://backend-5e69d1d7.nhost.app';
 
 void main() {
   runApp(PersistentAuthExample());
@@ -30,14 +28,14 @@ class PersistentAuthExample extends StatefulWidget {
 }
 
 class _PersistentAuthExampleState extends State<PersistentAuthExample> {
-  NhostClient nhostClient;
+  late NhostClient nhostClient;
 
   @override
   void initState() {
     super.initState();
     // Create a new Nhost client using your project's backend URL.
     nhostClient = NhostClient(
-      baseUrl: nhostApiUrl,
+      backendUrl: nhostUrl,
       // Instruct the client to store tokens using shared preferences.
       authStore: SharedPreferencesAuthStore(),
     );
@@ -68,7 +66,7 @@ class _PersistentAuthExampleState extends State<PersistentAuthExample> {
 /// application.
 class SharedPreferencesAuthStore implements AuthStore {
   @override
-  Future<String> getString(String key) async {
+  Future<String?> getString(String key) async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString(key);
   }

@@ -1,3 +1,71 @@
+## 2.0.1
+
+ - **DOCS**: Update pubspec sample in READMEs.
+
+## 2.0.0
+
+ - Graduate package to a stable release. See pre-releases prior to this version for changelog entries.
+
+## 2.0.0-beta.3
+
+ - Update a dependency to the latest release.
+
+## 2.0.0-beta.2
+
+> Note: This release has breaking changes.
+
+ - **REFACTOR**: Change all instances of login to sign in.
+ - **BREAKING** **REFACTOR**: Rename signIn -> signInEmailPassword.
+
+## 2.0.0-beta.1
+
+> Note: This release has breaking changes.
+
+ - **BREAKING** **REFACTOR**: Change client names to include the word client.
+
+## 2.0.0-beta.0
+
+> Note: This release has breaking changes.
+
+ - **BREAKING** **FEAT**: Migrate to the Nhost v2 backend.
+
+## 1.1.5
+
+ - **FIX**: Remove outdated links.
+ - **FIX**: Remove unneeded imports across the board.
+
+## 1.1.4
+
+ - Update a dependency to the latest release.
+
+## 1.1.3
+
+ - **FIX**: Correct compilation errors after migration to null-safety.
+
+## 1.1.2
+
+ - **REFACTOR**: Display quick-start URL if todos fail to fetch.
+ - **REFACTOR**: Display quick-start URL if todos fail to fetch.
+ - **FIX**: Fix broken URLs across packages.
+ - **DOCS**: Remove mention of older Flutter support from READMEs.
+ - **CHORE**: Upgrade to latest stable SDK.
+ - **CHORE**: Upgrade dependencies.
+ - **CHORE**: Publish packages.
+ - **CHORE**: Publish packages.
+ - **CHORE**: Publish packages.
+
+## 1.1.1
+
+ - **REFACTOR**: Display quick-start URL if todos fail to fetch.
+
+## 1.1.0
+
+ - **REFACTOR**: Display quick-start URL if todos fail to fetch.
+ - **FIX**: Supply an AuthProvider to children of the GraphQLProvider.
+ - **FEAT**: Add a little bit of logging.
+ - **CHORE**: Update pod deps for an example app.
+ - **CHORE**: Extract provider code to src.
+
 ## 1.0.6
 
  - **FIX**: Upgrade graphql_flutter dependency to 5.0.0.

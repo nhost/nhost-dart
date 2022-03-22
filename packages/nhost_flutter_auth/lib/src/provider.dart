@@ -6,7 +6,7 @@ import 'package:nhost_sdk/nhost_sdk.dart';
 class NhostAuthProvider extends InheritedNotifier<_AuthNotifier> {
   NhostAuthProvider({
     Key? key,
-    required Auth auth,
+    required AuthClient auth,
     required Widget child,
   }) : super(
           key: key,
@@ -19,7 +19,7 @@ class NhostAuthProvider extends InheritedNotifier<_AuthNotifier> {
     return oldWidget.notifier != notifier;
   }
 
-  static Auth? of(BuildContext context) {
+  static AuthClient? of(BuildContext context) {
     return context
         .dependOnInheritedWidgetOfExactType<NhostAuthProvider>()
         ?.notifier
@@ -28,13 +28,13 @@ class NhostAuthProvider extends InheritedNotifier<_AuthNotifier> {
 }
 
 /// A [Listenable] that notifies when Nhost authentication states changes
-class _AuthNotifier extends ChangeNotifier implements ValueListenable<Auth> {
-  _AuthNotifier(Auth auth) : _auth = auth {
+class _AuthNotifier extends ChangeNotifier implements ValueListenable<AuthClient> {
+  _AuthNotifier(AuthClient auth) : _auth = auth {
     _unsubscribeAuthListener =
         _auth.addAuthStateChangedCallback((_) => notifyListeners());
   }
 
-  final Auth _auth;
+  final AuthClient _auth;
   late UnsubscribeDelegate _unsubscribeAuthListener;
 
   @override
@@ -44,7 +44,7 @@ class _AuthNotifier extends ChangeNotifier implements ValueListenable<Auth> {
   }
 
   @override
-  Auth get value => _auth;
+  AuthClient get value => _auth;
 
   @override
   int get hashCode => value.hashCode;

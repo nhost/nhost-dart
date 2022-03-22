@@ -1,12 +1,29 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:meta/meta.dart';
-import 'package:nhost_sdk/src/logging.dart';
 
+import '../errors.dart';
+import '../foundation/collection.dart';
+import '../foundation/request.dart';
 import '../foundation/uri.dart';
 import '../http.dart';
+import '../logging.dart';
+
+/// Multipart request byte streams are chunked before sending so that we can
+/// measure progress as the bytes are pulled by the socket. This is the size
+/// of those chunks, in bytes.
+const int multipartChunkSize = 64 * 1024; // 64 KB
+
+/// Signature for callbacks that receive the upload progress of
+/// [ApiClient.postMultipart] requests.
+typedef UploadProgressCallback = void Function(
+  http.MultipartRequest request,
+  int bytesUploaded,
+  int bytesTotal,
+);
 
 /// Defined here so we don't need to import dart:io (which affects quality
 /// score, because it thinks that dart:io makes using Flutter Web impossible)
@@ -57,11 +74,13 @@ class ApiClient {
   /// {@endtemplate}
   Future<ResponseType?> delete<ResponseType>(
     String path, {
+    Map<String, String>? query,
     Map<String, String>? headers,
     JsonDeserializer<ResponseType>? responseDeserializer,
   }) async {
+    query ??= const {};
     return send<ResponseType>(
-      _newApiRequest('delete', path),
+      _newApiRequest('delete', path, query: query),
       headers: headers,
       responseDeserializer: responseDeserializer,
     );
@@ -74,10 +93,11 @@ class ApiClient {
   /// {@macro nhost.api.ApiClient.responseDeserializer}
   Future<ResponseType> get<ResponseType>(
     String path, {
-    Map<String, String> query = const {},
+    Map<String, String>? query,
     Map<String, String>? headers,
     JsonDeserializer<ResponseType>? responseDeserializer,
   }) async {
+    query ??= const {};
     return send<ResponseType>(
       _newApiRequest('get', path, query: query),
       headers: headers,
@@ -92,22 +112,15 @@ class ApiClient {
   /// {@macro nhost.api.ApiClient.responseDeserializer}
   Future<ResponseType> post<ResponseType>(
     String path, {
-    Map<String, String?> query = const {},
-    Map<String, dynamic>? data,
+    Map<String, String?>? query,
+    dynamic jsonBody,
     Map<String, String>? headers,
     JsonDeserializer<ResponseType>? responseDeserializer,
   }) async {
-    final request = _newApiRequest('post', path, query: query);
-    if (data != null) {
-      request
-        ..body = jsonEncode(data)
-        ..headers.addAll({
-          contentTypeHeader: _jsonContentType.toString(),
-        });
-    }
-
+    query ??= const {};
+    final req = _newApiRequest('post', path, query: query, jsonBody: jsonBody);
     return send<ResponseType>(
-      request,
+      req,
       headers: headers,
       responseDeserializer: responseDeserializer,
     );
@@ -123,9 +136,52 @@ class ApiClient {
     required Iterable<http.MultipartFile> files,
     Map<String, String>? headers,
     JsonDeserializer<ResponseType>? responseDeserializer,
+    UploadProgressCallback? onUploadProgress,
   }) async {
+    final url = baseUrl.extend(path);
+    final multipartRequest = http.MultipartRequest('post', url)
+      ..files.addAll(files);
+
+    http.BaseRequest requestToSend;
+    if (onUploadProgress != null) {
+      final chunkedByteStream = chunkStream(
+        multipartRequest.finalize(),
+        chunkLength: multipartChunkSize,
+      );
+
+      // Reporting upload progress isn't straightforward, so we have to jump
+      // through a few hoops to get it going.
+      //
+      // The central idea is that we create the stream representation of the
+      // request, set ourselves up to watch the stream's consumption rate, then
+      // send it over the wire. The consumed bytes are reported to the callback
+      // as the upload progress.
+      var bytesUploaded = 0;
+      final bytesTotal = multipartRequest.contentLength;
+      final observedByteStream = chunkedByteStream
+          .transform(StreamTransformer<List<int>, List<int>>.fromHandlers(
+        handleData: (data, sink) {
+          // Pass the data along the chain
+          sink.add(data);
+
+          // ...and report progress
+          bytesUploaded += data.length;
+          onUploadProgress(multipartRequest, bytesUploaded, bytesTotal);
+        },
+        handleError: (error, stackTrace, sink) =>
+            throw AsyncError(error, stackTrace),
+        handleDone: (sink) => sink.close(),
+      ));
+
+      requestToSend = StreamWrappingRequest('post', url, observedByteStream)
+        ..contentLength = multipartRequest.contentLength
+        ..headers.addAll(multipartRequest.headers);
+    } else {
+      requestToSend = multipartRequest;
+    }
+
     return send<ResponseType>(
-      http.MultipartRequest('post', baseUrl.extend(path))..files.addAll(files),
+      requestToSend,
       headers: headers,
       responseDeserializer: responseDeserializer,
     );
@@ -138,11 +194,31 @@ class ApiClient {
   /// {@macro nhost.api.ApiClient.responseDeserializer}
   Future<ResponseType> put<ResponseType>(
     String path, {
+    Map<String, String?>? query,
+    dynamic jsonBody,
     Map<String, String>? headers,
     JsonDeserializer<ResponseType>? responseDeserializer,
   }) async {
+    query ??= const {};
     return send<ResponseType>(
-      _newApiRequest('put', path),
+      _newApiRequest('put', path, query: query, jsonBody: jsonBody),
+      headers: headers,
+      responseDeserializer: responseDeserializer,
+    );
+  }
+
+  /// Performs an HTTP request of the specified method.
+  Future<ResponseType> request<ResponseType>(
+    String method,
+    String path, {
+    Map<String, String?>? query,
+    dynamic jsonBody,
+    Map<String, String>? headers,
+    JsonDeserializer<ResponseType>? responseDeserializer,
+  }) async {
+    query ??= const {};
+    return send<ResponseType>(
+      _newApiRequest(method, path, query: query, jsonBody: jsonBody),
       headers: headers,
       responseDeserializer: responseDeserializer,
     );
@@ -158,15 +234,47 @@ class ApiClient {
       request.headers.addAll(headers);
     }
 
-    final response =
-        await http.Response.fromStream(await _httpClient.send(request));
+    log.finest(() =>
+        'Sending a ${request.method.toUpperCase()} request to ${request.url}');
+
+    return _handleResponse<ResponseType>(
+      request,
+      await http.Response.fromStream(await _httpClient.send(request)),
+      responseDeserializer: responseDeserializer,
+    );
+  }
+
+  http.Request _newApiRequest(
+    String method,
+    String path, {
+    Map<String, String?>? query,
+    dynamic jsonBody,
+  }) {
+    final req =
+        http.Request(method, baseUrl.extend(path, queryParameters: query))
+          ..encoding = utf8;
+    if (jsonBody != null) {
+      req
+        ..body = jsonEncode(jsonBody)
+        ..headers.addAll({
+          contentTypeHeader: _jsonContentType.toString(),
+        });
+    }
+    return req;
+  }
+
+  ResponseType _handleResponse<ResponseType>(
+    http.BaseRequest request,
+    http.Response response, {
+    JsonDeserializer<ResponseType>? responseDeserializer,
+  }) {
     final contentTypeHeader = response.headers['content-type'];
     final isJson =
         contentTypeHeader?.startsWith(_noCharsetJsonContentType.toString()) ==
             true;
     dynamic responseBody = isJson ? jsonDecode(response.body) : response.body;
 
-    // If the status is not in the success range, throw.
+    // If the status is not in the success range,  throw.
     if (response.statusCode < 200 || response.statusCode >= 300) {
       log.finer('API client encountered a failure, '
           'url=${request.url} status=${response.statusCode}');
@@ -182,21 +290,13 @@ class ApiClient {
       return null as ResponseType;
     }
   }
-
-  http.Request _newApiRequest(
-    String method,
-    String path, {
-    Map<String, String?>? query,
-  }) =>
-      http.Request(method, baseUrl.extend(path, queryParameters: query))
-        ..encoding = utf8;
 }
 
 /// Thrown by [ApiClient] to indicate a failed API call.
 ///
 /// An API call is considered failed if its [response]'s [statusCode] falls
 /// outside the 2xx range.
-class ApiException {
+class ApiException extends NhostException {
   ApiException(this.url, this.body, this.request, this.response);
 
   final Uri url;
@@ -209,8 +309,8 @@ class ApiException {
 
   @override
   String toString() {
-    return 'ApiException('
-        'apiUrl=$url, statusCode=$statusCode, responseBody=$responseBody)';
+    return 'ApiException: '
+        'apiUrl=$url, statusCode=$statusCode, responseBody=$responseBody';
   }
 }
 

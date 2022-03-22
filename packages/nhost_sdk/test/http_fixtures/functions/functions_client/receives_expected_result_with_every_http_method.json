@@ -1,0 +1,117 @@
+{
+  "name": "functions/functions_client/receives_expected_result_with_every_http_method.json",
+  "interactions": [
+    {
+      "request": {
+        "method": "get",
+        "uri": "http://localhost:1337/v1/functions/test_function?arg=query+content",
+        "headers": {
+          "content-type": "application/json; charset=utf-8"
+        },
+        "body": {
+          "encoding": "utf-8",
+          "string": "{\"arg\":\"body content\"}"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "etag": "W/\"31-q3AgJddYd+d9pV4RBbcXXKiDG1M\"",
+          "content-type": "application/json; charset=utf-8",
+          "access-control-allow-headers": "origin,Accept,Authorization,Content-Type",
+          "date": "Fri, 11 Mar 2022 05:10:37 GMT",
+          "access-control-allow-origin": "*",
+          "content-length": "49"
+        },
+        "body": {
+          "encoding": "utf-8",
+          "string": "{\"receivedArgs\":[\"body content\",\"query content\"]}"
+        }
+      }
+    },
+    {
+      "request": {
+        "method": "put",
+        "uri": "http://localhost:1337/v1/functions/test_function?arg=query+content",
+        "headers": {
+          "content-type": "application/json; charset=utf-8"
+        },
+        "body": {
+          "encoding": "utf-8",
+          "string": "{\"arg\":\"body content\"}"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "etag": "W/\"31-q3AgJddYd+d9pV4RBbcXXKiDG1M\"",
+          "content-type": "application/json; charset=utf-8",
+          "access-control-allow-headers": "origin,Accept,Authorization,Content-Type",
+          "date": "Fri, 11 Mar 2022 05:10:37 GMT",
+          "access-control-allow-origin": "*",
+          "content-length": "49"
+        },
+        "body": {
+          "encoding": "utf-8",
+          "string": "{\"receivedArgs\":[\"body content\",\"query content\"]}"
+        }
+      }
+    },
+    {
+      "request": {
+        "method": "post",
+        "uri": "http://localhost:1337/v1/functions/test_function?arg=query+content",
+        "headers": {
+          "content-type": "application/json; charset=utf-8"
+        },
+        "body": {
+          "encoding": "utf-8",
+          "string": "{\"arg\":\"body content\"}"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "etag": "W/\"31-q3AgJddYd+d9pV4RBbcXXKiDG1M\"",
+          "content-type": "application/json; charset=utf-8",
+          "access-control-allow-headers": "origin,Accept,Authorization,Content-Type",
+          "date": "Fri, 11 Mar 2022 05:10:38 GMT",
+          "access-control-allow-origin": "*",
+          "content-length": "49"
+        },
+        "body": {
+          "encoding": "utf-8",
+          "string": "{\"receivedArgs\":[\"body content\",\"query content\"]}"
+        }
+      }
+    },
+    {
+      "request": {
+        "method": "delete",
+        "uri": "http://localhost:1337/v1/functions/test_function?arg=query+content",
+        "headers": {
+          "content-type": "application/json; charset=utf-8"
+        },
+        "body": {
+          "encoding": "utf-8",
+          "string": "{\"arg\":\"body content\"}"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "etag": "W/\"31-q3AgJddYd+d9pV4RBbcXXKiDG1M\"",
+          "content-type": "application/json; charset=utf-8",
+          "access-control-allow-headers": "origin,Accept,Authorization,Content-Type",
+          "date": "Fri, 11 Mar 2022 05:10:38 GMT",
+          "access-control-allow-origin": "*",
+          "content-length": "49"
+        },
+        "body": {
+          "encoding": "utf-8",
+          "string": "{\"receivedArgs\":[\"body content\",\"query content\"]}"
+        }
+      }
+    }
+  ]
+}

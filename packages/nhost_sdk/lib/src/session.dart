@@ -7,19 +7,18 @@ const _hasuraClaimsNamespace = 'https://hasura.io/jwt/claims';
 
 /// Shares authentication information between service classes.
 class UserSession {
-  UserSession();
-
   Session? _session;
   Map<String, dynamic>? _hasuraClaims;
 
-  String? get jwt => session?.jwtToken;
+  String? get accessToken => session?.accessToken;
 
   String? getClaim(String claim) =>
       _hasuraClaims != null ? _hasuraClaims![claim] : null;
 
+  /// The set of HTTP headers sent along with Nhost API calls.
   Map<String, String> get authenticationHeaders {
     return {
-      if (jwt != null) authorizationHeader: 'Bearer $jwt',
+      if (accessToken != null) authorizationHeader: 'Bearer $accessToken',
     };
   }
 
@@ -30,10 +29,10 @@ class UserSession {
 
   Session? get session => _session;
   set session(Session? session) {
-    if (session != null && session.jwtToken != null) {
+    if (session != null && session.accessToken != null) {
       _session = session;
 
-      final decodedToken = JwtDecoder.decode(session.jwtToken!);
+      final decodedToken = JwtDecoder.decode(session.accessToken!);
       _hasuraClaims =
           decodedToken[_hasuraClaimsNamespace] as Map<String, dynamic>?;
     } else {

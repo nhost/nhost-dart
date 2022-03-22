@@ -8,7 +8,7 @@ and Flutter.
 
 Includes support for:
 
-* User login and registration, including multi-factor authentication
+* User sign in and registration, including multi-factor authentication
 * Email and password changes, either directly or via email confirmation
 * Storage and retrieval of arbitrary files
 * Scaling and transformation of stored files
@@ -43,7 +43,7 @@ void main() async {
 
 ```yaml
 dependencies:
-  nhost_sdk: ^2.0.0
+  nhost_sdk: ^3.0.0
 ```
 
 ## 🔥 More Dart & Flutter packages from Nhost

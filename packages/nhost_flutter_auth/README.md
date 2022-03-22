@@ -4,22 +4,15 @@
 [![nhost_flutter_auth tests](https://github.com/nhost/nhost-dart/actions/workflows/test.nhost_flutter_auth.yaml/badge.svg)](https://github.com/nhost/nhost-dart/actions/workflows/test.nhost_flutter_auth.yaml)
 
 Provides [Nhost](https://nhost.io) authentication state to your Flutter app,
-making it easy to set up protected resources, and react to logins and logouts.
+making it easy to set up protected resources, and react to sign ins and sign
+outs.
 
 ## Getting Started
 ### Latest Release
 
 ```yaml
 dependencies:
-  nhost_flutter_auth: ^1.0.0
-```
-
-For people affected by the Metal jank issues on iOS, we support Flutter 1.22.4
-as well:
-
-```yaml
-dependencies:
-  nhost_flutter_auth: ^0.3.0
+  nhost_flutter_auth: ^2.0.0
 ```
 
 ## 🔥 More Dart & Flutter packages from Nhost

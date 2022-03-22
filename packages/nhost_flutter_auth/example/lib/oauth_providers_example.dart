@@ -1,10 +1,9 @@
-/// This example demonstrates the ability to login using an OAuth 2.0 provider,
-/// on Android and iOS.
+/// This example demonstrates the ability to sign in using an OAuth 2.0
+/// provider, on Android and iOS.
 ///
 /// This example depends on the `url_launcher` and `app_links` packages
 /// (https://pub.dev/packages/flutter_appauth), and requires that you set up a
-/// GitHub OAuth application using the instructions at
-/// https://docs.nhost.io/auth/oauth-providers/github
+/// GitHub OAuth application.
 ///
 /// Then, in your Nhost project's "Sign-In" settings, set:
 ///
@@ -12,19 +11,19 @@
 /// Failure redirect URL: `nhost-example://oauth.login.failure`.
 library oauth_providers_example;
 
+import 'package:app_links/app_links.dart';
 import 'package:flutter/material.dart';
 import 'package:nhost_flutter_auth/nhost_flutter_auth.dart';
 import 'package:url_launcher/url_launcher.dart' as url_launcher;
-import 'package:app_links/app_links.dart';
 
+import 'config.dart';
 import 'simple_auth_example.dart';
 
 /// Fill in this value with the backend URL found on your Nhost project page.
-const nhostApiUrl = 'https://backend-5e69d1d7.nhost.app';
-const nhostGithubLoginUrl = '$nhostApiUrl/auth/providers/github/';
+const nhostGithubSignInUrl = '$nhostUrl/v1/auth/providers/github/';
 
-const loginSuccessHost = 'oauth.login.success';
-const loginFailureHost = 'oauth.login.failure';
+const signInSuccessHost = 'oauth.login.success';
+const signInFailureHost = 'oauth.login.failure';
 
 void main() async {
   runApp(OAuthExample());
@@ -36,21 +35,21 @@ class OAuthExample extends StatefulWidget {
 }
 
 class _OAuthExampleState extends State<OAuthExample> {
-  NhostClient nhostClient;
-  AppLinks appLinks;
+  late NhostClient nhostClient;
+  late AppLinks appLinks;
 
   @override
   void initState() {
     super.initState();
 
     // Create a new Nhost client using your project's backend URL.
-    nhostClient = NhostClient(baseUrl: nhostApiUrl);
+    nhostClient = NhostClient(backendUrl: nhostUrl);
 
     appLinks = AppLinks(
       onAppLink: (uri, stringUri) async {
-        if (uri.host == loginSuccessHost) {
+        if (uri.host == signInSuccessHost) {
           // ignore: unawaited_futures
-          nhostClient.auth.completeOAuthProviderLogin(uri);
+          nhostClient.auth.completeOAuthProviderSignIn(uri);
         }
         await url_launcher.closeWebView();
       },
@@ -73,7 +72,6 @@ class _OAuthExampleState extends State<OAuthExample> {
           body: SafeArea(
             child: ExampleProtectedScreen(),
           ),
-          // ExampleProtectedScreen(),
         ),
       ),
     );
@@ -85,15 +83,15 @@ class ExampleProtectedScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     // NhostAuthProvider.of will register this widget so that it rebuilds
     // whenever the user's authentication state changes.
-    final auth = NhostAuthProvider.of(context);
+    final auth = NhostAuthProvider.of(context)!;
     Widget widget;
 
     switch (auth.authenticationState) {
-      case AuthenticationState.loggedIn:
+      case AuthenticationState.signedIn:
         widget = LoggedInUserDetails();
         break;
       default:
-        widget = ProviderLoginForm();
+        widget = ProviderSignInForm();
         break;
     }
 
@@ -104,14 +102,14 @@ class ExampleProtectedScreen extends StatelessWidget {
   }
 }
 
-class ProviderLoginForm extends StatelessWidget {
+class ProviderSignInForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextButton(
       onPressed: () async {
         try {
           await url_launcher.launch(
-            nhostGithubLoginUrl,
+            nhostGithubSignInUrl,
             forceSafariVC: true,
           );
         } on Exception {

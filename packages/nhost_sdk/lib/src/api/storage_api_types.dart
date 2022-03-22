@@ -1,92 +1,128 @@
+import '../storage_client.dart';
+
 /// Describes a file stored by Nhost.
 ///
-/// The fields of this class can be used to fetch the file's contents ([key]),
+/// The fields of this class can be used to fetch the file's contents ([id]),
 /// as well as populate the headers of an HttpResponse if you were to serve
 /// this file to a client.
 class FileMetadata {
   FileMetadata({
-    required this.key,
-    this.acceptRanges,
-    this.lastModified,
-    this.contentLength,
-    this.eTag,
-    this.contentType,
-    this.nhostMetadata,
+    required this.id,
+    required this.name,
+    required this.size,
+    required this.mimeType,
+    required this.etag,
+    required this.createdAt,
+    required this.bucketId,
   });
 
+  /// UUID identifying the file on the server
+  final String id;
+
   /// Path to file
-  final String key;
+  final String name;
 
-  /// accept-ranges value for HTTP response header
-  final String? acceptRanges;
-
-  /// last-modified  value for HTTP response header
-  final DateTime? lastModified;
-
-  /// content-length value for HTTP response header
-  final int? contentLength;
-
-  /// etag value for HTTP response header
-  final String? eTag;
+  /// Size of file in bytes
+  final int size;
 
   /// content-type value for HTTP response header
-  final String? contentType;
+  final String mimeType;
 
-  /// Additional Nhost-specific metadata associated with this file
-  final FileNhostMetadata? nhostMetadata;
+  /// etag value for HTTP response header
+  final String etag;
+
+  ///
+  final DateTime createdAt;
+
+  ///
+  final String bucketId;
+
+  @override
+  String toString() {
+    return 'FileMetadata('
+        'id=$id, name=$name, mimeType=$mimeType, size=$size)';
+  }
 
   static FileMetadata fromJson(dynamic json) {
     return FileMetadata(
-      // TODO(https://github.com/nhost/hasura-backend-plus/issues/436): In
-      // order to work around inconsistencies in the backend's naming of this
-      // field, we duplicate.
-      key: (json['Key'] ?? json['key']) as String,
-      acceptRanges: json['AcceptRanges'] as String?,
-      lastModified: json['LastModified'] == null
-          ? null
-          : DateTime.parse(json['LastModified'] as String),
-      contentLength: json['ContentLength'] as int?,
-      eTag: json['ETag'] as String?,
-      contentType: json['ContentType'] as String?,
-      nhostMetadata: json['Metadata'] == null
-          ? null
-          : FileNhostMetadata.fromJson(
-              json['Metadata'] as Map<String, dynamic>),
+      id: json['id'],
+      name: json['name'] as String,
+      size: json['size'] as int,
+      mimeType: json['mimeType'] as String,
+      etag: json['etag'] as String,
+      createdAt: DateTime.parse(json['createdAt'] as String),
+      bucketId: json['bucketId'] as String,
     );
   }
 }
 
-/// Additional Nhost-specific metadata associated with a [FileMetadata]
-/// instance.
-class FileNhostMetadata {
-  FileNhostMetadata({this.token});
+class PresignedUrl {
+  PresignedUrl({required this.url, required this.expiration});
 
-  final String? token;
+  final String url;
+  final DateTime expiration;
 
-  static FileNhostMetadata fromJson(dynamic json) {
-    return FileNhostMetadata(
-      token: json['token'] as String?,
+  static PresignedUrl fromJson(dynamic json) {
+    return PresignedUrl(
+      url: json['url'] as String,
+      expiration: DateTime.parse(json['expiration']),
     );
   }
 }
 
 /// Instructs the backend on how to transform a stored image.
-class ImageTransformConfig {
-  ImageTransformConfig({
+class ImageTransform {
+  ImageTransform({
     this.width,
     this.height,
     this.quality,
-  });
+    this.blur,
+    this.cornerRadius,
+  }) : assert(quality == null || (1 <= quality && quality <= 100));
 
+  /// The width of the resulting image.
   final int? width;
+
+  /// The height of the resulting image.
   final int? height;
+
+  /// The quality of the resulting image. Value between 1 and 100 (inclusive).
   final int? quality;
+
+  /// The amount of blur to apply, in pixels.
+  final double? blur;
+
+  /// The corner radius to apply to the resulting image.
+  final ImageCornerRadius? cornerRadius;
 
   Map<String, String> toQueryArguments() {
     return {
       if (width != null) 'w': '$width',
       if (height != null) 'h': '$height',
       if (quality != null) 'q': '$quality',
+      if (blur != null) 'b': '$blur',
+      if (cornerRadius != null) 'r': cornerRadius!.toQueryValue(),
     };
   }
+}
+
+/// The corner radius applied to an image.
+///
+/// Used with [StorageClient.downloadImage].
+class ImageCornerRadius {
+  /// Applies the maximum amount of corner radius possible, based on the size
+  /// of the image being transformed.
+  ImageCornerRadius.full()
+      : isFull = true,
+        inPixels = null;
+
+  /// Applies a corner radius of [pixels] pixels.
+  ImageCornerRadius.pixels(double pixels)
+      : isFull = false,
+        inPixels = pixels;
+
+  final bool isFull;
+  final double? inPixels;
+
+  String toQueryValue() => isFull ? 'full' : inPixels!.toStringAsFixed(1);
 }

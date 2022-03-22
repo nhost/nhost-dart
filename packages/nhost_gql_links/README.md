@@ -5,7 +5,7 @@
 
 Constructs library-independent GraphQL links for [Nhost](https://nhost.io). This
 package is used by
-[`nhost_graphql_adapter`](https://github.com/nhost/nhost-dart/packages/nhost_graphql_adapter),
+[`nhost_graphql_adapter`](https://github.com/nhost/nhost-dart/tree/main/packages/nhost_graphql_adapter),
 and generally isn't meant for use directly.
 
 ## Getting Started
@@ -13,7 +13,7 @@ and generally isn't meant for use directly.
 
 ```yaml
 dependencies:
-  nhost_gql_links: ^1.0.0
+  nhost_gql_links: ^2.0.0
 ```
 
 ## 🔥 More Dart & Flutter packages from Nhost

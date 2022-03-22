@@ -1,3 +1,88 @@
+## 3.0.1
+
+ - **DOCS**: Update pubspec sample in READMEs.
+
+## 3.0.0
+
+ - Graduate package to a stable release. See pre-releases prior to this version for changelog entries.
+
+## 3.0.0-beta.3
+
+ - **FEAT**: Add endpoint for resending verification email.
+
+## 3.0.0-beta.2
+
+> Note: This release has breaking changes.
+
+ - **REFACTOR**: Change all instances of login to sign in.
+ - **REFACTOR**: Only create the session completer if required.
+ - **REFACTOR**: Remove AuthResponse's user parameter.
+ - **REFACTOR**: Add an exception base class.
+ - **FIX**: Null out the current user after the session is cleared.
+ - **BREAKING** **REFACTOR**: Rename signIn -> signInEmailPassword.
+ - **BREAKING** **REFACTOR**: Improve refresh-token based authentication.
+ - **BREAKING** **REFACTOR**: Rename all occurrences of jwt to accessToken.
+
+## 3.0.0-beta.1
+
+> Note: This release has breaking changes.
+
+ - **REFACTOR**: Add an ApiClient.request method for sending general requests.
+ - **FEAT**: Support additional HTTP methods on function calls.
+ - **FEAT**: Add a query string param to ApiClient.delete.
+ - **BREAKING** **REFACTOR**: Rename NhostFunctionsClient.{invoke, callFunction}.
+ - **BREAKING** **REFACTOR**: Change client names to include the word client.
+
+## 3.0.0-beta.0
+
+> Note: This release has breaking changes.
+
+  Migrate (partially) to the Nhost v2 backend.
+
+ - **FEAT** Single URL configuration of `NhostClient`s
+ - **FEAT** Serverless function calls, via `NhostClient.functions`
+ - **FEAT** GraphQL-based storage of file metadata
+ - **FEAT** Pre-signed URLs for sharing of protected files `Storage.getPresignedUrl`
+ - **FEAT** Additional image transformation parameters in `Storage.downloadImage`
+ - **REFACTOR** Dev server scripts/configs for running the examples
+ - **TEST** Improved testability with a new test dev server, HTTP proxy support in
+   testing environments, and environment-driven logging
+
+## 2.1.1
+
+ - **FIX**: Remove outdated links.
+
+## 2.1.0
+
+ - **TEST**: Fix tests to run against a local Nhost instance.
+ - **REFACTOR**: Extract response handling logic into its own method.
+ - **FEAT**: Add support for reporting file upload progress.
+ - **FEAT**: Add FileMetadata.toString() method.
+ - **CHORE**: Update example to null-safety.
+
+## 2.0.2
+
+ - **FIX**: Fix broken URLs across packages.
+ - **FIX**: Change early return condition for clear session.
+ - **DOCS**: Reformat a comment.
+ - **CHORE**: Upgrade to latest stable SDK.
+ - **CHORE**: Upgrade dependencies.
+ - **CHORE**: Publish packages.
+ - **CHORE**: Publish packages.
+ - **CHORE**: Publish packages.
+
+## 2.0.1
+
+ - **FIX**: Change early return condition for clear session.
+
+## 2.0.0
+
+> Note: This release has breaking changes.
+
+ - **DOCS**: Update major version in README.
+ - **DOCS**: Fix an incorrect method reference in a comment.
+ - **BREAKING** **FEAT**: Update auth state callback to include loading state.
+
 ## 1.1.1
 
  - **FIX**: Upgrade graphql dependency to 5.0.0.

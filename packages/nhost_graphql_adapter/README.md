@@ -16,15 +16,7 @@ for widgets that work great with
 
 ```yaml
 dependencies:
-  nhost_graphql_adapter: ^1.0.0
-```
-
-For people affected by the Metal jank issues on iOS, we support Flutter 1.22.4
-as well:
-
-```yaml
-dependencies:
-  nhost_graphql_adapter: ^0.6.0
+  nhost_graphql_adapter: ^2.0.0
 ```
 
 ## 🔥 More Dart & Flutter packages from Nhost

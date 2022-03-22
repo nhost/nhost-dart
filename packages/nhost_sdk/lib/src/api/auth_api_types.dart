@@ -1,5 +1,6 @@
 import 'dart:core';
 
+import '../auth_client.dart';
 import 'core_codec.dart';
 
 /// Describes the client's authorization state.
@@ -7,38 +8,39 @@ import 'core_codec.dart';
 /// Many authorization-related API calls return instances of this class. The
 /// details of which can be found on specific methods of [Auth].
 class AuthResponse {
-  AuthResponse({this.session, this.user, this.mfa});
+  AuthResponse({this.session, this.mfa});
+
   final Session? session;
-  final User? user;
   final MultiFactorAuthenticationInfo? mfa;
+  User? get user => session?.user;
 
   static AuthResponse fromJson(dynamic json) {
-    if (json['mfa'] == true) {
-      return AuthResponse(mfa: MultiFactorAuthenticationInfo.fromJson(json));
-    } else {
-      final session = Session.fromJson(json);
-      return AuthResponse(session: session, user: session.user);
-    }
+    return AuthResponse(
+      session:
+          json['session'] != null ? Session.fromJson(json['session']) : null,
+      mfa: json['mfa'] != null
+          ? MultiFactorAuthenticationInfo.fromJson(json['mfa'])
+          : null,
+    );
   }
 }
 
 /// Represents a user-authenticated session with Nhost.
 class Session {
   Session({
-    this.jwtToken,
-    this.jwtExpiresIn,
+    this.accessToken,
+    this.accessTokenExpiresIn,
     this.refreshToken,
     this.user,
-    this.mfa,
   });
 
   /// The raw JSON web token
-  final String? jwtToken;
+  final String? accessToken;
 
-  /// The amount of time that [jwtToken] will remain valid.
+  /// The amount of time that [accessToken] will remain valid.
   ///
   /// Measured from the time of issue.
-  final Duration? jwtExpiresIn;
+  final Duration? accessTokenExpiresIn;
 
   /// A token that can be used to periodically refresh the session.
   ///
@@ -48,49 +50,38 @@ class Session {
   /// The user associated with this session.
   final User? user;
 
-  /// Multi-factor Authentication information.
-  ///
-  /// This field will be `null` if MFA is not enabled for the user.
-  final MultiFactorAuthenticationInfo? mfa;
-
   Session copyWith({
-    String? jwtToken,
-    Duration? jwtExpiresIn,
+    String? accessToken,
+    Duration? accessTokenExpiresIn,
     String? refreshToken,
     User? user,
-    MultiFactorAuthenticationInfo? mfa,
   }) {
     return Session(
-      jwtToken: jwtToken ?? this.jwtToken,
-      jwtExpiresIn: jwtExpiresIn ?? this.jwtExpiresIn,
+      accessToken: accessToken ?? this.accessToken,
+      accessTokenExpiresIn: accessTokenExpiresIn ?? this.accessTokenExpiresIn,
       refreshToken: refreshToken ?? this.refreshToken,
       user: user ?? this.user,
-      mfa: mfa ?? this.mfa,
     );
   }
 
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
-      'jwt_token': jwtToken,
-      'jwt_expires_in': durationToMs(jwtExpiresIn),
-      'refresh_token': refreshToken,
+      'accessToken': accessToken,
+      'accessTokenExpiresIn': durationToMs(accessTokenExpiresIn),
+      'refreshToken': refreshToken,
       'user': user?.toJson(),
-      'mfa': mfa?.toJson(),
     };
   }
 
   static Session fromJson(dynamic json) {
     return Session(
-      jwtToken: json['jwt_token'] as String?,
-      jwtExpiresIn: durationFromMs(json['jwt_expires_in'] as int?),
-      refreshToken: json['refresh_token'] as String?,
+      accessToken: json['accessToken'] as String?,
+      accessTokenExpiresIn:
+          durationFromMs(json['accessTokenExpiresIn'] as int?),
+      refreshToken: json['refreshToken'] as String?,
       user: json['user'] == null
           ? null
           : User.fromJson(json['user'] as Map<String, dynamic>),
-      mfa: json['mfa'] == null
-          ? null
-          : MultiFactorAuthenticationInfo.fromJson(
-              json['mfa'] as Map<String, dynamic>),
     );
   }
 }
@@ -99,31 +90,42 @@ class Session {
 class User {
   User({
     required this.id,
-    required this.email,
-    this.displayName,
+    required this.displayName,
+    required this.locale,
+    required this.createdAt,
+    required this.isAnonymous,
+    required this.defaultRole,
+    required this.roles,
+    this.email,
     this.avatarUrl,
   });
 
-  /// A UUID identifying the user
   final String id;
+  final String? email;
+  final String displayName;
 
-  /// The user's email address
-  final String email;
-
-  /// The user's preferred name for display, or `null` if none
-  final String? displayName;
-
-  /// A [Uri] locating the user's avatar image, or `null` if none.
+  /// A [Uri] locating the user's avatar image, or `null` if none
   final Uri? avatarUrl;
+  final String locale;
+  final DateTime createdAt;
+
+  final bool isAnonymous;
+  final String defaultRole;
+  final List<String> roles;
 
   static User fromJson(dynamic json) {
     return User(
       id: json['id'] as String,
-      email: json['email'] as String,
-      displayName: json['display_name'] as String?,
-      avatarUrl: json['avatar_url'] == null
+      email: json['email'] as String?,
+      displayName: json['displayName'] as String,
+      locale: json['locale'] as String,
+      avatarUrl: json['avatarUrl'] == null
           ? null
-          : Uri.parse(json['avatar_url'] as String),
+          : Uri.parse(json['avatarUrl'] as String),
+      createdAt: DateTime.parse(json['createdAt']),
+      isAnonymous: json['isAnonymous'] as bool,
+      defaultRole: json['defaultRole'] as String,
+      roles: <String>[...json['roles']],
     );
   }
 
@@ -131,18 +133,23 @@ class User {
     return <String, dynamic>{
       'id': id,
       'email': email,
-      'display_name': displayName,
-      'avatar_url': avatarUrl?.toString(),
+      'displayName': displayName,
+      'avatarUrl': avatarUrl?.toString(),
+      'locale': locale,
+      'createdAt': createdAt.toIso8601String(),
+      'isAnonymous': isAnonymous,
+      'defaultRole': defaultRole,
+      'roles': roles,
     };
   }
 }
 
-/// Describes information required to perform an MFA login.
+/// Describes information required to perform an MFA sign in.
 class MultiFactorAuthenticationInfo {
   MultiFactorAuthenticationInfo({required this.ticket});
 
-  /// Ticket string to be provided to [Auth.completeMfaLogin] in order to continue the
-  /// login process
+  /// Ticket string to be provided to [AuthClient.completeMfaSignIn] in order
+  /// to continue the sign in process
   final String ticket;
 
   static MultiFactorAuthenticationInfo fromJson(dynamic json) {
@@ -159,28 +166,28 @@ class MultiFactorAuthenticationInfo {
 }
 
 class MultiFactorAuthResponse {
-  MultiFactorAuthResponse({required this.qrCode, required this.otpSecret});
+  MultiFactorAuthResponse({required this.imageUrl, required this.totpSecret});
 
   /// Data URI of the QR code that describes a user's OTP generation.
   ///
   /// This value, when presented to the user, can be read by authenticator apps
   /// to set up OTP.
-  final UriData qrCode;
+  final UriData imageUrl;
 
   /// OTP secret
-  final String otpSecret;
+  final String totpSecret;
 
   static MultiFactorAuthResponse fromJson(dynamic json) {
     return MultiFactorAuthResponse(
-      qrCode: uriDataFromString(json['image_url'] as String)!,
-      otpSecret: json['otp_secret'] as String,
+      imageUrl: uriDataFromString(json['imageUrl'] as String)!,
+      totpSecret: json['totpSecret'] as String,
     );
   }
 
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
-      'image_url': uriDataToString(qrCode),
-      'otp_secret': otpSecret,
+      'imageUrl': uriDataToString(imageUrl),
+      'totpSecret': totpSecret,
     };
   }
 }

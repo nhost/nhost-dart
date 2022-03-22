@@ -1,3 +1,61 @@
+## 2.0.1
+
+ - **DOCS**: Update pubspec sample in READMEs.
+
+## 2.0.0
+
+ - Graduate package to a stable release. See pre-releases prior to this version for changelog entries.
+
+## 2.0.0-beta.3
+
+ - Update a dependency to the latest release.
+
+## 2.0.0-beta.2
+
+> Note: This release has breaking changes.
+
+ - **BREAKING** **REFACTOR**: Rename signIn -> signInEmailPassword.
+
+## 2.0.0-beta.1
+
+> Note: This release has breaking changes.
+
+ - **BREAKING** **REFACTOR**: Change client names to include the word client.
+
+## 2.0.0-beta.0
+
+> Note: This release has breaking changes.
+
+Migrate (partially) to the Nhost v2 backend.
+
+ - **FEAT** Slightly nicer GQL client creation (fewer parameters)
+
+## 1.0.14
+
+ - **FIX**: Remove outdated links.
+
+## 1.0.13
+
+ - Update a dependency to the latest release.
+
+## 1.0.12
+
+ - **FIX**: Fix broken URLs across packages.
+ - **DOCS**: Remove mention of older Flutter support from READMEs.
+ - **CHORE**: Upgrade to latest stable SDK.
+ - **CHORE**: Upgrade dependencies.
+ - **CHORE**: Publish packages.
+ - **CHORE**: Publish packages.
+ - **CHORE**: Publish packages.
+
+## 1.0.11
+
+ - Update a dependency to the latest release.
+
+## 1.0.10
+
+ - Update a dependency to the latest release.
+
 ## 1.0.9
 
  - **FIX**: Upgrade graphql dependency to 5.0.0.

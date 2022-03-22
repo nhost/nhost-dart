@@ -1,3 +1,62 @@
+## 2.0.1
+
+ - **DOCS**: Update pubspec sample in READMEs.
+
+## 2.0.0
+
+ - Graduate package to a stable release. See pre-releases prior to this version for changelog entries.
+
+## 2.0.0-beta.3
+
+ - Update a dependency to the latest release.
+
+## 2.0.0-beta.2
+
+> Note: This release has breaking changes.
+
+ - **REFACTOR**: Change all instances of login to sign in.
+ - **BREAKING** **REFACTOR**: Rename signIn -> signInEmailPassword.
+
+## 2.0.0-beta.1
+
+> Note: This release has breaking changes.
+
+ - **BREAKING** **REFACTOR**: Change client names to include the word client.
+
+## 2.0.0-beta.0
+
+> Note: This release has breaking changes.
+
+ - **BREAKING** **FEAT**: Migrate to the Nhost v2 backend.
+
+## 1.0.11
+
+ - **FIX**: Remove outdated links.
+ - **FIX**: Remove unneeded imports across the board.
+
+## 1.0.10
+
+ - Update a dependency to the latest release.
+
+## 1.0.9
+
+ - **FIX**: Fix broken URLs across packages.
+ - **DOCS**: Remove mention of older Flutter support from READMEs.
+ - **CHORE**: Satisfy a couple of the new lints.
+ - **CHORE**: Upgrade to latest stable SDK.
+ - **CHORE**: Upgrade dependencies.
+ - **CHORE**: Publish packages.
+ - **CHORE**: Publish packages.
+ - **CHORE**: Publish packages.
+
+## 1.0.8
+
+ - Update a dependency to the latest release.
+
+## 1.0.7
+
+ - **FIX**: Update NhostAuthProvider to rebuild on transitions from loading -> logged{In,Out}.
+
 ## 1.0.6
 
  - Update a dependency to the latest release.

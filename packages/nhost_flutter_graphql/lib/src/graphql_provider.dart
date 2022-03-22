@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:nhost_flutter_auth/nhost_flutter_auth.dart';
 import 'package:nhost_graphql_adapter/nhost_graphql_adapter.dart';
-import 'package:nhost_sdk/nhost_sdk.dart';
 
 import 'logging.dart';
 
@@ -21,10 +20,12 @@ import 'logging.dart';
 class NhostGraphQLProvider extends StatefulWidget {
   NhostGraphQLProvider({
     Key? key,
-    required this.gqlEndpointUrl,
     this.nhostClient,
+    String? gqlEndpointUrl,
     this.child,
-  }) : super(key: key);
+  })  : assert(nhostClient != null || gqlEndpointUrl != null),
+        gqlEndpointUrl = gqlEndpointUrl ?? nhostClient!.gqlEndpointUrl,
+        super(key: key);
 
   /// The Nhost GQL URL
   final String gqlEndpointUrl;
@@ -40,14 +41,14 @@ class NhostGraphQLProvider extends StatefulWidget {
 
 class _NhostGraphQLProviderState extends State<NhostGraphQLProvider> {
   ValueNotifier<GraphQLClient>? clientNotifier;
-  Auth? _lastAuth;
+  AuthClient? _lastAuth;
 
   @override
   void initState() {
     super.initState();
   }
 
-  Auth get currentNhostAuth {
+  AuthClient get currentNhostAuth {
     final auth = widget.nhostClient?.auth ?? NhostAuthProvider.of(context);
 
     assert(() {

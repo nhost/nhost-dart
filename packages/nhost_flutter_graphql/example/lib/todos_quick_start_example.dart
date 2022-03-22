@@ -1,7 +1,7 @@
 /// Implementation of the Nhost Quick Start app in Flutter.
 ///
 /// GETTING STARTED: Follow the Nhost Quick Start at
-/// https://docs.nhost.io/quick-start to prepare the backend. You can ignore
+/// https://docs.nhost.io/get-started to prepare the backend. You can ignore
 /// the client-side JS, because this Flutter app takes on that responsibility.
 library todos_quick_start_example;
 
@@ -9,13 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:nhost_flutter_auth/nhost_flutter_auth.dart';
 import 'package:nhost_flutter_graphql/nhost_flutter_graphql.dart';
-import 'package:nhost_sdk/nhost_sdk.dart';
 
-// Fill in these values with the Backend and GraphQL URL found on your Nhost
-// project page.
-
-const nhostApiUrl = 'https://backend-5e69d1d7.nhost.app';
-const nhostGraphQLUrl = 'https://hasura-5e69d1d7.nhost.app/v1/graphql';
+import 'config.dart';
 
 void main() {
   runApp(TodosQuickStartExample());
@@ -27,8 +22,7 @@ class TodosQuickStartExample extends StatelessWidget {
     // The NhostGraphQLProvider automatically provides connection information
     // to `graphql_flutter` widgets in its subtree.
     return NhostGraphQLProvider(
-      nhostClient: NhostClient(baseUrl: nhostApiUrl),
-      gqlEndpointUrl: nhostGraphQLUrl,
+      nhostClient: NhostClient(backendUrl: nhostUrl),
       child: MaterialApp(
         title: 'Nhost.io Todos Quick Start',
         debugShowCheckedModeBanner: false,
@@ -45,15 +39,15 @@ class TodosQuickStartExample extends StatelessWidget {
 class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final auth = NhostAuthProvider.of(context);
+    final auth = NhostAuthProvider.of(context)!;
 
     Widget widget;
     switch (auth.authenticationState) {
-      case AuthenticationState.loggedIn:
+      case AuthenticationState.signedIn:
         widget = TodosPage();
         break;
-      case AuthenticationState.loggedOut:
-        widget = LoginPage();
+      case AuthenticationState.signedOut:
+        widget = SignInPage();
         break;
       default:
         widget = SizedBox();
@@ -108,7 +102,7 @@ final removeCompletedTodosMutation = gql(r'''
 
 class TodosPage extends StatelessWidget {
   const TodosPage({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -124,10 +118,10 @@ class TodosPage extends StatelessWidget {
         if (result.hasException) {
           return Text('Error encountered while loading todos. Did you setup '
               'your backend using the quick-start at '
-              'https://docs.nhost.io/quick-start?');
+              'https://docs.nhost.io/get-started?');
         }
 
-        final todos = (result.data['todos'] as List)
+        final todos = (result.data!['todos'] as List)
             .map((json) => Todo.fromJson(json))
             .toList();
 
@@ -159,7 +153,7 @@ class AddTodoField extends StatefulWidget {
 }
 
 class _AddTodoFieldState extends State<AddTodoField> {
-  TextEditingController _todoNameController;
+  late TextEditingController _todoNameController;
 
   @override
   void initState() {
@@ -206,8 +200,8 @@ class _AddTodoFieldState extends State<AddTodoField> {
 
 class TodoList extends StatelessWidget {
   const TodoList({
-    Key key,
-    this.todos,
+    Key? key,
+    required this.todos,
   }) : super(key: key);
 
   final List<Todo> todos;
@@ -220,14 +214,17 @@ class TodoList extends StatelessWidget {
 
     return ListView(
       children: [
-        for (final todo in todos) TodoTile(todo: todo),
+        for (final todo in todos)
+          if (!todo.isCompleted) TodoTile(todo: todo),
+        for (final todo in todos)
+          if (todo.isCompleted) TodoTile(todo: todo),
       ],
     );
   }
 }
 
 class TodoTile extends StatelessWidget {
-  TodoTile({Key key, @required this.todo}) : super(key: key);
+  TodoTile({Key? key, required this.todo}) : super(key: key);
   final Todo todo;
 
   @override
@@ -247,7 +244,7 @@ class TodoTile extends StatelessWidget {
                 : null,
           ),
           value: todo.isCompleted,
-          onChanged: result.isLoading
+          onChanged: result!.isLoading
               ? null
               : (flag) async {
                   runMutation({
@@ -264,12 +261,12 @@ class TodoTile extends StatelessWidget {
 class TodoListActions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final auth = NhostAuthProvider.of(context);
+    final auth = NhostAuthProvider.of(context)!;
     return Row(
       children: [
         TextButton(
           onPressed: () {
-            auth.logout();
+            auth.signOut();
           },
           child: Text('Logout'),
         ),
@@ -293,7 +290,11 @@ class TodoListActions extends StatelessWidget {
 }
 
 class Todo {
-  Todo({this.id, this.name, this.isCompleted});
+  Todo({
+    required this.id,
+    required this.name,
+    required this.isCompleted,
+  });
   factory Todo.fromJson(dynamic json) {
     return Todo(
       id: json['id'],
@@ -307,21 +308,21 @@ class Todo {
   final bool isCompleted;
 }
 
-class LoginPage extends StatefulWidget {
+class SignInPage extends StatefulWidget {
   @override
-  _LoginPageState createState() => _LoginPageState();
+  _SignInPageState createState() => _SignInPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _SignInPageState extends State<SignInPage> {
   final formKey = GlobalKey<FormState>();
-  TextEditingController emailController;
-  TextEditingController passwordController;
+  late TextEditingController emailController;
+  late TextEditingController passwordController;
 
   @override
   void initState() {
     super.initState();
-    emailController = TextEditingController();
-    passwordController = TextEditingController();
+    emailController = TextEditingController(text: 'user-1@nhost.io');
+    passwordController = TextEditingController(text: 'password-1');
   }
 
   @override
@@ -331,16 +332,16 @@ class _LoginPageState extends State<LoginPage> {
     passwordController.dispose();
   }
 
-  void tryLogin() async {
-    final auth = NhostAuthProvider.of(context);
+  void trySignIn() async {
+    final auth = NhostAuthProvider.of(context)!;
 
     try {
-      await auth.login(
+      await auth.signInEmailPassword(
           email: emailController.text, password: passwordController.text);
     } on ApiException {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Login Failed'),
+          content: Text('Sign in Failed'),
         ),
       );
     }
@@ -362,7 +363,7 @@ class _LoginPageState extends State<LoginPage> {
                 border: OutlineInputBorder(),
               ),
               autofocus: true,
-              onFieldSubmitted: (_) => tryLogin(),
+              onFieldSubmitted: (_) => trySignIn(),
             ),
             const SizedBox(height: 12),
             TextFormField(
@@ -372,11 +373,11 @@ class _LoginPageState extends State<LoginPage> {
                 border: OutlineInputBorder(),
               ),
               obscureText: true,
-              onFieldSubmitted: (_) => tryLogin(),
+              onFieldSubmitted: (_) => trySignIn(),
             ),
             const SizedBox(height: 20),
             ElevatedButton(
-              onPressed: tryLogin,
+              onPressed: trySignIn,
               child: Text('Submit'),
             )
           ],

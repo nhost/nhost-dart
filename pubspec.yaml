@@ -5,9 +5,9 @@ homepage: https://nhost.io
 repository: https://github.com/nhost/nhost-dart
 
 environment:
-  sdk: '>=2.12.0 <3.0.0'
+  sdk: '>=2.14.0 <3.0.0'
 
 dev_dependencies:
-  dotenv: 3.0.0-nullsafety.0
-  melos: 0.4.10+1
+  dotenv: ^3.0.0
+  melos: ^1.2.0
   path: ^1.0.0

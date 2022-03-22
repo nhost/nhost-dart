@@ -1,13 +1,13 @@
-/// Demonstrates login, logout, and requiring authentication to access a
+/// Demonstrates sign in, logout, and requiring authentication to access a
 /// resource.
 library simple_auth_example;
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:nhost_sdk/nhost_sdk.dart';
 import 'package:nhost_flutter_auth/nhost_flutter_auth.dart';
 
-/// Fill in this value with the backend URL found on your Nhost project page.
-const nhostApiUrl = 'https://backend-5e69d1d7.nhost.app';
+import 'config.dart';
 
 void main() {
   runApp(SimpleAuthExample());
@@ -19,13 +19,13 @@ class SimpleAuthExample extends StatefulWidget {
 }
 
 class _SimpleAuthExampleState extends State<SimpleAuthExample> {
-  NhostClient nhostClient;
+  late NhostClient nhostClient;
 
   @override
   void initState() {
     super.initState();
     // Create a new Nhost client using your project's backend URL.
-    nhostClient = NhostClient(baseUrl: nhostApiUrl);
+    nhostClient = NhostClient(backendUrl: nhostUrl);
   }
 
   @override
@@ -55,14 +55,14 @@ class ExampleProtectedScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     // NhostAuthProvider.of will register this widget so that it rebuilds whenever
     // the user's authentication state changes.
-    final auth = NhostAuthProvider.of(context);
+    final auth = NhostAuthProvider.of(context)!;
     Widget widget;
     switch (auth.authenticationState) {
-      case AuthenticationState.loggedIn:
+      case AuthenticationState.signedIn:
         widget = LoggedInUserDetails();
         break;
-      case AuthenticationState.loggedOut:
-        widget = LoginForm();
+      case AuthenticationState.signedOut:
+        widget = SignInForm();
         break;
       default:
         widget = SizedBox();
@@ -78,21 +78,21 @@ class ExampleProtectedScreen extends StatelessWidget {
 
 const rowSpacing = SizedBox(height: 12);
 
-class LoginForm extends StatefulWidget {
+class SignInForm extends StatefulWidget {
   @override
-  _LoginFormState createState() => _LoginFormState();
+  _SignInFormState createState() => _SignInFormState();
 }
 
-class _LoginFormState extends State<LoginForm> {
+class _SignInFormState extends State<SignInForm> {
   final formKey = GlobalKey<FormState>();
-  TextEditingController emailController;
-  TextEditingController passwordController;
+  late TextEditingController emailController;
+  late TextEditingController passwordController;
 
   @override
   void initState() {
     super.initState();
-    emailController = TextEditingController();
-    passwordController = TextEditingController();
+    emailController = TextEditingController(text: 'user-1@nhost.io');
+    passwordController = TextEditingController(text: 'password-1');
   }
 
   @override
@@ -102,16 +102,22 @@ class _LoginFormState extends State<LoginForm> {
     passwordController.dispose();
   }
 
-  void tryLogin() async {
-    final auth = NhostAuthProvider.of(context);
+  void trySignIn() async {
+    final auth = NhostAuthProvider.of(context)!;
 
     try {
-      await auth.login(
+      await auth.signInEmailPassword(
           email: emailController.text, password: passwordController.text);
     } on ApiException {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Login Failed'),
+          content: Text('Sign in Failed'),
+        ),
+      );
+    } on SocketException {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Network Failed'),
         ),
       );
     }
@@ -132,7 +138,7 @@ class _LoginFormState extends State<LoginForm> {
                 hintText: 'Email',
                 border: OutlineInputBorder(),
               ),
-              onFieldSubmitted: (_) => tryLogin(),
+              onFieldSubmitted: (_) => trySignIn(),
             ),
             rowSpacing,
             TextFormField(
@@ -142,11 +148,11 @@ class _LoginFormState extends State<LoginForm> {
                 border: OutlineInputBorder(),
               ),
               obscureText: true,
-              onFieldSubmitted: (_) => tryLogin(),
+              onFieldSubmitted: (_) => trySignIn(),
             ),
             const SizedBox(height: 20),
             ElevatedButton(
-              onPressed: tryLogin,
+              onPressed: trySignIn,
               child: Text('Submit'),
             )
           ],
@@ -159,8 +165,8 @@ class _LoginFormState extends State<LoginForm> {
 class LoggedInUserDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final auth = NhostAuthProvider.of(context);
-    final currentUser = auth.currentUser;
+    final auth = NhostAuthProvider.of(context)!;
+    final currentUser = auth.currentUser!;
 
     final textTheme = Theme.of(context).textTheme;
     const cellPadding = EdgeInsets.all(4);
@@ -197,7 +203,7 @@ class LoggedInUserDetails extends StatelessWidget {
           rowSpacing,
           ElevatedButton(
             onPressed: () {
-              auth.logout();
+              auth.signOut();
             },
             child: Text('Logout'),
           ),

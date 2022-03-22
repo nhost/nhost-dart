@@ -1,7 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import 'package:nhost_sdk/nhost_sdk.dart';
 import 'package:nhost_flutter_auth/nhost_flutter_auth.dart';
 
 void main() {
@@ -10,7 +9,7 @@ void main() {
         (tester) async {
       final mockAuth = MockAuth();
 
-      Auth? actualAuth;
+      AuthClient? actualAuth;
       await tester.pumpWidget(
         NhostAuthProvider(
           auth: mockAuth,
@@ -98,7 +97,7 @@ void main() {
       expect(buildCount, 1);
 
       // Emulate an auth state change, then pump the engine
-      mockAuth.triggerStateChange(AuthenticationState.loggedOut);
+      mockAuth.triggerStateChange(AuthenticationState.signedOut);
       await tester.pump();
 
       // The state change should result in a second build
@@ -108,7 +107,7 @@ void main() {
     testWidgets('.of() returns null if no authentication found',
         (tester) async {
       // We set it to a value to ensure it gets changed
-      Auth? auth = MockAuth();
+      AuthClient? auth = MockAuth();
       await tester.pumpWidget(
         Builder(builder: (context) {
           auth = NhostAuthProvider.of(context);
@@ -121,7 +120,7 @@ void main() {
   });
 }
 
-class MockAuth extends Mock implements Auth {
+class MockAuth extends Mock implements AuthClient {
   final List<AuthStateChangedCallback> _tokenChangedCallbacks = [];
 
   @override
