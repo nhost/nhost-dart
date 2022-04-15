@@ -96,9 +96,9 @@ jobs:
     - name: Install tools
       run: |
         echo "$HOME/.pub-cache/bin" >> $GITHUB_PATH
-        pub get
-        pub global activate junitreport
-        pub global activate melos
+        dart pub get
+        dart pub global activate junitreport
+        dart pub global activate melos
 
     - name: Bootstrap packages
       run: melos bootstrap
