@@ -15,11 +15,9 @@ on:
   push:
     branches:
       - main
-      - main-null-unsafe
   pull_request:
     branches:
       - main
-      - main-null-unsafe
   schedule:
   # Run the quality job at 4am every day
   - cron: '0 4 * * *'
