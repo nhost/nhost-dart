@@ -108,7 +108,7 @@ class ProviderSignInForm extends StatelessWidget {
     return TextButton(
       onPressed: () async {
         try {
-          await url_launcher.launchUrl(
+          await url_launcher.launch(
             nhostGithubSignInUrl,
             forceSafariVC: true,
           );
