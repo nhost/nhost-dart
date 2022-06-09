@@ -65,7 +65,7 @@ class PresignedUrl {
   static PresignedUrl fromJson(dynamic json) {
     return PresignedUrl(
       url: json['url'] as String,
-      expiration: DateTime.parse(json['expiration']),
+      expiration: DateTime.now().add(Duration(seconds: json['expiration'])),
     );
   }
 }
