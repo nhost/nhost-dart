@@ -1,3 +1,8 @@
+## 3.0.2
+
+ - **FIX**: nhost_graphql_links: downgraded `nock` version.
+ - **FIX**: repo: broken links.
+
 ## 3.0.1
 
  - **DOCS**: Update pubspec sample in READMEs.

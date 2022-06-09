@@ -1,7 +1,7 @@
 /// Implementation of the Nhost Quick Start app in Flutter.
 ///
 /// GETTING STARTED: Follow the Nhost Quick Start at
-/// https://docs.nhost.io/get-started to prepare the backend. You can ignore
+/// https://docs.nhost.io to prepare the backend. You can ignore
 /// the client-side JS, because this Flutter app takes on that responsibility.
 library todos_quick_start_example;
 
@@ -118,7 +118,7 @@ class TodosPage extends StatelessWidget {
         if (result.hasException) {
           return Text('Error encountered while loading todos. Did you setup '
               'your backend using the quick-start at '
-              'https://docs.nhost.io/get-started?');
+              'https://docs.nhost.io?');
         }
 
         final todos = (result.data!['todos'] as List)

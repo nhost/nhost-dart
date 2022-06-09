@@ -1,3 +1,7 @@
+## 2.0.2
+
+ - **FIX**: nhost_flutter_auth: deprecated functions.
+
 ## 2.0.1
 
  - **DOCS**: Update pubspec sample in READMEs.
