@@ -204,7 +204,7 @@ class AuthClient {
     final options = {
       if (locale != null) 'locale': locale,
       if (includeRoleOptions) 'defaultRole': defaultRole,
-      if (includeRoleOptions) 'roles': roles,
+      if (includeRoleOptions) 'allowedRoles': roles,
       if (displayName != null) 'displayName': displayName,
       if (redirectTo != null) 'redirectTo': redirectTo,
     };
