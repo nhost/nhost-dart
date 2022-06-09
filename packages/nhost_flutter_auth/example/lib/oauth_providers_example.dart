@@ -51,7 +51,7 @@ class _OAuthExampleState extends State<OAuthExample> {
           // ignore: unawaited_futures
           nhostClient.auth.completeOAuthProviderSignIn(uri);
         }
-        await url_launcher.closeWebView();
+        await url_launcher.closeInAppWebView();
       },
     );
   }
@@ -108,7 +108,7 @@ class ProviderSignInForm extends StatelessWidget {
     return TextButton(
       onPressed: () async {
         try {
-          await url_launcher.launch(
+          await url_launcher.launchUrl(
             nhostGithubSignInUrl,
             forceSafariVC: true,
           );
