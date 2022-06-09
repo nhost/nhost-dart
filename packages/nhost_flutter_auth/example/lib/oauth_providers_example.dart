@@ -51,7 +51,7 @@ class _OAuthExampleState extends State<OAuthExample> {
           // ignore: unawaited_futures
           nhostClient.auth.completeOAuthProviderSignIn(uri);
         }
-        await url_launcher.closeInAppWebView();
+        await url_launcher.closeWebView();
       },
     );
   }
