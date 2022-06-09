@@ -1,3 +1,9 @@
+## 2.0.2
+
+ - **REVERT**: nhost_graphql_adapter: `nock` version bump.
+ - **FIX**: nhost_graphql_links: downgraded `nock` version.
+ - **FIX**: repo: broken links.
+
 ## 2.0.1
 
  - **DOCS**: Update pubspec sample in READMEs.

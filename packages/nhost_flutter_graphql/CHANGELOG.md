@@ -1,3 +1,7 @@
+## 2.0.2
+
+ - **FIX**: repo: broken links.
+
 ## 2.0.1
 
  - **DOCS**: Update pubspec sample in READMEs.
