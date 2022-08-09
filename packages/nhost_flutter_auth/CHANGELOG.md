@@ -1,3 +1,8 @@
+## 2.0.3
+
+ - **FIX**: Presigned URL DateTime (#66).
+ - **FIX**: nhost_flutter_auth: deprecated functions.
+
 ## 2.0.2
 
  - **FIX**: nhost_flutter_auth: deprecated functions.

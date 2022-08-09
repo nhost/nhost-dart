@@ -1,3 +1,9 @@
+## 3.0.3
+
+ - **FIX**: Presigned URL DateTime (#66).
+ - **FIX**: nhost_graphql_links: downgraded `nock` version.
+ - **FIX**: repo: broken links.
+
 ## 3.0.2
 
  - **FIX**: nhost_graphql_links: downgraded `nock` version.

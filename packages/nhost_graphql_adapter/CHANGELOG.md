@@ -1,3 +1,10 @@
+## 2.0.3
+
+ - **REVERT**: nhost_graphql_adapter: `nock` version bump.
+ - **FIX**: Presigned URL DateTime (#66).
+ - **FIX**: nhost_graphql_links: downgraded `nock` version.
+ - **FIX**: repo: broken links.
+
 ## 2.0.2
 
  - **REVERT**: nhost_graphql_adapter: `nock` version bump.
