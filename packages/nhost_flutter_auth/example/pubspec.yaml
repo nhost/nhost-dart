@@ -16,5 +16,8 @@ dependencies:
   nhost_flutter_auth:
     path: ../
 
+dev_dependencies:
+  lints: ^1.0.0
+
 flutter:
   uses-material-design: true
