@@ -12,7 +12,6 @@ dependencies:
   http_parser: ^4.0.0
   http: ^0.13.0
   jwt_decoder: ^2.0.0
-  lints: ^1.0.0
   logging: ^1.0.1
   meta: ^1.0.0
   path: ^1.0.0
@@ -21,6 +20,7 @@ dev_dependencies:
   betamax: ^2.0.0
   fake_async: ^1.0.0
   graphql: ^5.0.0
+  lints: ^1.0.0
   mockito: ^5.0.0
   nock: ^1.0.0
   otp: ">=3.0.0-nullsafety.0 <4.0.0"
