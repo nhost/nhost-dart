@@ -3,7 +3,7 @@ description: Demonstrates usage of the nhost_graphql package
 publish_to: none
 
 environment:
-  sdk: '>=2.14.0 <3.0.0'
+  sdk: ">=2.14.0 <3.0.0"
 
 dependencies:
   graphql: ^5.0.0
@@ -11,3 +11,6 @@ dependencies:
   # Nhost packages
   nhost_graphql_adapter:
     path: ../
+
+dev_dependencies:
+  lints: ^1.0.0
