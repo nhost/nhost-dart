@@ -1,3 +1,7 @@
+## 3.0.4
+
+- **FEAT**: Add `metadata` to sign up
+
 ## 3.0.3
 
 - **FIX**: `lints` package moved to `dev_dependencies`

@@ -1,3 +1,7 @@
+## 2.0.4
+
+- **FEAT**: Add `metadata` to sign up
+
 ## 2.0.3
 
 - **CHORE**: bump `nhost_sdk` version

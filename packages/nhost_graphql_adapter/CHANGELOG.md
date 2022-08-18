@@ -1,3 +1,7 @@
+## 2.0.4
+
+- **CHORE**: bump `nhost_sdk` version
+
 ## 2.0.3
 
 - **CHORE**: bump `nhost_sdk` version
