@@ -96,6 +96,7 @@ class User {
     required this.isAnonymous,
     required this.defaultRole,
     required this.roles,
+    required this.metadata,
     this.email,
     this.avatarUrl,
   });
@@ -112,6 +113,7 @@ class User {
   final bool isAnonymous;
   final String defaultRole;
   final List<String> roles;
+  final Map<String, Object?> metadata;
 
   static User fromJson(dynamic json) {
     return User(
@@ -126,6 +128,7 @@ class User {
       isAnonymous: json['isAnonymous'] as bool,
       defaultRole: json['defaultRole'] as String,
       roles: <String>[...json['roles']],
+      metadata: <String, Object?>{...json['metadata']},
     );
   }
 
@@ -139,6 +142,7 @@ class User {
       'createdAt': createdAt.toIso8601String(),
       'isAnonymous': isAnonymous,
       'defaultRole': defaultRole,
+      'metadata': metadata,
       'roles': roles,
     };
   }
