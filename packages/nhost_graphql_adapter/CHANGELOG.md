@@ -1,6 +1,6 @@
 ## 2.0.4
 
- - **FIX**: `lints` package (#73).
+- **CHORE**: bump `nhost_sdk` version
 
 ## 2.0.3
 

@@ -1,6 +1,6 @@
 ## 3.0.4
 
- - **FIX**: `lints` package (#73).
+- **FEAT**: Add `metadata` to sign up
 
 ## 3.0.3
 
