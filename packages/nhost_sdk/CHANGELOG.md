@@ -1,3 +1,7 @@
+## 3.0.4
+
+ - **FIX**: `lints` package (#73).
+
 ## 3.0.3
 
 - **FIX**: `lints` package moved to `dev_dependencies`
