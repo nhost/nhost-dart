@@ -22,13 +22,16 @@ class NhostGraphQLProvider extends StatefulWidget {
     Key? key,
     this.nhostClient,
     String? gqlEndpointUrl,
+    GraphQLCache? cache,
     this.child,
   })  : assert(nhostClient != null || gqlEndpointUrl != null),
         gqlEndpointUrl = gqlEndpointUrl ?? nhostClient!.gqlEndpointUrl,
+        cache = cache ?? GraphQLCache(),
         super(key: key);
 
   /// The Nhost GQL URL
   final String gqlEndpointUrl;
+  final GraphQLCache cache;
 
   /// Optional. If not provided, the necessary information will be requested
   /// from ancestry using [NhostAuth.of(BuildContext)]
@@ -96,6 +99,7 @@ class _NhostGraphQLProviderState extends State<NhostGraphQLProvider> {
       final client = createNhostGraphQLClientForAuth(
         widget.gqlEndpointUrl,
         _lastAuth = currentAuth,
+        gqlCache: widget.cache,
       );
       if (clientNotifier == null) {
         clientNotifier = ValueNotifier(client);
