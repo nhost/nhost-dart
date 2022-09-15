@@ -1,3 +1,7 @@
+## 2.1.0
+
+ - feat(nhost_flutter_graphql): configurable GraphQLCache
+
 ## 2.0.4
 
 - **CHORE**: bump `nhost_sdk` version
