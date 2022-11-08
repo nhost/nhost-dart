@@ -1,5 +1,5 @@
 name: nhost_gql_links
-version: 2.0.4
+version: 2.0.5
 description: Constructs GraphQL links for use with graphql and ferry packages
 homepage: https://nhost.io
 repository: https://github.com/nhost/nhost-dart/tree/main/packages/nhost_gql_links
@@ -12,7 +12,7 @@ dependencies:
   gql_exec: ^0.3.0
   gql_http_link: ^0.4.0
   gql_link: ^0.4.0
-  gql_websocket_link: ^0.3.1
+  gql_websocket_link: ^0.3.4
   gql: ^0.13.0
   http: ^0.13.1
   logging: ^1.0.1
