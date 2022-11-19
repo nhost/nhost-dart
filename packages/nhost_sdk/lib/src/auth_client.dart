@@ -37,7 +37,8 @@ const refreshTokenClientStorageKey = 'nhostRefreshToken';
 
 /// The query parameter name for the refresh token provided during OAuth
 /// provider-based sign-ins.
-const refreshTokenQueryParamName = 'refresh_token';
+// const refreshTokenQueryParamName = 'refresh_token';
+const refreshTokenQueryParamName = 'refreshToken';
 
 /// The Nhost authentication service.
 ///
