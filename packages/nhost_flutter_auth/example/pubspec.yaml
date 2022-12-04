@@ -17,7 +17,7 @@ dependencies:
     path: ../
 
 dev_dependencies:
-  lints: ^1.0.0
+  lints: any
 
 flutter:
   uses-material-design: true
