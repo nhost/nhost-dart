@@ -6,7 +6,7 @@ ide:
 
 scripts:
   postbootstrap:
-    run: melos run generate_github_workflows
+    run: dart run melos run generate_github_workflows
   generate_github_workflows:
     run: dart tool/generate_package_workflows.dart
   test:
