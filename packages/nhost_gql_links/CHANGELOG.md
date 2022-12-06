@@ -1,3 +1,7 @@
+## 2.0.5-dev.0
+
+ - **FIX**: upgrade deps.
+
 ## 2.0.4
 
 - **CHORE**: bump `nhost_sdk` version

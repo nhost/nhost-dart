@@ -1,3 +1,10 @@
+## 3.0.0-dev.0
+
+> Note: This release has breaking changes.
+
+ - **FIX**: upgrade deps.
+ - **BREAKING** **FEAT**: increase flutter sdk constrain.
+
 ## 2.0.4
 
 - **FEAT**: Add `metadata` to sign up

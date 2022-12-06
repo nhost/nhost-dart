@@ -1,3 +1,11 @@
+## 4.0.0-dev.0
+
+> Note: This release has breaking changes.
+
+ - **FIX**: upgrade deps.
+ - **FIX**: upgrade deps for nhost sdk.
+ - **BREAKING** **FEAT**: increase flutter sdk constrain.
+
 ## 3.0.4
 
 - **FEAT**: Add `metadata` to sign up
