@@ -2,8 +2,16 @@ table:
   name: provider_requests
   schema: auth
 configuration:
+  column_config:
+    id:
+      custom_name: id
+    options:
+      custom_name: options
+    redirect_url:
+      custom_name: redirectUrl
   custom_column_names:
     id: id
+    options: options
     redirect_url: redirectUrl
   custom_name: authProviderRequests
   custom_root_fields:

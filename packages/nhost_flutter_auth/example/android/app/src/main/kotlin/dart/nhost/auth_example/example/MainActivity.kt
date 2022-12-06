@@ -1,4 +1,4 @@
-package com.example.example
+package dart.nhost.auth_example.example
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -1,7 +1,0 @@
-INSERT INTO auth.users VALUES ('6a847fd6-b227-4129-98ae-1f80a1ab9258', '2022-01-28 22:15:07.779926+00', '2022-01-28 22:21:59.465206+00', '2022-01-28 22:21:59.453+00', false, 'user-1@nhost.io', 'https://s.gravatar.com/avatar/d86c12c3233e91ec90869a1f874cdf0e?r=g&default=blank', 'en', 'user-1@nhost.io', NULL, '$2a$10$VVFjHbVTb2nINQ6Ldrnh4.hqwIPe6gwd0ulgBVSRYVDtAqenbUkxW', false, false, NULL, NULL, NULL, '2022-01-28 22:15:07.779926+00', 'user', false, NULL, NULL, 'verifyEmail:2f41bfdd-3c09-4391-9b83-1d7732580f3d', '2022-02-27 22:15:07.765+00');
-INSERT INTO auth.user_roles VALUES ('6128e440-4042-4885-a58e-33e217498ec0', '2022-01-28 22:15:07.779926+00', '6a847fd6-b227-4129-98ae-1f80a1ab9258', 'user');
-INSERT INTO auth.user_roles VALUES ('81a9c855-6027-41fc-8154-9c8a5a5ee461', '2022-01-28 22:15:07.779926+00', '6a847fd6-b227-4129-98ae-1f80a1ab9258', 'me');
-
-INSERT INTO public.todos VALUES ('1a3c85e8-3d1a-401e-9ad0-1520b4f98ea7', '6a847fd6-b227-4129-98ae-1f80a1ab9258', 'Take an awesome dog on awesome walks', false, '2022-01-28 22:16:55.424304', '2022-01-28 22:16:55.424304');
-INSERT INTO public.todos VALUES ('ef8b4384-cd72-4ae6-863a-0ec657181b90', '6a847fd6-b227-4129-98ae-1f80a1ab9258', 'Snack on awesome snacks', false, '2022-01-28 22:16:45.262918', '2022-01-28 22:16:45.262918');
-INSERT INTO public.todos VALUES ('f0dada38-b0a0-47b3-8911-250a825b7a12', '6a847fd6-b227-4129-98ae-1f80a1ab9258', 'Nhost SDK release', true, '2022-01-28 22:21:06.706836', '2022-01-28 22:21:06.706836');

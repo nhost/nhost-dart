@@ -65,12 +65,12 @@ class ExampleProtectedScreen extends StatelessWidget {
         widget = SignInForm();
         break;
       default:
-        widget = SizedBox();
+        widget = const SizedBox();
         break;
     }
 
     return Padding(
-      padding: EdgeInsets.all(32),
+      padding: const EdgeInsets.all(32),
       child: widget,
     );
   }
@@ -110,13 +110,13 @@ class _SignInFormState extends State<SignInForm> {
           email: emailController.text, password: passwordController.text);
     } on ApiException {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text('Sign in Failed'),
         ),
       );
     } on SocketException {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text('Network Failed'),
         ),
       );
@@ -134,7 +134,7 @@ class _SignInFormState extends State<SignInForm> {
           children: [
             TextFormField(
               controller: emailController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 hintText: 'Email',
                 border: OutlineInputBorder(),
               ),
@@ -143,7 +143,7 @@ class _SignInFormState extends State<SignInForm> {
             rowSpacing,
             TextFormField(
               controller: passwordController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 hintText: 'Password',
                 border: OutlineInputBorder(),
               ),
@@ -153,7 +153,7 @@ class _SignInFormState extends State<SignInForm> {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: trySignIn,
-              child: Text('Submit'),
+              child: const Text('Submit'),
             )
           ],
         ),
@@ -183,7 +183,7 @@ class LoggedInUserDetails extends StatelessWidget {
           Text('User details:', style: textTheme.caption),
           rowSpacing,
           Table(
-            defaultColumnWidth: IntrinsicColumnWidth(),
+            defaultColumnWidth: const IntrinsicColumnWidth(),
             children: [
               for (final row in currentUser.toJson().entries)
                 TableRow(
@@ -205,7 +205,7 @@ class LoggedInUserDetails extends StatelessWidget {
             onPressed: () {
               auth.signOut();
             },
-            child: Text('Logout'),
+            child: const Text('Logout'),
           ),
         ],
       ),

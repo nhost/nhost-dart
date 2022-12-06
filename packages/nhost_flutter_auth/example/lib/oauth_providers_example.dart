@@ -38,22 +38,23 @@ class _OAuthExampleState extends State<OAuthExample> {
   late NhostClient nhostClient;
   late AppLinks appLinks;
 
+  handleAppLink() async {
+    appLinks = AppLinks();
+    final uri = await appLinks.getInitialAppLink();
+    if (uri?.host == signInSuccessHost) {
+      // ignore: unawaited_futures
+      nhostClient.auth.completeOAuthProviderSignIn(uri!);
+    }
+    await url_launcher.closeInAppWebView();
+  }
+
   @override
   void initState() {
     super.initState();
 
     // Create a new Nhost client using your project's backend URL.
     nhostClient = NhostClient(backendUrl: nhostUrl);
-
-    appLinks = AppLinks(
-      onAppLink: (uri, stringUri) async {
-        if (uri.host == signInSuccessHost) {
-          // ignore: unawaited_futures
-          nhostClient.auth.completeOAuthProviderSignIn(uri);
-        }
-        await url_launcher.closeWebView();
-      },
-    );
+    handleAppLink();
   }
 
   @override
@@ -96,7 +97,7 @@ class ExampleProtectedScreen extends StatelessWidget {
     }
 
     return Padding(
-      padding: EdgeInsets.all(32),
+      padding: const EdgeInsets.all(32),
       child: widget,
     );
   }
@@ -108,15 +109,14 @@ class ProviderSignInForm extends StatelessWidget {
     return TextButton(
       onPressed: () async {
         try {
-          await url_launcher.launch(
-            nhostGithubSignInUrl,
-            forceSafariVC: true,
+          await url_launcher.launchUrl(
+            Uri.parse(nhostGithubSignInUrl),
           );
         } on Exception {
           // Exceptions can occur due to weirdness with redirects
         }
       },
-      child: Text('Authenticate with GitHub'),
+      child: const Text('Authenticate with GitHub'),
     );
   }
 }
