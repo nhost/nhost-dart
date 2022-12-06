@@ -14,7 +14,7 @@ dependencies:
   jwt_decoder: ^2.0.1
   logging: ^1.1.0
   meta: ^1.8.0
-  path: ^1.8.3
+  path: ^1.8.2
 
 dev_dependencies:
   betamax: ^2.0.0
