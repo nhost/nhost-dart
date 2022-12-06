@@ -102,7 +102,7 @@ jobs:
 
     # Run analysis on all packages
     - name: Analyze packages
-      run: flutter analyze --no-pub --congratulate packages/* packages/*/example
+      run: dart run melos analyze
 
     # Run tests for package in question
     - name: Execute tests

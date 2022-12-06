@@ -39,10 +39,10 @@ class NhostGraphQLProvider extends StatefulWidget {
   final Widget? child;
 
   @override
-  _NhostGraphQLProviderState createState() => _NhostGraphQLProviderState();
+  NhostGraphQLProviderState createState() => NhostGraphQLProviderState();
 }
 
-class _NhostGraphQLProviderState extends State<NhostGraphQLProvider> {
+class NhostGraphQLProviderState extends State<NhostGraphQLProvider> {
   ValueNotifier<GraphQLClient>? clientNotifier;
   AuthClient? _lastAuth;
 

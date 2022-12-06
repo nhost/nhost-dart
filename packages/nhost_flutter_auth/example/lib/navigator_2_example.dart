@@ -225,17 +225,17 @@ class HomePage extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         ContentItem(
-          child: Text('Home', style: textTheme.headline5),
+          child: Text('Home', style: textTheme.headlineSmall),
         ),
         ContentItem(
           child: Text(
             isAuthenticated == true ? '(Authenticated)' : '(Unauthenticated)',
             style: isAuthenticated
-                ? textTheme.caption!.copyWith(
+                ? textTheme.bodySmall!.copyWith(
                     color: Colors.blue[700],
                     fontWeight: FontWeight.bold,
                   )
-                : textTheme.caption!.copyWith(
+                : textTheme.bodySmall!.copyWith(
                     color: Colors.red[700],
                     fontWeight: FontWeight.bold,
                   ),
@@ -324,7 +324,10 @@ class AdminPage extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         ContentItem(
-          child: Text('You\'re on the Admin page!', style: textTheme.headline5),
+          child: Text(
+            'You\'re on the Admin page!',
+            style: textTheme.headlineSmall,
+          ),
         ),
         const ContentItem(
           child: Text(
