@@ -1,3 +1,8 @@
+## 3.0.0-dev.2
+
+ - **FIX**: fix analyzer on ci for both stable and beta flutter sdk.
+ - **FEAT**: add analyze command to melos.
+
 ## 3.0.0-dev.1
 
  - Update a dependency to the latest release.

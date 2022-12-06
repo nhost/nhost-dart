@@ -1,3 +1,7 @@
+## 4.0.0-dev.2
+
+ - **FIX**: fix analyzer on ci for both stable and beta flutter sdk.
+
 ## 4.0.0-dev.1
 
  - **FIX**: downgrade path to 1.8.2.
