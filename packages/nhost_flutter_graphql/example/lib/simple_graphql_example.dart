@@ -50,12 +50,12 @@ class SimpleGqlExample extends StatelessWidget {
               }
 
               if (result.isLoading) {
-                return Text('Loading…');
+                return const Text('Loading…');
               }
 
               final todosList = result.data!['todos'] as List<dynamic>;
               if (todosList.isEmpty) {
-                return Text('No todos yet!');
+                return const Text('No todos yet!');
               }
 
               return Column(

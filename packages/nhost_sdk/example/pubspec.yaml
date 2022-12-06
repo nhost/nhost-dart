@@ -1,5 +1,5 @@
 name: nhost_sdk_example
-description:
+description: 'nhost sdk example'
 private: true
 
 environment:

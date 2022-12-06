@@ -1,4 +1,5 @@
 # Contributing to this repository
+
 ## Getting started
 
 This repository contains multiple Dart/Flutter packages, which can be found
@@ -37,6 +38,7 @@ Tests are automatically run by GitHub on every commit, but if you want to
 run them locally, run `dart run melos run test`.
 
 ## Publishing
+
 ### Updating package versions
 
 To version all packages in this repo that have been changed since the previous
@@ -70,3 +72,5 @@ dart run melos publish
 # Publishes to pub.dev. No turning back.
 dart run melos publish --no-dry-run
 ```
+
+#[TODO]: In case of error eveything under example_Server can be deleted

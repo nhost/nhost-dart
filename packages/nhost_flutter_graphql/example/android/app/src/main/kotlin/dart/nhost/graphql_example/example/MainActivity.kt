@@ -1,4 +1,4 @@
-package com.example.nhost_flutter_graphql_example
+package dart.nhost.graphql_example.example
 
 import io.flutter.embedding.android.FlutterActivity
 
