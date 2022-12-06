@@ -1,3 +1,7 @@
+## 4.0.0-dev.1
+
+ - **FIX**: downgrade path to 1.8.2.
+
 ## 4.0.0-dev.0
 
 > Note: This release has breaking changes.
