@@ -26,15 +26,17 @@ const signInSuccessHost = 'oauth.login.success';
 const signInFailureHost = 'oauth.login.failure';
 
 void main() async {
-  runApp(OAuthExample());
+  runApp(const OAuthExample());
 }
 
 class OAuthExample extends StatefulWidget {
+  const OAuthExample({super.key});
+
   @override
-  _OAuthExampleState createState() => _OAuthExampleState();
+  OAuthExampleState createState() => OAuthExampleState();
 }
 
-class _OAuthExampleState extends State<OAuthExample> {
+class OAuthExampleState extends State<OAuthExample> {
   late NhostClient nhostClient;
   late AppLinks appLinks;
 
@@ -67,7 +69,7 @@ class _OAuthExampleState extends State<OAuthExample> {
   Widget build(BuildContext context) {
     return NhostAuthProvider(
       auth: nhostClient.auth,
-      child: MaterialApp(
+      child: const MaterialApp(
         title: 'Nhost.io OAuth Example',
         home: Scaffold(
           body: SafeArea(
@@ -80,6 +82,8 @@ class _OAuthExampleState extends State<OAuthExample> {
 }
 
 class ExampleProtectedScreen extends StatelessWidget {
+  const ExampleProtectedScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     // NhostAuthProvider.of will register this widget so that it rebuilds
@@ -89,10 +93,10 @@ class ExampleProtectedScreen extends StatelessWidget {
 
     switch (auth.authenticationState) {
       case AuthenticationState.signedIn:
-        widget = LoggedInUserDetails();
+        widget = const LoggedInUserDetails();
         break;
       default:
-        widget = ProviderSignInForm();
+        widget = const ProviderSignInForm();
         break;
     }
 
@@ -104,6 +108,8 @@ class ExampleProtectedScreen extends StatelessWidget {
 }
 
 class ProviderSignInForm extends StatelessWidget {
+  const ProviderSignInForm({super.key});
+
   @override
   Widget build(BuildContext context) {
     return TextButton(

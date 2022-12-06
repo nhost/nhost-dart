@@ -7,23 +7,24 @@ library todos_quick_start_example;
 
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:nhost_flutter_auth/nhost_flutter_auth.dart';
 import 'package:nhost_flutter_graphql/nhost_flutter_graphql.dart';
 
 import 'config.dart';
 
 void main() {
-  runApp(TodosQuickStartExample());
+  runApp(const TodosQuickStartExample());
 }
 
 class TodosQuickStartExample extends StatelessWidget {
+  const TodosQuickStartExample({super.key});
+
   @override
   Widget build(BuildContext context) {
     // The NhostGraphQLProvider automatically provides connection information
     // to `graphql_flutter` widgets in its subtree.
     return NhostGraphQLProvider(
       nhostClient: NhostClient(backendUrl: nhostUrl),
-      child: MaterialApp(
+      child: const MaterialApp(
         title: 'Nhost.io Todos Quick Start',
         debugShowCheckedModeBanner: false,
         home: Scaffold(
@@ -37,6 +38,8 @@ class TodosQuickStartExample extends StatelessWidget {
 }
 
 class App extends StatelessWidget {
+  const App({super.key});
+
   @override
   Widget build(BuildContext context) {
     final auth = NhostAuthProvider.of(context)!;
@@ -47,7 +50,7 @@ class App extends StatelessWidget {
         widget = const TodosPage();
         break;
       case AuthenticationState.signedOut:
-        widget = SignInPage();
+        widget = const SignInPage();
         break;
       default:
         widget = const SizedBox();
@@ -134,13 +137,13 @@ class TodosPage extends StatelessWidget {
               style: TextStyle(fontSize: 24),
             ),
             spacer,
-            AddTodoField(),
+            const AddTodoField(),
             spacer,
             Expanded(
               child: TodoList(todos: todos),
             ),
             spacer,
-            TodoListActions(),
+            const TodoListActions(),
           ],
         );
       },
@@ -149,11 +152,13 @@ class TodosPage extends StatelessWidget {
 }
 
 class AddTodoField extends StatefulWidget {
+  const AddTodoField({super.key});
+
   @override
-  _AddTodoFieldState createState() => _AddTodoFieldState();
+  AddTodoFieldState createState() => AddTodoFieldState();
 }
 
-class _AddTodoFieldState extends State<AddTodoField> {
+class AddTodoFieldState extends State<AddTodoField> {
   late TextEditingController _todoNameController;
 
   @override
@@ -225,7 +230,10 @@ class TodoList extends StatelessWidget {
 }
 
 class TodoTile extends StatelessWidget {
-  TodoTile({Key? key, required this.todo}) : super(key: key);
+  const TodoTile({
+    Key? key,
+    required this.todo,
+  }) : super(key: key);
   final Todo todo;
 
   @override
@@ -248,10 +256,12 @@ class TodoTile extends StatelessWidget {
           onChanged: result!.isLoading
               ? null
               : (flag) async {
-                  runMutation({
-                    'todo_id': todo.id,
-                    'is_completed': flag,
-                  });
+                  runMutation(
+                    {
+                      'todo_id': todo.id,
+                      'is_completed': flag,
+                    },
+                  );
                 },
         );
       },
@@ -260,6 +270,8 @@ class TodoTile extends StatelessWidget {
 }
 
 class TodoListActions extends StatelessWidget {
+  const TodoListActions({super.key});
+
   @override
   Widget build(BuildContext context) {
     final auth = NhostAuthProvider.of(context)!;
@@ -310,11 +322,13 @@ class Todo {
 }
 
 class SignInPage extends StatefulWidget {
+  const SignInPage({super.key});
+
   @override
-  _SignInPageState createState() => _SignInPageState();
+  SignInPageState createState() => SignInPageState();
 }
 
-class _SignInPageState extends State<SignInPage> {
+class SignInPageState extends State<SignInPage> {
   final formKey = GlobalKey<FormState>();
   late TextEditingController emailController;
   late TextEditingController passwordController;

@@ -7,10 +7,20 @@ ide:
 scripts:
   postbootstrap:
     run: dart run melos run generate_github_workflows
+
+  analyze:
+    run: |
+      dart run melos exec -c 5 -- \
+        dart analyze . --fatal-infos
+    description: |
+      Run `dart analyze` in all packages.
+       - Note: you can also rely on your IDEs Dart Analysis / Issues window.
+
   generate_github_workflows:
-    run: dart tool/generate_package_workflows.dart
+    run: dart ./tool/generate_package_workflows.dart
+
   test:
-    run: pub run melos exec -- 'if [ -d test ]; then flutter test --reporter=expanded; fi'
+    run: dart run melos exec -- 'if [ -d test ]; then flutter test --reporter=expanded; fi'
 
 command:
   version:

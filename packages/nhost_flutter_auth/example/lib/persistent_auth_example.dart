@@ -19,15 +19,17 @@ import 'config.dart';
 import 'simple_auth_example.dart';
 
 void main() {
-  runApp(PersistentAuthExample());
+  runApp(const PersistentAuthExample());
 }
 
 class PersistentAuthExample extends StatefulWidget {
+  const PersistentAuthExample({super.key});
+
   @override
-  _PersistentAuthExampleState createState() => _PersistentAuthExampleState();
+  PersistentAuthExampleState createState() => PersistentAuthExampleState();
 }
 
-class _PersistentAuthExampleState extends State<PersistentAuthExample> {
+class PersistentAuthExampleState extends State<PersistentAuthExample> {
   late NhostClient nhostClient;
 
   @override
@@ -51,7 +53,7 @@ class _PersistentAuthExampleState extends State<PersistentAuthExample> {
   Widget build(BuildContext context) {
     return NhostAuthProvider(
       auth: nhostClient.auth,
-      child: MaterialApp(
+      child: const MaterialApp(
         title: 'Nhost.io Persistent Flutter Authentication Example',
         home: Scaffold(
           body: ExampleProtectedScreen(),

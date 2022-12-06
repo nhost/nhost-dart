@@ -15,10 +15,12 @@ import 'config.dart';
 final nhostClient = NhostClient(backendUrl: nhostUrl);
 
 void main() {
-  runApp(SimpleGqlExample());
+  runApp(const SimpleGqlExample());
 }
 
 class SimpleGqlExample extends StatelessWidget {
+  const SimpleGqlExample({super.key});
+
   @override
   Widget build(BuildContext context) {
     // The NhostGraphQLProvider automatically provides connection information

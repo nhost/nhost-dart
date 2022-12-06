@@ -10,15 +10,17 @@ import 'package:nhost_flutter_auth/nhost_flutter_auth.dart';
 import 'config.dart';
 
 void main() {
-  runApp(SimpleAuthExample());
+  runApp(const SimpleAuthExample());
 }
 
 class SimpleAuthExample extends StatefulWidget {
+  const SimpleAuthExample({super.key});
+
   @override
-  _SimpleAuthExampleState createState() => _SimpleAuthExampleState();
+  SimpleAuthExampleState createState() => SimpleAuthExampleState();
 }
 
-class _SimpleAuthExampleState extends State<SimpleAuthExample> {
+class SimpleAuthExampleState extends State<SimpleAuthExample> {
   late NhostClient nhostClient;
 
   @override
@@ -40,7 +42,7 @@ class _SimpleAuthExampleState extends State<SimpleAuthExample> {
     // subtree, which can be accessed using NhostAuthProvider.of(BuildContext).
     return NhostAuthProvider(
       auth: nhostClient.auth,
-      child: MaterialApp(
+      child: const MaterialApp(
         title: 'Nhost.io Simple Flutter Authentication',
         home: Scaffold(
           body: ExampleProtectedScreen(),
@@ -51,6 +53,8 @@ class _SimpleAuthExampleState extends State<SimpleAuthExample> {
 }
 
 class ExampleProtectedScreen extends StatelessWidget {
+  const ExampleProtectedScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     // NhostAuthProvider.of will register this widget so that it rebuilds whenever
@@ -59,10 +63,10 @@ class ExampleProtectedScreen extends StatelessWidget {
     Widget widget;
     switch (auth.authenticationState) {
       case AuthenticationState.signedIn:
-        widget = LoggedInUserDetails();
+        widget = const LoggedInUserDetails();
         break;
       case AuthenticationState.signedOut:
-        widget = SignInForm();
+        widget = const SignInForm();
         break;
       default:
         widget = const SizedBox();
@@ -79,11 +83,13 @@ class ExampleProtectedScreen extends StatelessWidget {
 const rowSpacing = SizedBox(height: 12);
 
 class SignInForm extends StatefulWidget {
+  const SignInForm({super.key});
+
   @override
-  _SignInFormState createState() => _SignInFormState();
+  SignInFormState createState() => SignInFormState();
 }
 
-class _SignInFormState extends State<SignInForm> {
+class SignInFormState extends State<SignInForm> {
   final formKey = GlobalKey<FormState>();
   late TextEditingController emailController;
   late TextEditingController passwordController;
@@ -163,6 +169,8 @@ class _SignInFormState extends State<SignInForm> {
 }
 
 class LoggedInUserDetails extends StatelessWidget {
+  const LoggedInUserDetails({super.key});
+
   @override
   Widget build(BuildContext context) {
     final auth = NhostAuthProvider.of(context)!;

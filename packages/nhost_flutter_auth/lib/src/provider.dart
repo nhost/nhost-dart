@@ -3,19 +3,19 @@ import 'package:flutter/widgets.dart';
 import 'package:nhost_sdk/nhost_sdk.dart';
 
 /// Exposes Nhost authentication information to its subtree.
-class NhostAuthProvider extends InheritedNotifier<_AuthNotifier> {
+class NhostAuthProvider extends InheritedNotifier<AuthNotifier> {
   NhostAuthProvider({
     Key? key,
     required AuthClient auth,
     required Widget child,
   }) : super(
           key: key,
-          notifier: _AuthNotifier(auth),
+          notifier: AuthNotifier(auth),
           child: child,
         );
 
   @override
-  bool updateShouldNotify(InheritedNotifier<_AuthNotifier> oldWidget) {
+  bool updateShouldNotify(InheritedNotifier<AuthNotifier> oldWidget) {
     return oldWidget.notifier != notifier;
   }
 
@@ -28,8 +28,9 @@ class NhostAuthProvider extends InheritedNotifier<_AuthNotifier> {
 }
 
 /// A [Listenable] that notifies when Nhost authentication states changes
-class _AuthNotifier extends ChangeNotifier implements ValueListenable<AuthClient> {
-  _AuthNotifier(AuthClient auth) : _auth = auth {
+class AuthNotifier extends ChangeNotifier
+    implements ValueListenable<AuthClient> {
+  AuthNotifier(AuthClient auth) : _auth = auth {
     _unsubscribeAuthListener =
         _auth.addAuthStateChangedCallback((_) => notifyListeners());
   }
@@ -53,6 +54,6 @@ class _AuthNotifier extends ChangeNotifier implements ValueListenable<AuthClient
   bool operator ==(dynamic other) {
     if (identical(this, other)) return true;
     if (other.runtimeType != runtimeType) return false;
-    return other is _AuthNotifier && other.value == value;
+    return other is AuthNotifier && other.value == value;
   }
 }
