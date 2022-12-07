@@ -1,3 +1,7 @@
+## 4.0.0-dev.3
+
+ - **FIX**: path could be any.
+
 ## 4.0.0-dev.2
 
  - **FIX**: fix analyzer on ci for both stable and beta flutter sdk.
