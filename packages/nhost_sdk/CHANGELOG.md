@@ -1,3 +1,7 @@
+## 4.0.0-dev.4
+
+ - **FIX**: dependencies versioning.
+
 ## 4.0.0-dev.3
 
  - **FIX**: path could be any.
