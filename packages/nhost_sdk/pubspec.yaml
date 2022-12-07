@@ -9,12 +9,12 @@ environment:
   sdk: '>=2.14.0 <3.0.0'
 
 dependencies:
-  http_parser: ^4.0.2
-  http: ^0.13.5
+  http_parser: ^4.0.1
+  http: ^0.13.4
   jwt_decoder: ^2.0.1
   logging: ^1.1.0
   meta: ^1.8.0
-  path: any
+  path: ^1.8.0
 
 dev_dependencies:
   betamax: ^2.0.0
