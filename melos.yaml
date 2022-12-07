@@ -10,7 +10,7 @@ scripts:
 
   analyze:
     run: |
-      dart run melos exec -c 5 -- \
+      dart run melos exec -c 1 -- \
         dart analyze . --fatal-infos && flutter analyze --no-pub --congratulate packages/* packages/*/example
     description: |
       Run `dart analyze` in all packages.
