@@ -10,4 +10,4 @@ environment:
 dev_dependencies:
   dotenv: ^3.0.0
   melos: ^2.8.0
-  path: ^1.8.2
+  path: ^1.8.0
