@@ -1,3 +1,7 @@
+## 4.0.0-dev.5
+
+ - **FIX**: refresh token in query param.
+
 ## 4.0.0-dev.4
 
  - **FIX**: dependencies versioning.
