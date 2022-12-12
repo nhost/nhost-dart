@@ -26,3 +26,10 @@ dev_dependencies:
     sdk: flutter
   lints: any
   mockito: ^5.3.2
+dependency_overrides:
+  nhost_sdk:
+    path: ../nhost_sdk/
+  nhost_flutter_auth:
+    path: ../nhost_flutter_auth/
+  nhost_graphql_adapter:
+    path: ../nhost_graphql_adapter/

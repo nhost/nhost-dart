@@ -6,7 +6,9 @@ void main() async {
   final functions = NhostClient(backendUrl: nhostUrl).functions;
 
   print('Running serverless function /hello');
-  final helloResponse =
-      await functions.callFunction('/hello', query: {'name': 'Universe'});
+  final helloResponse = await functions.callFunction(
+    '/hello',
+    query: {'name': 'Universe'},
+  );
   print('Response: ${helloResponse.body}');
 }

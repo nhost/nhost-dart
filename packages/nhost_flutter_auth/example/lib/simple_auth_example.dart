@@ -45,7 +45,9 @@ class SimpleAuthExampleState extends State<SimpleAuthExample> {
       child: const MaterialApp(
         title: 'Nhost.io Simple Flutter Authentication',
         home: Scaffold(
-          body: ExampleProtectedScreen(),
+          body: SafeArea(
+            child: ExampleProtectedScreen(),
+          ),
         ),
       ),
     );
@@ -113,7 +115,9 @@ class SignInFormState extends State<SignInForm> {
 
     try {
       await auth.signInEmailPassword(
-          email: emailController.text, password: passwordController.text);
+        email: emailController.text,
+        password: passwordController.text,
+      );
     } on ApiException {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(

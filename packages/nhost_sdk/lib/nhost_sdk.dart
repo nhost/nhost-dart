@@ -1,7 +1,6 @@
 library nhost_sdk;
 
 import 'package:http/http.dart' as http;
-import 'package:nhost_sdk/src/logging.dart';
 
 import 'src/auth_client.dart';
 import 'src/auth_store.dart';
@@ -16,6 +15,7 @@ export 'src/auth_store.dart';
 export 'src/auth_client.dart';
 export 'src/errors.dart';
 export 'src/functions_client.dart';
+import 'src/logging.dart';
 export 'src/logging.dart' show debugLogNhostErrorsToConsole;
 export 'src/storage_client.dart';
 

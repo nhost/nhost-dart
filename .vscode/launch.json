@@ -9,6 +9,7 @@
       "cwd": "packages/nhost_flutter_auth/example",
       "program": "lib/simple_auth_example.dart",
       "request": "launch",
+      "flutterMode": "debug",
       "type": "dart"
     },
     {
@@ -16,17 +17,20 @@
       "cwd": "packages/nhost_flutter_graphql/example",
       "request": "launch",
       "program": "lib/simple_graphql_example.dart",
+      "flutterMode": "debug",
       "type": "dart"
     },
     {
       "name": "nhost_graphql_adapter",
       "cwd": "packages/nhost_graphql_adapter/example",
+      "flutterMode": "debug",
       "request": "launch",
       "type": "dart"
     },
     {
       "name": "nhost_sdk",
       "cwd": "packages/nhost_sdk/example",
+      "flutterMode": "debug",
       "request": "launch",
       "type": "dart"
     }

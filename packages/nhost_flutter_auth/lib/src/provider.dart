@@ -31,8 +31,9 @@ class NhostAuthProvider extends InheritedNotifier<AuthNotifier> {
 class AuthNotifier extends ChangeNotifier
     implements ValueListenable<AuthClient> {
   AuthNotifier(AuthClient auth) : _auth = auth {
-    _unsubscribeAuthListener =
-        _auth.addAuthStateChangedCallback((_) => notifyListeners());
+    _unsubscribeAuthListener = _auth.addAuthStateChangedCallback(
+      (_) => notifyListeners(),
+    );
   }
 
   final AuthClient _auth;
