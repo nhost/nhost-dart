@@ -1,0 +1,4 @@
+-- Could not auto-generate a down migration.
+-- Please write an appropriate down migration for the SQL below:
+-- CREATE TABLE "public"."todos" ("id" uuid NOT NULL DEFAULT gen_random_uuid(), "user_id" UUID NOT NULL, "name" Text NOT NULL, "is_completed" Boolean NOT NULL DEFAULT false, "created_at" Timestamp NOT NULL DEFAULT now(), "updated_at" Timestamp NOT NULL DEFAULT now(), PRIMARY KEY ("id") , FOREIGN KEY ("user_id") REFERENCES "auth"."users"("id") ON UPDATE restrict ON DELETE restrict);
+-- CREATE EXTENSION IF NOT EXISTS pgcrypto;
