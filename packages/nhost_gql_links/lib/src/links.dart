@@ -151,8 +151,10 @@ Link webSocketLinkForNhost(
       ? (() async => channel = await testChannelGenerator()) as ChannelGenerator
       : () {
           log.finest('Creating GraphQL web socket, uri=$wsEndpointUri');
-          return channel = WebSocketChannel.connect(wsEndpointUri,
-              protocols: ['graphql-ws']);
+          return channel = WebSocketChannel.connect(
+            wsEndpointUri,
+            protocols: ['graphql-ws'],
+          );
         };
 
   // If authentication state changes, we reconnect the socket, which will also
@@ -163,7 +165,6 @@ Link webSocketLinkForNhost(
       channel?.sink.close(webSocketNormalCloseCode, 'Auth changed');
     }
   });
-
   final webSocketLink = WebSocketLink(
     /* url — provided via channelGenerator */ null,
     autoReconnect: true,

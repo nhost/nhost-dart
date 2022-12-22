@@ -30,3 +30,7 @@ dev_dependencies:
 
   # Nhost packages
   nhost_graphql_adapter: ^3.0.0-dev.5
+
+dependency_overrides:
+  nhost_graphql_adapter:
+    path: ../nhost_graphql_adapter/

@@ -161,8 +161,10 @@ class AuthClient {
   }
 
   void _onTokenChanged() {
-    log.finest('Calling token change callbacks, '
-        'jwt.hashCode=${identityHashCode(accessToken)}');
+    log.finest(
+      'Calling token change callbacks, '
+      'jwt.hashCode=${identityHashCode(accessToken)}',
+    );
     for (final tokenChangedFunction in _tokenChangedCallbacks) {
       tokenChangedFunction();
     }
@@ -566,8 +568,10 @@ class AuthClient {
   Future<Session> _refreshSession([String? initRefreshToken]) async {
     log.finest('Session refresh requested');
 
-    final refreshToken = initRefreshToken ??
-        await _authStore.getString(refreshTokenClientStorageKey);
+    final storedRefreshTokenValue = await _authStore.getString(
+      refreshTokenClientStorageKey,
+    );
+    final refreshToken = initRefreshToken ?? storedRefreshTokenValue;
 
     // If there's no refresh token, we're all done.
     if (refreshToken == null) {
@@ -575,7 +579,8 @@ class AuthClient {
       _loading = false;
       _onAuthStateChanged(authenticationState);
       throw AuthServiceException(
-          'No refresh token in AuthStore. Cannot authenticate.');
+        'No refresh token in AuthStore. Cannot authenticate.',
+      );
     }
 
     // Set lock to avoid two refresh token request being sent at the same time
@@ -589,13 +594,12 @@ class AuthClient {
       return _sessionCompleter!.future;
     }
 
-    Session? res;
     try {
       _refreshTokenLock = true;
 
       // Make refresh token request
       log.finest('Making session refresh request');
-      res = await _apiClient.post(
+      final res = await _apiClient.post(
         '/token',
         jsonBody: {
           'refreshToken': refreshToken,
@@ -603,7 +607,7 @@ class AuthClient {
         responseDeserializer: Session.fromJson,
       );
 
-      await setSession(res!);
+      await setSession(res);
       _sessionCompleter?.complete(res);
       return res;
     } on Exception catch (e, st) {
@@ -634,8 +638,10 @@ class AuthClient {
     // user. Failure to do so will result in very difficult to track down race
     // conditions.
 
-    log.finest('Setting session, accessToken.hashCode='
-        '${identityHashCode(session.accessToken)}');
+    log.finest(
+      'Setting session, accessToken.hashCode='
+      '${identityHashCode(session.accessToken)}',
+    );
 
     final previouslyAuthenticated = authenticationState;
     _session.session = session;
@@ -643,7 +649,9 @@ class AuthClient {
 
     if (session.refreshToken != null) {
       await _authStore.setString(
-          refreshTokenClientStorageKey, session.refreshToken!);
+        refreshTokenClientStorageKey,
+        session.refreshToken!,
+      );
     }
 
     final accessTokenExpiresIn = session.accessTokenExpiresIn;
@@ -660,10 +668,13 @@ class AuthClient {
 
     // Start refresh token interval after logging in.
     log.finest('Creating token refresh timer, duration=$refreshTimerDuration');
-    _tokenRefreshTimer = Timer(refreshTimerDuration, () {
-      log.finest('Refresh timer elapsed');
-      _refreshSession();
-    });
+    _tokenRefreshTimer = Timer(
+      refreshTimerDuration,
+      () {
+        log.finest('Refresh timer elapsed');
+        _refreshSession();
+      },
+    );
 
     // We're ready!
     _loading = false;

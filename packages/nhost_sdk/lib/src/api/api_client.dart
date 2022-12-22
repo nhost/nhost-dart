@@ -276,8 +276,10 @@ class ApiClient {
 
     // If the status is not in the success range,  throw.
     if (response.statusCode < 200 || response.statusCode >= 300) {
-      log.finer('API client encountered a failure, '
-          'url=${request.url} status=${response.statusCode}');
+      log.finer(
+        'API client encountered a failure, '
+        'url=${request.url} status=${response.statusCode}',
+      );
       throw ApiException(request.url, responseBody, request, response);
     }
 
