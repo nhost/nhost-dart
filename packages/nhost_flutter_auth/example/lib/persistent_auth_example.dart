@@ -23,7 +23,9 @@ void main() {
 }
 
 class PersistentAuthExample extends StatefulWidget {
-  const PersistentAuthExample({super.key});
+  const PersistentAuthExample({
+    super.key,
+  });
 
   @override
   PersistentAuthExampleState createState() => PersistentAuthExampleState();
@@ -42,6 +44,11 @@ class PersistentAuthExampleState extends State<PersistentAuthExample> {
       // Instruct the client to store tokens using shared preferences.
       authStore: SharedPreferencesAuthStore(),
     );
+    // this will fetch refresh token and will sign user in!
+    nhostClient.auth
+        .signInWithStoredCredentials()
+        .then((value) => null)
+        .catchError(print);
   }
 
   @override

@@ -214,7 +214,9 @@ void main() async {
 
       test('throws when the stored token is invalid', () async {
         await authStore.setString(
-            refreshTokenClientStorageKey, invalidRefreshToken);
+          refreshTokenClientStorageKey,
+          invalidRefreshToken,
+        );
         expect(
           auth.signInWithStoredCredentials(),
           throwsA(isA<ApiException>().having(

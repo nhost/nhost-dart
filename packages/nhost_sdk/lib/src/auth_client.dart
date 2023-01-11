@@ -7,7 +7,6 @@ import 'api/api_client.dart';
 import 'api/auth_api_types.dart';
 import 'auth_store.dart';
 import 'errors.dart';
-import 'foundation/duration.dart';
 import 'foundation/uri.dart';
 import 'http.dart';
 import 'logging.dart';
@@ -355,7 +354,8 @@ class AuthClient {
   /// Throws an [NhostException] if sign in fails.
   Future<AuthResponse> signInWithStoredCredentials() async {
     log.finer('Attempting sign in (stored credentials)');
-    return AuthResponse(session: await _refreshSession());
+    final session = await _refreshSession();
+    return AuthResponse(session: session);
   }
 
   /// Attempts a sign in using a [refreshToken] from a previously sign in.
@@ -380,8 +380,9 @@ class AuthClient {
     bool all = false,
   }) async {
     log.finer('Attempting sign out');
-    final refreshToken =
-        await _authStore.getString(refreshTokenClientStorageKey);
+    final refreshToken = await _authStore.getString(
+      refreshTokenClientStorageKey,
+    );
     try {
       await _apiClient.post(
         '/signout',
@@ -581,6 +582,7 @@ class AuthClient {
     final storedRefreshTokenValue = await _authStore.getString(
       refreshTokenClientStorageKey,
     );
+
     final refreshToken = initRefreshToken ?? storedRefreshTokenValue;
 
     // If there's no refresh token, we're all done.
@@ -667,11 +669,8 @@ class AuthClient {
     final accessTokenExpiresIn = session.accessTokenExpiresIn;
     final refreshTimerDuration = _tokenRefreshInterval ??
         (accessTokenExpiresIn != null
-            ? max(
-                Duration(seconds: 30),
-                accessTokenExpiresIn - Duration(seconds: 45),
-              )
-            : Duration(seconds: 30)); // 45 sec before expiry
+            ? accessTokenExpiresIn - Duration(seconds: 45)
+            : Duration(seconds: 855)); // 45 sec before expiry
 
     // Ensure that the previous timer is cancelled.
     _tokenRefreshTimer?.cancel();
@@ -726,6 +725,16 @@ class AuthClient {
     _loading = false;
     _onTokenChanged();
     _onAuthStateChanged(AuthenticationState.signedOut);
+  }
+
+  @override
+  String toString() {
+    return {
+      'accessToken': accessToken,
+      'refreshToken': _session.session?.refreshToken,
+      'accessTokenExpiresIn': _session.session?.accessTokenExpiresIn,
+      'userEmail': _session.session?.user?.email,
+    }.toString();
   }
 
   //#endregion

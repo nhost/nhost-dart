@@ -58,7 +58,9 @@ class SimpleAuthExampleState extends State<SimpleAuthExample> {
 }
 
 class ExampleProtectedScreen extends StatelessWidget {
-  const ExampleProtectedScreen({super.key});
+  const ExampleProtectedScreen({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

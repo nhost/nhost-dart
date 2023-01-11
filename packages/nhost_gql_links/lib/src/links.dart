@@ -143,8 +143,9 @@ Link webSocketLinkForNhost(
   @visibleForTesting Duration testReconnectTimeout = const Duration(seconds: 3),
 }) {
   final uri = Uri.parse(nhostGqlEndpointUrl);
-  final wsEndpointUri =
-      uri.replace(scheme: uri.scheme == 'https' ? 'wss' : 'ws');
+  final wsEndpointUri = uri.replace(
+    scheme: uri.scheme == 'https' ? 'wss' : 'ws',
+  );
 
   WebSocketChannel? channel;
   final channelGenerator = testChannelGenerator != null
@@ -159,12 +160,14 @@ Link webSocketLinkForNhost(
 
   // If authentication state changes, we reconnect the socket, which will also
   // re-evaluate the initialPayload to provide the auth header if available.
-  nhostAuth.addTokenChangedCallback(() {
-    if (channel != null) {
-      log.finest('Reconnecting GraphQL web socket as result of token change');
-      channel?.sink.close(webSocketNormalCloseCode, 'Auth changed');
-    }
-  });
+  nhostAuth.addTokenChangedCallback(
+    () {
+      if (channel != null) {
+        log.finest('Reconnecting GraphQL web socket as result of token change');
+        channel?.sink.close(webSocketNormalCloseCode, 'Auth changed');
+      }
+    },
+  );
   final webSocketLink = WebSocketLink(
     /* url — provided via channelGenerator */ null,
     autoReconnect: true,
