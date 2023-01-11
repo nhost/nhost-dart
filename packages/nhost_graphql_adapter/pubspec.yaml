@@ -11,7 +11,7 @@ environment:
 dependencies:
   graphql: ^5.1.1
   http: ^0.13.5
-  meta: ^1.8.0
+  meta: ^1.7.0
 
   # Nhost packages
   nhost_sdk: ^4.0.0-dev.10

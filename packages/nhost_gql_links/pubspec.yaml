@@ -16,7 +16,7 @@ dependencies:
   gql: ^0.14.0
   http: ^0.13.5
   logging: ^1.1.0
-  meta: ^1.8.0
+  meta: ^1.7.0
   web_socket_channel: ^2.2.0
 
   # Nhost packages
