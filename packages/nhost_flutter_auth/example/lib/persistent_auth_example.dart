@@ -48,7 +48,12 @@ class PersistentAuthExampleState extends State<PersistentAuthExample> {
     nhostClient.auth
         .signInWithStoredCredentials()
         .then((value) => null)
-        .catchError(print);
+        .catchError(
+      (e) {
+        // ignore: avoid_print
+        print(e);
+      },
+    );
   }
 
   @override

@@ -22,12 +22,12 @@ String createNhostServiceEndpoint({
   String apiVersion = 'v1',
   String protocol = 'https',
 }) {
-  final LOCALHOST_REGEX = RegExp(
+  final localhostRegex = RegExp(
     r'^((?<protocol>http[s]?):\/\/)?(?<host>localhost)(:(?<port>(\d+|__\w+__)))?$',
   );
 
   // checking for local development environment
-  if (LOCALHOST_REGEX.hasMatch(subdomain)) {
+  if (localhostRegex.hasMatch(subdomain)) {
     final hasPort = subdomain.split(':').length == 2;
     if (hasPort) {
       return 'http://$subdomain/$apiVersion/$service';

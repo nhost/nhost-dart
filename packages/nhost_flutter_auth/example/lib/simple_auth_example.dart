@@ -129,6 +129,8 @@ class SignInFormState extends State<SignInForm> {
         ),
       );
     } on SocketException catch (e) {
+      // ignore: avoid_print
+      print(e);
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Network Failed'),
