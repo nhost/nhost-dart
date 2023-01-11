@@ -1,3 +1,7 @@
+## 3.0.0-dev.9
+
+ - **FIX**: fix analyzer to fix ci.
+
 ## 3.0.0-dev.8
 
  - Update a dependency to the latest release.

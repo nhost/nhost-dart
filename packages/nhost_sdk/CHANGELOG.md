@@ -1,3 +1,8 @@
+## 4.0.0-dev.9
+
+ - **FIX**: fix analyzer to fix ci.
+ - **FEAT**: add signInAnonymous method.
+
 ## 4.0.0-dev.8
 
  - **FEAT**: add ticket to changePassword request.
