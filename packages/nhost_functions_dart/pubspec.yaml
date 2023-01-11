@@ -1,6 +1,6 @@
 name: nhost_functions_dart
 description: Nhost Dart Functions Service SDK
-version: 1.0.0-dev.2
+version: 1.0.0-dev.3
 homepage: https://nhost.io
 
 environment:

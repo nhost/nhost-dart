@@ -1,3 +1,7 @@
+## 1.0.0-dev.3
+
+ - **FIX**: add license to new packages.
+
 ## 1.0.0-dev.2
 
  - **FEAT**: add new packages placeholders.

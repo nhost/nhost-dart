@@ -1,3 +1,7 @@
+## 3.0.0-dev.11
+
+ - **FIX**: downgrade meta to 1.7.
+
 ## 3.0.0-dev.10
 
  - Update a dependency to the latest release.

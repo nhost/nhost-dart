@@ -1,6 +1,6 @@
 name: nhost_storage_dart
 description: Nhost Dart Storage Service SDK
-version: 1.0.0-dev.2
+version: 1.0.0-dev.3
 homepage: https://nhost.io
 
 environment:
