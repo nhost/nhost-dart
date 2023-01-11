@@ -7,15 +7,16 @@ Provides GraphQL clients to your Flutter application, automatically configured
 to work with [Nhost](https://nhost.io).
 
 ## Getting Started
+
 ### Latest Release
 
 ```yaml
 dependencies:
-  nhost_flutter_graphql: ^2.0.0
+  nhost_flutter_graphql: ^3.0.0
 ```
 
 ## 🔥 More Dart & Flutter packages from Nhost
 
-* [nhost_sdk](https://pub.dev/packages/nhost_sdk)
-* [nhost_graphql_adapter](https://pub.dev/packages/nhost_graphql_adapter)
-* [nhost_flutter_auth](https://pub.dev/packages/nhost_flutter_auth)
+- [nhost_sdk](https://pub.dev/packages/nhost_sdk)
+- [nhost_graphql_adapter](https://pub.dev/packages/nhost_graphql_adapter)
+- [nhost_flutter_auth](https://pub.dev/packages/nhost_flutter_auth)
