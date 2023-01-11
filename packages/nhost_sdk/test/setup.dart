@@ -8,8 +8,13 @@ import 'package:nhost_sdk/nhost_sdk.dart';
 import 'package:test/test.dart';
 import 'package:test_api/src/backend/invoker.dart';
 
-const backendUrl = 'http://localhost:1337';
-const gqlUrl = '$backendUrl/v1/graphql';
+const subdomain = 'localhost:1337';
+const region = '';
+final gqlUrl = createNhostServiceEndpoint(
+  region: region,
+  subdomain: subdomain,
+  service: 'graphql',
+);
 
 const enableLoggingEnvVariableName = 'LOGGING';
 const recordFixturesEnvVariableName = 'RECORD_HTTP_FIXTURES';
@@ -49,7 +54,8 @@ NhostClient createApiTestClient(
   AuthStore? authStore,
 }) {
   return NhostClient(
-    backendUrl: backendUrl,
+    subdomain: subdomain,
+    region: region,
     httpClientOverride: httpClient,
     authStore: authStore,
   );

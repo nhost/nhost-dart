@@ -8,19 +8,20 @@ and Flutter.
 
 Includes support for:
 
-* User sign in and registration, including multi-factor authentication
-* Email and password changes, either directly or via email confirmation
-* Storage and retrieval of arbitrary files
-* Scaling and transformation of stored files
-* GraphQL authentication, via
+- User sign in and registration, including multi-factor authentication
+- Email and password changes, either directly or via email confirmation
+- Storage and retrieval of arbitrary files
+- Scaling and transformation of stored files
+- GraphQL authentication, via
   [nhost_graphql_adapter](https://pub.dev/packages/nhost_graphql_adapter)
 
 ### Sample
+
 ```dart
 import 'package:nhost_sdk/nhost_sdk.dart';
 
 void main() async {
-  final nhost = NhostClient(baseUrl: 'https://backend-5e69d1d7.nhost.app');
+  final nhost = NhostClient(subdomain: 'backend-5e69d1d7', region: 'eu-central-1');
 
   // User registration
   await nhost.auth.register(email: 'new-user@gmail.com', password: 'xxxxx');
@@ -39,6 +40,7 @@ void main() async {
 ```
 
 ## Getting Started
+
 ### Latest Release
 
 ```yaml
@@ -48,6 +50,6 @@ dependencies:
 
 ## 🔥 More Dart & Flutter packages from Nhost
 
-* [nhost_graphql_adapter](https://pub.dev/packages/nhost_graphql_adapter)
-* [nhost_flutter_graphql](https://pub.dev/packages/nhost_flutter_graphql)
-* [nhost_flutter_auth](https://pub.dev/packages/nhost_flutter_auth)
+- [nhost_graphql_adapter](https://pub.dev/packages/nhost_graphql_adapter)
+- [nhost_flutter_graphql](https://pub.dev/packages/nhost_flutter_graphql)
+- [nhost_flutter_auth](https://pub.dev/packages/nhost_flutter_auth)

@@ -8,6 +8,7 @@ import 'api/auth_api_types.dart';
 import 'auth_store.dart';
 import 'errors.dart';
 import 'foundation/duration.dart';
+import 'foundation/uri.dart';
 import 'http.dart';
 import 'logging.dart';
 import 'session.dart';
@@ -46,7 +47,9 @@ const refreshTokenQueryParamName = 'refreshToken';
 ///
 /// See https://docs.nhost.io/reference/sdk/authentication for more info.
 class AuthClient {
-  /// {@macro nhost.api.NhostClient.baseUrl}
+  /// {@macro nhost.api.NhostClient.subdomain}
+  ///
+  /// {@macro nhost.api.NhostClient.region}
   ///
   /// {@macro nhost.api.NhostClient.authStore}
   ///
@@ -58,13 +61,20 @@ class AuthClient {
   ///
   /// {@macro nhost.api.NhostClient.httpClientOverride}
   AuthClient({
-    required String baseUrl,
+    required String subdomain,
+    required String region,
     required UserSession session,
     required AuthStore authStore,
     Duration? tokenRefreshInterval,
     required http.Client httpClient,
   })  : _apiClient = ApiClient(
-          Uri.parse(baseUrl),
+          Uri.parse(
+            createNhostServiceEndpoint(
+              region: region,
+              subdomain: subdomain,
+              service: 'auth',
+            ),
+          ),
           httpClient: httpClient,
         ),
         _session = session,

@@ -3,6 +3,7 @@ import 'package:http_parser/http_parser.dart';
 import 'package:nhost_sdk/src/api/storage_api_types.dart';
 
 import 'api/api_client.dart';
+import 'foundation/uri.dart';
 import 'session.dart';
 
 /// The default used during file upload if not provided.
@@ -12,15 +13,30 @@ const applicationOctetStreamType = 'application/octet-stream';
 ///
 /// Supports the storage and retrieval of files on the backend.
 class StorageClient {
-  final ApiClient _apiClient;
-  final UserSession _session;
-
+  /// {@macro nhost.api.NhostClient.subdomain}
+  ///
+  /// {@macro nhost.api.NhostClient.region}
+  ///
+  /// {@macro nhost.api.NhostClient.httpClientOverride}
   StorageClient({
-    required String baseUrl,
+    required String subdomain,
+    required String region,
     required UserSession session,
     required http.Client httpClient,
-  })  : _apiClient = ApiClient(Uri.parse(baseUrl), httpClient: httpClient),
+  })  : _apiClient = ApiClient(
+          Uri.parse(
+            createNhostServiceEndpoint(
+              region: region,
+              subdomain: subdomain,
+              service: 'storage',
+            ),
+          ),
+          httpClient: httpClient,
+        ),
         _session = session;
+
+  final ApiClient _apiClient;
+  final UserSession _session;
 
   /// Releases the object's resources.
   void close() {

@@ -1,4 +1,55 @@
-# Nhost Packages for Dart & Flutter
+<div align="center"># Nhost Packages for Dart & Flutter</div>
+
+![Nhost](https://i.imgur.com/ZenoUlM.png)
+
+<div align="center">
+
+# Nhost
+
+<a href="https://docs.nhost.io/#quickstart">Quickstart</a>
+<span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
+<a href="http://nhost.io/">Website</a>
+<span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
+<a href="https://docs.nhost.io">Docs</a>
+<span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
+<a href="https://nhost.io/blog">Blog</a>
+<span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
+<a href="https://twitter.com/nhost">Twitter</a>
+<span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
+<a href="https://nhost.io/discord">Discord</a>
+<br />
+
+  <hr />
+</div>
+
+**Nhost is an open source Firebase alternative with GraphQL,** built with the following things in mind:
+
+- Open Source
+- GraphQL
+- SQL
+- Great Developer Experience
+
+Nhost consists of open source software:
+
+- Database: [PostgreSQL](https://www.postgresql.org/)
+- Instant GraphQL API: [Hasura](https://hasura.io/)
+- Authentication: [Hasura Auth](https://github.com/nhost/hasura-auth/)
+- Storage: [Hasura Storage](https://github.com/nhost/hasura-storage)
+- Serverless Functions: Node.js (JavaScript and TypeScript)
+- [Nhost CLI](https://docs.nhost.io/reference/cli) for local development
+
+## Architecture of Nhost
+
+<div align="center">
+  <br />
+  <img src="https://github.com/nhost/nhost/raw/main/assets/nhost-diagram.png"/>
+  <br />
+  <br />
+</div>
+
+Visit [https://docs.nhost.io](http://docs.nhost.io) for the complete documentation.
+
+# Get Started
 
 | Package                                                 |                                                                                                                                               |                                                                                                                                                                                                                                                                                                                                                       |
 | ------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

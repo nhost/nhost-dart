@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:fake_async/fake_async.dart';
 import 'package:nhost_sdk/nhost_sdk.dart';
+import 'package:nhost_sdk/src/foundation/uri.dart';
 import 'package:nock/nock.dart';
 import 'package:test/test.dart';
 
@@ -17,7 +18,11 @@ const testPassword = 'password-1';
 const invalidRefreshToken = '10b27fd6-a606-42f4-9063-d6bd9d7866c8';
 
 void main() async {
-  final gqlAdmin = GqlAdminTestHelper(apiUrl: backendUrl, gqlUrl: gqlUrl);
+  final gqlAdmin = GqlAdminTestHelper(
+    subdomain: subdomain,
+    region: region,
+    gqlUrl: gqlUrl,
+  );
 
   late NhostClient nhost;
   late AuthClient auth;
@@ -385,10 +390,21 @@ void main() async {
       NhostClient client, {
       Duration? elapseTimeBy,
     }) {
-      final interceptor = nock('$backendUrl/v1/auth').post('/token', anything)
-        ..body = jsonEncode({
-          'refreshToken': mockFirstSession.refreshToken,
-        })
+      final interceptor = nock(
+        createNhostServiceEndpoint(
+          subdomain: subdomain,
+          region: region,
+          service: 'auth',
+        ),
+      ).post(
+        '/token',
+        anything,
+      )
+        ..body = jsonEncode(
+          {
+            'refreshToken': mockFirstSession.refreshToken,
+          },
+        )
         ..reply(
           200,
           jsonEncode(mockNextSession.toJson()),
@@ -414,7 +430,8 @@ void main() async {
 
     test('should occur after a server-determined interval', () {
       final nhostClient = NhostClient(
-        backendUrl: backendUrl,
+        subdomain: subdomain,
+        region: region,
       );
       final tokenEndpointRefreshMock = runTokenRefreshSequence(
         nhostClient,
@@ -429,7 +446,8 @@ void main() async {
       final testRefreshInterval = Duration(minutes: 10);
 
       final nhostClient = NhostClient(
-        backendUrl: backendUrl,
+        subdomain: subdomain,
+        region: region,
         tokenRefreshInterval: testRefreshInterval,
       );
       final tokenEndpointRefreshMock = runTokenRefreshSequence(

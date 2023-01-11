@@ -26,8 +26,11 @@ class SimpleAuthExampleState extends State<SimpleAuthExample> {
   @override
   void initState() {
     super.initState();
-    // Create a new Nhost client using your project's backend URL.
-    nhostClient = NhostClient(backendUrl: nhostUrl);
+    // Create a new Nhost client using your project's subdomain and region.
+    nhostClient = NhostClient(
+      subdomain: subdomain,
+      region: region,
+    );
   }
 
   @override
@@ -112,7 +115,6 @@ class SignInFormState extends State<SignInForm> {
 
   void trySignIn() async {
     final auth = NhostAuthProvider.of(context)!;
-
     try {
       await auth.signInEmailPassword(
         email: emailController.text,

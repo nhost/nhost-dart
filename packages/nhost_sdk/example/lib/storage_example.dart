@@ -5,7 +5,10 @@ import 'config.dart';
 
 void main() async {
   // Setup
-  final client = NhostClient(backendUrl: nhostUrl);
+  final client = NhostClient(
+    subdomain: subdomain,
+    region: region,
+  );
   await signInOrSignUp(client,
       email: 'user-1@nhost.io', password: 'password-1');
 

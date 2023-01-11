@@ -12,7 +12,10 @@ import 'package:nhost_flutter_graphql/nhost_flutter_graphql.dart';
 import 'config.dart';
 
 /// Client used to authenticate GraphQL requests
-final nhostClient = NhostClient(backendUrl: nhostUrl);
+final nhostClient = NhostClient(
+  subdomain: subdomain,
+  region: region,
+);
 
 void main() {
   runApp(const SimpleGqlExample());

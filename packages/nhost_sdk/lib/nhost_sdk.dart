@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 
 import 'src/auth_client.dart';
 import 'src/auth_store.dart';
+import 'src/foundation/uri.dart';
 import 'src/functions_client.dart';
 import 'src/session.dart';
 import 'src/storage_client.dart';
@@ -14,6 +15,7 @@ export 'src/api/storage_api_types.dart';
 export 'src/auth_store.dart';
 export 'src/auth_client.dart';
 export 'src/errors.dart';
+export 'src/foundation/uri.dart' show createNhostServiceEndpoint;
 export 'src/functions_client.dart';
 import 'src/logging.dart';
 export 'src/logging.dart' show debugLogNhostErrorsToConsole;
@@ -32,9 +34,14 @@ export 'src/storage_client.dart';
 class NhostClient {
   /// Constructs a new Nhost client.
   ///
-  /// {@template nhost.api.NhostClient.baseUrl}
-  /// [backendUrl] is the Nhost "Backend URL" that can be found on your Nhost
-  /// project page.
+  /// {@template nhost.api.NhostClient.subdomain}
+  /// [subdomain] is the Nhost "subdomain" that can be found on your Nhost
+  /// project page. for local development pass 'localhost' or 'localhost:1337'
+  /// {@endtemplate}
+  ///
+  /// {@template nhost.api.NhostClient.region}
+  /// [region] is the Nhost "region" that can be found on your Nhost
+  /// project page. for local development pass empty string ''
   /// {@endtemplate}
   ///
   /// {@template nhost.api.NhostClient.authStore}
@@ -55,7 +62,8 @@ class NhostClient {
   /// configuration and debugging.
   /// {@endtemplate}
   NhostClient({
-    required this.backendUrl,
+    required this.subdomain,
+    required this.region,
     AuthStore? authStore,
     Duration? tokenRefreshInterval,
     http.Client? httpClientOverride,
@@ -66,8 +74,11 @@ class NhostClient {
     initializeLogging();
   }
 
-  /// The Nhost project's backend URL.
-  final String backendUrl;
+  /// The Nhost project's backend subdomain
+  final String subdomain;
+
+  /// The Nhost project's backend region
+  final String region;
 
   /// Persists authentication information between restarts of the app.
   final AuthStore _authStore;
@@ -79,13 +90,18 @@ class NhostClient {
   http.Client? _httpClient;
 
   /// The GraphQL endpoint URL.
-  String get gqlEndpointUrl => '$backendUrl/v1/graphql';
+  String get gqlEndpointUrl => createNhostServiceEndpoint(
+        subdomain: subdomain,
+        region: region,
+        service: 'graphql',
+      );
 
   /// The Nhost authentication service.
   ///
   /// https://docs.nhost.io/platform/authentication
   AuthClient get auth => _auth ??= AuthClient(
-        baseUrl: '$backendUrl/v1/auth',
+        subdomain: subdomain,
+        region: region,
         authStore: _authStore,
         tokenRefreshInterval: _refreshInterval,
         session: _session,
@@ -97,7 +113,8 @@ class NhostClient {
   ///
   /// https://docs.nhost.io/platform/serverless-functions
   FunctionsClient get functions => _functions ??= FunctionsClient(
-        baseUrl: '$backendUrl/v1/functions',
+        subdomain: subdomain,
+        region: region,
         session: _session,
         httpClient: httpClient,
       );
@@ -107,7 +124,8 @@ class NhostClient {
   ///
   /// https://docs.nhost.io/platform/storage
   StorageClient get storage => _storage ??= StorageClient(
-        baseUrl: '$backendUrl/v1/storage',
+        subdomain: subdomain,
+        region: region,
         httpClient: httpClient,
         session: _session,
       );

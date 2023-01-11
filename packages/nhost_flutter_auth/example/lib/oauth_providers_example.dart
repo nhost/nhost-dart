@@ -19,8 +19,12 @@ import 'package:url_launcher/url_launcher.dart' as url_launcher;
 import 'config.dart';
 import 'simple_auth_example.dart';
 
-/// Fill in this value with the backend URL found on your Nhost project page.
-const nhostGithubSignInUrl = '$nhostUrl/v1/auth/providers/github/';
+/// Fill in this value with the subdomain and region found on your Nhost project page.
+final nhostGithubSignInUrl = '${createNhostServiceEndpoint(
+  subdomain: subdomain,
+  region: region,
+  service: 'auth',
+)}/providers/github/';
 
 const signInSuccessHost = 'oauth.login.success';
 const signInFailureHost = 'oauth.login.failure';
@@ -54,8 +58,11 @@ class OAuthExampleState extends State<OAuthExample> {
   void initState() {
     super.initState();
 
-    // Create a new Nhost client using your project's backend URL.
-    nhostClient = NhostClient(backendUrl: nhostUrl);
+    // Create a new Nhost client using your project's subdomain and region.
+    nhostClient = NhostClient(
+      subdomain: subdomain,
+      region: region,
+    );
     handleAppLink();
   }
 

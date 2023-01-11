@@ -43,8 +43,11 @@ class NavigatorExampleAppState extends State<NavigatorExampleApp> {
   @override
   void initState() {
     super.initState();
-    // Create a new Nhost client using your project's backend URL.
-    nhostClient = NhostClient(backendUrl: nhostUrl);
+    // Create a new Nhost client using your project's subdomain and region.
+    nhostClient = NhostClient(
+      subdomain: subdomain,
+      region: region,
+    );
     appState = ExampleNavigator();
   }
 
@@ -250,29 +253,31 @@ class HomePage extends StatelessWidget {
             ),
           ),
         ContentItem(
-          child: Row(children: [
-            ElevatedButton(
-              onPressed: () {
-                navigator.requestRoutePath(AdminRoutePath());
-              },
-              child: const Text('Admin Page (Protected)'),
-            ),
-            const SizedBox(width: 8),
-            if (auth.authenticationState == AuthenticationState.signedOut)
+          child: Row(
+            children: [
               ElevatedButton(
                 onPressed: () {
-                  navigator.requestRoutePath(SignInRoutePath());
+                  navigator.requestRoutePath(AdminRoutePath());
                 },
-                child: const Text('Sign In'),
+                child: const Text('Admin Page (Protected)'),
               ),
-            if (auth.authenticationState == AuthenticationState.signedIn)
-              ElevatedButton(
-                onPressed: () {
-                  auth.signOut();
-                },
-                child: const Text('Logout'),
-              ),
-          ]),
+              const SizedBox(width: 8),
+              if (auth.authenticationState == AuthenticationState.signedOut)
+                ElevatedButton(
+                  onPressed: () {
+                    navigator.requestRoutePath(SignInRoutePath());
+                  },
+                  child: const Text('Sign In'),
+                ),
+              if (auth.authenticationState == AuthenticationState.signedIn)
+                ElevatedButton(
+                  onPressed: () {
+                    auth.signOut();
+                  },
+                  child: const Text('Logout'),
+                ),
+            ],
+          ),
         ),
       ],
     );

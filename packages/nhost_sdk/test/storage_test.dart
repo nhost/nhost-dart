@@ -16,8 +16,11 @@ import 'test_helpers.dart';
 final pathContext = Context(style: Style.url);
 
 void main() async {
-  final unrecordedGqlAdmin =
-      GqlAdminTestHelper(apiUrl: backendUrl, gqlUrl: gqlUrl);
+  final unrecordedGqlAdmin = GqlAdminTestHelper(
+    subdomain: subdomain,
+    region: region,
+    gqlUrl: gqlUrl,
+  );
   GqlAdminTestHelper? recordedGqlAdmin;
 
   NhostClient client;
@@ -47,7 +50,11 @@ void main() async {
     // Provide a few values to tests
     storage = client.storage;
     recordedGqlAdmin = GqlAdminTestHelper(
-        apiUrl: backendUrl, gqlUrl: gqlUrl, httpClientOverride: httpClient);
+      subdomain: subdomain,
+      region: region,
+      gqlUrl: gqlUrl,
+      httpClientOverride: httpClient,
+    );
   });
 
   group('creating files', () {

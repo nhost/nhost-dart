@@ -1,6 +1,7 @@
 import 'package:http/http.dart' as http;
 
 import 'api/api_client.dart';
+import 'foundation/uri.dart';
 import 'logging.dart';
 import 'session.dart';
 
@@ -8,15 +9,30 @@ import 'session.dart';
 ///
 /// See https://docs.nhost.io/platform/serverless-functions for more info.
 class FunctionsClient {
-  final ApiClient _apiClient;
-  final UserSession _session;
-
+  /// {@macro nhost.api.NhostClient.subdomain}
+  ///
+  /// {@macro nhost.api.NhostClient.region}
+  ///
+  /// {@macro nhost.api.NhostClient.httpClientOverride}
   FunctionsClient({
-    required String baseUrl,
+    required String subdomain,
+    required String region,
     required UserSession session,
     required http.Client httpClient,
-  })  : _apiClient = ApiClient(Uri.parse(baseUrl), httpClient: httpClient),
+  })  : _apiClient = ApiClient(
+          Uri.parse(
+            createNhostServiceEndpoint(
+              region: region,
+              subdomain: subdomain,
+              service: 'functions',
+            ),
+          ),
+          httpClient: httpClient,
+        ),
         _session = session;
+
+  final ApiClient _apiClient;
+  final UserSession _session;
 
   /// Invokes the serverless function at [url].
   ///

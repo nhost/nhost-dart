@@ -22,7 +22,10 @@ final todosQuery = gql(r'''
 
 void main() async {
   // Set up the Nhost and GraphQL clients
-  final nhostClient = NhostClient(backendUrl: nhostUrl);
+  final nhostClient = NhostClient(
+    subdomain: subdomain,
+    region: region,
+  );
   final graphqlClient = createNhostGraphQLClient(nhostClient);
 
   // Run a query, unauthenticated

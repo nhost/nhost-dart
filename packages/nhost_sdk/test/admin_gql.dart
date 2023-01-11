@@ -5,13 +5,17 @@ import 'package:nhost_sdk/nhost_sdk.dart';
 
 class GqlAdminTestHelper {
   GqlAdminTestHelper({
-    required String apiUrl,
+    required String region,
+    required String subdomain,
     required String gqlUrl,
     http.Client? httpClientOverride,
   }) {
     // Used to verify, retrieve, or clear backend state.
     client = createNhostGraphQLClient(
-      NhostClient(backendUrl: apiUrl),
+      NhostClient(
+        region: region,
+        subdomain: subdomain,
+      ),
       defaultHeaders: {
         'X-Hasura-Admin-Secret': 'nhost-admin-secret',
       },

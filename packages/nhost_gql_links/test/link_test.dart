@@ -12,11 +12,11 @@ import 'package:test/test.dart';
 
 import 'mock_web_socket.dart';
 
-const baseUrl = 'https://test';
-const backendEndpoint = baseUrl;
-
-const gqlEndpointPath = '/v1/graphql';
-const gqlEndpoint = '$baseUrl$gqlEndpointPath';
+const subdomain = 'test';
+const region = 'eu-central-1';
+const baseUrl = 'https://$subdomain.graphql.$region.nhost.run';
+const gqlEndpointPath = '/v1';
+const gqlEndpoint = '$baseUrl/v1';
 
 final testQuery = parseString('query todos { id }');
 final testSubscription = parseString('subscription todos { id }');
@@ -37,7 +37,10 @@ const emptyResponse = '{"data": {}}';
 void main() {
   late NhostClient nhost;
   setUp(() {
-    nhost = NhostClient(backendUrl: backendEndpoint);
+    nhost = NhostClient(
+      subdomain: subdomain,
+      region: region,
+    );
   });
 
   tearDown(() {

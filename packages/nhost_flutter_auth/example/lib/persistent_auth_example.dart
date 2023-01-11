@@ -35,9 +35,10 @@ class PersistentAuthExampleState extends State<PersistentAuthExample> {
   @override
   void initState() {
     super.initState();
-    // Create a new Nhost client using your project's backend URL.
+    // Create a new Nhost client using your project's subdomain and region.
     nhostClient = NhostClient(
-      backendUrl: nhostUrl,
+      subdomain: subdomain,
+      region: region,
       // Instruct the client to store tokens using shared preferences.
       authStore: SharedPreferencesAuthStore(),
     );

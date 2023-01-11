@@ -23,7 +23,10 @@ class TodosQuickStartExample extends StatelessWidget {
     // The NhostGraphQLProvider automatically provides connection information
     // to `graphql_flutter` widgets in its subtree.
     return NhostGraphQLProvider(
-      nhostClient: NhostClient(backendUrl: nhostUrl),
+      nhostClient: NhostClient(
+        subdomain: subdomain,
+        region: region,
+      ),
       child: const MaterialApp(
         title: 'Nhost.io Todos Quick Start',
         debugShowCheckedModeBanner: false,
