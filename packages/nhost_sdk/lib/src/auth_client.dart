@@ -316,6 +316,18 @@ class AuthClient {
     );
   }
 
+  /// Authenticates a user anonymously.
+  ///
+  /// You need to make sure anonymous signin is enabled via
+  /// Nhost dashboard -> settings -> Sign in methods -> Anonymous Users
+  /// Throws an [NhostException] if sign in fails.
+  Future<void> signInAnonymous() async {
+    log.finer('Attempting sign in anonymously');
+    await _apiClient.post(
+      '/signin/anonymous',
+    );
+  }
+
   /// Authenticates a user using a [phoneNumber].
   ///
   /// The returned [AuthResponse] will only have its [AuthResponse.mfa] field
