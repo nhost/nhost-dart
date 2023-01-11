@@ -24,7 +24,7 @@ final nhostGithubSignInUrl = '${createNhostServiceEndpoint(
   subdomain: subdomain,
   region: region,
   service: 'auth',
-)}/providers/github/';
+)}/signin/provider/github';
 
 const signInSuccessHost = 'oauth.login.success';
 const signInFailureHost = 'oauth.login.failure';
