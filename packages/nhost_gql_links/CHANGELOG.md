@@ -1,3 +1,9 @@
+## 3.0.0-dev.6
+
+ - chore: update version to align other packages versioning
+
+ - **FIX**: fix token expire time to be second and fix example of persistent token and silent login.
+
 ## 2.0.5-dev.6
 
  - **FIX**: bug in server and parsing user metadata.
