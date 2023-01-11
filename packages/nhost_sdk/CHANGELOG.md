@@ -1,3 +1,7 @@
+## 4.0.0-dev.8
+
+ - **FEAT**: add ticket to changePassword request.
+
 ## 4.0.0-dev.7
 
  - **FIX**: fix token expire time to be second and fix example of persistent token and silent login.
