@@ -1,0 +1,140 @@
+# This is a template that is used to produce package-specific workflows
+#
+# The reason we want package-specific workflows at all is so we can
+#
+# 1. Limit the workflow to only being triggered on changes to files on the
+#    package's path, and that of its dependents
+# 2. Display a package-specific testing badge (at the time of writing, you can't
+#    request badges for matrix configurations)
+#
+# Instantiations of this template are produced by the Melos postbootstrap script
+# which can be found in `melos.yaml`.
+
+name: 'nhost_auth_dart tests'
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  schedule:
+  # Run the quality job at 4am every day
+  - cron: '0 4 * * *'
+
+env: {}
+jobs:
+  # Ensure that the package meets a suitably high pub.dev score
+  score-package-quality:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # We test against several Flutter versions
+        flutter_channel: [stable, beta]
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - run: .github/workflows/scripts/make-pana-pubspecs.sh
+
+    - uses: axel-op/dart-package-analyzer@v3
+      # Set an id for the current step, so we can reference it later
+      id: analysis
+      with:
+        githubToken: ${{ secrets.GITHUB_TOKEN }}
+        relativePath: packages/nhost_auth_dart
+
+    - name: Require analysis (near) perfection
+      env:
+        # "analysis" is the id set above
+        TOTAL: ${{ steps.analysis.outputs.total }}
+        TOTAL_MAX: ${{ steps.analysis.outputs.total_max }}
+      run: |
+        PERCENTAGE=$((( $TOTAL ) * 100 / ( $TOTAL_MAX - ${MAX_PANA_MISSING_POINTS:-10} )))
+        if (( $PERCENTAGE < 100 ))
+        then
+          echo "Score to low ($TOTAL/$TOTAL_MAX)."
+          exit 1
+        fi
+
+  # Analyzes, checks formatting, and tests the packages
+  test-package:
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        # We test against several Flutter versions
+        flutter_channel: [stable, beta]
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Determine Flutter version
+      id: flutter-version
+      uses: shyndman/latest-flutter-version-action@v1.0.6
+      with:
+        channel: ${{ matrix.flutter_channel }}
+
+    - name: Cache Flutter dependencies
+      uses: actions/cache@v1
+      with:
+        path: /opt/hostedtoolcache/flutter
+        key: ${{ runner.OS }}-flutter-install-cache-${{ steps.flutter-version.outputs.version }}
+
+    # Setup the flutter environment
+    - name: Setup Dart/Flutter (specific channel)
+      uses: subosito/flutter-action@v1.5.3
+      with:
+        channel: ${{ matrix.flutter_channel }}
+
+    # Get binary dependencies
+    - name: Install tools
+      run: |
+        echo "$HOME/.pub-cache/bin" >> $GITHUB_PATH
+        dart pub get
+        dart pub global activate junitreport
+        dart pub global activate melos
+
+    - name: Bootstrap packages
+      run: melos bootstrap
+
+    # Run analysis on all packages
+    - name: Analyze packages
+      run: dart run melos analyze
+
+    # Run tests for package in question
+    - name: Execute tests
+      run: >
+        melos exec
+        --scope=nhost_auth_dart
+        --dir-exists=test --
+        'flutter test --no-pub --machine --coverage | tojunit
+        > test-results.xml'
+
+    # Report test results
+    - name: Report test results
+      uses: mikepenz/action-junit-report@v2
+      with:
+        check_name: 'Test results: nhost_auth_dart'
+        require_tests: false
+        report_paths: "packages/nhost_auth_dart/test-results.xml"
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+
+    # Check if coverage was generated
+    - name: Check for coverage file
+      id: check_coverage_exists
+      uses: andstor/file-existence-action@v1
+      with:
+        files: "packages/nhost_auth_dart/coverage/lcov.info"
+
+    # Report coverage
+    - name: Report coverage
+      uses: zgosalvez/github-actions-report-lcov@v1
+      with:
+        artifact-name: 'Test coverage for nhost_auth_dart'
+        coverage-files: packages/nhost_auth_dart/coverage/lcov.info
+        working-directory: packages/nhost_auth_dart/
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+      if: ${{ github.event_name != 'pull_request' && steps.check_coverage_exists.outputs.files_exists == 'true' }}
