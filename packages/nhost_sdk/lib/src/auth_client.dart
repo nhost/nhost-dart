@@ -446,11 +446,13 @@ class AuthClient {
   /// Throws an [NhostException] if changing passwords fails.
   Future<void> changePassword({
     required String newPassword,
+    String? ticket,
   }) async {
     await _apiClient.post(
       '/user/password',
       jsonBody: {
         'newPassword': newPassword,
+        if (ticket != null) 'ticket': ticket
       },
       headers: _session.authenticationHeaders,
     );
@@ -463,13 +465,16 @@ class AuthClient {
     required String email,
     String? redirectTo,
   }) async {
-    await _apiClient.post('/user/password/reset', jsonBody: {
-      'email': email,
-      if (redirectTo != null)
-        'options': {
-          'redirectTo': redirectTo,
-        },
-    });
+    await _apiClient.post(
+      '/user/password/reset',
+      jsonBody: {
+        'email': email,
+        if (redirectTo != null)
+          'options': {
+            'redirectTo': redirectTo,
+          },
+      },
+    );
   }
 
   //#endregion
