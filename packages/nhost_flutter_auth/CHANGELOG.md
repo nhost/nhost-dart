@@ -1,3 +1,7 @@
+## 3.0.0-dev.7
+
+ - **FIX**: fix token expire time to be second and fix example of persistent token and silent login.
+
 ## 3.0.0-dev.6
 
  - **FIX**: bug in server and parsing user metadata.
