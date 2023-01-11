@@ -1,3 +1,8 @@
+## 4.0.0-dev.6
+
+ - **FIX**: bug in server and parsing user metadata.
+ - **FEAT**: support for subdomain api.
+
 ## 4.0.0-dev.5
 
  - **FIX**: refresh token in query param.

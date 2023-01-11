@@ -1,3 +1,8 @@
+## 2.0.5-dev.6
+
+ - **FIX**: bug in server and parsing user metadata.
+ - **FEAT**: support for subdomain api.
+
 ## 2.0.5-dev.5
 
  - Update a dependency to the latest release.
