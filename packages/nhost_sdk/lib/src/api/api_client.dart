@@ -250,9 +250,10 @@ class ApiClient {
     Map<String, String?>? query,
     dynamic jsonBody,
   }) {
-    final req =
-        http.Request(method, baseUrl.extend(path, queryParameters: query))
-          ..encoding = utf8;
+    final req = http.Request(
+      method,
+      baseUrl.extend(path, queryParameters: query),
+    )..encoding = utf8;
     if (jsonBody != null) {
       req
         ..body = jsonEncode(jsonBody)

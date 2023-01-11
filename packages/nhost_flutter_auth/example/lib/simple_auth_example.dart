@@ -126,7 +126,7 @@ class SignInFormState extends State<SignInForm> {
           content: Text('Sign in Failed'),
         ),
       );
-    } on SocketException {
+    } on SocketException catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Network Failed'),
