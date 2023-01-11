@@ -2,9 +2,11 @@ name: nhost_auth_dart
 description: Nhost Dart Auth Service SDK
 version: 1.0.0-dev.3
 homepage: https://nhost.io
+repository: https://github.com/nhost/nhost-dart/tree/main/packages/nhost_sdk
+issue_tracker: https://github.com/nhost/nhost-dart/issues
 
 environment:
-  sdk: '>=2.14.9 <3.0.0'
+  sdk: '>=2.14.0 <3.0.0'
 
 dependencies:
   #Nhost_sdk

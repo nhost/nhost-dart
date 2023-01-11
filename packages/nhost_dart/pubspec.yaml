@@ -2,13 +2,15 @@ name: nhost_dart
 description: Nhost Dart SDK
 version: 1.0.0-dev.3
 homepage: https://nhost.io
+repository: https://github.com/nhost/nhost-dart/tree/main/packages/nhost_sdk
+issue_tracker: https://github.com/nhost/nhost-dart/issues
 
 environment:
   sdk: '>=2.14.9 <3.0.0'
 
 dependencies:
-  #Nhost_sdk
   nhost_sdk: ^4.0.0-dev.10
+
 dev_dependencies:
   lints: ^2.0.0
   test: ^1.16.0

@@ -1,0 +1,10 @@
+name: nhost_dart_example
+description: 'nhost dart example'
+private: true
+
+environment:
+  sdk: '>=2.14.0 <3.0.0'
+
+dependencies:
+  # Nhost packages
+  nhost_sdk: ^4.0.0-dev.10
