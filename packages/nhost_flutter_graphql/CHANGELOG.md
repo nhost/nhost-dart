@@ -1,3 +1,7 @@
+## 3.0.0-dev.12
+
+ - **FEAT**: seperating all clients into their own packages.
+
 ## 3.0.0-dev.11
 
  - Update a dependency to the latest release.

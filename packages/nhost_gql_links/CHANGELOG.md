@@ -1,3 +1,7 @@
+## 3.0.0-dev.12
+
+ - **FEAT**: seperating all clients into their own packages.
+
 ## 3.0.0-dev.11
 
  - **FIX**: downgrade meta to 1.7.
