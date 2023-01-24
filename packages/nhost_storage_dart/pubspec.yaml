@@ -11,7 +11,7 @@ environment:
 dependencies:
   http_parser: ^4.0.1
   http: ^0.13.4
-  #Nhost_dart
+  #Nhost_sdk
   nhost_sdk: ^4.0.0-dev.10
 
 dev_dependencies:
