@@ -82,6 +82,8 @@ class AuthClient {
   final AuthStore _authStore;
   final UserSession _session;
 
+  UserSession get userSession => _session;
+
   final List<TokenChangedCallback> _tokenChangedCallbacks = [];
   final List<AuthStateChangedCallback> _authChangedCallbacks = [];
   final List<SessionRefreshFailedCallback> _sessionRefreshFailedCallbacks = [];

@@ -13,6 +13,10 @@ void main() async {
   final storage = StorageClient(
     subdomain: subdomain,
     region: region,
+    // this must be passed form Auth session otherwise,
+    // the sessions are not shared and therefore, headers for API calls
+    // will be missed.
+    session: auth.userSession,
   );
 
   await signInOrSignUp(
