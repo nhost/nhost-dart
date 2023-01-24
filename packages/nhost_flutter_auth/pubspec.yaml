@@ -14,8 +14,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  # Nhost packages
-  nhost_sdk: ^4.0.0-dev.10
+  #Nhost_dart
+  nhost_dart: ^1.0.0-dev.3
 dev_dependencies:
   flutter_test:
     sdk: flutter

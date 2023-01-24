@@ -1,5 +1,5 @@
 name: nhost_auth_dart_example
-description: 'nhost auth dart example'
+description: 'nhost Dart sdk example'
 private: true
 
 environment:
@@ -7,4 +7,5 @@ environment:
 
 dependencies:
   # Nhost packages
-  nhost_sdk: ^4.0.0-dev.10
+  nhost_auth_dart:
+    path: ../

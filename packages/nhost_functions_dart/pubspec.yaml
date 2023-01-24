@@ -9,6 +9,9 @@ environment:
   sdk: '>=2.14.9 <3.0.0'
 
 dependencies:
+  http_parser: ^4.0.1
+  http: ^0.13.4
+  logging: ^1.1.0
   #Nhost_sdk
   nhost_sdk: ^4.0.0-dev.10
 dev_dependencies:

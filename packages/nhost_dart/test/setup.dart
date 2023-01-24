@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:betamax/betamax.dart';
 import 'package:http/http.dart' as http;
 import 'package:logging/logging.dart';
-import 'package:nhost_sdk/nhost_sdk.dart';
+import 'package:nhost_dart/nhost_dart.dart';
 import 'package:test/test.dart';
 import 'package:test_api/src/backend/invoker.dart';
 

@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:nhost_sdk/nhost_sdk.dart';
+import 'package:nhost_dart/nhost_dart.dart';
 import 'package:test/test.dart';
 
 import 'setup.dart';

@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:fake_async/fake_async.dart';
+import 'package:nhost_auth_dart/nhost_auth_dart.dart';
+import 'package:nhost_dart/nhost_dart.dart';
 import 'package:nhost_sdk/nhost_sdk.dart';
 import 'package:nock/nock.dart';
 import 'package:test/test.dart';

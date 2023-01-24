@@ -1,19 +1,28 @@
-import 'package:nhost_sdk/nhost_sdk.dart';
+import 'package:nhost_auth_dart/nhost_auth_dart.dart';
+import 'package:nhost_storage_dart/nhost_storage_dart.dart';
 
-import 'auth_example.dart';
 import 'config.dart';
 
 void main() async {
   // Setup
-  final client = NhostClient(
+  final auth = AuthClient(
     subdomain: subdomain,
     region: region,
   );
-  await signInOrSignUp(client,
-      email: 'user-1@nhost.io', password: 'password-1');
+
+  final storage = StorageClient(
+    subdomain: subdomain,
+    region: region,
+  );
+
+  await signInOrSignUp(
+    auth,
+    email: 'user-1@nhost.io',
+    password: 'password-1',
+  );
 
   // Create a new file...
-  final fileMetadata = await client.storage.uploadString(
+  final fileMetadata = await storage.uploadString(
     fileName: 'some_text_file.txt',
     fileContents: 'abcdef abcdef abcdef abcdef abcdef',
     mimeType: 'text/plain',
@@ -21,14 +30,14 @@ void main() async {
   print('File uploaded!');
 
   // ...turn around and download its contents...
-  final downloadedFileContent =
-      await client.storage.downloadFile(fileMetadata.id);
+  final downloadedFileContent = await storage.downloadFile(fileMetadata.id);
   print('Downloaded file contents:');
   print(downloadedFileContent.body);
 
   // ...then delete it.
-  await client.storage.delete(fileMetadata.id);
+  await storage.delete(fileMetadata.id);
 
   // Release
-  client.close();
+  auth.close();
+  storage.close();
 }

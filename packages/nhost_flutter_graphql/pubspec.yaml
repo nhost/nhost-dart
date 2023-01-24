@@ -17,8 +17,8 @@ dependencies:
   graphql_flutter: ^5.1.0
   logging: ^1.1.0
 
-  # Nhost packages
-  nhost_sdk: ^4.0.0-dev.10
+  #Nhost_dart
+  nhost_dart: ^1.0.0-dev.3
   nhost_flutter_auth: ^3.0.0-dev.10
   nhost_graphql_adapter: ^3.0.0-dev.11
 dev_dependencies:

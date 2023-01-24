@@ -1,3 +1,4 @@
+import 'package:nhost_auth_dart/nhost_auth_dart.dart';
 import 'package:nhost_sdk/nhost_sdk.dart';
 import 'package:otp/otp.dart';
 
@@ -17,7 +18,7 @@ User createTestUser({required String id, required String email}) {
     defaultRole: 'user',
     roles: ['user'],
     isAnonymous: false,
-    metadata: { 'age': 14, 'height': 162 },
+    metadata: {'age': 14, 'height': 162},
   );
 }
 

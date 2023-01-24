@@ -2,15 +2,10 @@ import 'dart:async';
 
 import 'package:http/http.dart' as http;
 import 'package:meta/meta.dart';
+import 'package:nhost_sdk/nhost_sdk.dart';
 
-import 'api/api_client.dart';
-import 'api/auth_api_types.dart';
 import 'auth_store.dart';
-import 'errors.dart';
-import 'foundation/uri.dart';
-import 'http.dart';
 import 'logging.dart';
-import 'session.dart';
 
 /// Signature for callbacks that respond to token changes.
 ///
@@ -62,10 +57,10 @@ class AuthClient {
   AuthClient({
     required String subdomain,
     required String region,
-    required UserSession session,
-    required AuthStore authStore,
+    UserSession? session,
+    AuthStore? authStore,
     Duration? tokenRefreshInterval,
-    required http.Client httpClient,
+    http.Client? httpClient,
   })  : _apiClient = ApiClient(
           Uri.parse(
             createNhostServiceEndpoint(
@@ -74,14 +69,15 @@ class AuthClient {
               service: 'auth',
             ),
           ),
-          httpClient: httpClient,
+          httpClient: httpClient ?? http.Client(),
         ),
-        _session = session,
-        _authStore = authStore,
+        _session = session ?? UserSession(),
+        _authStore = authStore ?? InMemoryAuthStore(),
         _tokenRefreshInterval = tokenRefreshInterval,
         _refreshTokenLock = false,
         _loading = false;
 
+  /// The HTTP client used by this client's services.
   final ApiClient _apiClient;
   final AuthStore _authStore;
   final UserSession _session;

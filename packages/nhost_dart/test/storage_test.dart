@@ -2,8 +2,9 @@ import 'dart:math' as math;
 
 import 'package:http/http.dart';
 import 'package:mockito/mockito.dart';
-import 'package:nhost_sdk/nhost_sdk.dart';
+import 'package:nhost_dart/nhost_dart.dart';
 import 'package:nhost_sdk/src/foundation/collection.dart';
+import 'package:nhost_storage_dart/nhost_storage_dart.dart';
 import 'package:path/path.dart' show Context, Style;
 import 'package:test/test.dart';
 

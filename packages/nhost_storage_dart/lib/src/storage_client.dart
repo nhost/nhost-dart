@@ -1,10 +1,7 @@
-import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
-import 'package:nhost_sdk/src/api/storage_api_types.dart';
-
-import 'api/api_client.dart';
-import 'foundation/uri.dart';
-import 'session.dart';
+import 'package:nhost_sdk/nhost_sdk.dart';
+import 'package:http/http.dart' as http;
+import 'api/storage_api_types.dart';
 
 /// The default used during file upload if not provided.
 const applicationOctetStreamType = 'application/octet-stream';
@@ -21,8 +18,8 @@ class StorageClient {
   StorageClient({
     required String subdomain,
     required String region,
-    required UserSession session,
-    required http.Client httpClient,
+    UserSession? session,
+    http.Client? httpClient,
   })  : _apiClient = ApiClient(
           Uri.parse(
             createNhostServiceEndpoint(
@@ -31,9 +28,9 @@ class StorageClient {
               service: 'storage',
             ),
           ),
-          httpClient: httpClient,
+          httpClient: httpClient ?? http.Client(),
         ),
-        _session = session;
+        _session = session ?? UserSession();
 
   final ApiClient _apiClient;
   final UserSession _session;

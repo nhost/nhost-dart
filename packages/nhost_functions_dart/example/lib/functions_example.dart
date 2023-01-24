@@ -1,12 +1,12 @@
-import 'package:nhost_sdk/nhost_sdk.dart';
+import 'package:nhost_functions_dart/nhost_functions_dart.dart';
 
 import 'config.dart';
 
 void main() async {
-  final functions = NhostClient(
+  final functions = FunctionsClient(
     subdomain: subdomain,
     region: region,
-  ).functions;
+  );
 
   print('Running serverless function /hello');
   final helloResponse = await functions.callFunction(

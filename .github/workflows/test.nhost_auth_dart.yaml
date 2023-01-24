@@ -54,8 +54,8 @@ jobs:
         PERCENTAGE=$((( $TOTAL ) * 100 / ( $TOTAL_MAX - ${MAX_PANA_MISSING_POINTS:-10} )))
         if (( $PERCENTAGE < 100 ))
         then
-          echo "Score to low ($TOTAL/$TOTAL_MAX) ($PERCENTAGE)."
-          # exit 1
+          echo "Score to low ($TOTAL/$TOTAL_MAX)."
+          exit 1
         fi
 
   # Analyzes, checks formatting, and tests the packages

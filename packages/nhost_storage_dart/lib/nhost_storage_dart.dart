@@ -1,5 +1,4 @@
 library nhost_storage_dart;
 
-int calculate() {
-  return 6 * 7;
-}
+export 'src/api/storage_api_types.dart';
+export 'src/storage_client.dart';

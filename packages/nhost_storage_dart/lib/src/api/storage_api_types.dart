@@ -1,5 +1,3 @@
-import '../storage_client.dart';
-
 /// Describes a file stored by Nhost.
 ///
 /// The fields of this class can be used to fetch the file's contents ([id]),

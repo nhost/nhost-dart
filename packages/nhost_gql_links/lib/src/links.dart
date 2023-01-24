@@ -6,7 +6,7 @@ import 'package:gql_websocket_link/gql_websocket_link.dart';
 import 'package:http/http.dart' as http;
 import 'package:meta/meta.dart';
 import 'package:nhost_gql_links/src/logging.dart';
-import 'package:nhost_sdk/nhost_sdk.dart';
+import 'package:nhost_dart/nhost_dart.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 /// Creates a link that that configures automatically based on [nhostClient]'s

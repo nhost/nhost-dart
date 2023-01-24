@@ -1,9 +1,7 @@
 import 'package:http/http.dart' as http;
+import 'package:nhost_sdk/nhost_sdk.dart';
 
-import 'api/api_client.dart';
-import 'foundation/uri.dart';
 import 'logging.dart';
-import 'session.dart';
 
 /// Client for calling Nhost serverless functions.
 ///
@@ -17,8 +15,8 @@ class FunctionsClient {
   FunctionsClient({
     required String subdomain,
     required String region,
-    required UserSession session,
-    required http.Client httpClient,
+    UserSession? session,
+    http.Client? httpClient,
   })  : _apiClient = ApiClient(
           Uri.parse(
             createNhostServiceEndpoint(
@@ -27,9 +25,9 @@ class FunctionsClient {
               service: 'functions',
             ),
           ),
-          httpClient: httpClient,
+          httpClient: httpClient ?? http.Client(),
         ),
-        _session = session;
+        _session = session ?? UserSession();
 
   final ApiClient _apiClient;
   final UserSession _session;

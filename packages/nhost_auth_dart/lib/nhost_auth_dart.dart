@@ -1,5 +1,5 @@
 library nhost_auth_dart;
 
-int calculate() {
-  return 6 * 7;
-}
+export 'src/auth_store.dart';
+export 'src/auth_client.dart';
+export 'package:nhost_sdk/nhost_sdk.dart' show ApiException;

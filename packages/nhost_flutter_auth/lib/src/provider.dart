@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
-import 'package:nhost_sdk/nhost_sdk.dart';
+import 'package:nhost_dart/nhost_dart.dart';
 
 /// Exposes Nhost authentication information to its subtree.
 class NhostAuthProvider extends InheritedNotifier<AuthNotifier> {

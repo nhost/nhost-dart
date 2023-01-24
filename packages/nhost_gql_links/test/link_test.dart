@@ -6,7 +6,7 @@ import 'package:fake_async/fake_async.dart';
 import 'package:gql/language.dart';
 import 'package:gql_exec/gql_exec.dart';
 import 'package:nhost_gql_links/nhost_gql_links.dart';
-import 'package:nhost_sdk/nhost_sdk.dart';
+import 'package:nhost_dart/nhost_dart.dart';
 import 'package:nock/nock.dart';
 import 'package:test/test.dart';
 

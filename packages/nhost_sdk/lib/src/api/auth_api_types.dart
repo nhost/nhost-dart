@@ -1,6 +1,5 @@
 import 'dart:core';
 
-import '../auth_client.dart';
 import 'core_codec.dart';
 
 /// Describes the client's authorization state.
