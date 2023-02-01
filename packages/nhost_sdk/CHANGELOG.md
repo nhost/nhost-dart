@@ -1,3 +1,7 @@
+## 4.0.0-dev.13
+
+ - **FEAT**: support for hasura auth and storage client and refactor them to accept only URL.
+
 ## 4.0.0-dev.12
 
  - **FIX**: update link to nhost_Dart from nhost_sdk.

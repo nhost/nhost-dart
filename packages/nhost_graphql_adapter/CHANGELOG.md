@@ -1,3 +1,7 @@
+## 3.0.0-dev.14
+
+ - **FEAT**: support for hasura auth and storage client and refactor them to accept only URL.
+
 ## 3.0.0-dev.13
 
  - **FEAT**: Support for Subdomain cloud hosting and ServiceUrls self-hosting Nhost projects.
