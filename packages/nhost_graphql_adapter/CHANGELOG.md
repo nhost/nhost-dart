@@ -1,3 +1,7 @@
+## 3.0.0-dev.13
+
+ - **FEAT**: Support for Subdomain cloud hosting and ServiceUrls self-hosting Nhost projects.
+
 ## 3.0.0-dev.12
 
  - **FEAT**: seperating all clients into their own packages.

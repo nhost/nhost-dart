@@ -1,3 +1,7 @@
+## 1.0.0-dev.5
+
+ - **FEAT**: Support for Subdomain cloud hosting and ServiceUrls self-hosting Nhost projects.
+
 ## 1.0.0-dev.4
 
  - **FIX**: add auth package to example for storage.

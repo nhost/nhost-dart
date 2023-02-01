@@ -1,3 +1,9 @@
+## 4.0.0-dev.12
+
+ - **FIX**: update link to nhost_Dart from nhost_sdk.
+ - **FEAT**: Support for Subdomain cloud hosting and ServiceUrls self-hosting Nhost projects.
+ - **FEAT**: Support for Subdomain cloud hosting and ServiceUrls self-hosting Nhost projects.
+
 ## 4.0.0-dev.11
 
  - **FEAT**: seperating all clients into their own packages.
