@@ -28,6 +28,19 @@ void main() async {
       ),
     );
 
+
+    // for self host or local host you may use ServiceUrls
+    /*
+    final nhost = NhostClient(
+      serviceUrls: ServiceUrls(
+        authUrl: '',
+        storageUrl: '',
+        functionsUrl: '',
+        graphqlUrl: '',
+      ),
+    );
+    */
+
   // User registration
   await nhost.auth.register(email: 'new-user@gmail.com', password: 'xxxxx');
 
