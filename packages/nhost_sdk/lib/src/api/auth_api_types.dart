@@ -169,7 +169,7 @@ class User {
 class MultiFactorAuthenticationInfo {
   MultiFactorAuthenticationInfo({required this.ticket});
 
-  /// Ticket string to be provided to [AuthClient.completeMfaSignIn] in order
+  /// Ticket string to be provided to [HasuraAuthClient.completeMfaSignIn] in order
   /// to continue the sign in process
   final String ticket;
 

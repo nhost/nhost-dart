@@ -5,18 +5,10 @@ import 'config.dart';
 
 void main() async {
   // Setup
-  final auth = AuthClient(
-    subdomain: Subdomain(
-      subdomain: subdomain,
-      region: region,
-    ),
-  );
+  final auth = HasuraAuthClient(url: authUrl);
 
-  final storage = StorageClient(
-    subdomain: Subdomain(
-      subdomain: subdomain,
-      region: region,
-    ),
+  final storage = HasuraStorageClient(
+    url: storageUrl,
     // this must be passed form Auth session otherwise,
     // the sessions are not shared and therefore, headers for API calls
     // will be missed.

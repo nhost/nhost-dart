@@ -4,12 +4,7 @@ import 'config.dart';
 
 void main() async {
   // Setup
-  final auth = AuthClient(
-    subdomain: Subdomain(
-      subdomain: subdomain,
-      region: region,
-    ),
-  );
+  final auth = HasuraAuthClient(url: authUrl);
 
   try {
     await signInOrSignUp(
@@ -35,7 +30,7 @@ void main() async {
 }
 
 Future<void> signInOrSignUp(
-  AuthClient auth, {
+  HasuraAuthClient auth, {
   required String email,
   required String password,
 }) async {

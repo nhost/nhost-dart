@@ -9,37 +9,21 @@ const applicationOctetStreamType = 'application/octet-stream';
 /// The Nhost storage service.
 ///
 /// Supports the storage and retrieval of files on the backend.
-class StorageClient {
+class HasuraStorageClient {
   /// {@macro nhost.api.NhostClient.subdomain}
   ///
   /// {@macro nhost.api.NhostClient.serviceUrls}
   ///
   /// {@macro nhost.api.NhostClient.httpClientOverride}
-  StorageClient({
-    Subdomain? subdomain,
-    String? storageUrl,
+  HasuraStorageClient({
+    required String url,
     UserSession? session,
     http.Client? httpClient,
   })  : _apiClient = ApiClient(
-          Uri.parse(
-            subdomain != null
-                ? createNhostServiceEndpoint(
-                    subdomain: subdomain.subdomain,
-                    region: subdomain.region,
-                    service: 'storage',
-                  )
-                : storageUrl!,
-          ),
+          Uri.parse(url),
           httpClient: httpClient ?? http.Client(),
         ),
-        _session = session ?? UserSession() {
-    if ((subdomain == null && storageUrl == null) ||
-        (subdomain != null && storageUrl != null)) {
-      throw ArgumentError.notNull(
-        'You have to pass either [Subdomain] or [StorageUrl]',
-      );
-    }
-  }
+        _session = session ?? UserSession();
 
   final ApiClient _apiClient;
   final UserSession _session;

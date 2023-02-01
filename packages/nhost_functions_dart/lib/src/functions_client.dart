@@ -6,37 +6,21 @@ import 'logging.dart';
 /// Client for calling Nhost serverless functions.
 ///
 /// See https://docs.nhost.io/platform/serverless-functions for more info.
-class FunctionsClient {
-  /// {@macro nhost.api.NhostClient.subdomain}
+class NhostFunctionsClient {
+  /// {@macro nhost.api.NhostClient.url}
   ///
-  /// {@macro nhost.api.NhostClient.serviceUrls}
+  /// {@macro nhost.api.NhostClient.session}
   ///
   /// {@macro nhost.api.NhostClient.httpClientOverride}
-  FunctionsClient({
-    Subdomain? subdomain,
-    String? functionsUrl,
+  NhostFunctionsClient({
+    required String url,
     UserSession? session,
     http.Client? httpClient,
   })  : _apiClient = ApiClient(
-          Uri.parse(
-            subdomain != null
-                ? createNhostServiceEndpoint(
-                    subdomain: subdomain.subdomain,
-                    region: subdomain.region,
-                    service: 'functions',
-                  )
-                : functionsUrl!,
-          ),
+          Uri.parse(url),
           httpClient: httpClient ?? http.Client(),
         ),
-        _session = session ?? UserSession() {
-    if ((subdomain == null && functionsUrl == null) ||
-        (subdomain != null && functionsUrl != null)) {
-      throw ArgumentError.notNull(
-        'You have to pass either [Subdomain] or [FunctionUrl]',
-      );
-    }
-  }
+        _session = session ?? UserSession();
   final ApiClient _apiClient;
   final UserSession _session;
 

@@ -7,7 +7,7 @@ import 'setup.dart';
 
 void main() async {
   NhostClient client;
-  late FunctionsClient functions;
+  late NhostFunctionsClient functions;
 
   setUpAll(() {
     initLogging();

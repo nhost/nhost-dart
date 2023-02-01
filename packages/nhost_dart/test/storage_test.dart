@@ -25,7 +25,7 @@ void main() async {
   GqlAdminTestHelper? recordedGqlAdmin;
 
   NhostClient client;
-  late StorageClient storage;
+  late HasuraStorageClient storage;
 
   setUpAll(() {
     initLogging();

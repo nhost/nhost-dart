@@ -4,21 +4,21 @@
 class ServiceUrls {
   /// {@macro nhost.api.NhostClient.serviceUrls}
   ServiceUrls({
-    this.authUrl,
-    this.graphqlUrl,
-    this.storageUrl,
-    this.functionsUrl,
+    required this.authUrl,
+    required this.graphqlUrl,
+    required this.storageUrl,
+    required this.functionsUrl,
   });
 
   /// Check out self-hosted nhost dashboard and get your `authUrl`
-  final String? authUrl;
+  final String authUrl;
 
   /// Check out self-hosted nhost dashboard and get your `graphqlUrl`
-  final String? graphqlUrl;
+  final String graphqlUrl;
 
   /// Check out self-hosted nhost dashboard and get your `storageUrl`
-  final String? storageUrl;
+  final String storageUrl;
 
   /// Check out self-hosted nhost dashboard and get your `functionsUrl`
-  final String? functionsUrl;
+  final String functionsUrl;
 }

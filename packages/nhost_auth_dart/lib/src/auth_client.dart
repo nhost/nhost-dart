@@ -9,41 +9,39 @@ import 'logging.dart';
 
 /// Signature for callbacks that respond to token changes.
 ///
-/// Registered via [AuthClient.addTokenChangedCallback].
+/// Registered via [HasuraAuthClient.addTokenChangedCallback].
 typedef TokenChangedCallback = void Function();
 
 /// Signature for callbacks that respond to authentication changes.
 ///
-/// Registered via [AuthClient.addAuthStateChangedCallback].
+/// Registered via [HasuraAuthClient.addAuthStateChangedCallback].
 typedef AuthStateChangedCallback = void Function(
     AuthenticationState authenticationState);
 
 /// Signature for callbacks that respond to session refresh failures.
 ///
-/// Registered via [AuthClient.addSessionRefreshFailedCallback].
+/// Registered via [HasuraAuthClient.addSessionRefreshFailedCallback].
 typedef SessionRefreshFailedCallback = void Function(
     Exception error, StackTrace stackTrace);
 
 /// Signature for functions that remove their associated callback when called.
 typedef UnsubscribeDelegate = void Function();
 
-/// Identifies the refresh token in the [AuthClient]'s [AuthStore] instance.
+/// Identifies the refresh token in the [HasuraAuthClient]'s [AuthStore] instance.
 const refreshTokenClientStorageKey = 'nhostRefreshToken';
 
 /// The query parameter name for the refresh token provided during OAuth
 /// provider-based sign-ins.
 const refreshTokenQueryParamName = 'refreshToken';
 
-/// The Nhost authentication service.
+/// The Hasura authentication service.
 ///
 /// Supports user authentication, MFA, OTP, and various user management
 /// functions.
 ///
 /// See https://docs.nhost.io/reference/sdk/authentication for more info.
-class AuthClient {
-  /// {@macro nhost.api.NhostClient.subdomain}
-  ///
-  /// {@macro nhost.api.NhostClient.serviceUrls}
+class HasuraAuthClient {
+  /// {@macro nhost.api.NhostClient.url}
   ///
   /// {@macro nhost.api.NhostClient.authStore}
   ///
@@ -54,37 +52,21 @@ class AuthClient {
   /// {@macro nhost.api.NhostClient.tokenRefreshInterval}
   ///
   /// {@macro nhost.api.NhostClient.httpClientOverride}
-  AuthClient({
-    Subdomain? subdomain,
-    String? authUrl,
+  HasuraAuthClient({
+    required String url,
     UserSession? session,
     AuthStore? authStore,
     Duration? tokenRefreshInterval,
     http.Client? httpClient,
   })  : _apiClient = ApiClient(
-          Uri.parse(
-            subdomain != null
-                ? createNhostServiceEndpoint(
-                    subdomain: subdomain.subdomain,
-                    region: subdomain.region,
-                    service: 'auth',
-                  )
-                : authUrl ?? '',
-          ),
+          Uri.parse(url),
           httpClient: httpClient ?? http.Client(),
         ),
         _session = session ?? UserSession(),
         _authStore = authStore ?? InMemoryAuthStore(),
         _tokenRefreshInterval = tokenRefreshInterval,
         _refreshTokenLock = false,
-        _loading = false {
-    if ((subdomain == null && authUrl == null) ||
-        (subdomain != null && authUrl != null)) {
-      throw ArgumentError.notNull(
-        'You have to pass either [Subdomain] or [AuthUrl]',
-      );
-    }
-  }
+        _loading = false;
 
   /// The HTTP client used by this client's services.
   final ApiClient _apiClient;
@@ -666,7 +648,7 @@ class AuthClient {
     }
   }
 
-  /// Updates the [AuthClient] to begin identifying as the user described by
+  /// Updates the [HasuraAuthClient] to begin identifying as the user described by
   /// [session].
   @visibleForTesting
   Future<void> setSession(Session session) async {

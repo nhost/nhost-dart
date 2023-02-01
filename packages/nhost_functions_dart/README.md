@@ -13,10 +13,7 @@ Get your subdomain and region from nhost dashboard
 import 'package:nhost_functions_dart/nhost_functions_dart.dart';
 
 void main() async {
-    final functions = FunctionsClient(
-    subdomain: 'subdomain',
-    region: 'region',
-  );
+    final functions = NhostFunctionsClient(url: 'Your Service URL');
 
   print('Running serverless function /hello');
   final helloResponse = await functions.callFunction(

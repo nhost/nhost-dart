@@ -16,16 +16,16 @@ export 'package:nhost_sdk/nhost_sdk.dart'
         ServiceUrls,
         Subdomain;
 export 'package:nhost_storage_dart/nhost_storage_dart.dart'
-    show StorageClient, ImageCornerRadius, ImageTransform;
+    show HasuraStorageClient, ImageCornerRadius, ImageTransform;
 export 'package:nhost_auth_dart/nhost_auth_dart.dart'
     show
-        AuthClient,
+        HasuraAuthClient,
         UnsubscribeDelegate,
         AuthenticationState,
         AuthStore,
         AuthStateChangedCallback;
 export 'package:nhost_functions_dart/nhost_functions_dart.dart'
-    show FunctionsClient;
+    show NhostFunctionsClient;
 export 'src/logging.dart' show debugLogNhostErrorsToConsole;
 
 /// API client for accessing Nhost's authentication and storage APIs.
@@ -114,49 +114,58 @@ class NhostClient {
       );
     }
 
-    if (serviceUrls!.graphqlUrl == null) {
-      throw ArgumentError.notNull(
-        'graphqlUrl in [ServiceUrls] cannot be null',
-      );
-    }
-
-    return serviceUrls!.graphqlUrl!;
+    return serviceUrls!.graphqlUrl;
   }
 
   /// The Nhost authentication service.
   ///
   /// https://docs.nhost.io/platform/authentication
-  AuthClient get auth => _auth ??= AuthClient(
-        subdomain: subdomain,
-        authUrl: serviceUrls?.authUrl,
+  HasuraAuthClient get auth => _auth ??= HasuraAuthClient(
+        url: subdomain != null
+            ? createNhostServiceEndpoint(
+                subdomain: subdomain!.subdomain,
+                region: subdomain!.region,
+                service: 'auth',
+              )
+            : serviceUrls!.authUrl,
         authStore: _authStore,
         tokenRefreshInterval: _refreshInterval,
         session: _session,
         httpClient: httpClient,
       );
-  AuthClient? _auth;
+  HasuraAuthClient? _auth;
 
   /// The Nhost serverless functions service.
   ///
   /// https://docs.nhost.io/platform/serverless-functions
-  FunctionsClient get functions => _functions ??= FunctionsClient(
-        subdomain: subdomain,
-        functionsUrl: serviceUrls?.functionsUrl,
+  NhostFunctionsClient get functions => _functions ??= NhostFunctionsClient(
+        url: subdomain != null
+            ? createNhostServiceEndpoint(
+                subdomain: subdomain!.subdomain,
+                region: subdomain!.region,
+                service: 'functions',
+              )
+            : serviceUrls!.functionsUrl,
         session: _session,
         httpClient: httpClient,
       );
-  FunctionsClient? _functions;
+  NhostFunctionsClient? _functions;
 
   /// The Nhost file storage service.
   ///
   /// https://docs.nhost.io/platform/storage
-  StorageClient get storage => _storage ??= StorageClient(
-        subdomain: subdomain,
-        storageUrl: serviceUrls?.storageUrl,
+  HasuraStorageClient get storage => _storage ??= HasuraStorageClient(
+        url: subdomain != null
+            ? createNhostServiceEndpoint(
+                subdomain: subdomain!.subdomain,
+                region: subdomain!.region,
+                service: 'storage',
+              )
+            : serviceUrls!.storageUrl,
         httpClient: httpClient,
         session: _session,
       );
-  StorageClient? _storage;
+  HasuraStorageClient? _storage;
 
   /// Releases the resources used by this client.
   void close() {

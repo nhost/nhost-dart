@@ -16,21 +16,20 @@ import 'package:nhost_storage_dart/nhost_storage_dart.dart';
 
 void main() async {
   // Setup
-  final auth = AuthClient(
-    subdomain: 'subdomain',
-    region: 'region',
-  );
+  final auth = HasuraAuthClient(url: authUrl);
 
-  final storage = StorageClient(
-    subdomain: 'subdomain',
-    region: 'region',
+  final storage = HasuraStorageClient(
+    url: storageUrl,
     // this must be passed form Auth session otherwise,
     // the sessions are not shared and therefore, headers for API calls
     // will be missed.
     session: auth.userSession,
   );
 
-  await auth.signInEmailPassword(email: 'user-1@nhost.io', password: 'password-1');
+  await auth.signInEmailPassword(
+    email: 'user-1@nhost.io',
+    password: 'password-1',
+  );
 
   // Create a new file...
   final fileMetadata = await storage.uploadString(

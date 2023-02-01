@@ -14,13 +14,13 @@ import 'package:nhost_auth_dart/nhost_auth_dart.dart';
 
 void main() async {
   // Setup
-  final auth = AuthClient(
-    subdomain: 'subdomain',
-    region: 'region',
-  );
+  final auth = HasuraAuthClient(url: authUrl);
 
   try {
-    await auth.signInEmailPassword(email: 'user-1@nhost.io', password: 'password-1');
+    await auth.signInEmailPassword(
+      email: 'user-1@nhost.io',
+      password: 'password-1',
+    );
     // Print out a few details about the current user
     final currentUser = auth.currentUser;
     if (currentUser != null) {
