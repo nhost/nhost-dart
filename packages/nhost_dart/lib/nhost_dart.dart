@@ -9,7 +9,12 @@ import 'package:nhost_auth_dart/nhost_auth_dart.dart';
 import 'src/logging.dart';
 
 export 'package:nhost_sdk/nhost_sdk.dart'
-    show ApiException, Session, createNhostServiceEndpoint;
+    show
+        ApiException,
+        Session,
+        createNhostServiceEndpoint,
+        ServiceUrls,
+        Subdomain;
 export 'package:nhost_storage_dart/nhost_storage_dart.dart'
     show StorageClient, ImageCornerRadius, ImageTransform;
 export 'package:nhost_auth_dart/nhost_auth_dart.dart'
@@ -37,13 +42,15 @@ class NhostClient {
   /// Constructs a new Nhost client.
   ///
   /// {@template nhost.api.NhostClient.subdomain}
-  /// [subdomain] is the Nhost "subdomain" that can be found on your Nhost
-  /// project page. for local development pass 'localhost' or 'localhost:1337'
+  /// [subdomain] is the Nhost "subdomain" and "region" that can be found on your Nhost
+  /// project page.
+  /// for local development pass 'localhost' or 'localhost:1337' to subdomain
+  /// and leave region empty string '';
   /// {@endtemplate}
   ///
-  /// {@template nhost.api.NhostClient.region}
-  /// [region] is the Nhost "region" that can be found on your Nhost
-  /// project page. for local development pass empty string ''
+  /// {@template nhost.api.NhostClient.serviceUrls}
+  /// [region] is the Nhost services Urls that can be found on
+  /// your Nhost self-hosted project page.
   /// {@endtemplate}
   ///
   /// {@template nhost.api.NhostClient.authStore}
@@ -64,8 +71,8 @@ class NhostClient {
   /// configuration and debugging.
   /// {@endtemplate}
   NhostClient({
-    required this.subdomain,
-    required this.region,
+    this.subdomain,
+    this.serviceUrls,
     AuthStore? authStore,
     Duration? tokenRefreshInterval,
     http.Client? httpClientOverride,
@@ -73,14 +80,20 @@ class NhostClient {
         _authStore = authStore ?? InMemoryAuthStore(),
         _refreshInterval = tokenRefreshInterval,
         _httpClient = httpClientOverride {
+    if ((subdomain == null && serviceUrls == null) ||
+        (subdomain != null && serviceUrls != null)) {
+      throw ArgumentError.notNull(
+        'You have to pass either [Subdomain] or [ServiceUrls]',
+      );
+    }
     initializeLogging();
   }
 
-  /// The Nhost project's backend subdomain
-  final String subdomain;
+  /// The Nhost project's backend subdomain and region
+  final Subdomain? subdomain;
 
   /// The Nhost project's backend region
-  final String region;
+  final ServiceUrls? serviceUrls;
 
   /// Persists authentication information between restarts of the app.
   final AuthStore _authStore;
@@ -92,18 +105,30 @@ class NhostClient {
   http.Client? _httpClient;
 
   /// The GraphQL endpoint URL.
-  String get gqlEndpointUrl => createNhostServiceEndpoint(
-        subdomain: subdomain,
-        region: region,
+  String get gqlEndpointUrl {
+    if (subdomain != null) {
+      return createNhostServiceEndpoint(
+        subdomain: subdomain!.subdomain,
+        region: subdomain!.region,
         service: 'graphql',
       );
+    }
+
+    if (serviceUrls!.graphqlUrl == null) {
+      throw ArgumentError.notNull(
+        'graphqlUrl in [ServiceUrls] cannot be null',
+      );
+    }
+
+    return serviceUrls!.graphqlUrl!;
+  }
 
   /// The Nhost authentication service.
   ///
   /// https://docs.nhost.io/platform/authentication
   AuthClient get auth => _auth ??= AuthClient(
         subdomain: subdomain,
-        region: region,
+        authUrl: serviceUrls?.authUrl,
         authStore: _authStore,
         tokenRefreshInterval: _refreshInterval,
         session: _session,
@@ -116,7 +141,7 @@ class NhostClient {
   /// https://docs.nhost.io/platform/serverless-functions
   FunctionsClient get functions => _functions ??= FunctionsClient(
         subdomain: subdomain,
-        region: region,
+        functionsUrl: serviceUrls?.functionsUrl,
         session: _session,
         httpClient: httpClient,
       );
@@ -127,7 +152,7 @@ class NhostClient {
   /// https://docs.nhost.io/platform/storage
   StorageClient get storage => _storage ??= StorageClient(
         subdomain: subdomain,
-        region: region,
+        storageUrl: serviceUrls?.storageUrl,
         httpClient: httpClient,
         session: _session,
       );

@@ -28,8 +28,10 @@ class SimpleAuthExampleState extends State<SimpleAuthExample> {
     super.initState();
     // Create a new Nhost client using your project's subdomain and region.
     nhostClient = NhostClient(
-      subdomain: subdomain,
-      region: region,
+      subdomain: Subdomain(
+        subdomain: subdomain,
+        region: region,
+      ),
     );
   }
 

@@ -45,8 +45,10 @@ class NavigatorExampleAppState extends State<NavigatorExampleApp> {
     super.initState();
     // Create a new Nhost client using your project's subdomain and region.
     nhostClient = NhostClient(
-      subdomain: subdomain,
-      region: region,
+      subdomain: Subdomain(
+        region: region,
+        subdomain: subdomain,
+      ),
     );
     appState = ExampleNavigator();
   }

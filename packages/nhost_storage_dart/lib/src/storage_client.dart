@@ -12,25 +12,34 @@ const applicationOctetStreamType = 'application/octet-stream';
 class StorageClient {
   /// {@macro nhost.api.NhostClient.subdomain}
   ///
-  /// {@macro nhost.api.NhostClient.region}
+  /// {@macro nhost.api.NhostClient.serviceUrls}
   ///
   /// {@macro nhost.api.NhostClient.httpClientOverride}
   StorageClient({
-    required String subdomain,
-    required String region,
+    Subdomain? subdomain,
+    String? storageUrl,
     UserSession? session,
     http.Client? httpClient,
   })  : _apiClient = ApiClient(
           Uri.parse(
-            createNhostServiceEndpoint(
-              region: region,
-              subdomain: subdomain,
-              service: 'storage',
-            ),
+            subdomain != null
+                ? createNhostServiceEndpoint(
+                    subdomain: subdomain.subdomain,
+                    region: subdomain.region,
+                    service: 'storage',
+                  )
+                : storageUrl!,
           ),
           httpClient: httpClient ?? http.Client(),
         ),
-        _session = session ?? UserSession();
+        _session = session ?? UserSession() {
+    if ((subdomain == null && storageUrl == null) ||
+        (subdomain != null && storageUrl != null)) {
+      throw ArgumentError.notNull(
+        'You have to pass either [Subdomain] or [StorageUrl]',
+      );
+    }
+  }
 
   final ApiClient _apiClient;
   final UserSession _session;

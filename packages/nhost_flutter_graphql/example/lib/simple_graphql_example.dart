@@ -13,8 +13,10 @@ import 'config.dart';
 
 /// Client used to authenticate GraphQL requests
 final nhostClient = NhostClient(
-  subdomain: subdomain,
-  region: region,
+  subdomain: Subdomain(
+    subdomain: subdomain,
+    region: region,
+  ),
 );
 
 void main() {

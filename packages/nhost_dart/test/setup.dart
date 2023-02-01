@@ -54,8 +54,10 @@ NhostClient createApiTestClient(
   AuthStore? authStore,
 }) {
   return NhostClient(
-    subdomain: subdomain,
-    region: region,
+    subdomain: Subdomain(
+      subdomain: subdomain,
+      region: region,
+    ),
     httpClientOverride: httpClient,
     authStore: authStore,
   );

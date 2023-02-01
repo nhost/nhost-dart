@@ -5,8 +5,10 @@ import 'config.dart';
 void main() async {
   // Setup
   final auth = AuthClient(
-    subdomain: subdomain,
-    region: region,
+    subdomain: Subdomain(
+      subdomain: subdomain,
+      region: region,
+    ),
   );
 
   try {

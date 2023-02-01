@@ -13,8 +13,10 @@ class GqlAdminTestHelper {
     // Used to verify, retrieve, or clear backend state.
     client = createNhostGraphQLClient(
       NhostClient(
-        region: region,
-        subdomain: subdomain,
+        subdomain: Subdomain(
+          subdomain: subdomain,
+          region: region,
+        ),
       ),
       defaultHeaders: {
         'X-Hasura-Admin-Secret': 'nhost-admin-secret',

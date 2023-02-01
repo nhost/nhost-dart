@@ -4,8 +4,10 @@ import 'config.dart';
 
 void main() async {
   final functions = FunctionsClient(
-    subdomain: subdomain,
-    region: region,
+    subdomain: Subdomain(
+      subdomain: subdomain,
+      region: region,
+    ),
   );
 
   print('Running serverless function /hello');

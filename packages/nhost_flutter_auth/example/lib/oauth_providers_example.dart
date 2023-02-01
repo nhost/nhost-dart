@@ -60,8 +60,10 @@ class OAuthExampleState extends State<OAuthExample> {
 
     // Create a new Nhost client using your project's subdomain and region.
     nhostClient = NhostClient(
-      subdomain: subdomain,
-      region: region,
+      subdomain: Subdomain(
+        subdomain: subdomain,
+        region: region,
+      ),
     );
     handleAppLink();
   }

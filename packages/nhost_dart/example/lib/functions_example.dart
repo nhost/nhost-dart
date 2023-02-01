@@ -4,8 +4,10 @@ import 'config.dart';
 
 void main() async {
   final functions = NhostClient(
-    subdomain: subdomain,
-    region: region,
+    subdomain: Subdomain(
+      subdomain: subdomain,
+      region: region,
+    ),
   ).functions;
 
   print('Running serverless function /hello');

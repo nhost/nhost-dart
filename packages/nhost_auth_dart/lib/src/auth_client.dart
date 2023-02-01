@@ -43,7 +43,7 @@ const refreshTokenQueryParamName = 'refreshToken';
 class AuthClient {
   /// {@macro nhost.api.NhostClient.subdomain}
   ///
-  /// {@macro nhost.api.NhostClient.region}
+  /// {@macro nhost.api.NhostClient.serviceUrls}
   ///
   /// {@macro nhost.api.NhostClient.authStore}
   ///
@@ -55,19 +55,21 @@ class AuthClient {
   ///
   /// {@macro nhost.api.NhostClient.httpClientOverride}
   AuthClient({
-    required String subdomain,
-    required String region,
+    Subdomain? subdomain,
+    String? authUrl,
     UserSession? session,
     AuthStore? authStore,
     Duration? tokenRefreshInterval,
     http.Client? httpClient,
   })  : _apiClient = ApiClient(
           Uri.parse(
-            createNhostServiceEndpoint(
-              region: region,
-              subdomain: subdomain,
-              service: 'auth',
-            ),
+            subdomain != null
+                ? createNhostServiceEndpoint(
+                    subdomain: subdomain.subdomain,
+                    region: subdomain.region,
+                    service: 'auth',
+                  )
+                : authUrl ?? '',
           ),
           httpClient: httpClient ?? http.Client(),
         ),
@@ -75,7 +77,14 @@ class AuthClient {
         _authStore = authStore ?? InMemoryAuthStore(),
         _tokenRefreshInterval = tokenRefreshInterval,
         _refreshTokenLock = false,
-        _loading = false;
+        _loading = false {
+    if ((subdomain == null && authUrl == null) ||
+        (subdomain != null && authUrl != null)) {
+      throw ArgumentError.notNull(
+        'You have to pass either [Subdomain] or [AuthUrl]',
+      );
+    }
+  }
 
   /// The HTTP client used by this client's services.
   final ApiClient _apiClient;

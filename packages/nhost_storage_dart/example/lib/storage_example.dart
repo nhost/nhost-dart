@@ -6,13 +6,17 @@ import 'config.dart';
 void main() async {
   // Setup
   final auth = AuthClient(
-    subdomain: subdomain,
-    region: region,
+    subdomain: Subdomain(
+      subdomain: subdomain,
+      region: region,
+    ),
   );
 
   final storage = StorageClient(
-    subdomain: subdomain,
-    region: region,
+    subdomain: Subdomain(
+      subdomain: subdomain,
+      region: region,
+    ),
     // this must be passed form Auth session otherwise,
     // the sessions are not shared and therefore, headers for API calls
     // will be missed.

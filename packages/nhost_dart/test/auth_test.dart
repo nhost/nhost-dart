@@ -433,8 +433,10 @@ void main() async {
 
     test('should occur after a server-determined interval', () {
       final nhostClient = NhostClient(
-        subdomain: subdomain,
-        region: region,
+        subdomain: Subdomain(
+          subdomain: subdomain,
+          region: region,
+        ),
       );
       final tokenEndpointRefreshMock = runTokenRefreshSequence(
         nhostClient,
@@ -449,8 +451,10 @@ void main() async {
       final testRefreshInterval = Duration(minutes: 10);
 
       final nhostClient = NhostClient(
-        subdomain: subdomain,
-        region: region,
+        subdomain: Subdomain(
+          subdomain: subdomain,
+          region: region,
+        ),
         tokenRefreshInterval: testRefreshInterval,
       );
       final tokenEndpointRefreshMock = runTokenRefreshSequence(

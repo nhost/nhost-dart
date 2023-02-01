@@ -38,8 +38,10 @@ void main() {
   late NhostClient nhost;
   setUp(() {
     nhost = NhostClient(
-      subdomain: subdomain,
-      region: region,
+      subdomain: Subdomain(
+        subdomain: subdomain,
+        region: region,
+      ),
     );
   });
 

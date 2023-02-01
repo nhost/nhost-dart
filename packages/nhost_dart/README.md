@@ -21,7 +21,12 @@ Includes support for:
 import 'package:nhost_dart/nhost_dart.dart';
 
 void main() async {
-  final nhost = NhostClient(subdomain: 'backend-5e69d1d7', region: 'eu-central-1');
+  final nhost = NhostClient(
+    subdomain: Subdomain(
+        region: 'eu-central-1',
+        subdomain: 'backend-5e69d1d7',
+      ),
+    );
 
   // User registration
   await nhost.auth.register(email: 'new-user@gmail.com', password: 'xxxxx');

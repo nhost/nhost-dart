@@ -25,8 +25,10 @@ final myTodosQuery = gql(r'''
 
 void main() async {
   final nhostClient = NhostClient(
-    subdomain: subdomain,
-    region: region,
+    subdomain: Subdomain(
+      subdomain: subdomain,
+      region: region,
+    ),
   );
 
   // The Nhost "terminating link" (the point at which requests are sent). We're
