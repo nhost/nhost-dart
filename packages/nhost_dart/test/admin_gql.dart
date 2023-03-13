@@ -1,7 +1,6 @@
 import 'package:graphql/client.dart';
 import 'package:http/http.dart' as http;
 import 'package:nhost_dart/nhost_dart.dart';
-import 'package:nhost_graphql_adapter/nhost_graphql_adapter.dart';
 import 'package:nhost_storage_dart/nhost_storage_dart.dart';
 
 class GqlAdminTestHelper {

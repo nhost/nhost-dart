@@ -1,7 +1,8 @@
 import 'package:graphql/client.dart';
 import 'package:http/http.dart' as http;
-import 'package:nhost_graphql_adapter/nhost_graphql_adapter.dart';
 import 'package:nhost_sdk/nhost_sdk.dart';
+
+import '../nhost_graphql_adapter.dart';
 
 /// Constructs a GQL client for accessing Nhost.io's backend.
 ///

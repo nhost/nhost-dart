@@ -26,7 +26,10 @@ export 'package:nhost_functions_dart/nhost_functions_dart.dart'
     show NhostFunctionsClient;
 export 'src/logging.dart' show debugLogNhostErrorsToConsole;
 export 'package:nhost_graphql_adapter/nhost_graphql_adapter.dart'
-    show createNhostGraphQLClientForAuth, combinedLinkForNhost;
+    show
+        createNhostGraphQLClientForAuth,
+        combinedLinkForNhost,
+        createNhostGraphQLClient;
 
 /// API client for accessing Nhost's authentication and storage APIs.
 ///

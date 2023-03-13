@@ -4,7 +4,6 @@ library simple_example;
 
 import 'package:graphql/client.dart';
 import 'package:nhost_dart/nhost_dart.dart';
-import 'package:nhost_graphql_adapter/nhost_graphql_adapter.dart';
 
 import 'config.dart';
 
