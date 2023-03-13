@@ -7,40 +7,13 @@ import 'package:nhost_sdk/nhost_sdk.dart';
 import 'auth_store.dart';
 import 'logging.dart';
 
-/// Signature for callbacks that respond to token changes.
-///
-/// Registered via [HasuraAuthClient.addTokenChangedCallback].
-typedef TokenChangedCallback = void Function();
-
-/// Signature for callbacks that respond to authentication changes.
-///
-/// Registered via [HasuraAuthClient.addAuthStateChangedCallback].
-typedef AuthStateChangedCallback = void Function(
-    AuthenticationState authenticationState);
-
-/// Signature for callbacks that respond to session refresh failures.
-///
-/// Registered via [HasuraAuthClient.addSessionRefreshFailedCallback].
-typedef SessionRefreshFailedCallback = void Function(
-    Exception error, StackTrace stackTrace);
-
-/// Signature for functions that remove their associated callback when called.
-typedef UnsubscribeDelegate = void Function();
-
-/// Identifies the refresh token in the [HasuraAuthClient]'s [AuthStore] instance.
-const refreshTokenClientStorageKey = 'nhostRefreshToken';
-
-/// The query parameter name for the refresh token provided during OAuth
-/// provider-based sign-ins.
-const refreshTokenQueryParamName = 'refreshToken';
-
-/// The Hasura authentication service.
+/// The Nhost authentication service.
 ///
 /// Supports user authentication, MFA, OTP, and various user management
-/// functions.
+/// functions. implements
 ///
 /// See https://docs.nhost.io/reference/sdk/authentication for more info.
-class HasuraAuthClient {
+class NhostAuthClient implements HasuraAuthClient {
   /// {@macro nhost.api.NhostClient.url}
   ///
   /// {@macro nhost.api.NhostClient.authStore}
@@ -52,7 +25,7 @@ class HasuraAuthClient {
   /// {@macro nhost.api.NhostClient.tokenRefreshInterval}
   ///
   /// {@macro nhost.api.NhostClient.httpClientOverride}
-  HasuraAuthClient({
+  NhostAuthClient({
     required String url,
     UserSession? session,
     AuthStore? authStore,
@@ -90,10 +63,12 @@ class HasuraAuthClient {
   bool _loading;
 
   /// Currently logged-in user, or `null` if unauthenticated.
+  @override
   User? get currentUser => _currentUser;
   User? _currentUser;
 
   /// Whether a user is logged in, not logged in, or if a sign-in is in process.
+  @override
   AuthenticationState get authenticationState {
     if (_loading) return AuthenticationState.inProgress;
     return _session.session != null
@@ -103,15 +78,18 @@ class HasuraAuthClient {
 
   /// The currently logged-in user's Json Web Token, or `null` if
   /// unauthenticated.
+  @override
   String? get accessToken => _session.accessToken;
 
   /// Gets the value of a JWT claim named [jwtClaim] associated with the current
   /// authentication session, or `null` if not found/unauthenticated.
+  @override
   String? getClaim(String jwtClaim) => _session.getClaim(jwtClaim);
 
   /// Releases the service's resources.
   ///
   /// The service's methods cannot be called past this point.
+  @override
   void close() {
     _apiClient.close();
     _tokenRefreshTimer?.cancel();
@@ -122,6 +100,7 @@ class HasuraAuthClient {
   /// Add a callback that will be invoked when the service's token changes.
   ///
   /// The returned function will remove the callback when called.
+  @override
   UnsubscribeDelegate addTokenChangedCallback(TokenChangedCallback callback) {
     _tokenChangedCallbacks.add(callback);
     return () {
@@ -133,6 +112,7 @@ class HasuraAuthClient {
   /// state changes.
   ///
   /// The returned function will remove the callback when called.
+  @override
   UnsubscribeDelegate addAuthStateChangedCallback(
       AuthStateChangedCallback callback) {
     _authChangedCallbacks.add(callback);
@@ -149,6 +129,7 @@ class HasuraAuthClient {
   /// [signInWithStoredCredentials].
   ///
   /// The returned function will remove the callback when called.
+  @override
   UnsubscribeDelegate addSessionRefreshFailedCallback(
       SessionRefreshFailedCallback callback) {
     _sessionRefreshFailedCallbacks.add(callback);
@@ -191,6 +172,7 @@ class HasuraAuthClient {
   /// activate their account by clicking an activation link sent to their email.
   ///
   /// Throws an [NhostException] if registration fails.
+  @override
   Future<AuthResponse> signUp({
     required String email,
     required String password,
@@ -247,6 +229,7 @@ class HasuraAuthClient {
   /// user's one-time-password.
   ///
   /// Throws an [NhostException] if sign in fails.
+  @override
   Future<AuthResponse> signInEmailPassword({
     required String email,
     required String password,
@@ -288,6 +271,7 @@ class HasuraAuthClient {
   /// be used to sign in via [signInWithRefreshToken].
   ///
   /// Throws an [NhostException] if sign in fails.
+  @override
   Future<void> signInWithEmailPasswordless(
     String email, {
     String? redirectTo,
@@ -310,6 +294,7 @@ class HasuraAuthClient {
   /// You need to make sure anonymous signin is enabled via
   /// Nhost dashboard -> settings -> Sign in methods -> Anonymous Users
   /// Throws an [NhostException] if sign in fails.
+  @override
   Future<void> signInAnonymous() async {
     log.finer('Attempting sign in anonymously');
     await _apiClient.post(
@@ -324,6 +309,7 @@ class HasuraAuthClient {
   /// [completeSmsPasswordlessSignIn] alongside the user's one-time-password.
   ///
   /// Throws an [NhostException] if sign in fails.
+  @override
   Future<void> signInWithSmsPasswordless(String phoneNumber) async {
     log.finer('Attempting sign in (passwordless SMS)');
     await _apiClient.post(
@@ -334,6 +320,7 @@ class HasuraAuthClient {
     );
   }
 
+  @override
   Future<AuthResponse> completeSmsPasswordlessSignIn(
     String phoneNumber,
     String otp,
@@ -353,6 +340,7 @@ class HasuraAuthClient {
   /// provided during construction.
   ///
   /// Throws an [NhostException] if sign in fails.
+  @override
   Future<AuthResponse> signInWithStoredCredentials() async {
     log.finer('Attempting sign in (stored credentials)');
     final session = await _refreshSession();
@@ -365,6 +353,7 @@ class HasuraAuthClient {
   /// [Session.refreshToken].
   ///
   /// Throws an [NhostException] if sign in fails.
+  @override
   Future<AuthResponse> signInWithRefreshToken(String refreshToken) async {
     log.finer('Attempting sign in (token)');
     return AuthResponse(session: await _refreshSession(refreshToken));
@@ -377,6 +366,7 @@ class HasuraAuthClient {
   /// Returns an [AuthResponse] with its fields unset.
   ///
   /// Throws an [NhostException] if sign out fails.
+  @override
   Future<AuthResponse> signOut({
     bool all = false,
   }) async {
@@ -407,6 +397,7 @@ class HasuraAuthClient {
 
   /// Resends the sign-up verification email to the user with the specified
   /// [email].
+  @override
   Future<void> sendVerificationEmail({
     required String email,
     String? redirectTo,
@@ -432,6 +423,7 @@ class HasuraAuthClient {
   /// EMAIL VERIFICATION" turned OFF.
   ///
   /// Throws an [NhostException] if changing emails fails.
+  @override
   Future<void> changeEmail(String newEmail) async {
     await _apiClient.post(
       '/user/email/change',
@@ -445,6 +437,7 @@ class HasuraAuthClient {
   /// Changes the password of the logged in user.
   ///
   /// Throws an [NhostException] if changing passwords fails.
+  @override
   Future<void> changePassword({
     required String newPassword,
     String? ticket,
@@ -462,6 +455,7 @@ class HasuraAuthClient {
   /// Resets a user's password.
   ///
   /// Throws an [NhostException] if requesting the password change fails.
+  @override
   Future<void> resetPassword({
     required String email,
     String? redirectTo,
@@ -491,6 +485,7 @@ class HasuraAuthClient {
   /// used to [enableMfa] and [disableMfa].
   ///
   /// Throws an [NhostException] if MFA generation fails.
+  @override
   Future<MultiFactorAuthResponse> generateMfa() async {
     return await _apiClient.get(
       '/mfa/totp/generate',
@@ -505,6 +500,7 @@ class HasuraAuthClient {
   /// created via the [generateMfa] call.
   ///
   /// Throws an [NhostException] if enabling MFA fails.
+  @override
   Future<void> enableMfa(String totp) async {
     await _apiClient.post(
       '/user/mfa',
@@ -521,6 +517,7 @@ class HasuraAuthClient {
   /// [code] is the one-time password generated by the user's password manager.
   ///
   /// Throws an [NhostException] if disabling MFA fails.
+  @override
   Future<void> disableMfa(String code) async {
     await _apiClient.post(
       '/user/mfa',
@@ -540,6 +537,7 @@ class HasuraAuthClient {
   /// is the [AuthResponse.mfa.ticket] returned by a preceding call to [signInEmailPassword].
   ///
   /// Throws an [NhostException] if logging in via MFA fails.
+  @override
   Future<AuthResponse> completeMfaSignIn({
     required String otp,
     required String ticket,
@@ -569,6 +567,7 @@ class HasuraAuthClient {
   ///
   /// For an example of this in practice, see the `nhost_flutter_auth` package's
   /// OAuthProvider example.
+  @override
   Future<void> completeOAuthProviderSignIn(Uri redirectUrl) async {
     final queryArgs = redirectUrl.queryParameters;
     if (!queryArgs.containsKey(refreshTokenQueryParamName)) {
@@ -648,8 +647,9 @@ class HasuraAuthClient {
     }
   }
 
-  /// Updates the [HasuraAuthClient] to begin identifying as the user described by
+  /// Updates the [NhostAuthClient] to begin identifying as the user described by
   /// [session].
+  @override
   @visibleForTesting
   Future<void> setSession(Session session) async {
     // It is CRITICAL that this function be awaited before returning to the
@@ -705,6 +705,7 @@ class HasuraAuthClient {
   /// It is CRITICAL that this function be awaited before returning to the user.
   /// Failure to do so will result in very difficult to track down race
   /// conditions.
+  @override
   @visibleForTesting
   Future<void> clearSession() async {
     log.finest('Clearing session');
@@ -744,12 +745,6 @@ class HasuraAuthClient {
   }
 
   //#endregion
-}
-
-enum AuthenticationState {
-  inProgress,
-  signedIn,
-  signedOut,
 }
 
 class AuthServiceException implements NhostException {

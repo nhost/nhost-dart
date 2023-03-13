@@ -14,7 +14,7 @@ import 'package:nhost_auth_dart/nhost_auth_dart.dart';
 
 void main() async {
   // Setup
-  final auth = HasuraAuthClient(url: authUrl);
+  final auth = NhostAuthClient(url: authUrl);
 
   try {
     await auth.signInEmailPassword(

@@ -1,7 +1,7 @@
 import 'package:graphql/client.dart';
 import 'package:http/http.dart' as http;
-import 'package:nhost_auth_dart/nhost_auth_dart.dart';
 import 'package:nhost_graphql_adapter/nhost_graphql_adapter.dart';
+import 'package:nhost_sdk/nhost_sdk.dart';
 
 /// Constructs a GQL client for accessing Nhost.io's backend.
 ///
@@ -25,7 +25,7 @@ import 'package:nhost_graphql_adapter/nhost_graphql_adapter.dart';
 /// and debugging.
 /// {@endtemplate}
 GraphQLClient createNhostGraphQLClient(
-  NhostClient nhostClient, {
+  NhostClientBase nhostClient, {
   GraphQLCache? gqlCache,
   Map<String, String>? defaultHeaders,
   http.Client? httpClientOverride,

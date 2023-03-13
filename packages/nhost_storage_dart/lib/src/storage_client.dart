@@ -9,13 +9,13 @@ const applicationOctetStreamType = 'application/octet-stream';
 /// The Nhost storage service.
 ///
 /// Supports the storage and retrieval of files on the backend.
-class HasuraStorageClient {
+class NhostStorageClient implements HasuraStorageClient {
   /// {@macro nhost.api.NhostClient.subdomain}
   ///
   /// {@macro nhost.api.NhostClient.serviceUrls}
   ///
   /// {@macro nhost.api.NhostClient.httpClientOverride}
-  HasuraStorageClient({
+  NhostStorageClient({
     required String url,
     UserSession? session,
     http.Client? httpClient,
@@ -29,6 +29,7 @@ class HasuraStorageClient {
   final UserSession _session;
 
   /// Releases the object's resources.
+  @override
   void close() {
     _apiClient.close();
   }
@@ -38,6 +39,7 @@ class HasuraStorageClient {
   /// If not provided, [mimeType] defaults to `application/octet-stream`.
   ///
   /// Throws an [ApiException] if the upload fails.
+  @override
   Future<FileMetadata> uploadBytes({
     required String fileName,
     required List<int> fileContents,
@@ -65,6 +67,7 @@ class HasuraStorageClient {
   /// If not provided, [mimeType] defaults to `application/octet-stream`.
   ///
   /// Throws an [ApiException] if the upload fails.
+  @override
   Future<FileMetadata> uploadString({
     required String fileName,
     required String fileContents,
@@ -109,6 +112,7 @@ class HasuraStorageClient {
   }
 
   /// Downloads the file with the specified identifier.
+  @override
   Future<http.Response> downloadFile(String fileId) async {
     return _apiClient.get<http.Response>(
       '/files/$fileId',
@@ -116,21 +120,7 @@ class HasuraStorageClient {
     );
   }
 
-  /// Downloads the image with the specified identifier, optionally applying
-  /// a visual transformation.
-  Future<http.Response> downloadImage(
-    String fileId, {
-    ImageTransform? transform,
-  }) async {
-    return _apiClient.get<http.Response>(
-      '/files/$fileId',
-      query: {
-        ...?transform?.toQueryArguments(),
-      },
-      headers: _session.authenticationHeaders,
-    );
-  }
-
+  @override
   Future<PresignedUrl> getPresignedUrl(String fileId) async {
     return await _apiClient.get(
       '/files/$fileId/presignedurl',
@@ -142,9 +132,26 @@ class HasuraStorageClient {
   /// Deletes a file on the backend.
   ///
   /// Throws an [ApiException] if the deletion fails.
+  @override
   Future<void> delete(String fileId) async {
     await _apiClient.delete(
       '/files/$fileId',
+      headers: _session.authenticationHeaders,
+    );
+  }
+
+  /// Downloads the image with the specified identifier, optionally applying
+  /// a visual transformation.
+  @override
+  Future<http.Response> downloadImage(
+    String fileId, {
+    ImageTransformBase? transform,
+  }) async {
+    return _apiClient.get<http.Response>(
+      '/files/$fileId',
+      query: {
+        ...?transform?.toQueryArguments(),
+      },
       headers: _session.authenticationHeaders,
     );
   }

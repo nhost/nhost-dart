@@ -11,6 +11,7 @@ environment:
 dependencies:
   http_parser: ^4.0.1
   http: ^0.13.4
+
   #Nhost_sdk
   nhost_sdk: ^4.0.0-dev.13
 dev_dependencies:

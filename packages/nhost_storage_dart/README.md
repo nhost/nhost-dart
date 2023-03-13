@@ -16,9 +16,9 @@ import 'package:nhost_storage_dart/nhost_storage_dart.dart';
 
 void main() async {
   // Setup
-  final auth = HasuraAuthClient(url: authUrl);
+  final auth = NhostAuthClient(url: authUrl);
 
-  final storage = HasuraStorageClient(
+  final storage = NhostStorageClient(
     url: storageUrl,
     // this must be passed form Auth session otherwise,
     // the sessions are not shared and therefore, headers for API calls

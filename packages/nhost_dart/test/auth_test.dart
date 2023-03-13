@@ -26,7 +26,7 @@ void main() async {
   );
 
   late NhostClient nhost;
-  late HasuraAuthClient auth;
+  late NhostAuthClient auth;
   late AuthStore authStore;
 
   setUpAll(() {

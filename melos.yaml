@@ -6,11 +6,11 @@ ide:
 
 scripts:
   postbootstrap:
-    run: dart run melos run generate_github_workflows
+    run: melos run generate_github_workflows
 
   analyze:
     run: |
-      dart run melos exec -c 1 -- \
+      melos exec -c 1 -- \
         dart analyze . --fatal-infos && flutter analyze --no-pub --congratulate packages/* packages/*/example
     description: |
       Run `dart analyze` in all packages.
@@ -20,7 +20,7 @@ scripts:
     run: dart ./tool/generate_package_workflows.dart
 
   test:
-    run: dart run melos exec -c 1 -- 'if [ -d test ]; then flutter test --reporter=expanded; fi'
+    run: melos exec -c 1 -- 'if [ -d test ]; then flutter test --reporter=expanded; fi'
 
 command:
   version:

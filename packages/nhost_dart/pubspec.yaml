@@ -14,15 +14,18 @@ dependencies:
   logging: ^1.1.0
   meta: ^1.7.0
   path: ^1.8.0
-  #NHOST SDK
+
+  #NHOST Package
   nhost_sdk: ^4.0.0-dev.13
   nhost_storage_dart: ^1.0.0-dev.7
   nhost_auth_dart: ^1.0.0-dev.7
   nhost_functions_dart: ^1.0.0-dev.7
+  nhost_graphql_adapter: ^3.0.0-dev.16
+
 dev_dependencies:
   betamax: ^2.0.0
   fake_async: ^1.3.1
-  graphql: ^5.1.1
+  graphql: ^5.1.3
   lints: any
   mockito: ^5.3.2
   nock: ^1.2.1
@@ -30,6 +33,3 @@ dev_dependencies:
   stack_trace: ^1.11.0
   test_api: ^0.4.16
   test: ^1.22.0
-
-  # Nhost packages
-  nhost_graphql_adapter: ^3.0.0-dev.16

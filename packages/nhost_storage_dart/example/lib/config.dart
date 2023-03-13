@@ -7,12 +7,12 @@ const authUrl = 'https://localhost:1337/v1/auth';
 const storageUrl = 'https://localhost:1337/v1/storage';
 
 Future<void> signInOrSignUp(
-  HasuraAuthClient hasuraAuthClient, {
+  NhostAuthClient nhostAuthClient, {
   required String email,
   required String password,
 }) async {
   try {
-    await hasuraAuthClient.signInEmailPassword(
+    await nhostAuthClient.signInEmailPassword(
       email: email,
       password: password,
     );
@@ -20,7 +20,7 @@ Future<void> signInOrSignUp(
   } on ApiException catch (e) {
     print('Sign in failed, so try to register instead');
     print(e);
-    await hasuraAuthClient.signUp(
+    await nhostAuthClient.signUp(
       email: email,
       password: password,
     );

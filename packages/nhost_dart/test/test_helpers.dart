@@ -24,21 +24,21 @@ User createTestUser({required String id, required String email}) {
 
 // Registers a basic user for test setup. The auth object will be left in a
 // logged out state.
-Future<void> registerTestUser(HasuraAuthClient auth) async {
+Future<void> registerTestUser(NhostAuthClient auth) async {
   await auth.signUp(email: defaultTestEmail, password: defaultTestPassword);
   await auth.signOut();
 }
 
 // Register and logs in a basic user for test setup. The auth object will be
 // left in a logged in state.
-Future<AuthResponse> registerAndSignInBasicUser(HasuraAuthClient auth) async {
+Future<AuthResponse> registerAndSignInBasicUser(NhostAuthClient auth) async {
   return await auth.signUp(
       email: defaultTestEmail, password: defaultTestPassword);
 }
 
 // Registers an MFA user for test setup, logs them out, and returns the OTP
 // secret.
-Future<String> registerMfaUser(HasuraAuthClient auth,
+Future<String> registerMfaUser(NhostAuthClient auth,
     {bool signOut = true}) async {
   await auth.signUp(email: defaultTestEmail, password: defaultTestPassword);
   final mfaDetails = await auth.generateMfa();

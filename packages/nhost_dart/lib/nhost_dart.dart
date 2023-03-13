@@ -3,8 +3,8 @@ library nhost_dart;
 import 'package:http/http.dart' as http;
 import 'package:nhost_functions_dart/nhost_functions_dart.dart';
 import 'package:nhost_sdk/nhost_sdk.dart';
-import 'package:nhost_storage_dart/nhost_storage_dart.dart';
 import 'package:nhost_auth_dart/nhost_auth_dart.dart';
+import 'package:nhost_storage_dart/nhost_storage_dart.dart';
 
 import 'src/logging.dart';
 
@@ -14,19 +14,19 @@ export 'package:nhost_sdk/nhost_sdk.dart'
         Session,
         createNhostServiceEndpoint,
         ServiceUrls,
-        Subdomain;
-export 'package:nhost_storage_dart/nhost_storage_dart.dart'
-    show HasuraStorageClient, ImageCornerRadius, ImageTransform;
-export 'package:nhost_auth_dart/nhost_auth_dart.dart'
-    show
-        HasuraAuthClient,
-        UnsubscribeDelegate,
+        Subdomain,
         AuthenticationState,
-        AuthStore,
-        AuthStateChangedCallback;
+        AuthStateChangedCallback,
+        UnsubscribeDelegate,
+        AuthStore;
+export 'package:nhost_storage_dart/nhost_storage_dart.dart'
+    show NhostStorageClient, ImageCornerRadius, ImageTransform;
+export 'package:nhost_auth_dart/nhost_auth_dart.dart' show NhostAuthClient;
 export 'package:nhost_functions_dart/nhost_functions_dart.dart'
     show NhostFunctionsClient;
 export 'src/logging.dart' show debugLogNhostErrorsToConsole;
+export 'package:nhost_graphql_adapter/nhost_graphql_adapter.dart'
+    show createNhostGraphQLClientForAuth, combinedLinkForNhost;
 
 /// API client for accessing Nhost's authentication and storage APIs.
 ///
@@ -38,7 +38,7 @@ export 'src/logging.dart' show debugLogNhostErrorsToConsole;
 ///
 /// Additional packages for working with GraphQL and Flutter can be found at
 /// https://pub.dev/publishers/nhost.io
-class NhostClient {
+class NhostClient implements NhostClientBase {
   /// Constructs a new Nhost client.
   ///
   /// {@template nhost.api.NhostClient.subdomain}
@@ -90,9 +90,11 @@ class NhostClient {
   }
 
   /// The Nhost project's backend subdomain and region
+  @override
   final Subdomain? subdomain;
 
   /// The Nhost project's backend region
+  @override
   final ServiceUrls? serviceUrls;
 
   /// Persists authentication information between restarts of the app.
@@ -101,10 +103,12 @@ class NhostClient {
   final UserSession _session;
 
   /// The HTTP client used by this client's services.
+  @override
   http.Client get httpClient => _httpClient ??= http.Client();
   http.Client? _httpClient;
 
   /// The GraphQL endpoint URL.
+  @override
   String get gqlEndpointUrl {
     if (subdomain != null) {
       return createNhostServiceEndpoint(
@@ -120,7 +124,8 @@ class NhostClient {
   /// The Nhost authentication service.
   ///
   /// https://docs.nhost.io/platform/authentication
-  HasuraAuthClient get auth => _auth ??= HasuraAuthClient(
+  @override
+  NhostAuthClient get auth => _auth ??= NhostAuthClient(
         url: subdomain != null
             ? createNhostServiceEndpoint(
                 subdomain: subdomain!.subdomain,
@@ -133,11 +138,12 @@ class NhostClient {
         session: _session,
         httpClient: httpClient,
       );
-  HasuraAuthClient? _auth;
+  NhostAuthClient? _auth;
 
   /// The Nhost serverless functions service.
   ///
   /// https://docs.nhost.io/platform/serverless-functions
+  @override
   NhostFunctionsClient get functions => _functions ??= NhostFunctionsClient(
         url: subdomain != null
             ? createNhostServiceEndpoint(
@@ -154,7 +160,8 @@ class NhostClient {
   /// The Nhost file storage service.
   ///
   /// https://docs.nhost.io/platform/storage
-  HasuraStorageClient get storage => _storage ??= HasuraStorageClient(
+  @override
+  NhostStorageClient get storage => _storage ??= NhostStorageClient(
         url: subdomain != null
             ? createNhostServiceEndpoint(
                 subdomain: subdomain!.subdomain,
@@ -165,9 +172,10 @@ class NhostClient {
         httpClient: httpClient,
         session: _session,
       );
-  HasuraStorageClient? _storage;
+  NhostStorageClient? _storage;
 
   /// Releases the resources used by this client.
+  @override
   void close() {
     _auth?.close();
     _storage?.close();

@@ -6,7 +6,7 @@ import 'logging.dart';
 /// Client for calling Nhost serverless functions.
 ///
 /// See https://docs.nhost.io/platform/serverless-functions for more info.
-class NhostFunctionsClient {
+class NhostFunctionsClient implements FunctionsClient {
   /// {@macro nhost.api.NhostClient.url}
   ///
   /// {@macro nhost.api.NhostClient.session}
@@ -32,6 +32,7 @@ class NhostFunctionsClient {
   /// The HTTP method used for the call can be overridden via [httpMethod].
   ///
   /// Throws an [ApiException] if a failure occurs.
+  @override
   Future<http.Response> callFunction(
     String url, {
     Map<String, String?>? query,

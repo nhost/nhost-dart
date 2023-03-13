@@ -7,5 +7,5 @@
     // Override language mode for our workflow template
     "*.yaml.template": "yaml"
   },
-  "cSpell.words": ["autofocus", "nhost", "prefs", "signin", "Todos"]
+  "cSpell.words": ["autofocus", "Hasura", "nhost", "Passwordless", "prefs", "signin", "Todos"]
 }
