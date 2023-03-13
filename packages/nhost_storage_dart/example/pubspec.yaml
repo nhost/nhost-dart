@@ -9,4 +9,4 @@ dependencies:
   # Nhost packages
   nhost_storage_dart:
     path: ../
-  nhost_auth_dart: ^1.0.0-dev.6
+  nhost_auth_dart: ^1.0.0-dev.7

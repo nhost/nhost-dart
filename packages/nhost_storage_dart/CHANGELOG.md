@@ -1,3 +1,7 @@
+## 1.0.0-dev.7
+
+ - **FIX**: update versions in readme files.
+
 ## 1.0.0-dev.6
 
  - **FEAT**: support for hasura auth and storage client and refactor them to accept only URL.

@@ -1,3 +1,7 @@
+## 3.0.0-dev.15
+
+ - Update a dependency to the latest release.
+
 ## 3.0.0-dev.14
 
  - **FEAT**: support for hasura auth and storage client and refactor them to accept only URL.
