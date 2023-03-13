@@ -1,3 +1,7 @@
+## 4.0.0-dev.15
+
+ - **FIX**: pump sdk package version.
+
 ## 4.0.0-dev.13
 
  - **FEAT**: support for hasura auth and storage client and refactor them to accept only URL.

@@ -1,3 +1,7 @@
+## 3.0.0-dev.17
+
+ - Update a dependency to the latest release.
+
 ## 3.0.0-dev.16
 
  - **FIX**: fix depenceies issue.

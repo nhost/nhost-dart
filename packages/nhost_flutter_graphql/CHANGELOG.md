@@ -1,3 +1,7 @@
+## 3.0.0-dev.17
+
+ - **FIX**: analyzer.
+
 ## 3.0.0-dev.16
 
  - Update a dependency to the latest release.

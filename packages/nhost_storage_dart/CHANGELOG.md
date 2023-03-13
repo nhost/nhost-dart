@@ -1,3 +1,7 @@
+## 1.0.0-dev.8
+
+ - **FIX**: analyzer.
+
 ## 1.0.0-dev.7
 
  - **FIX**: update versions in readme files.
