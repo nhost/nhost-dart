@@ -61,9 +61,9 @@ Visit [https://docs.nhost.io](http://docs.nhost.io) for the complete documentati
 
 ## The structure of the repository
 
-<div align="center">
+<!-- <div align="center">
   <br />
   <img src="https://github.com/nhost/nhost/raw/main/repo-diagram.svg"/>
   <br />
   <br />
-</div>
+</div> -->
