@@ -1,3 +1,7 @@
+## 3.0.0-dev.16
+
+ - **FIX**: fix depenceies issue.
+
 ## 3.0.0-dev.15
 
  - **FIX**: update versions in readme files.
