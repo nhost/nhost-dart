@@ -96,7 +96,7 @@ jobs:
         echo "$HOME/.pub-cache/bin" >> $GITHUB_PATH
         dart pub get
         dart pub global activate junitreport
-        dart pub global activate melos
+        dart pub global activate melos 2.9.0
 
     - name: Bootstrap packages
       run: melos bootstrap
