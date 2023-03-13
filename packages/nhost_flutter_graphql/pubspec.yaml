@@ -2,7 +2,7 @@ name: nhost_flutter_graphql
 description: >
   Provides GraphQL clients to your Flutter application, automatically configured
   to work with Nhost
-version: 3.0.0-dev.17
+version: 3.0.0-dev.18
 homepage: https://nhost.io
 repository: https://github.com/nhost/nhost-dart/tree/main/packages/nhost_flutter_graphql
 issue_tracker: https://github.com/nhost/nhost-dart/issues
