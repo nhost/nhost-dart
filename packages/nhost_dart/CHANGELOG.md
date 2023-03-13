@@ -1,3 +1,7 @@
+## 1.0.0-dev.11
+
+ - **FIX**: dev deps for tests.
+
 ## 1.0.0-dev.10
 
  - **FIX**: depenceies graph.
