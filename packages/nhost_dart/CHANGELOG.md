@@ -1,3 +1,7 @@
+## 1.0.0-dev.10
+
+ - **FIX**: depenceies graph.
+
 ## 1.0.0-dev.9
 
  - Update a dependency to the latest release.
