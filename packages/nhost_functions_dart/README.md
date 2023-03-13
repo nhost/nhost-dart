@@ -29,5 +29,5 @@ void main() async {
 
 ```yaml
 dependencies:
-  nhost_functions_dart: ^4.0.0
+  nhost_functions_dart: ^1.0.0
 ```

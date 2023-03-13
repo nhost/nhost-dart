@@ -58,6 +58,6 @@ void main() async {
 
 ```yaml
 dependencies:
-  nhost_auth_dart: ^4.0.0
-  nhost_storage_dart: ^4.0.0
+  nhost_auth_dart: ^1.0.0
+  nhost_storage_dart: ^1.0.0
 ```
