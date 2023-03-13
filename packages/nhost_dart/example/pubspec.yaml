@@ -1,6 +1,7 @@
 name: nhost_dart_example
 description: 'nhost Dart sdk example'
 private: true
+version: 1.0.0+1
 
 environment:
   sdk: '>=2.14.0 <3.0.0'

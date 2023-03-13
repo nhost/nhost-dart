@@ -1,5 +1,5 @@
-name: example
-description: A new Flutter project.
+name: nhost_flutter_auth_example
+description: Nhost Flutter auth package example
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
