@@ -92,6 +92,7 @@ jobs:
     # Get binary dependencies
     - name: Install tools
       run: |
+        sudo rm -Rf $HOME/.pub-cache
         echo "$HOME/.pub-cache/bin" >> $GITHUB_PATH
         dart pub get
         dart pub global activate junitreport
