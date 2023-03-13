@@ -1,0 +1,13 @@
+# This is used to establish tool dependencies, and is never published.
+name: nhost_dart
+publish_to: none
+homepage: https://nhost.io
+repository: https://github.com/nhost/nhost-dart
+
+environment:
+  sdk: '>=2.14.0 <3.0.0'
+
+dev_dependencies:
+  dotenv: ^3.0.0
+  melos: ^2.9.0
+  path: ^1.8.3
