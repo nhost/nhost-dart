@@ -19,6 +19,7 @@ dependencies:
 
   #Nhost_dart
   nhost_flutter_auth: ^3.0.0-dev.15
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
