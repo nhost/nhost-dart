@@ -58,12 +58,3 @@ Visit [https://docs.nhost.io](http://docs.nhost.io) for the complete documentati
 | [nhost_flutter_graphql](packages/nhost_flutter_graphql) | Flutter widgets for providing Nhost GraphQL connections, for use with the [graphql_flutter](https://pub.dev/packages/graphql_flutter) package | [![nhost_flutter_graphql](https://github.com/nhost/nhost-dart/actions/workflows/test.nhost_flutter_graphql.yaml/badge.svg)](https://github.com/nhost/nhost-dart/actions/workflows/test.nhost_flutter_graphql.yaml) [![nhost_flutter_auth Pub](https://img.shields.io/pub/v/nhost_flutter_graphql)](https://pub.dev/packages/nhost_flutter_graphql)    |
 | [nhost_graphql_adapter](packages/nhost_graphql_adapter) | GraphQL connection setup, for use with the [graphql](https://pub.dev/packages/graphql) package                                                | [![nhost_graphql_adapter](https://github.com/nhost/nhost-dart/actions/workflows/test.nhost_graphql_adapter.yaml/badge.svg)](https://github.com/nhost/nhost-dart/actions/workflows/test.nhost_graphql_adapter.yaml) [![nhost_graphql_adapter Pub](https://img.shields.io/pub/v/nhost_graphql_adapter)](https://pub.dev/packages/nhost_graphql_adapter) |
 | [nhost_gql_links](packages/nhost_gql_links)             | (Internal) Library-independent GraphQL link setup                                                                                             | [![nhost_gql_links](https://github.com/nhost/nhost-dart/actions/workflows/test.nhost_gql_links.yaml/badge.svg)](https://github.com/nhost/nhost-dart/actions/workflows/test.nhost_gql_links.yaml) [![nhost_gql_links Pub](https://img.shields.io/pub/v/nhost_gql_links)](https://pub.dev/packages/nhost_gql_links)                                     |
-
-## The structure of the repository
-
-<!-- <div align="center">
-  <br />
-  <img src="https://github.com/nhost/nhost/raw/main/repo-diagram.svg"/>
-  <br />
-  <br />
-</div> -->
