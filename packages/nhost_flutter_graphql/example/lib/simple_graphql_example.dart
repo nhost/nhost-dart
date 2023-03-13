@@ -12,13 +12,20 @@ import 'package:nhost_flutter_graphql/nhost_flutter_graphql.dart';
 import 'config.dart';
 
 /// Client used to authenticate GraphQL requests
-final nhostClient = NhostClient(backendUrl: nhostUrl);
+final nhostClient = NhostClient(
+  subdomain: Subdomain(
+    subdomain: subdomain,
+    region: region,
+  ),
+);
 
 void main() {
-  runApp(SimpleGqlExample());
+  runApp(const SimpleGqlExample());
 }
 
 class SimpleGqlExample extends StatelessWidget {
+  const SimpleGqlExample({super.key});
+
   @override
   Widget build(BuildContext context) {
     // The NhostGraphQLProvider automatically provides connection information
@@ -31,44 +38,49 @@ class SimpleGqlExample extends StatelessWidget {
         home: Scaffold(
           // `Query`, along with other `graphql` widgets, automatically pick up
           // the connection information from the nearest `NhostGraphQLProvider`.
-          body: Query(
-            options: QueryOptions(
-              document: gql('''
-                  query {
-                    todos {
-                      name
-                      is_completed
-                      created_at
-                      updated_at
-                    }
+          body: SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.all(20),
+              child: Query(
+                options: QueryOptions(
+                  document: gql('''
+                      query {
+                        todos {
+                          name
+                          is_completed
+                          created_at
+                          updated_at
+                        }
+                      }
+                    '''),
+                ),
+                builder: (result, {fetchMore, refetch}) {
+                  if (result.hasException) {
+                    return ErrorWidget(result.exception!);
                   }
-                '''),
+
+                  if (result.isLoading) {
+                    return const Text('Loading…');
+                  }
+
+                  final todosList = result.data!['todos'] as List<dynamic>;
+                  if (todosList.isEmpty) {
+                    return const Text('No todos yet!');
+                  }
+
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      for (final item in todosList)
+                        Text(
+                          '${item['name'].trim()}, '
+                          'isCompleted: ${item['is_completed']}',
+                        ),
+                    ],
+                  );
+                },
+              ),
             ),
-            builder: (result, {fetchMore, refetch}) {
-              if (result.hasException) {
-                return ErrorWidget(result.exception!);
-              }
-
-              if (result.isLoading) {
-                return Text('Loading…');
-              }
-
-              final todosList = result.data!['todos'] as List<dynamic>;
-              if (todosList.isEmpty) {
-                return Text('No todos yet!');
-              }
-
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  for (final item in todosList)
-                    Text(
-                      '${item['name'].trim()}, '
-                      'isCompleted: ${item['is_completed']}',
-                    ),
-                ],
-              );
-            },
           ),
         ),
       ),

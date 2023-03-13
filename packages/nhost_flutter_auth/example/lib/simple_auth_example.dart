@@ -10,22 +10,29 @@ import 'package:nhost_flutter_auth/nhost_flutter_auth.dart';
 import 'config.dart';
 
 void main() {
-  runApp(SimpleAuthExample());
+  runApp(const SimpleAuthExample());
 }
 
 class SimpleAuthExample extends StatefulWidget {
+  const SimpleAuthExample({super.key});
+
   @override
-  _SimpleAuthExampleState createState() => _SimpleAuthExampleState();
+  SimpleAuthExampleState createState() => SimpleAuthExampleState();
 }
 
-class _SimpleAuthExampleState extends State<SimpleAuthExample> {
+class SimpleAuthExampleState extends State<SimpleAuthExample> {
   late NhostClient nhostClient;
 
   @override
   void initState() {
     super.initState();
-    // Create a new Nhost client using your project's backend URL.
-    nhostClient = NhostClient(backendUrl: nhostUrl);
+    // Create a new Nhost client using your project's subdomain and region.
+    nhostClient = NhostClient(
+      subdomain: Subdomain(
+        subdomain: subdomain,
+        region: region,
+      ),
+    );
   }
 
   @override
@@ -40,10 +47,12 @@ class _SimpleAuthExampleState extends State<SimpleAuthExample> {
     // subtree, which can be accessed using NhostAuthProvider.of(BuildContext).
     return NhostAuthProvider(
       auth: nhostClient.auth,
-      child: MaterialApp(
+      child: const MaterialApp(
         title: 'Nhost.io Simple Flutter Authentication',
         home: Scaffold(
-          body: ExampleProtectedScreen(),
+          body: SafeArea(
+            child: ExampleProtectedScreen(),
+          ),
         ),
       ),
     );
@@ -51,6 +60,10 @@ class _SimpleAuthExampleState extends State<SimpleAuthExample> {
 }
 
 class ExampleProtectedScreen extends StatelessWidget {
+  const ExampleProtectedScreen({
+    super.key,
+  });
+
   @override
   Widget build(BuildContext context) {
     // NhostAuthProvider.of will register this widget so that it rebuilds whenever
@@ -59,18 +72,18 @@ class ExampleProtectedScreen extends StatelessWidget {
     Widget widget;
     switch (auth.authenticationState) {
       case AuthenticationState.signedIn:
-        widget = LoggedInUserDetails();
+        widget = const LoggedInUserDetails();
         break;
       case AuthenticationState.signedOut:
-        widget = SignInForm();
+        widget = const SignInForm();
         break;
       default:
-        widget = SizedBox();
+        widget = const SizedBox();
         break;
     }
 
     return Padding(
-      padding: EdgeInsets.all(32),
+      padding: const EdgeInsets.all(32),
       child: widget,
     );
   }
@@ -79,11 +92,13 @@ class ExampleProtectedScreen extends StatelessWidget {
 const rowSpacing = SizedBox(height: 12);
 
 class SignInForm extends StatefulWidget {
+  const SignInForm({super.key});
+
   @override
-  _SignInFormState createState() => _SignInFormState();
+  SignInFormState createState() => SignInFormState();
 }
 
-class _SignInFormState extends State<SignInForm> {
+class SignInFormState extends State<SignInForm> {
   final formKey = GlobalKey<FormState>();
   late TextEditingController emailController;
   late TextEditingController passwordController;
@@ -104,19 +119,22 @@ class _SignInFormState extends State<SignInForm> {
 
   void trySignIn() async {
     final auth = NhostAuthProvider.of(context)!;
-
     try {
       await auth.signInEmailPassword(
-          email: emailController.text, password: passwordController.text);
+        email: emailController.text,
+        password: passwordController.text,
+      );
     } on ApiException {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text('Sign in Failed'),
         ),
       );
-    } on SocketException {
+    } on SocketException catch (e) {
+      // ignore: avoid_print
+      print(e);
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text('Network Failed'),
         ),
       );
@@ -134,7 +152,7 @@ class _SignInFormState extends State<SignInForm> {
           children: [
             TextFormField(
               controller: emailController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 hintText: 'Email',
                 border: OutlineInputBorder(),
               ),
@@ -143,7 +161,7 @@ class _SignInFormState extends State<SignInForm> {
             rowSpacing,
             TextFormField(
               controller: passwordController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 hintText: 'Password',
                 border: OutlineInputBorder(),
               ),
@@ -153,7 +171,7 @@ class _SignInFormState extends State<SignInForm> {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: trySignIn,
-              child: Text('Submit'),
+              child: const Text('Submit'),
             )
           ],
         ),
@@ -163,6 +181,8 @@ class _SignInFormState extends State<SignInForm> {
 }
 
 class LoggedInUserDetails extends StatelessWidget {
+  const LoggedInUserDetails({super.key});
+
   @override
   Widget build(BuildContext context) {
     final auth = NhostAuthProvider.of(context)!;
@@ -177,13 +197,13 @@ class LoggedInUserDetails extends StatelessWidget {
         children: [
           Text(
             'Welcome ${currentUser.email}!',
-            style: textTheme.headline5,
+            style: textTheme.headlineSmall,
           ),
           rowSpacing,
-          Text('User details:', style: textTheme.caption),
+          Text('User details:', style: textTheme.bodySmall),
           rowSpacing,
           Table(
-            defaultColumnWidth: IntrinsicColumnWidth(),
+            defaultColumnWidth: const IntrinsicColumnWidth(),
             children: [
               for (final row in currentUser.toJson().entries)
                 TableRow(
@@ -205,7 +225,7 @@ class LoggedInUserDetails extends StatelessWidget {
             onPressed: () {
               auth.signOut();
             },
-            child: Text('Logout'),
+            child: const Text('Logout'),
           ),
         ],
       ),

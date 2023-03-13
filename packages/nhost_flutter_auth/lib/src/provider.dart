@@ -1,25 +1,25 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
-import 'package:nhost_sdk/nhost_sdk.dart';
+import 'package:nhost_dart/nhost_dart.dart';
 
 /// Exposes Nhost authentication information to its subtree.
-class NhostAuthProvider extends InheritedNotifier<_AuthNotifier> {
+class NhostAuthProvider extends InheritedNotifier<AuthNotifier> {
   NhostAuthProvider({
     Key? key,
-    required AuthClient auth,
+    required NhostAuthClient auth,
     required Widget child,
   }) : super(
           key: key,
-          notifier: _AuthNotifier(auth),
+          notifier: AuthNotifier(auth),
           child: child,
         );
 
   @override
-  bool updateShouldNotify(InheritedNotifier<_AuthNotifier> oldWidget) {
+  bool updateShouldNotify(InheritedNotifier<AuthNotifier> oldWidget) {
     return oldWidget.notifier != notifier;
   }
 
-  static AuthClient? of(BuildContext context) {
+  static NhostAuthClient? of(BuildContext context) {
     return context
         .dependOnInheritedWidgetOfExactType<NhostAuthProvider>()
         ?.notifier
@@ -28,13 +28,15 @@ class NhostAuthProvider extends InheritedNotifier<_AuthNotifier> {
 }
 
 /// A [Listenable] that notifies when Nhost authentication states changes
-class _AuthNotifier extends ChangeNotifier implements ValueListenable<AuthClient> {
-  _AuthNotifier(AuthClient auth) : _auth = auth {
-    _unsubscribeAuthListener =
-        _auth.addAuthStateChangedCallback((_) => notifyListeners());
+class AuthNotifier extends ChangeNotifier
+    implements ValueListenable<NhostAuthClient> {
+  AuthNotifier(NhostAuthClient auth) : _auth = auth {
+    _unsubscribeAuthListener = _auth.addAuthStateChangedCallback(
+      (_) => notifyListeners(),
+    );
   }
 
-  final AuthClient _auth;
+  final NhostAuthClient _auth;
   late UnsubscribeDelegate _unsubscribeAuthListener;
 
   @override
@@ -44,7 +46,7 @@ class _AuthNotifier extends ChangeNotifier implements ValueListenable<AuthClient
   }
 
   @override
-  AuthClient get value => _auth;
+  NhostAuthClient get value => _auth;
 
   @override
   int get hashCode => value.hashCode;
@@ -53,6 +55,6 @@ class _AuthNotifier extends ChangeNotifier implements ValueListenable<AuthClient
   bool operator ==(dynamic other) {
     if (identical(this, other)) return true;
     if (other.runtimeType != runtimeType) return false;
-    return other is _AuthNotifier && other.value == value;
+    return other is AuthNotifier && other.value == value;
   }
 }

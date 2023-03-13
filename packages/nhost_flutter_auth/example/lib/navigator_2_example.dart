@@ -22,7 +22,7 @@ import 'simple_auth_example.dart';
 
 void main() {
   configurePackages();
-  runApp(NavigatorExampleApp());
+  runApp(const NavigatorExampleApp());
 }
 
 void configurePackages() {
@@ -30,19 +30,26 @@ void configurePackages() {
 }
 
 class NavigatorExampleApp extends StatefulWidget {
+  const NavigatorExampleApp({super.key});
+
   @override
-  _NavigatorExampleAppState createState() => _NavigatorExampleAppState();
+  NavigatorExampleAppState createState() => NavigatorExampleAppState();
 }
 
-class _NavigatorExampleAppState extends State<NavigatorExampleApp> {
+class NavigatorExampleAppState extends State<NavigatorExampleApp> {
   late NhostClient nhostClient;
   late ExampleNavigator appState;
 
   @override
   void initState() {
     super.initState();
-    // Create a new Nhost client using your project's backend URL.
-    nhostClient = NhostClient(backendUrl: nhostUrl);
+    // Create a new Nhost client using your project's subdomain and region.
+    nhostClient = NhostClient(
+      subdomain: Subdomain(
+        region: region,
+        subdomain: subdomain,
+      ),
+    );
     appState = ExampleNavigator();
   }
 
@@ -137,11 +144,11 @@ class ExampleRouterDelegate extends RouterDelegate<ExampleRoutePath>
     return Navigator(
       key: navigatorKey,
       pages: [
-        MaterialPage(child: AppFrame(child: HomePage())),
+        const MaterialPage(child: AppFrame(child: HomePage())),
         if (isSignInPageRequested || needsSignIn)
-          MaterialPage(child: AppFrame(child: SignInPage())),
+          const MaterialPage(child: AppFrame(child: SignInPage())),
         if (requestedRoutePath is AdminRoutePath && !needsSignIn)
-          MaterialPage(child: AppFrame(child: AdminPage())),
+          const MaterialPage(child: AppFrame(child: AdminPage())),
       ],
       onPopPage: (route, result) {
         navigator.requestRoutePath(HomeRoutePath());
@@ -176,13 +183,13 @@ class ExampleRouteInformationParser
   @override
   RouteInformation restoreRouteInformation(ExampleRoutePath configuration) {
     if (configuration is HomeRoutePath) {
-      return RouteInformation(location: '/');
+      return const RouteInformation(location: '/');
     }
     if (configuration is AdminRoutePath) {
-      return RouteInformation(location: '/admin');
+      return const RouteInformation(location: '/admin');
     }
     if (configuration is SignInRoutePath) {
-      return RouteInformation(location: '/signin');
+      return const RouteInformation(location: '/signin');
     }
 
     throw ('Unsupported configuration');
@@ -208,6 +215,8 @@ class HomeRoutePath extends ExampleRoutePath {}
 class SignInRoutePath extends ExampleRoutePath {}
 
 class HomePage extends StatelessWidget {
+  const HomePage({super.key});
+
   @override
   Widget build(BuildContext context) {
     final auth = NhostAuthProvider.of(context)!;
@@ -221,54 +230,56 @@ class HomePage extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         ContentItem(
-          child: Text('Home', style: textTheme.headline5),
+          child: Text('Home', style: textTheme.headlineSmall),
         ),
         ContentItem(
           child: Text(
             isAuthenticated == true ? '(Authenticated)' : '(Unauthenticated)',
             style: isAuthenticated
-                ? textTheme.caption!.copyWith(
+                ? textTheme.bodySmall!.copyWith(
                     color: Colors.blue[700],
                     fontWeight: FontWeight.bold,
                   )
-                : textTheme.caption!.copyWith(
+                : textTheme.bodySmall!.copyWith(
                     color: Colors.red[700],
                     fontWeight: FontWeight.bold,
                   ),
           ),
         ),
-        ContentItem(child: Text('This content is visible to everyone.')),
+        const ContentItem(child: Text('This content is visible to everyone.')),
         if (auth.authenticationState == AuthenticationState.signedIn)
-          ContentItem(
+          const ContentItem(
             child: Text(
               'This additional content is only visible to authenticated '
               'users',
             ),
           ),
         ContentItem(
-          child: Row(children: [
-            ElevatedButton(
-              onPressed: () {
-                navigator.requestRoutePath(AdminRoutePath());
-              },
-              child: Text('Admin Page (Protected)'),
-            ),
-            SizedBox(width: 8),
-            if (auth.authenticationState == AuthenticationState.signedOut)
+          child: Row(
+            children: [
               ElevatedButton(
                 onPressed: () {
-                  navigator.requestRoutePath(SignInRoutePath());
+                  navigator.requestRoutePath(AdminRoutePath());
                 },
-                child: Text('Sign In'),
+                child: const Text('Admin Page (Protected)'),
               ),
-            if (auth.authenticationState == AuthenticationState.signedIn)
-              ElevatedButton(
-                onPressed: () {
-                  auth.signOut();
-                },
-                child: Text('Logout'),
-              ),
-          ]),
+              const SizedBox(width: 8),
+              if (auth.authenticationState == AuthenticationState.signedOut)
+                ElevatedButton(
+                  onPressed: () {
+                    navigator.requestRoutePath(SignInRoutePath());
+                  },
+                  child: const Text('Sign In'),
+                ),
+              if (auth.authenticationState == AuthenticationState.signedIn)
+                ElevatedButton(
+                  onPressed: () {
+                    auth.signOut();
+                  },
+                  child: const Text('Logout'),
+                ),
+            ],
+          ),
         ),
       ],
     );
@@ -276,40 +287,42 @@ class HomePage extends StatelessWidget {
 }
 
 class SignInPage extends StatelessWidget {
+  const SignInPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     final navigator = Provider.of<ExampleNavigator>(context);
 
-    return Container(
-      child: Column(
-        children: [
-          if (navigator.requestedRoutePath is ProtectedRoutePath)
-            Container(
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.red[600]!),
-                borderRadius: BorderRadius.circular(3),
-              ),
-              padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-              margin: EdgeInsets.only(top: 16),
-              child: Text(
-                'The requested page requires authentication',
-                style: TextStyle(
-                  color: Colors.red[600],
-                  height: 1.05,
-                ),
+    return Column(
+      children: [
+        if (navigator.requestedRoutePath is ProtectedRoutePath)
+          Container(
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.red[600]!),
+              borderRadius: BorderRadius.circular(3),
+            ),
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+            margin: const EdgeInsets.only(top: 16),
+            child: Text(
+              'The requested page requires authentication',
+              style: TextStyle(
+                color: Colors.red[600],
+                height: 1.05,
               ),
             ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-            child: SignInForm(),
           ),
-        ],
-      ),
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+          child: SignInForm(),
+        ),
+      ],
     );
   }
 }
 
 class AdminPage extends StatelessWidget {
+  const AdminPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
@@ -318,9 +331,12 @@ class AdminPage extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         ContentItem(
-          child: Text('You\'re on the Admin page!', style: textTheme.headline5),
+          child: Text(
+            'You\'re on the Admin page!',
+            style: textTheme.headlineSmall,
+          ),
         ),
-        ContentItem(
+        const ContentItem(
           child: Text(
             'No one can see this unless they\'re authenticated.',
           ),
@@ -345,18 +361,18 @@ class AppFrame extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Nhost Navigator 2.0 Example'),
+        title: const Text('Nhost Navigator 2.0 Example'),
         actions: [
           if (auth.authenticationState == AuthenticationState.signedOut)
             IconButton(
-              icon: Icon(Icons.login),
+              icon: const Icon(Icons.login),
               onPressed: () {
                 navigator.requestRoutePath(SignInRoutePath());
               },
             ),
           if (auth.authenticationState == AuthenticationState.signedIn)
             IconButton(
-              icon: Icon(Icons.logout),
+              icon: const Icon(Icons.logout),
               onPressed: () {
                 auth.signOut();
                 navigator.requestRoutePath(HomeRoutePath());
@@ -365,7 +381,7 @@ class AppFrame extends StatelessWidget {
         ],
       ),
       body: Container(
-        padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
         child: child,
       ),
     );
@@ -382,7 +398,7 @@ class ContentItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.only(bottom: 12),
       child: child,
     );
   }

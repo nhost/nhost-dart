@@ -1,16 +1,15 @@
 name: nhost_graphql_example
 description: Demonstrates usage of the nhost_graphql package
 publish_to: none
+version: 1.0.0+1
 
 environment:
-  sdk: ">=2.14.0 <3.0.0"
+  sdk: '>=2.18.0 <3.0.0'
 
 dependencies:
-  graphql: ^5.0.0
+  graphql: ^5.1.3
 
   # Nhost packages
-  nhost_graphql_adapter:
-    path: ../
-
+  nhost_dart: ^1.0.0-dev.12
 dev_dependencies:
-  lints: ^1.0.0
+  lints: any

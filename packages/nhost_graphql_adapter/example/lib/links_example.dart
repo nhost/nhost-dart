@@ -5,8 +5,7 @@ library links_example;
 import 'dart:async';
 
 import 'package:graphql/client.dart';
-import 'package:nhost_graphql_adapter/nhost_graphql_adapter.dart';
-import 'package:nhost_sdk/nhost_sdk.dart';
+import 'package:nhost_dart/nhost_dart.dart';
 
 import 'config.dart';
 import 'todo_example.dart';
@@ -25,7 +24,12 @@ final myTodosQuery = gql(r'''
 ''');
 
 void main() async {
-  final nhostClient = NhostClient(backendUrl: nhostUrl);
+  final nhostClient = NhostClient(
+    subdomain: Subdomain(
+      subdomain: subdomain,
+      region: region,
+    ),
+  );
 
   // The Nhost "terminating link" (the point at which requests are sent). We're
   // going to build links that execute on requests before this point is reached.

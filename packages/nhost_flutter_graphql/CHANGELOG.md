@@ -1,3 +1,101 @@
+## 3.0.0-dev.22
+
+ - Update a dependency to the latest release.
+
+## 3.0.0-dev.21
+
+ - Update a dependency to the latest release.
+
+## 3.0.0-dev.20
+
+ - Update a dependency to the latest release.
+
+## 3.0.0-dev.19
+
+ - Update a dependency to the latest release.
+
+## 3.0.0-dev.18
+
+ - **FIX**: export dart sdk from package.
+
+## 3.0.0-dev.17
+
+ - **FIX**: analyzer.
+
+## 3.0.0-dev.16
+
+ - Update a dependency to the latest release.
+
+## 3.0.0-dev.15
+
+ - Update a dependency to the latest release.
+
+## 3.0.0-dev.14
+
+ - **FEAT**: support for hasura auth and storage client and refactor them to accept only URL.
+
+## 3.0.0-dev.13
+
+ - **FEAT**: Support for Subdomain cloud hosting and ServiceUrls self-hosting Nhost projects.
+
+## 3.0.0-dev.12
+
+ - **FEAT**: seperating all clients into their own packages.
+
+## 3.0.0-dev.11
+
+ - Update a dependency to the latest release.
+
+## 3.0.0-dev.10
+
+ - Update a dependency to the latest release.
+
+## 3.0.0-dev.9
+
+ - Update a dependency to the latest release.
+
+## 3.0.0-dev.8
+
+ - Update a dependency to the latest release.
+
+## 3.0.0-dev.7
+
+ - Update a dependency to the latest release.
+
+## 3.0.0-dev.6
+
+ - **FIX**: bug in server and parsing user metadata.
+ - **FEAT**: support for subdomain api.
+
+## 3.0.0-dev.5
+
+ - Update a dependency to the latest release.
+
+## 3.0.0-dev.4
+
+ - Update a dependency to the latest release.
+
+## 3.0.0-dev.3
+
+ - Update a dependency to the latest release.
+
+## 3.0.0-dev.2
+
+ - **FIX**: fix analyzer on ci for both stable and beta flutter sdk.
+ - **FIX**: expose NhostAuthProvider from graphql package.
+ - **FEAT**: add analyze command to melos.
+
+## 3.0.0-dev.1
+
+ - Update a dependency to the latest release.
+
+## 3.0.0-dev.0
+
+> Note: This release has breaking changes.
+
+ - **FIX**: upgrade deps.
+ - **BREAKING** **FEAT**: increase flutter sdk constrain.
+
 ## 2.1.0
 
  - feat(nhost_flutter_graphql): configurable GraphQLCache

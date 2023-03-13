@@ -3,8 +3,7 @@
 library simple_example;
 
 import 'package:graphql/client.dart';
-import 'package:nhost_graphql_adapter/nhost_graphql_adapter.dart';
-import 'package:nhost_sdk/nhost_sdk.dart';
+import 'package:nhost_dart/nhost_dart.dart';
 
 import 'config.dart';
 
@@ -23,7 +22,12 @@ final todosQuery = gql(r'''
 
 void main() async {
   // Set up the Nhost and GraphQL clients
-  final nhostClient = NhostClient(backendUrl: nhostUrl);
+  final nhostClient = NhostClient(
+    subdomain: Subdomain(
+      subdomain: subdomain,
+      region: region,
+    ),
+  );
   final graphqlClient = createNhostGraphQLClient(nhostClient);
 
   // Run a query, unauthenticated

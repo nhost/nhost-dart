@@ -1,3 +1,3 @@
-export 'package:nhost_sdk/nhost_sdk.dart';
+export 'package:nhost_dart/nhost_dart.dart';
 
-export 'src/provider.dart';
+export 'src/provider.dart' hide AuthNotifier;

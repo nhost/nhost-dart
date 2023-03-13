@@ -19,25 +19,42 @@ import 'config.dart';
 import 'simple_auth_example.dart';
 
 void main() {
-  runApp(PersistentAuthExample());
+  runApp(const PersistentAuthExample());
 }
 
 class PersistentAuthExample extends StatefulWidget {
+  const PersistentAuthExample({
+    super.key,
+  });
+
   @override
-  _PersistentAuthExampleState createState() => _PersistentAuthExampleState();
+  PersistentAuthExampleState createState() => PersistentAuthExampleState();
 }
 
-class _PersistentAuthExampleState extends State<PersistentAuthExample> {
+class PersistentAuthExampleState extends State<PersistentAuthExample> {
   late NhostClient nhostClient;
 
   @override
   void initState() {
     super.initState();
-    // Create a new Nhost client using your project's backend URL.
+    // Create a new Nhost client using your project's subdomain and region.
     nhostClient = NhostClient(
-      backendUrl: nhostUrl,
+      subdomain: Subdomain(
+        subdomain: subdomain,
+        region: region,
+      ),
       // Instruct the client to store tokens using shared preferences.
       authStore: SharedPreferencesAuthStore(),
+    );
+    // this will fetch refresh token and will sign user in!
+    nhostClient.auth
+        .signInWithStoredCredentials()
+        .then((value) => null)
+        .catchError(
+      (e) {
+        // ignore: avoid_print
+        print(e);
+      },
     );
   }
 
@@ -51,7 +68,7 @@ class _PersistentAuthExampleState extends State<PersistentAuthExample> {
   Widget build(BuildContext context) {
     return NhostAuthProvider(
       auth: nhostClient.auth,
-      child: MaterialApp(
+      child: const MaterialApp(
         title: 'Nhost.io Persistent Flutter Authentication Example',
         home: Scaffold(
           body: ExampleProtectedScreen(),

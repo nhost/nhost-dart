@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:nhost_flutter_auth/nhost_flutter_auth.dart';
-import 'package:nhost_graphql_adapter/nhost_graphql_adapter.dart';
 
 import 'logging.dart';
 
@@ -39,19 +38,19 @@ class NhostGraphQLProvider extends StatefulWidget {
   final Widget? child;
 
   @override
-  _NhostGraphQLProviderState createState() => _NhostGraphQLProviderState();
+  NhostGraphQLProviderState createState() => NhostGraphQLProviderState();
 }
 
-class _NhostGraphQLProviderState extends State<NhostGraphQLProvider> {
+class NhostGraphQLProviderState extends State<NhostGraphQLProvider> {
   ValueNotifier<GraphQLClient>? clientNotifier;
-  AuthClient? _lastAuth;
+  NhostAuthClient? _lastAuth;
 
   @override
   void initState() {
     super.initState();
   }
 
-  AuthClient get currentNhostAuth {
+  NhostAuthClient get currentNhostAuth {
     final auth = widget.nhostClient?.auth ?? NhostAuthProvider.of(context);
 
     assert(() {

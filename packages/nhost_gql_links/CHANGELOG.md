@@ -1,3 +1,86 @@
+## 3.0.0-dev.18
+
+ - Update a dependency to the latest release.
+
+## 3.0.0-dev.17
+
+ - Update a dependency to the latest release.
+
+## 3.0.0-dev.16
+
+ - Update a dependency to the latest release.
+
+## 3.0.0-dev.15
+
+ - Update a dependency to the latest release.
+
+## 3.0.0-dev.14
+
+ - **FEAT**: support for hasura auth and storage client and refactor them to accept only URL.
+
+## 3.0.0-dev.13
+
+ - **FEAT**: Support for Subdomain cloud hosting and ServiceUrls self-hosting Nhost projects.
+
+## 3.0.0-dev.12
+
+ - **FEAT**: seperating all clients into their own packages.
+
+## 3.0.0-dev.11
+
+ - **FIX**: downgrade meta to 1.7.
+
+## 3.0.0-dev.10
+
+ - Update a dependency to the latest release.
+
+## 3.0.0-dev.9
+
+ - Update a dependency to the latest release.
+
+## 3.0.0-dev.8
+
+ - Update a dependency to the latest release.
+
+## 3.0.0-dev.7
+
+ - Update a dependency to the latest release.
+
+## 3.0.0-dev.6
+
+ - chore: update version to align other packages versioning
+
+ - **FIX**: fix token expire time to be second and fix example of persistent token and silent login.
+
+## 2.0.5-dev.6
+
+ - **FIX**: bug in server and parsing user metadata.
+ - **FEAT**: support for subdomain api.
+
+## 2.0.5-dev.5
+
+ - Update a dependency to the latest release.
+
+## 2.0.5-dev.4
+
+ - Update a dependency to the latest release.
+
+## 2.0.5-dev.3
+
+ - Update a dependency to the latest release.
+
+## 2.0.5-dev.2
+
+ - Update a dependency to the latest release.
+
+## 2.0.5-dev.1
+
+ - Update a dependency to the latest release.
+
+## 2.0.5-dev.0
+
+ - **FIX**: upgrade deps.
+
 ## 2.0.4
 
 - **CHORE**: bump `nhost_sdk` version

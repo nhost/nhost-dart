@@ -12,15 +12,16 @@ for widgets that work great with
 [graphql_flutter](https://pub.dev/packages/graphql_flutter).
 
 ## Getting Started
+
 ### Latest Release
 
 ```yaml
 dependencies:
-  nhost_graphql_adapter: ^2.0.0
+  nhost_graphql_adapter: ^3.0.0
 ```
 
 ## 🔥 More Dart & Flutter packages from Nhost
 
-* [nhost_sdk](https://pub.dev/packages/nhost_sdk)
-* [nhost_flutter_graphql](https://pub.dev/packages/nhost_flutter_graphql)
-* [nhost_flutter_auth](https://pub.dev/packages/nhost_flutter_auth)
+- [nhost_sdk](https://pub.dev/packages/nhost_sdk)
+- [nhost_flutter_graphql](https://pub.dev/packages/nhost_flutter_graphql)
+- [nhost_flutter_auth](https://pub.dev/packages/nhost_flutter_auth)

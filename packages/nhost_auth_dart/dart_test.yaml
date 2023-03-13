@@ -1,0 +1,3 @@
+tags:
+  # Indiciates the test should not use fixtures
+  no-http-fixtures:

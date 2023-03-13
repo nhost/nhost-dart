@@ -5,6 +5,7 @@
 
   "files.associations": {
     // Override language mode for our workflow template
-    "*.yaml.template": "yaml",
-  }
+    "*.yaml.template": "yaml"
+  },
+  "cSpell.words": ["autofocus", "Hasura", "nhost", "Passwordless", "prefs", "signin", "Todos"]
 }

@@ -13,6 +13,32 @@ String joinSubpath(String basePath, String subPath) {
   return '$path$suffix';
 }
 
+/// Generate Endpoint for each service and based on new subdomain approach or
+/// override it to localhost for development based on old path-feature
+String createNhostServiceEndpoint({
+  required String subdomain,
+  required String region,
+  required String service,
+  String apiVersion = 'v1',
+  String protocol = 'https',
+}) {
+  final localhostRegex = RegExp(
+    r'^((?<protocol>http[s]?):\/\/)?(?<host>localhost)(:(?<port>(\d+|__\w+__)))?$',
+  );
+
+  // checking for local development environment
+  if (localhostRegex.hasMatch(subdomain)) {
+    final hasPort = subdomain.split(':').length == 2;
+    if (hasPort) {
+      return 'http://$subdomain/$apiVersion/$service';
+    }
+    return 'http://$subdomain:1337/$apiVersion/$service';
+  }
+
+  // production app, new subdomain approach
+  return '$protocol://$subdomain.$service.$region.nhost.run/$apiVersion';
+}
+
 extension UriExt on Uri {
   /// Extends a base Uri to include a [subPath], and optionally a new set of
   /// [queryParameters].

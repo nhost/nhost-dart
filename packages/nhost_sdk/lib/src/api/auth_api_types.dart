@@ -1,6 +1,5 @@
 import 'dart:core';
 
-import '../auth_client.dart';
 import 'core_codec.dart';
 
 /// Describes the client's authorization state.
@@ -39,7 +38,7 @@ class Session {
 
   /// The amount of time that [accessToken] will remain valid.
   ///
-  /// Measured from the time of issue.
+  /// Measured from the time of issue in Seconds.
   final Duration? accessTokenExpiresIn;
 
   /// A token that can be used to periodically refresh the session.
@@ -67,7 +66,7 @@ class Session {
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
       'accessToken': accessToken,
-      'accessTokenExpiresIn': durationToMs(accessTokenExpiresIn),
+      'accessTokenExpiresIn': durationToSeconds(accessTokenExpiresIn),
       'refreshToken': refreshToken,
       'user': user?.toJson(),
     };
@@ -77,7 +76,7 @@ class Session {
     return Session(
       accessToken: json['accessToken'] as String?,
       accessTokenExpiresIn:
-          durationFromMs(json['accessTokenExpiresIn'] as int?),
+          durationFromSeconds(json['accessTokenExpiresIn'] as int?),
       refreshToken: json['refreshToken'] as String?,
       user: json['user'] == null
           ? null
@@ -96,7 +95,7 @@ class User {
     required this.isAnonymous,
     required this.defaultRole,
     required this.roles,
-    required this.metadata,
+    this.metadata,
     this.email,
     this.avatarUrl,
   });
@@ -113,7 +112,7 @@ class User {
   final bool isAnonymous;
   final String defaultRole;
   final List<String> roles;
-  final Map<String, Object?> metadata;
+  final Map<String, Object?>? metadata;
 
   static User fromJson(dynamic json) {
     return User(
@@ -128,7 +127,9 @@ class User {
       isAnonymous: json['isAnonymous'] as bool,
       defaultRole: json['defaultRole'] as String,
       roles: <String>[...json['roles']],
-      metadata: <String, Object?>{...json['metadata']},
+      metadata: json['metadata'] == null
+          ? null
+          : <String, Object?>{...json['metadata']},
     );
   }
 
@@ -146,13 +147,29 @@ class User {
       'roles': roles,
     };
   }
+
+  @override
+  String toString() {
+    return {
+      'id': id,
+      'displayName': displayName,
+      'locale': locale,
+      'createdAt': createdAt,
+      'isAnonymous': isAnonymous,
+      'defaultRole': defaultRole,
+      'roles': roles,
+      'metadata': metadata,
+      'email': email,
+      'avatarUrl': avatarUrl,
+    }.toString();
+  }
 }
 
 /// Describes information required to perform an MFA sign in.
 class MultiFactorAuthenticationInfo {
   MultiFactorAuthenticationInfo({required this.ticket});
 
-  /// Ticket string to be provided to [AuthClient.completeMfaSignIn] in order
+  /// Ticket string to be provided to [NhostAuthClient.completeMfaSignIn] in order
   /// to continue the sign in process
   final String ticket;
 

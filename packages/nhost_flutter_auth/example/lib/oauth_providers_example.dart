@@ -19,41 +19,53 @@ import 'package:url_launcher/url_launcher.dart' as url_launcher;
 import 'config.dart';
 import 'simple_auth_example.dart';
 
-/// Fill in this value with the backend URL found on your Nhost project page.
-const nhostGithubSignInUrl = '$nhostUrl/v1/auth/providers/github/';
+/// Fill in this value with the subdomain and region found on your Nhost project page.
+final nhostGithubSignInUrl = '${createNhostServiceEndpoint(
+  subdomain: subdomain,
+  region: region,
+  service: 'auth',
+)}/signin/provider/github';
 
 const signInSuccessHost = 'oauth.login.success';
 const signInFailureHost = 'oauth.login.failure';
 
 void main() async {
-  runApp(OAuthExample());
+  runApp(const OAuthExample());
 }
 
 class OAuthExample extends StatefulWidget {
+  const OAuthExample({super.key});
+
   @override
-  _OAuthExampleState createState() => _OAuthExampleState();
+  OAuthExampleState createState() => OAuthExampleState();
 }
 
-class _OAuthExampleState extends State<OAuthExample> {
+class OAuthExampleState extends State<OAuthExample> {
   late NhostClient nhostClient;
   late AppLinks appLinks;
+
+  handleAppLink() async {
+    appLinks = AppLinks();
+    final uri = await appLinks.getInitialAppLink();
+    if (uri?.host == signInSuccessHost) {
+      // ignore: unawaited_futures
+      nhostClient.auth.completeOAuthProviderSignIn(uri!);
+    }
+    await url_launcher.closeInAppWebView();
+  }
 
   @override
   void initState() {
     super.initState();
 
-    // Create a new Nhost client using your project's backend URL.
-    nhostClient = NhostClient(backendUrl: nhostUrl);
-
-    appLinks = AppLinks(
-      onAppLink: (uri, stringUri) async {
-        if (uri.host == signInSuccessHost) {
-          // ignore: unawaited_futures
-          nhostClient.auth.completeOAuthProviderSignIn(uri);
-        }
-        await url_launcher.closeWebView();
-      },
+    // Create a new Nhost client using your project's subdomain and region.
+    nhostClient = NhostClient(
+      subdomain: Subdomain(
+        subdomain: subdomain,
+        region: region,
+      ),
     );
+    handleAppLink();
   }
 
   @override
@@ -66,7 +78,7 @@ class _OAuthExampleState extends State<OAuthExample> {
   Widget build(BuildContext context) {
     return NhostAuthProvider(
       auth: nhostClient.auth,
-      child: MaterialApp(
+      child: const MaterialApp(
         title: 'Nhost.io OAuth Example',
         home: Scaffold(
           body: SafeArea(
@@ -79,6 +91,8 @@ class _OAuthExampleState extends State<OAuthExample> {
 }
 
 class ExampleProtectedScreen extends StatelessWidget {
+  const ExampleProtectedScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     // NhostAuthProvider.of will register this widget so that it rebuilds
@@ -88,35 +102,36 @@ class ExampleProtectedScreen extends StatelessWidget {
 
     switch (auth.authenticationState) {
       case AuthenticationState.signedIn:
-        widget = LoggedInUserDetails();
+        widget = const LoggedInUserDetails();
         break;
       default:
-        widget = ProviderSignInForm();
+        widget = const ProviderSignInForm();
         break;
     }
 
     return Padding(
-      padding: EdgeInsets.all(32),
+      padding: const EdgeInsets.all(32),
       child: widget,
     );
   }
 }
 
 class ProviderSignInForm extends StatelessWidget {
+  const ProviderSignInForm({super.key});
+
   @override
   Widget build(BuildContext context) {
     return TextButton(
       onPressed: () async {
         try {
-          await url_launcher.launch(
-            nhostGithubSignInUrl,
-            forceSafariVC: true,
+          await url_launcher.launchUrl(
+            Uri.parse(nhostGithubSignInUrl),
           );
         } on Exception {
           // Exceptions can occur due to weirdness with redirects
         }
       },
-      child: Text('Authenticate with GitHub'),
+      child: const Text('Authenticate with GitHub'),
     );
   }
 }

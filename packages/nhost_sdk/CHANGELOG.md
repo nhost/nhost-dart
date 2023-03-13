@@ -1,3 +1,80 @@
+## 4.0.0-dev.18
+
+ - **FIX**: trigger update.
+
+## 4.0.0-dev.17
+
+ - **FIX**: trigger build.
+
+## 4.0.0-dev.15
+
+ - **FIX**: pump sdk package version.
+
+## 4.0.0-dev.13
+
+ - **FEAT**: support for hasura auth and storage client and refactor them to accept only URL.
+
+## 4.0.0-dev.12
+
+ - **FIX**: update link to nhost_Dart from nhost_sdk.
+ - **FEAT**: Support for Subdomain cloud hosting and ServiceUrls self-hosting Nhost projects.
+ - **FEAT**: Support for Subdomain cloud hosting and ServiceUrls self-hosting Nhost projects.
+
+## 4.0.0-dev.11
+
+ - **FEAT**: seperating all clients into their own packages.
+ - **FEAT**: maintian packages to high score.
+
+## 4.0.0-dev.10
+
+ - **FEAT**: add new packages placeholders.
+
+## 4.0.0-dev.9
+
+ - **FIX**: fix analyzer to fix ci.
+ - **FEAT**: add signInAnonymous method.
+
+## 4.0.0-dev.8
+
+ - **FEAT**: add ticket to changePassword request.
+
+## 4.0.0-dev.7
+
+ - **FIX**: fix token expire time to be second and fix example of persistent token and silent login.
+
+## 4.0.0-dev.6
+
+ - **FIX**: bug in server and parsing user metadata.
+ - **FEAT**: support for subdomain api.
+
+## 4.0.0-dev.5
+
+ - **FIX**: refresh token in query param.
+
+## 4.0.0-dev.4
+
+ - **FIX**: dependencies versioning.
+
+## 4.0.0-dev.3
+
+ - **FIX**: path could be any.
+
+## 4.0.0-dev.2
+
+ - **FIX**: fix analyzer on ci for both stable and beta flutter sdk.
+
+## 4.0.0-dev.1
+
+ - **FIX**: downgrade path to 1.8.2.
+
+## 4.0.0-dev.0
+
+> Note: This release has breaking changes.
+
+ - **FIX**: upgrade deps.
+ - **FIX**: upgrade deps for nhost sdk.
+ - **BREAKING** **FEAT**: increase flutter sdk constrain.
+
 ## 3.0.4
 
 - **FEAT**: Add `metadata` to sign up

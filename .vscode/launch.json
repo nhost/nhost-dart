@@ -1,0 +1,46 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "nhost_flutter_auth",
+      "cwd": "packages/nhost_flutter_auth/example",
+      "program": "lib/simple_auth_example.dart",
+      "request": "launch",
+      "flutterMode": "debug",
+      "type": "dart"
+    },
+    {
+      "name": "nhost_flutter_auth_persist",
+      "cwd": "packages/nhost_flutter_auth/example",
+      "program": "lib/persistent_auth_example.dart",
+      "request": "launch",
+      "flutterMode": "debug",
+      "type": "dart"
+    },
+    {
+      "name": "nhost_flutter_graphql",
+      "cwd": "packages/nhost_flutter_graphql/example",
+      "request": "launch",
+      "program": "lib/simple_graphql_example.dart",
+      "flutterMode": "debug",
+      "type": "dart"
+    },
+    {
+      "name": "nhost_graphql_adapter",
+      "cwd": "packages/nhost_graphql_adapter/example",
+      "flutterMode": "debug",
+      "request": "launch",
+      "type": "dart"
+    },
+    {
+      "name": "nhost_sdk",
+      "cwd": "packages/nhost_sdk/example",
+      "flutterMode": "debug",
+      "request": "launch",
+      "type": "dart"
+    }
+  ]
+}

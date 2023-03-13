@@ -9,6 +9,7 @@ import '../errors.dart';
 import '../foundation/collection.dart';
 import '../foundation/request.dart';
 import '../foundation/uri.dart';
+import '../foundation/types.dart';
 import '../http.dart';
 import '../logging.dart';
 
@@ -16,14 +17,6 @@ import '../logging.dart';
 /// measure progress as the bytes are pulled by the socket. This is the size
 /// of those chunks, in bytes.
 const int multipartChunkSize = 64 * 1024; // 64 KB
-
-/// Signature for callbacks that receive the upload progress of
-/// [ApiClient.postMultipart] requests.
-typedef UploadProgressCallback = void Function(
-  http.MultipartRequest request,
-  int bytesUploaded,
-  int bytesTotal,
-);
 
 /// Defined here so we don't need to import dart:io (which affects quality
 /// score, because it thinks that dart:io makes using Flutter Web impossible)
@@ -250,9 +243,10 @@ class ApiClient {
     Map<String, String?>? query,
     dynamic jsonBody,
   }) {
-    final req =
-        http.Request(method, baseUrl.extend(path, queryParameters: query))
-          ..encoding = utf8;
+    final req = http.Request(
+      method,
+      baseUrl.extend(path, queryParameters: query),
+    )..encoding = utf8;
     if (jsonBody != null) {
       req
         ..body = jsonEncode(jsonBody)
@@ -276,8 +270,10 @@ class ApiClient {
 
     // If the status is not in the success range,  throw.
     if (response.statusCode < 200 || response.statusCode >= 300) {
-      log.finer('API client encountered a failure, '
-          'url=${request.url} status=${response.statusCode}');
+      log.finer(
+        'API client encountered a failure, '
+        'url=${request.url} status=${response.statusCode}',
+      );
       throw ApiException(request.url, responseBody, request, response);
     }
 
