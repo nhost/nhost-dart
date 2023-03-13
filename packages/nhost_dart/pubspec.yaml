@@ -21,6 +21,7 @@ dependencies:
   nhost_auth_dart: ^1.0.0-dev.9
   nhost_functions_dart: ^1.0.0-dev.9
   nhost_graphql_adapter: ^3.0.0-dev.19
+
 dev_dependencies:
   betamax: ^2.0.0
   fake_async: ^1.3.1
@@ -32,3 +33,8 @@ dev_dependencies:
   stack_trace: ^1.11.0
   test_api: ^0.4.16
   test: ^1.22.0
+  gql: ^0.14.0
+  gql_exec: ^0.4.3
+  nhost_gql_links: ^3.0.0-dev.17
+  async: ^2.10.0
+  stream_channel: ^2.1.1
