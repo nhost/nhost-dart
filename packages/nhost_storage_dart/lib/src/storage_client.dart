@@ -121,9 +121,14 @@ class NhostStorageClient implements HasuraStorageClient {
   }
 
   @override
-  Future<PresignedUrl> getPresignedUrl(String fileId) async {
+  Future<PresignedUrl> getPresignedUrl(String fileId, {
+    ImageTransform? transform,
+  }) async {
     return await _apiClient.get(
       '/files/$fileId/presignedurl',
+      query: {
+        ...?transform?.toQueryArguments(),
+      },
       headers: _session.authenticationHeaders,
       responseDeserializer: PresignedUrl.fromJson,
     );
