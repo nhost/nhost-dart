@@ -18,9 +18,9 @@ on:
   pull_request:
     branches:
       - main
-  schedule:
+# schedule:
   # Run the quality job at 4am every day
-  - cron: '0 4 * * *'
+  # - cron: '0 4 * * *'
 
 env:#{dart_package_workflow_env}
 jobs:
