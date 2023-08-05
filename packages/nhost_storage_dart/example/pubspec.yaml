@@ -1,14 +1,16 @@
 name: nhost_storage_dart_example
-description: 'nhost Storage Dart sdk example'
+description: "nhost Storage Dart sdk example"
 private: true
 version: 1.0.0+1
 publish_to: none
 
 environment:
-  sdk: '>=2.14.0 <3.0.0'
+  sdk: ">=2.14.0 <3.0.0"
 
 dependencies:
   # Nhost packages
   nhost_storage_dart:
     path: ../
-  nhost_auth_dart: ^1.0.0
+  # nhost_auth_dart: ^1.0.0
+  nhost_auth_dart:
+    path: ../../nhost_auth_dart

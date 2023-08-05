@@ -15,7 +15,9 @@ dependencies:
   flutter:
     sdk: flutter
   #Nhost_dart
-  nhost_dart: ^1.0.0
+  # nhost_dart: ^1.0.0
+  nhost_dart:
+    path: ../nhost_dart
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -8,8 +8,8 @@ repository: https://github.com/nhost/nhost-dart/tree/main/packages/nhost_flutter
 issue_tracker: https://github.com/nhost/nhost-dart/issues
 
 environment:
-  sdk: '>=2.14.0 <3.0.0'
-  flutter: '>=2.8.0'
+  sdk: ">=2.14.0 <3.0.0"
+  flutter: ">=2.8.0"
 
 dependencies:
   flutter:
@@ -18,7 +18,9 @@ dependencies:
   logging: ^1.1.0
 
   #Nhost_dart
-  nhost_flutter_auth: ^3.0.0
+  # nhost_flutter_auth: ^3.0.0
+  nhost_flutter_auth:
+    path: ../nhost_flutter_auth
 dev_dependencies:
   flutter_test:
     sdk: flutter

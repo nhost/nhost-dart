@@ -1,16 +1,16 @@
 name: nhost_flutter_graphql_example
 description: A new Flutter project.
-publish_to: 'none'
+publish_to: "none"
 private: true
 version: 1.0.0+1
 
 environment:
-  sdk: '>=2.18.0 <3.0.0'
+  sdk: ">=2.18.0 <3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
-  graphql_flutter: ^5.1.0
+  graphql_flutter: ^5.1.3
 
   # Nhost packages
   nhost_flutter_graphql:
