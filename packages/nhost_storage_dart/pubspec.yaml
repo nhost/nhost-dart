@@ -1,6 +1,6 @@
 name: nhost_storage_dart
 description: Nhost Dart Storage Service SDK
-version: 1.0.0
+version: 1.0.1
 homepage: https://nhost.io
 repository: https://github.com/nhost/nhost-dart/tree/main/packages/nhost_sdk
 issue_tracker: https://github.com/nhost/nhost-dart/issues
@@ -13,9 +13,7 @@ dependencies:
   http: ^0.13.6
 
   #Nhost_sdk
-  # nhost_sdk: ^4.0.0
-  nhost_sdk:
-    path: ../nhost_sdk
+  nhost_sdk: ^4.0.1
 dev_dependencies:
   lints: ^2.0.0
   test: ^1.16.0
