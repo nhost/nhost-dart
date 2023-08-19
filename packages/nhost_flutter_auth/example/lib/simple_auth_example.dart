@@ -125,6 +125,7 @@ class SignInFormState extends State<SignInForm> {
         password: passwordController.text,
       );
     } on ApiException {
+      if (!context.mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Sign in Failed'),
@@ -133,6 +134,7 @@ class SignInFormState extends State<SignInForm> {
     } on SocketException catch (e) {
       // ignore: avoid_print
       print(e);
+      if (!context.mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Network Failed'),
