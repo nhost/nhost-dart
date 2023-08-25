@@ -26,7 +26,7 @@ const refreshTokenClientStorageKey = 'nhostRefreshToken';
 
 /// The query parameter name for the refresh token provided during OAuth
 /// provider-based sign-ins.
-const refreshTokenQueryParamName = 'refreshToken';
+const refreshTokenQueryParamName = 'code';
 
 /// Signature for callbacks that receive the upload progress of
 /// [ApiClient.postMultipart] requests.
