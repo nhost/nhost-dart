@@ -2,7 +2,7 @@ name: nhost_flutter_graphql_example
 description: A new Flutter project.
 publish_to: 'none'
 private: true
-version: 1.0.0+1
+version: 2.0.0
 
 environment:
   sdk: '>=2.18.0 <3.0.0'
