@@ -1,3 +1,8 @@
+## 1.0.1
+
+ - **CHORE**: bump `nhost_functions_dart` version
+ - Update dependencies.
+
 ## 1.0.0
 
  - Graduate package to a stable release. See pre-releases prior to this version for changelog entries.

@@ -1,13 +1,13 @@
 name: nhost_dart_example
-description: 'nhost Dart sdk example'
+description: "nhost Dart sdk example"
 private: true
 version: 1.0.0+1
 publish_to: none
 
 environment:
-  sdk: '>=2.14.0 <3.0.0'
+  sdk: ">=2.14.0 <3.0.0"
 
 dependencies:
   # Nhost packages
   nhost_dart:
-    path: ../
+    path: ../../nhost_dart

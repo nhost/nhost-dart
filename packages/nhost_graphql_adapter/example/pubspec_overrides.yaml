@@ -1,0 +1,16 @@
+# melos_managed_dependency_overrides: nhost_auth_dart,nhost_dart,nhost_functions_dart,nhost_gql_links,nhost_graphql_adapter,nhost_sdk,nhost_storage_dart
+dependency_overrides:
+  nhost_auth_dart:
+    path: ../../nhost_auth_dart
+  nhost_dart:
+    path: ../../nhost_dart
+  nhost_functions_dart:
+    path: ../../nhost_functions_dart
+  nhost_gql_links:
+    path: ../../nhost_gql_links
+  nhost_graphql_adapter:
+    path: ..
+  nhost_sdk:
+    path: ../../nhost_sdk
+  nhost_storage_dart:
+    path: ../../nhost_storage_dart

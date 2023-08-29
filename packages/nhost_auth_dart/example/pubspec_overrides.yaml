@@ -1,0 +1,6 @@
+# melos_managed_dependency_overrides: nhost_auth_dart,nhost_sdk
+dependency_overrides:
+  nhost_auth_dart:
+    path: ..
+  nhost_sdk:
+    path: ../../nhost_sdk

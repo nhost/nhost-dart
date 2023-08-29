@@ -165,7 +165,7 @@ class ExampleRouteInformationParser
   @override
   Future<ExampleRoutePath> parseRouteInformation(
       RouteInformation routeInformation) async {
-    final uri = Uri.parse(routeInformation.location!);
+    final uri = routeInformation.uri;
 
     if (uri.pathSegments.isNotEmpty) {
       if (uri.pathSegments.first == 'admin') {
@@ -183,13 +183,13 @@ class ExampleRouteInformationParser
   @override
   RouteInformation restoreRouteInformation(ExampleRoutePath configuration) {
     if (configuration is HomeRoutePath) {
-      return const RouteInformation(location: '/');
+      return RouteInformation(uri: Uri.parse('/'));
     }
     if (configuration is AdminRoutePath) {
-      return const RouteInformation(location: '/admin');
+      return RouteInformation(uri: Uri.parse('/admin'));
     }
     if (configuration is SignInRoutePath) {
-      return const RouteInformation(location: '/signin');
+      return RouteInformation(uri: Uri.parse('/signin'));
     }
 
     throw ('Unsupported configuration');
