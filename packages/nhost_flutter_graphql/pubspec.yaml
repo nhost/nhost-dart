@@ -18,7 +18,7 @@ dependencies:
   logging: ^1.1.0
 
   #Nhost_dart
-  nhost_flutter_auth: ^3.0.1
+  nhost_flutter_auth: ^3.0.2
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -17,7 +17,7 @@ dependencies:
 
   #NHOST Package
   nhost_sdk: ^4.0.1
-  nhost_storage_dart: ^1.0.1
+  nhost_storage_dart: ^1.0.2
   nhost_auth_dart: ^1.0.1
   nhost_functions_dart: ^1.0.1
   nhost_graphql_adapter: ^3.0.1
