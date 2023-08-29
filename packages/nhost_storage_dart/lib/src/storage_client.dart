@@ -123,7 +123,7 @@ class NhostStorageClient implements HasuraStorageClient {
   @override
   Future<PresignedUrl> getPresignedUrl(
     String fileId, {
-    ImageTransform? transform,
+    ImageTransformBase? transform,
   }) async {
     return await _apiClient.get(
       '/files/$fileId/presignedurl',
