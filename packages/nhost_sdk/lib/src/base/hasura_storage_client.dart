@@ -88,9 +88,6 @@ abstract class HasuraStorageClient {
     String fileId, {
     ImageTransformBase? transform,
   });
-  Future<PresignedUrlBase> getPresignedUrl(
-    String fileId, {
-    ImageTransformBase? transform,
-  });
+  Future<PresignedUrlBase> getPresignedUrl(String fileId);
   Future<void> delete(String fileId);
 }

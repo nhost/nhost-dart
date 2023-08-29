@@ -2,7 +2,6 @@
 
  - **CHORE**: bump `nhost_flutter_auth` version
  - Update dependencies.
- - update nhost_dart to 1.0.1
 
 ## 3.0.0
 

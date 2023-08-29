@@ -63,7 +63,7 @@ void main() async {
 
 ```yaml
 dependencies:
-  nhost_dart: ^1.0.1
+  nhost_dart: ^1.0.0
 ```
 
 ## 🔥 More Dart & Flutter packages from Nhost

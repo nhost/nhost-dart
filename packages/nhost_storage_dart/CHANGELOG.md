@@ -2,7 +2,6 @@
 
  - **CHORE**: bump `nhost_storage_dart` version
  - Update dependencies.
- - added image transform options to getPresignedUrl 
 
 ## 1.0.0
 
