@@ -1,3 +1,7 @@
+## 3.0.1
+
+ - update nhost_dart to 1.0.1
+
 ## 3.0.0
 
  - Graduate package to a stable release. See pre-releases prior to this version for changelog entries.

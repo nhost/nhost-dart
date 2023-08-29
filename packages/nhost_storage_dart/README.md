@@ -7,8 +7,8 @@
 
 ## Getting Started
 
-Get your subdomain and region from nhost dashboard
-User Authentication is needed in order to upload.
+Get your subdomain and region from nhost dashboard User Authentication is needed
+in order to upload.
 
 ```dart
 import 'package:nhost_auth_dart/nhost_auth_dart.dart';
@@ -59,5 +59,5 @@ void main() async {
 ```yaml
 dependencies:
   nhost_auth_dart: ^1.0.0
-  nhost_storage_dart: ^1.0.0
+  nhost_storage_dart: ^1.0.1s
 ```
