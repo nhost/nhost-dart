@@ -443,7 +443,7 @@ void main() async {
 
       expect(tokenEndpointRefreshMock.isDone, isTrue);
       expect(nhostClient.auth.accessToken, mockNextSession.accessToken);
-    }, tags: noHttpFixturesTag); // Don't record fixtures
+    });
 
     test('should occur after a user-provided interval, if specified', () {
       final testRefreshInterval = Duration(minutes: 10);
@@ -462,7 +462,7 @@ void main() async {
 
       expect(tokenEndpointRefreshMock.isDone, isTrue);
       expect(nhostClient.auth.accessToken, mockNextSession.accessToken);
-    }, tags: noHttpFixturesTag); // Don't record fixtures
+    });
   });
 
   group('email change', () {

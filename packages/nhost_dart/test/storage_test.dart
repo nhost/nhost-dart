@@ -187,13 +187,13 @@ void main() async {
 }
 
 abstract class UploadProgressCallbackFunction {
-  void call(BaseRequest request, int bytesUploaded, int bytesTotal);
+  void call(http.BaseRequest request, int bytesUploaded, int bytesTotal);
 }
 
 class UploadProgressCallbackFunctionMock extends Mock
     implements UploadProgressCallbackFunction {
   @override
-  void call([BaseRequest? request, int? bytesUploaded, int? bytesTotal]) {
+  void call([http.BaseRequest? request, int? bytesUploaded, int? bytesTotal]) {
     super.noSuchMethod(
         Invocation.method(#call, [request, bytesUploaded, bytesTotal]));
   }
