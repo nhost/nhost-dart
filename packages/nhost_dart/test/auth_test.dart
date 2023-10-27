@@ -8,6 +8,7 @@ import 'package:nhost_dart/nhost_dart.dart';
 import 'package:nhost_sdk/nhost_sdk.dart';
 import 'package:nock/nock.dart';
 import 'package:test/test.dart';
+import 'package:http/http.dart' as http;
 
 import 'admin_gql.dart';
 import 'setup.dart';
@@ -31,21 +32,18 @@ void main() async {
 
   setUpAll(() {
     initLogging();
-    initializeHttpFixturesForSuite('auth');
   });
 
   setUp(() async {
     // Clear out any data from the previous test
     await gqlAdmin.clearUsers();
 
-    // Get a recording/playback HTTP client from Betamax
-    final httpClient = await setUpApiTest();
-
     // Create the service objects that we're going to be using to test
     nhost = createApiTestClient(
-      httpClient,
+      http.Client(),
       authStore: authStore = InMemoryAuthStore(),
     );
+
     auth = nhost.auth;
   });
 

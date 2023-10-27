@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:betamax/betamax.dart';
 import 'package:http/http.dart' as http;
 import 'package:logging/logging.dart';
 import 'package:nhost_dart/nhost_dart.dart';
@@ -10,6 +9,7 @@ import 'package:test_api/src/backend/invoker.dart';
 
 const subdomain = 'localhost:1337';
 const region = '';
+
 final gqlUrl = createNhostServiceEndpoint(
   region: region,
   subdomain: subdomain,
@@ -17,7 +17,6 @@ final gqlUrl = createNhostServiceEndpoint(
 );
 
 const enableLoggingEnvVariableName = 'LOGGING';
-const recordFixturesEnvVariableName = 'RECORD_HTTP_FIXTURES';
 
 /// Sets up logging if the appropriate env variable is set
 void initLogging() {
@@ -30,20 +29,6 @@ void initLogging() {
   } else {
     Logger.root.level = Level.OFF;
   }
-}
-
-/// Initializes Betamax, which is responsible for HTTP fixtures
-void initializeHttpFixturesForSuite(String suiteName) {
-  final recordFixtures =
-      Platform.environment[recordFixturesEnvVariableName] == 'true';
-  print(recordFixtures
-      ? '[$suiteName] Recording HTTP'
-      : '[$suiteName] Playing back HTTP fixtures');
-
-  Betamax.configureSuite(
-    suiteName: suiteName,
-    mode: recordFixtures ? Mode.recording : Mode.playback,
-  );
 }
 
 /// Creates an Nhost client for a single test.
@@ -61,16 +46,4 @@ NhostClient createApiTestClient(
     httpClientOverride: httpClient,
     authStore: authStore,
   );
-}
-
-/// Tests tagged with this value will not record fixtures
-const noHttpFixturesTag = 'no-http-fixtures';
-
-Future<http.Client> setUpApiTest() async {
-  final currentTest = Invoker.current!.liveTest;
-  if (currentTest.test.metadata.tags.contains(noHttpFixturesTag)) {
-    return http.Client();
-  }
-
-  return Betamax.clientForTest();
 }

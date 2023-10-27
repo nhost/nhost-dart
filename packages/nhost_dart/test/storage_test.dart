@@ -1,6 +1,6 @@
 import 'dart:math' as math;
 
-import 'package:http/http.dart';
+import 'package:http/http.dart' as http;
 import 'package:mockito/mockito.dart';
 import 'package:nhost_dart/nhost_dart.dart';
 import 'package:nhost_sdk/src/foundation/collection.dart';
@@ -29,7 +29,6 @@ void main() async {
 
   setUpAll(() {
     initLogging();
-    initializeHttpFixturesForSuite('storage');
   });
 
   setUp(() async {
@@ -39,8 +38,7 @@ void main() async {
     // Clear out all user files from previous run
     await unrecordedGqlAdmin.clearFiles();
 
-    // Get a recording/playback HTTP client from Betamax
-    final httpClient = await setUpApiTest();
+    var httpClient = http.Client();
 
     // Create a fresh client
     client = createApiTestClient(httpClient);
