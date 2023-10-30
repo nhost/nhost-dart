@@ -383,7 +383,10 @@ void main() async {
       nock.cleanAll();
     });
 
-    tearDownAll(() {
+    tearDownAll(() async {
+      // Clear out any data from the previous test
+      await gqlAdmin.clearUsers();
+
       HttpOverrides.global = null;
     });
 
