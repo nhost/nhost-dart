@@ -1,13 +1,11 @@
-import 'dart:async';
 import 'dart:io';
 
 import 'package:http/http.dart' as http;
 import 'package:logging/logging.dart';
 import 'package:nhost_dart/nhost_dart.dart';
 import 'package:test/test.dart';
-import 'package:test_api/src/backend/invoker.dart';
 
-const subdomain = 'localhost:1337';
+const subdomain = 'local';
 const region = '';
 
 final gqlUrl = createNhostServiceEndpoint(

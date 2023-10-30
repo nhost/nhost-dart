@@ -47,7 +47,7 @@ class NhostClient implements NhostClientBase {
   /// {@template nhost.api.NhostClient.subdomain}
   /// [subdomain] is the Nhost "subdomain" and "region" that can be found on your Nhost
   /// project page.
-  /// for local development pass 'localhost' or 'localhost:1337' to subdomain
+  /// for local development pass 'local' to subdomain
   /// and leave region empty string '';
   /// {@endtemplate}
   ///

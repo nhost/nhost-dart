@@ -16,7 +16,7 @@ String joinSubpath(String basePath, String subPath) {
 /// Generate Endpoint for each service and based on new subdomain approach or
 /// override it to localhost for development based on old path-feature
 String createNhostServiceEndpoint({
-  required String subdomain,
+  required String subdomain, // local
   required String region,
   required String service,
   String apiVersion = 'v1',
@@ -33,6 +33,10 @@ String createNhostServiceEndpoint({
       return 'http://$subdomain/$apiVersion/$service';
     }
     return 'http://$subdomain:1337/$apiVersion/$service';
+  }
+
+  if (region.isEmpty && subdomain == 'local') {
+    return '$protocol://$subdomain.$service.nhost.run/$apiVersion';
   }
 
   // production app, new subdomain approach
