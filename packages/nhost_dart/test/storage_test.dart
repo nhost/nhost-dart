@@ -1,11 +1,11 @@
 import 'dart:math' as math;
 
+import 'package:graphql/client.dart';
 import 'package:http/http.dart' as http;
 import 'package:mockito/mockito.dart';
 import 'package:nhost_dart/nhost_dart.dart';
 import 'package:nhost_sdk/src/foundation/collection.dart';
 import 'package:nhost_storage_dart/nhost_storage_dart.dart';
-import 'package:path/path.dart' show Context, Style;
 import 'package:test/test.dart';
 
 import 'admin_gql.dart';
@@ -13,16 +13,15 @@ import 'matchers.dart';
 import 'setup.dart';
 import 'test_helpers.dart';
 
-/// Used to join URL paths
-final pathContext = Context(style: Style.url);
+var testEmail = getTestEmail();
+const testPassword = 'password-1';
 
 void main() async {
-  final unrecordedGqlAdmin = GqlAdminTestHelper(
+  final gqlAdmin = GqlAdminTestHelper(
     subdomain: subdomain,
     region: region,
     gqlUrl: gqlUrl,
   );
-  GqlAdminTestHelper? recordedGqlAdmin;
 
   NhostClient client;
   late NhostStorageClient storage;
@@ -31,12 +30,13 @@ void main() async {
     initLogging();
   });
 
-  setUp(() async {
-    // Clear out any data from the previous test
-    await unrecordedGqlAdmin.clearUsers();
+  tearDownAll(() async {
+    await gqlAdmin.clearUsers();
+  });
 
+  setUp(() async {
     // Clear out all user files from previous run
-    await unrecordedGqlAdmin.clearFiles();
+    await gqlAdmin.clearFiles();
 
     var httpClient = http.Client();
 
@@ -44,16 +44,10 @@ void main() async {
     client = createApiTestClient(httpClient);
 
     // Register the basic user
-    await registerAndSignInBasicUser(client.auth);
+    await registerAndSignInBasicUser(client.auth, testEmail, testPassword);
 
     // Provide a few values to tests
     storage = client.storage;
-    recordedGqlAdmin = GqlAdminTestHelper(
-      subdomain: subdomain,
-      region: region,
-      gqlUrl: gqlUrl,
-      httpClientOverride: httpClient,
-    );
   });
 
   group('creating files', () {
@@ -81,7 +75,7 @@ void main() async {
 
       // Verify stored media
 
-      final storedFile = await recordedGqlAdmin!.getFileInfo(fileMetadata.id);
+      final storedFile = await gqlAdmin.getFileInfo(fileMetadata.id);
       expect(storedFile!.name, filePath);
       expect(storedFile.mimeType, 'text/plain; charset=utf-8');
     });
@@ -120,7 +114,7 @@ void main() async {
       expect(fileMetadata.mimeType, 'text/html');
 
       // Verify stored media
-      final storedFile = await recordedGqlAdmin!.getFileInfo(fileMetadata.id);
+      final storedFile = await gqlAdmin.getFileInfo(fileMetadata.id);
       expect(storedFile!.name, filePath);
       expect(storedFile.mimeType, 'text/html');
     });
@@ -175,13 +169,13 @@ void main() async {
 
     test('can be deleted', () async {
       // Sanity check
-      expect(await recordedGqlAdmin!.getFileInfo(fileId), isNotNull);
+      expect(await gqlAdmin.getFileInfo(fileId), isNotNull);
 
       // Now delete the file
       await storage.delete(fileId);
 
       // And ensure it is no longer available
-      expect(await recordedGqlAdmin!.getFileInfo(fileId), isNull);
+      expect(await gqlAdmin.getFileInfo(fileId), isNull);
     });
   });
 }
