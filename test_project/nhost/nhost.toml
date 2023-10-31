@@ -38,8 +38,6 @@ clientUrl = 'http://localhost:3000'
 enabled = true
 
 [auth.user]
-activeMfaType = 'totp'
-
 [auth.user.roles]
 default = 'user'
 allowed = ['user', 'me']

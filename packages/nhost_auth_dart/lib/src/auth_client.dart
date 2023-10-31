@@ -523,7 +523,7 @@ class NhostAuthClient implements HasuraAuthClient {
       '/user/mfa',
       jsonBody: {
         'code': code,
-        'activeMfaType': null,
+        'activeMfaType': '',
       },
       headers: _session.authenticationHeaders,
     );
