@@ -77,13 +77,13 @@ void main() async {
 
       // Verify metadata
       expect(fileMetadata.name, filePath);
-      expect(fileMetadata.mimeType, 'text/plain');
+      expect(fileMetadata.mimeType, 'text/plain; charset=utf-8');
 
       // Verify stored media
 
       final storedFile = await recordedGqlAdmin!.getFileInfo(fileMetadata.id);
       expect(storedFile!.name, filePath);
-      expect(storedFile.mimeType, 'text/plain');
+      expect(storedFile.mimeType, 'text/plain; charset=utf-8');
     });
 
     test('can write bytes', () async {
