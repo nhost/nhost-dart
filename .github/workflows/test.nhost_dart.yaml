@@ -95,7 +95,7 @@ jobs:
 
       - name: Start the nhost test_backend
         run: |
-          cd packages/nhost-dart/test/test_backend
+          cd packages/nhost_dart/test/test_backend
           nhost up
 
       # Run tests for package in question
@@ -109,7 +109,7 @@ jobs:
 
       - name: Stop the nhost test_backend
         run: |
-          cd packages/nhost-dart/test/test_backend
+          cd packages/nhost_dart/test/test_backend
           nhost down
 
       # Report test results
