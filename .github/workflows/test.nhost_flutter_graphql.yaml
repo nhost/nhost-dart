@@ -28,11 +28,6 @@ jobs:
   # Ensure that the package meets a suitably high pub.dev score
   score-package-quality:
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        # We test against several Flutter versions
-        flutter_channel: [stable, beta]
 
     steps:
       - uses: actions/checkout@v2
@@ -43,7 +38,7 @@ jobs:
         # Set an id for the current step, so we can reference it later
         id: analysis
         with:
-          githubToken: ${{ secrets.GITHUB_TOKEN }}
+          githubToken: ${{ github.token }}
           relativePath: packages/nhost_flutter_graphql
 
       - name: Require analysis (near) perfection
@@ -63,20 +58,8 @@ jobs:
   test-package:
     runs-on: ubuntu-latest
 
-    strategy:
-      fail-fast: false
-      matrix:
-        # We test against several Flutter versions
-        flutter_channel: [stable, beta]
-
     steps:
       - uses: actions/checkout@v2
-
-      - name: Determine Flutter version
-        id: flutter-version
-        uses: shyndman/latest-flutter-version-action@v1.0.6
-        with:
-          channel: ${{ matrix.flutter_channel }}
 
       - name: Cache Flutter dependencies
         uses: actions/cache@v1
@@ -86,9 +69,10 @@ jobs:
 
       # Setup the flutter environment
       - name: Setup Dart/Flutter (specific channel)
-        uses: subosito/flutter-action@v1.5.3
+        uses: subosito/flutter-action@v2
         with:
-          channel: ${{ matrix.flutter_channel }}
+          flutter-version: "3.13.9"
+          channel: "stable"
 
       # Get binary dependencies
       - name: Install tools
@@ -121,7 +105,7 @@ jobs:
           check_name: "Test results: nhost_flutter_graphql"
           require_tests: false
           report_paths: "packages/nhost_flutter_graphql/test-results.xml"
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ github.token }}
 
       # Check if coverage was generated
       - name: Check for coverage file
@@ -137,5 +121,5 @@ jobs:
           artifact-name: "Test coverage for nhost_flutter_graphql"
           coverage-files: packages/nhost_flutter_graphql/coverage/lcov.info
           working-directory: packages/nhost_flutter_graphql/
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ github.token }}
         if: ${{ github.event_name != 'pull_request' && steps.check_coverage_exists.outputs.files_exists == 'true' }}
