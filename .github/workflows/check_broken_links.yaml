@@ -13,6 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       LYCHEE_OUT: tmp/lychee_results.md
+      GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
     steps:
       - uses: actions/checkout@master
       - name: Check links
@@ -26,3 +27,4 @@ jobs:
             **/*.md
             **/*.yaml
             **/*.dart
+            --github-token $GITHUB_TOKEN
