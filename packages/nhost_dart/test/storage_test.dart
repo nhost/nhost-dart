@@ -1,6 +1,5 @@
 import 'dart:math' as math;
 
-import 'package:graphql/client.dart';
 import 'package:http/http.dart' as http;
 import 'package:mockito/mockito.dart';
 import 'package:nhost_dart/nhost_dart.dart';
@@ -128,7 +127,7 @@ void main() async {
         fileName: filePath,
         fileContents: fileContents,
         mimeType: 'text/html',
-        onUploadProgress: uploadCallback,
+        onUploadProgress: uploadCallback.call,
       );
 
       final verificationResult =

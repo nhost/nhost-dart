@@ -342,9 +342,9 @@ void main() async {
 
   group('session refresh failure callbacks', () {
     test('are called when refresh tokens are invalid', () async {
-      final _callbackCompleter = Completer();
+      final callbackCompleter = Completer();
       auth.addSessionRefreshFailedCallback((error, stackTrace) {
-        _callbackCompleter.completeError(error, stackTrace);
+        callbackCompleter.completeError(error, stackTrace);
       });
 
       final unauthorizedMatcher = throwsA(isA<ApiException>().having(
@@ -354,7 +354,7 @@ void main() async {
       ));
 
       expect(
-        _callbackCompleter.future,
+        callbackCompleter.future,
         unauthorizedMatcher,
       );
       expect(
