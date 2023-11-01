@@ -101,10 +101,10 @@ jobs:
       # Run tests for package in question
       - name: Execute tests
         run: >
-          sudo melos exec
+          melos exec
           --scope=nhost_dart
           --dir-exists=test --
-          'flutter test --no-pub --machine --coverage | tojunit
+          'sudo flutter test --no-pub --machine --coverage | tojunit
           > test-results.xml'
 
       - name: Stop the nhost test_backend
