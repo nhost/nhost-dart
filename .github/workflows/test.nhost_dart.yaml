@@ -98,6 +98,9 @@ jobs:
           cd packages/nhost_dart/test/test_backend
           nhost up
 
+      - name: Install sudo package
+        run: apt update && apt install sudo
+
       # Run tests for package in question
       - name: Execute tests
         run: >
