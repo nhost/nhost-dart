@@ -104,7 +104,7 @@ jobs:
           melos exec
           --scope=nhost_dart
           --dir-exists=test --
-          'sudo flutter test --no-pub --machine --coverage | tojunit
+          'flutter test --no-pub --machine --coverage | tojunit
           > test-results.xml'
 
       - name: Stop the nhost test_backend
