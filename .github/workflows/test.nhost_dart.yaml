@@ -100,10 +100,7 @@ jobs:
 
       # Run tests for package in question
       - name: Execute tests
-        run: |
-          which melos
-          which dart
-          sudo -E $FLUTTER_ROOT/bin/dart $PUB_CACHE/bin/melos exec --scope=nhost_dart --dir-exists=test -- bash -c "flutter test --no-pub --machine --coverage | tojunit > test-results.xml"
+        run: melos exec --scope=nhost_dart --dir-exists=test -- bash -c "flutter test --no-pub --machine --coverage | tojunit > test-results.xml"
 
       - name: Stop the nhost test_backend
         run: |
