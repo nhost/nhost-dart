@@ -56,8 +56,6 @@ void main() {
 
     final envFile = File(join(workflowsDirectory.path, '$packageName.env'));
     if (envFile.existsSync()) {
-      // final envVars = Parser().parse(envFile.readAsLinesSync());
-
       final envVars = DotEnv(includePlatformEnvironment: true)..load();
 
       templateVars['dart_package_workflow_env'] = '\n' +
