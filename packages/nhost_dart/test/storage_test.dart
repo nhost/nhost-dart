@@ -42,6 +42,8 @@ void main() async {
     // Create a fresh client
     client = createApiTestClient(httpClient);
 
+    await gqlAdmin.clearUsers();
+
     // Register the basic user
     await registerAndSignInBasicUser(client.auth, testEmail, testPassword);
 
