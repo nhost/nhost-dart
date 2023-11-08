@@ -359,6 +359,7 @@ class SignInPageState extends State<SignInPage> {
       await auth.signInEmailPassword(
           email: emailController.text, password: passwordController.text);
     } on ApiException {
+      if (!context.mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Sign in Failed'),

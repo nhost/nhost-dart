@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import 'api/storage_api_types.dart';
 
 /// The default used during file upload if not provided.
-const applicationOctetStreamType = 'application/octet-stream';
+const applicationOctetStreamType = 'application/octet-stream; charset=utf-8';
 
 /// The Nhost storage service.
 ///

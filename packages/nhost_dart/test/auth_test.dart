@@ -8,12 +8,13 @@ import 'package:nhost_dart/nhost_dart.dart';
 import 'package:nhost_sdk/nhost_sdk.dart';
 import 'package:nock/nock.dart';
 import 'package:test/test.dart';
+import 'package:http/http.dart' as http;
 
 import 'admin_gql.dart';
 import 'setup.dart';
 import 'test_helpers.dart';
 
-const testEmail = 'user-1@nhost.io';
+var testEmail = getTestEmail();
 const testPassword = 'password-1';
 
 const invalidRefreshToken = '10b27fd6-a606-42f4-9063-d6bd9d7866c8';
@@ -31,21 +32,22 @@ void main() async {
 
   setUpAll(() {
     initLogging();
-    initializeHttpFixturesForSuite('auth');
+  });
+
+  tearDownAll(() async {
+    await gqlAdmin.clearUsers();
   });
 
   setUp(() async {
     // Clear out any data from the previous test
     await gqlAdmin.clearUsers();
 
-    // Get a recording/playback HTTP client from Betamax
-    final httpClient = await setUpApiTest();
-
     // Create the service objects that we're going to be using to test
     nhost = createApiTestClient(
-      httpClient,
+      http.Client(),
       authStore: authStore = InMemoryAuthStore(),
     );
+
     auth = nhost.auth;
   });
 
@@ -136,7 +138,8 @@ void main() async {
     late String refreshToken;
     // Each tests registers a basic user, and leaves auth in a logged out state
     setUp(() async {
-      final res = await registerAndSignInBasicUser(auth);
+      final res =
+          await registerAndSignInBasicUser(auth, testEmail, testPassword);
       refreshToken = res.session!.refreshToken!;
       // Don't log out, so we can keep a valid refresh token
       await auth.clearSession();
@@ -260,7 +263,7 @@ void main() async {
   group('signOut', () {
     // All signOut tests log a user in first
     setUp(() async {
-      await registerAndSignInBasicUser(auth);
+      await registerAndSignInBasicUser(auth, testEmail, testPassword);
       assert(auth.currentUser != null);
     });
 
@@ -298,9 +301,9 @@ void main() async {
     });
 
     test('succeeds if the user exists', () async {
-      await registerTestUser(auth);
+      await registerTestUser(auth, testEmail, testPassword);
       expect(
-        auth.sendVerificationEmail(email: defaultTestEmail),
+        auth.sendVerificationEmail(email: testEmail),
         completes,
       );
     });
@@ -318,19 +321,19 @@ void main() async {
     });
 
     test('should be called on sign in', () async {
-      await registerTestUser(auth);
+      await registerTestUser(auth, testEmail, testPassword);
       await auth.signInEmailPassword(email: testEmail, password: testPassword);
       expect(authStateVar, AuthenticationState.signedIn);
     });
 
     test('should be called on sign out', () async {
-      await registerTestUser(auth);
+      await registerTestUser(auth, testEmail, testPassword);
       await auth.signOut();
       expect(authStateVar, AuthenticationState.signedOut);
     });
 
     test('should not be called once unsubscribed', () async {
-      await registerTestUser(auth);
+      await registerTestUser(auth, testEmail, testPassword);
       unsubscribe();
       await auth.signInEmailPassword(email: testEmail, password: testPassword);
       expect(authStateVar, AuthenticationState.signedOut);
@@ -339,9 +342,9 @@ void main() async {
 
   group('session refresh failure callbacks', () {
     test('are called when refresh tokens are invalid', () async {
-      final _callbackCompleter = Completer();
+      final callbackCompleter = Completer();
       auth.addSessionRefreshFailedCallback((error, stackTrace) {
-        _callbackCompleter.completeError(error, stackTrace);
+        callbackCompleter.completeError(error, stackTrace);
       });
 
       final unauthorizedMatcher = throwsA(isA<ApiException>().having(
@@ -351,7 +354,7 @@ void main() async {
       ));
 
       expect(
-        _callbackCompleter.future,
+        callbackCompleter.future,
         unauthorizedMatcher,
       );
       expect(
@@ -385,7 +388,10 @@ void main() async {
       nock.cleanAll();
     });
 
-    tearDownAll(() {
+    tearDownAll(() async {
+      // Clear out any data from the previous test
+      await gqlAdmin.clearUsers();
+
       HttpOverrides.global = null;
     });
 
@@ -445,7 +451,7 @@ void main() async {
 
       expect(tokenEndpointRefreshMock.isDone, isTrue);
       expect(nhostClient.auth.accessToken, mockNextSession.accessToken);
-    }, tags: noHttpFixturesTag); // Don't record fixtures
+    });
 
     test('should occur after a user-provided interval, if specified', () {
       final testRefreshInterval = Duration(minutes: 10);
@@ -464,12 +470,12 @@ void main() async {
 
       expect(tokenEndpointRefreshMock.isDone, isTrue);
       expect(nhostClient.auth.accessToken, mockNextSession.accessToken);
-    }, tags: noHttpFixturesTag); // Don't record fixtures
+    });
   });
 
   group('email change', () {
     setUp(() async {
-      await registerAndSignInBasicUser(auth);
+      await registerAndSignInBasicUser(auth, testEmail, testPassword);
     });
 
     // This should be tested, but requires a server configured with
@@ -514,7 +520,7 @@ void main() async {
 
   group('password change', () {
     setUp(() async {
-      await registerAndSignInBasicUser(auth);
+      await registerAndSignInBasicUser(auth, testEmail, testPassword);
     });
 
     test('should be able to change password directly', () async {
@@ -556,7 +562,7 @@ void main() async {
 
   group('multi-factor authentication', () {
     test('can be enabled on a user', () async {
-      await registerAndSignInBasicUser(auth);
+      await registerAndSignInBasicUser(auth, testEmail, testPassword);
 
       // Ask the backend to generate MFA configuration, and from that, generate
       // a time-based OTP.
@@ -570,7 +576,7 @@ void main() async {
     });
 
     test('should require TOTP for sign in once enabled', () async {
-      final otpSecret = await registerMfaUser(auth);
+      final otpSecret = await registerMfaUser(auth, testEmail, testPassword);
 
       final firstFactorAuthResult = await auth.signInEmailPassword(
           email: testEmail, password: testPassword);
@@ -588,7 +594,8 @@ void main() async {
     });
 
     test('can be disabled', () async {
-      final otpSecret = await registerMfaUser(auth, signOut: false);
+      final otpSecret =
+          await registerMfaUser(auth, testEmail, testPassword, signOut: false);
 
       expect(
         auth.disableMfa(totpFromSecret(otpSecret)),

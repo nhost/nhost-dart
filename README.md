@@ -36,7 +36,7 @@ Nhost consists of open source software:
 - Authentication: [Hasura Auth](https://github.com/nhost/hasura-auth/)
 - Storage: [Hasura Storage](https://github.com/nhost/hasura-storage)
 - Serverless Functions: Node.js (JavaScript and TypeScript)
-- [Nhost CLI](https://docs.nhost.io/reference/cli) for local development
+- [Nhost CLI](https://docs.nhost.io/cli) for local development
 
 ## Architecture of Nhost
 

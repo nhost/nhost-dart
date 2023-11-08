@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:nhost_dart/nhost_dart.dart';
 import 'package:test/test.dart';
+import 'package:http/http.dart' as http;
 
 import 'setup.dart';
 
@@ -11,12 +12,10 @@ void main() async {
 
   setUpAll(() {
     initLogging();
-    initializeHttpFixturesForSuite('functions');
   });
 
   setUp(() async {
-    // Get a recording/playback HTTP client from Betamax
-    final httpClient = await setUpApiTest();
+    var httpClient = http.Client();
 
     // Create a fresh client
     client = createApiTestClient(httpClient);
