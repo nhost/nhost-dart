@@ -310,8 +310,8 @@ class NhostAuthClient implements HasuraAuthClient {
   ///
   /// Throws an [NhostException] if sign in fails.
   @override
-  Future<void> signInWithSmsPasswordless(
-    String phoneNumber, {
+  Future<void> signInWithSmsPasswordless({
+    required String phoneNumber,
     String? locale,
     String? defaultRole,
     Map<String, Object?>? metadata,
@@ -331,7 +331,6 @@ class NhostAuthClient implements HasuraAuthClient {
       if (displayName != null) 'displayName': displayName,
       if (redirectTo != null) 'redirectTo': redirectTo,
     };
-
     await _apiClient.post(
       '/signin/passwordless/sms',
       jsonBody: {
