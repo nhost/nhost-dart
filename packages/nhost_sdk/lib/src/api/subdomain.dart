@@ -13,19 +13,19 @@ class Subdomain {
   /// Project subdomain (e.g. `ieingiwnginwnfnegqwvdqwdwq`)
   ///
   /// Check out nhost dashboard and get your `subdomain`
-  /// for local development pass 'localhost' or 'localhost:1337'
+  /// for localhost development pass 'local'
   final String subdomain;
 
   /// Project region (e.g. `eu-central-1`)
   ///
   /// Check out nhost dashboard and get your `region`
   /// Project region is not required during
-  /// local development (when `subdomain` is `localhost`)
-  /// in case of localhost, you pass only empty string ''
+  /// local development (when `subdomain` is `local`)
+  /// in case of local, you pass only empty string ''
   final String region;
 
   /// When set, the admin secret is sent as a header, `x-hasura-admin-secret`,
   ///
-  /// for all requests to GraphQL, Storage, and Serverless Functions.
+  /// for all requests to GraphQL, Storage, and Functions.
   // final String? adminSecret;
 }

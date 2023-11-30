@@ -1,4 +1,4 @@
 /// https://github.com/nhost/nhost-dart/#running-the-example-server
-const subdomain = 'localhost:1337';
+const subdomain = 'local';
 const region = '';
-const functionsUrl = 'https://localhost:1337/v1/functions';
+const functionsUrl = 'https://local.functions.nhost.run';
