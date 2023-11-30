@@ -312,13 +312,26 @@ class NhostAuthClient implements HasuraAuthClient {
   @override
   Future<void> signInWithSmsPasswordless(
     String phoneNumber, {
+    String? locale,
+    String? defaultRole,
     Map<String, Object?>? metadata,
+    List<String>? roles,
+    String? displayName,
+    String? redirectTo,
   }) async {
     log.finer('Attempting sign in (passwordless SMS)');
 
+    final includeRoleOptions =
+        defaultRole != null || (roles != null && roles.isNotEmpty);
     final options = {
       if (metadata != null) 'metadata': metadata,
+      if (locale != null) 'locale': locale,
+      if (includeRoleOptions) 'defaultRole': defaultRole,
+      if (includeRoleOptions) 'allowedRoles': roles,
+      if (displayName != null) 'displayName': displayName,
+      if (redirectTo != null) 'redirectTo': redirectTo,
     };
+
     await _apiClient.post(
       '/signin/passwordless/sms',
       jsonBody: {
