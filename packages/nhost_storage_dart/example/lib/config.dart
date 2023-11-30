@@ -1,10 +1,10 @@
 import 'package:nhost_auth_dart/nhost_auth_dart.dart';
 
 /// https://github.com/nhost/nhost-dart/#running-the-example-server
-const subdomain = 'localhost:1337';
+const subdomain = 'local';
 const region = '';
-const authUrl = 'https://localhost:1337/v1/auth';
-const storageUrl = 'https://localhost:1337/v1/storage';
+const authUrl = 'https://local.auth.nhost.run';
+const storageUrl = 'https://local.storage.nhost.run';
 
 Future<void> signInOrSignUp(
   NhostAuthClient nhostAuthClient, {
