@@ -1,3 +1,7 @@
+## 5.0.0
+
+ - remove support for passing `localhost` in favor of `local` as subdomain when developing locally
+
 ## 4.1.0
 
  - **FEAT**(nhost-storage): added image transform options to getPresignedUrl (#102).
