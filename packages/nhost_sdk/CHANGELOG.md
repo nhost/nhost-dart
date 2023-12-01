@@ -1,3 +1,7 @@
+## 4.2.0
+
+ - use subdomain and region approach
+
 ## 4.1.0
 
  - **FEAT**(nhost-storage): added image transform options to getPresignedUrl (#102).

@@ -13,7 +13,7 @@ dependencies:
   http: ^1.1.0
   logging: ^1.1.0
   #Nhost_sdk
-  nhost_sdk: ^4.1.0
+  nhost_sdk: ^4.2.0
 dev_dependencies:
   lints: ^2.0.0
   test: ^1.16.0

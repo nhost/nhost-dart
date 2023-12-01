@@ -16,7 +16,7 @@ dependencies:
   path: ^1.8.0
 
   #NHOST Package
-  nhost_sdk: ^4.1.0
+  nhost_sdk: ^4.2.0
   nhost_storage_dart: ^1.1.0
   nhost_auth_dart: ^1.0.1
   nhost_functions_dart: ^1.0.1
