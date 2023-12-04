@@ -44,7 +44,15 @@ abstract class HasuraAuthClient {
   });
 
   Future<void> signInAnonymous();
-  Future<void> signInWithSmsPasswordless(String phoneNumber);
+  Future<void> signInWithSmsPasswordless({
+    required String phoneNumber,
+    String? locale,
+    String? defaultRole,
+    Map<String, Object?>? metadata,
+    List<String>? roles,
+    String? displayName,
+    String? redirectTo,
+  });
 
   Future<AuthResponse> completeSmsPasswordlessSignIn(
     String phoneNumber,
