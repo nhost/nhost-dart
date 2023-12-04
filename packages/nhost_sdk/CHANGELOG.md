@@ -1,3 +1,8 @@
+## 5.0.0
+
+ - **FEAT**(nhost_sdk): Allow metadata to be passed in signInWithSmsPassword… (#123).
+ - **CHORE**(nhpst-sdk): remove support for using `localhost` in favor of passing `local` as subdomain when developing locally
+
 ## 4.1.0
 
  - **FEAT**(nhost-storage): added image transform options to getPresignedUrl (#102).

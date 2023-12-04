@@ -1,98 +1,102 @@
+## 4.0.0
+
+- Update a dependency to the latest release.
+
 ## 3.0.1
 
- - Update a dependency to the latest release.
+- Update a dependency to the latest release.
 
 ## 3.0.0
 
- - Graduate package to a stable release. See pre-releases prior to this version for changelog entries.
+- Graduate package to a stable release. See pre-releases prior to this version for changelog entries.
 
 ## 3.0.0-dev.20
 
- - Update a dependency to the latest release.
+- Update a dependency to the latest release.
 
 ## 3.0.0-dev.19
 
- - **FIX**: depenceies graph.
+- **FIX**: depenceies graph.
 
 ## 3.0.0-dev.18
 
- - Update a dependency to the latest release.
+- Update a dependency to the latest release.
 
 ## 3.0.0-dev.17
 
- - Update a dependency to the latest release.
+- Update a dependency to the latest release.
 
 ## 3.0.0-dev.16
 
- - **FIX**: fix depenceies issue.
+- **FIX**: fix depenceies issue.
 
 ## 3.0.0-dev.15
 
- - **FIX**: update versions in readme files.
+- **FIX**: update versions in readme files.
 
 ## 3.0.0-dev.14
 
- - **FEAT**: support for hasura auth and storage client and refactor them to accept only URL.
+- **FEAT**: support for hasura auth and storage client and refactor them to accept only URL.
 
 ## 3.0.0-dev.13
 
- - **FEAT**: Support for Subdomain cloud hosting and ServiceUrls self-hosting Nhost projects.
+- **FEAT**: Support for Subdomain cloud hosting and ServiceUrls self-hosting Nhost projects.
 
 ## 3.0.0-dev.12
 
- - **FEAT**: seperating all clients into their own packages.
+- **FEAT**: seperating all clients into their own packages.
 
 ## 3.0.0-dev.11
 
- - **FIX**: downgrade meta to 1.7.
+- **FIX**: downgrade meta to 1.7.
 
 ## 3.0.0-dev.10
 
- - Update a dependency to the latest release.
+- Update a dependency to the latest release.
 
 ## 3.0.0-dev.9
 
- - Update a dependency to the latest release.
+- Update a dependency to the latest release.
 
 ## 3.0.0-dev.8
 
- - Update a dependency to the latest release.
+- Update a dependency to the latest release.
 
 ## 3.0.0-dev.7
 
- - Update a dependency to the latest release.
+- Update a dependency to the latest release.
 
 ## 3.0.0-dev.6
 
- - **FIX**: bug in server and parsing user metadata.
- - **FEAT**: support for subdomain api.
+- **FIX**: bug in server and parsing user metadata.
+- **FEAT**: support for subdomain api.
 
 ## 3.0.0-dev.5
 
- - Update a dependency to the latest release.
+- Update a dependency to the latest release.
 
 ## 3.0.0-dev.4
 
- - Update a dependency to the latest release.
+- Update a dependency to the latest release.
 
 ## 3.0.0-dev.3
 
- - Update a dependency to the latest release.
+- Update a dependency to the latest release.
 
 ## 3.0.0-dev.2
 
- - **FIX**: fix analyzer on ci for both stable and beta flutter sdk.
+- **FIX**: fix analyzer on ci for both stable and beta flutter sdk.
 
 ## 3.0.0-dev.1
 
- - Update a dependency to the latest release.
+- Update a dependency to the latest release.
 
 ## 3.0.0-dev.0
 
 > Note: This release has breaking changes.
 
- - **FIX**: upgrade deps.
- - **BREAKING** **FEAT**: increase flutter sdk constrain.
+- **FIX**: upgrade deps.
+- **BREAKING** **FEAT**: increase flutter sdk constrain.
 
 ## 2.0.4
 
