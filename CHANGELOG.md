@@ -3,6 +3,39 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 2023-12-04
+
+### Changes
+
+---
+
+Packages with breaking changes:
+
+ - `nhost_sdk` - `v5.0.0`
+
+Packages with other changes:
+
+Packages with dependency updates only:
+
+> Packages listed below depend on other packages in this workspace that have had changes. Their versions have been incremented to bump the minimum dependency versions of the packages they depend upon in this project.
+
+ - `nhost_graphql_adapter` - `v4.0.0`
+ - `nhost_storage_dart` - `v2.0.0`
+ - `nhost_functions_dart` - `v2.0.0`
+ - `nhost_auth_dart` - `v2.0.0`
+ - `nhost_gql_links` - `v4.0.0`
+ - `nhost_dart` - `v2.0.0`
+ - `nhost_flutter_auth` - `v4.0.0`
+ - `nhost_flutter_graphql` - `v4.0.0`
+
+---
+
+#### `nhost_sdk` - `v5.0.0`
+
+ - **CHORE**(nhost-sdk): remove support for using `localhost` in favor of passing `local` as subdomain when developing locally
+ - **FEAT**(nhost_sdk): Allow metadata to be passed in signInWithSmsPassword… (#123).
+
+
 ## 2023-11-09
 
 ### Changes
