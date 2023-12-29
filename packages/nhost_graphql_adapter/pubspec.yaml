@@ -14,7 +14,7 @@ dependencies:
   meta: ^1.7.0
 
   #Nhost_dart
-  nhost_gql_links: ^3.0.1
+  nhost_gql_links: ^4.0.0
   nhost_sdk: ^5.0.0
 dev_dependencies:
   async: ^2.10.0

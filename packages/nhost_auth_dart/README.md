@@ -44,5 +44,5 @@ void main() async {
 
 ```yaml
 dependencies:
-  nhost_auth_dart: ^1.0.0
+  nhost_auth_dart: ^2.0.0
 ```
