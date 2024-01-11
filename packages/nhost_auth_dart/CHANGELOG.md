@@ -1,3 +1,7 @@
+## 2.0.1
+
+ - **FIX**: point to latest dep version to fix incompatible deps.
+
 ## 2.0.0
 
  - Update a dependency to the latest release.
