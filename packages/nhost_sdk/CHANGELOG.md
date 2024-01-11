@@ -1,3 +1,7 @@
+## 5.1.0
+
+ - **FEAT**(nhost_sdk): Allow metadata to be passed in signInWithSmsPassword… (#123).
+
 ## 5.0.0
 
  - **FEAT**(nhost_sdk): Allow metadata to be passed in signInWithSmsPassword… (#123).

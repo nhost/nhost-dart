@@ -3,6 +3,60 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 2024-01-11
+
+### Changes
+
+---
+
+Packages with breaking changes:
+
+ - There are no breaking changes in this release.
+
+Packages with other changes:
+
+ - [`nhost_auth_dart` - `v2.0.1`](#nhost_auth_dart---v201)
+ - [`nhost_dart` - `v2.0.1`](#nhost_dart---v201)
+ - [`nhost_graphql_adapter` - `v4.0.1`](#nhost_graphql_adapter---v401)
+ - [`nhost_sdk` - `v5.1.0`](#nhost_sdk---v510)
+ - [`nhost_storage_dart` - `v2.0.1`](#nhost_storage_dart---v201)
+ - [`nhost_flutter_auth` - `v4.0.1`](#nhost_flutter_auth---v401)
+ - [`nhost_flutter_graphql` - `v3.0.2`](#nhost_flutter_graphql---v302)
+ - [`nhost_functions_dart` - `v2.0.1`](#nhost_functions_dart---v201)
+ - [`nhost_gql_links` - `v4.0.1`](#nhost_gql_links---v401)
+
+Packages with dependency updates only:
+
+> Packages listed below depend on other packages in this workspace that have had changes. Their versions have been incremented to bump the minimum dependency versions of the packages they depend upon in this project.
+
+ - `nhost_flutter_auth` - `v4.0.1`
+ - `nhost_flutter_graphql` - `v3.0.2`
+ - `nhost_functions_dart` - `v2.0.1`
+ - `nhost_gql_links` - `v4.0.1`
+
+---
+
+#### `nhost_auth_dart` - `v2.0.1`
+
+ - **FIX**: point to latest dep version to fix incompatible deps.
+
+#### `nhost_dart` - `v2.0.1`
+
+ - **FIX**: point to latest dep version to fix incompatible deps.
+
+#### `nhost_graphql_adapter` - `v4.0.1`
+
+ - **FIX**: point to latest dep version to fix incompatible deps.
+
+#### `nhost_sdk` - `v5.1.0`
+
+ - **FEAT**(nhost_sdk): Allow metadata to be passed in signInWithSmsPassword… (#123).
+
+#### `nhost_storage_dart` - `v2.0.1`
+
+ - **FIX**: point to latest dep version to fix incompatible deps.
+
+
 ## 2023-12-04
 
 ### Changes
