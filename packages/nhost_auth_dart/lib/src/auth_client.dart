@@ -295,10 +295,17 @@ class NhostAuthClient implements HasuraAuthClient {
   /// Nhost dashboard -> settings -> Sign in methods -> Anonymous Users
   /// Throws an [NhostException] if sign in fails.
   @override
-  Future<void> signInAnonymous() async {
+  Future<void> signInAnonymous(
+    String? displayName,
+    String? locale,
+  ) async {
     log.finer('Attempting sign in anonymously');
     await _apiClient.post(
       '/signin/anonymous',
+      jsonBody: {
+        if (displayName != null) 'displayName': displayName,
+        if (locale != null) 'locale': locale,
+      },
     );
   }
 

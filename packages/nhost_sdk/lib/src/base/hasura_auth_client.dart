@@ -43,7 +43,10 @@ abstract class HasuraAuthClient {
     String? redirectTo,
   });
 
-  Future<void> signInAnonymous();
+  Future<void> signInAnonymous(
+    String? displayName,
+    String? locale,
+  );
   Future<void> signInWithSmsPasswordless({
     required String phoneNumber,
     String? locale,
