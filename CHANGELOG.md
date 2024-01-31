@@ -3,6 +3,71 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 2024-01-31
+
+### Changes
+
+---
+
+Packages with breaking changes:
+
+ - There are no breaking changes in this release.
+
+Packages with other changes:
+
+ - [`nhost_auth_dart` - `v2.0.2`](#nhost_auth_dart---v202)
+ - [`nhost_dart` - `v2.0.2`](#nhost_dart---v202)
+ - [`nhost_flutter_auth` - `v4.0.2`](#nhost_flutter_auth---v402)
+ - [`nhost_flutter_graphql` - `v3.0.3`](#nhost_flutter_graphql---v303)
+ - [`nhost_functions_dart` - `v2.0.2`](#nhost_functions_dart---v202)
+ - [`nhost_gql_links` - `v4.0.3`](#nhost_gql_links---v403)
+ - [`nhost_graphql_adapter` - `v4.0.2`](#nhost_graphql_adapter---v402)
+ - [`nhost_sdk` - `v5.1.1`](#nhost_sdk---v511)
+ - [`nhost_storage_dart` - `v2.0.2`](#nhost_storage_dart---v202)
+
+---
+
+#### `nhost_auth_dart` - `v2.0.2`
+
+ - **FIX**: point to latest dep version to fix incompatible deps (#128).
+ - **FIX**: point to latest dep version to fix incompatible deps.
+
+#### `nhost_dart` - `v2.0.2`
+
+ - **FIX**: point to latest dep version to fix incompatible deps (#128).
+ - **FIX**: point to latest dep version to fix incompatible deps.
+
+#### `nhost_flutter_auth` - `v4.0.2`
+
+ - **FIX**: point to latest dep version to fix incompatible deps (#128).
+
+#### `nhost_flutter_graphql` - `v3.0.3`
+
+ - **FIX**: point to latest dep version to fix incompatible deps (#128).
+
+#### `nhost_functions_dart` - `v2.0.2`
+
+ - **FIX**: point to latest dep version to fix incompatible deps (#128).
+
+#### `nhost_gql_links` - `v4.0.3`
+
+ - **FIX**: point to latest dep version to fix incompatible deps (#128).
+
+#### `nhost_graphql_adapter` - `v4.0.2`
+
+ - **FIX**: point to latest dep version to fix incompatible deps (#128).
+ - **FIX**: point to latest dep version to fix incompatible deps.
+
+#### `nhost_sdk` - `v5.1.1`
+
+ - **FIX**: point to latest dep version to fix incompatible deps (#128).
+
+#### `nhost_storage_dart` - `v2.0.2`
+
+ - **FIX**: point to latest dep version to fix incompatible deps (#128).
+ - **FIX**: point to latest dep version to fix incompatible deps.
+
+
 ## 2024-01-11
 
 ### Changes

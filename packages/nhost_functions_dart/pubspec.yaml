@@ -1,6 +1,6 @@
 name: nhost_functions_dart
 description: Nhost Dart Functions Service SDK
-version: 2.0.1
+version: 2.0.2
 homepage: https://nhost.io
 repository: https://github.com/nhost/nhost-dart/tree/main/packages/nhost_sdk
 issue_tracker: https://github.com/nhost/nhost-dart/issues
@@ -13,7 +13,7 @@ dependencies:
   http: ^1.1.0
   logging: ^1.1.0
   #Nhost_sdk
-  nhost_sdk: ^5.1.0
+  nhost_sdk: ^5.1.1
 dev_dependencies:
   lints: ^2.0.0
   test: ^1.16.0

@@ -1,3 +1,7 @@
+## 4.0.3
+
+ - **FIX**: point to latest dep version to fix incompatible deps (#128).
+
 ## 4.0.1
 
  - Update a dependency to the latest release.
