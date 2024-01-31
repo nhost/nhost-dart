@@ -1,4 +1,3 @@
-/// Describes a file stored by Nhost.
 import 'package:nhost_sdk/nhost_sdk.dart';
 
 ///
