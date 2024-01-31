@@ -1,3 +1,7 @@
+## 5.1.1
+
+ - **FIX**: point to latest dep version to fix incompatible deps (#128).
+
 ## 5.1.0
 
  - **FEAT**(nhost_sdk): Allow metadata to be passed in signInWithSmsPassword… (#123).

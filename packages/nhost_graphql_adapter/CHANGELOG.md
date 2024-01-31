@@ -1,3 +1,8 @@
+## 4.0.2
+
+ - **FIX**: point to latest dep version to fix incompatible deps (#128).
+ - **FIX**: point to latest dep version to fix incompatible deps.
+
 ## 4.0.1
 
  - **FIX**: point to latest dep version to fix incompatible deps.
