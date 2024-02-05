@@ -298,15 +298,31 @@ class NhostAuthClient implements HasuraAuthClient {
   Future<void> signInAnonymous(
     String? displayName,
     String? locale,
+    Map<String, dynamic>? metadata,
   ) async {
     log.finer('Attempting sign in anonymously');
-    await _apiClient.post(
-      '/signin/anonymous',
-      jsonBody: {
-        if (displayName != null) 'displayName': displayName,
-        if (locale != null) 'locale': locale,
-      },
-    );
+
+    AuthResponse? res;
+    try {
+      res = await _apiClient.post(
+        '/signin/anonymous',
+        jsonBody: {
+          if (displayName != null) 'displayName': displayName,
+          if (locale != null) 'locale': locale,
+          if (metadata != null) 'metadata': metadata
+        },
+        responseDeserializer: AuthResponse.fromJson,
+      );
+    } catch (e, st) {
+      log.finer('Sign in anonymously failed', e, st);
+      await clearSession();
+      rethrow;
+    }
+
+    if (res != null) {
+      log.finer('Sign in anonymously successful');
+      await setSession(res.session!);
+    }
   }
 
   /// Authenticates a user using a [phoneNumber].

@@ -46,6 +46,7 @@ abstract class HasuraAuthClient {
   Future<void> signInAnonymous(
     String? displayName,
     String? locale,
+    Map<String, dynamic>? metadata,
   );
   Future<void> signInWithSmsPasswordless({
     required String phoneNumber,
