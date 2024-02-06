@@ -1,3 +1,11 @@
+## 5.3.0
+
+ - **FEAT**(nhost_flutter_auth): Allow displayName and locale to be passed on signInAnonymous (#131).
+
+## 5.2.0
+
+ - **FEAT**(nhost_flutter_auth): Allow displayName and locale to be passed on signInAnonymous (#131).
+
 ## 5.1.1
 
  - **FIX**: point to latest dep version to fix incompatible deps (#128).

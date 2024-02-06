@@ -3,6 +3,96 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 2024-02-06
+
+### Changes
+
+---
+
+Packages with breaking changes:
+
+ - There are no breaking changes in this release.
+
+Packages with other changes:
+
+ - [`nhost_auth_dart` - `v2.2.0`](#nhost_auth_dart---v220)
+ - [`nhost_sdk` - `v5.3.0`](#nhost_sdk---v530)
+ - [`nhost_dart` - `v2.0.4`](#nhost_dart---v204)
+ - [`nhost_flutter_auth` - `v4.0.4`](#nhost_flutter_auth---v404)
+ - [`nhost_flutter_graphql` - `v3.0.5`](#nhost_flutter_graphql---v305)
+ - [`nhost_graphql_adapter` - `v4.0.4`](#nhost_graphql_adapter---v404)
+ - [`nhost_storage_dart` - `v2.0.4`](#nhost_storage_dart---v204)
+ - [`nhost_functions_dart` - `v2.0.4`](#nhost_functions_dart---v204)
+ - [`nhost_gql_links` - `v4.0.5`](#nhost_gql_links---v405)
+
+Packages with dependency updates only:
+
+> Packages listed below depend on other packages in this workspace that have had changes. Their versions have been incremented to bump the minimum dependency versions of the packages they depend upon in this project.
+
+ - `nhost_dart` - `v2.0.4`
+ - `nhost_flutter_auth` - `v4.0.4`
+ - `nhost_flutter_graphql` - `v3.0.5`
+ - `nhost_graphql_adapter` - `v4.0.4`
+ - `nhost_storage_dart` - `v2.0.4`
+ - `nhost_functions_dart` - `v2.0.4`
+ - `nhost_gql_links` - `v4.0.5`
+
+---
+
+#### `nhost_auth_dart` - `v2.2.0`
+
+ - **FEAT**(nhost_flutter_auth): Allow displayName and locale to be passed on signInAnonymous (#131).
+
+#### `nhost_sdk` - `v5.3.0`
+
+ - **FEAT**(nhost_flutter_auth): Allow displayName and locale to be passed on signInAnonymous (#131).
+
+
+## 2024-02-06
+
+### Changes
+
+---
+
+Packages with breaking changes:
+
+ - There are no breaking changes in this release.
+
+Packages with other changes:
+
+ - [`nhost_auth_dart` - `v2.1.0`](#nhost_auth_dart---v210)
+ - [`nhost_sdk` - `v5.2.0`](#nhost_sdk---v520)
+ - [`nhost_dart` - `v2.0.3`](#nhost_dart---v203)
+ - [`nhost_flutter_auth` - `v4.0.3`](#nhost_flutter_auth---v403)
+ - [`nhost_flutter_graphql` - `v3.0.4`](#nhost_flutter_graphql---v304)
+ - [`nhost_storage_dart` - `v2.0.3`](#nhost_storage_dart---v203)
+ - [`nhost_graphql_adapter` - `v4.0.3`](#nhost_graphql_adapter---v403)
+ - [`nhost_functions_dart` - `v2.0.3`](#nhost_functions_dart---v203)
+ - [`nhost_gql_links` - `v4.0.4`](#nhost_gql_links---v404)
+
+Packages with dependency updates only:
+
+> Packages listed below depend on other packages in this workspace that have had changes. Their versions have been incremented to bump the minimum dependency versions of the packages they depend upon in this project.
+
+ - `nhost_dart` - `v2.0.3`
+ - `nhost_flutter_auth` - `v4.0.3`
+ - `nhost_flutter_graphql` - `v3.0.4`
+ - `nhost_storage_dart` - `v2.0.3`
+ - `nhost_graphql_adapter` - `v4.0.3`
+ - `nhost_functions_dart` - `v2.0.3`
+ - `nhost_gql_links` - `v4.0.4`
+
+---
+
+#### `nhost_auth_dart` - `v2.1.0`
+
+ - **FEAT**(nhost_flutter_auth): Allow displayName and locale to be passed on signInAnonymous (#131).
+
+#### `nhost_sdk` - `v5.2.0`
+
+ - **FEAT**(nhost_flutter_auth): Allow displayName and locale to be passed on signInAnonymous (#131).
+
+
 ## 2024-01-31
 
 ### Changes
