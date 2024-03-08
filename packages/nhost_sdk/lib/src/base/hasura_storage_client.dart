@@ -66,7 +66,7 @@ abstract class HasuraStorageClient {
   void close();
 
   Future<FileMetadataBase> uploadBytes({
-    required String fileName,
+    String? fileName,
     required List<int> fileContents,
     String? fileId,
     String? bucketId,

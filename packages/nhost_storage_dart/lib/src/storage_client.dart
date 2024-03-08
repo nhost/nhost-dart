@@ -41,7 +41,7 @@ class NhostStorageClient implements HasuraStorageClient {
   /// Throws an [ApiException] if the upload fails.
   @override
   Future<FileMetadata> uploadBytes({
-    required String fileName,
+    String? fileName,
     required List<int> fileContents,
     String? fileId,
     String? bucketId,
