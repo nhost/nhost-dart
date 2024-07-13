@@ -95,6 +95,9 @@ class User {
     required this.isAnonymous,
     required this.defaultRole,
     required this.roles,
+    required this.emailVerified,
+    required this.phoneNumber,
+    required this.phoneNumberVerified,
     this.metadata,
     this.email,
     this.avatarUrl,
@@ -113,6 +116,9 @@ class User {
   final String defaultRole;
   final List<String> roles;
   final Map<String, Object?>? metadata;
+  final bool emailVerified;
+  final String phoneNumber;
+  final bool phoneNumberVerified;
 
   static User fromJson(dynamic json) {
     return User(
@@ -130,6 +136,9 @@ class User {
       metadata: json['metadata'] == null
           ? null
           : <String, Object?>{...json['metadata']},
+      emailVerified: json['emailVerified'] as bool,
+      phoneNumber: json['phoneNumber'] as String,
+      phoneNumberVerified: json['phoneNumberVerified'] as bool,
     );
   }
 
@@ -145,6 +154,9 @@ class User {
       'defaultRole': defaultRole,
       'metadata': metadata,
       'roles': roles,
+      'emailVerified': emailVerified,
+      'phoneNumber': phoneNumber,
+      'phoneNumberVerified': phoneNumberVerified,
     };
   }
 
@@ -161,6 +173,9 @@ class User {
       'metadata': metadata,
       'email': email,
       'avatarUrl': avatarUrl,
+      'emailVerified': emailVerified,
+      'phoneNumber': phoneNumber,
+      'phoneNumberVerified': phoneNumberVerified,
     }.toString();
   }
 }
