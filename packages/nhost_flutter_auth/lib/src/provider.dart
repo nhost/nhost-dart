@@ -52,7 +52,7 @@ class AuthNotifier extends ChangeNotifier
   int get hashCode => value.hashCode;
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     if (identical(this, other)) return true;
     if (other.runtimeType != runtimeType) return false;
     return other is AuthNotifier && other.value == value;
