@@ -25,6 +25,9 @@ User createTestUser({required String id, required String email}) {
     roles: ['user'],
     isAnonymous: false,
     metadata: {'age': 14, 'height': 162},
+    emailVerified: true,
+    phoneNumber: defaultTestPhone,
+    phoneNumberVerified: true,
   );
 }
 
