@@ -1,3 +1,7 @@
+## 5.3.1
+
+ - **FIX**: handle null phoneNumber in User fromJson.
+
 ## 5.3.0
 
  - **FEAT**(nhost_flutter_auth): Allow displayName and locale to be passed on signInAnonymous (#131).

@@ -11,4 +11,4 @@ dependencies:
   # Nhost packages
   nhost_storage_dart:
     path: ../
-  nhost_auth_dart: ^2.2.0
+  nhost_auth_dart: ^2.2.1

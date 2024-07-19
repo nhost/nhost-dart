@@ -3,6 +3,51 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 2024-07-19
+
+### Changes
+
+---
+
+Packages with breaking changes:
+
+ - There are no breaking changes in this release.
+
+Packages with other changes:
+
+ - [`nhost_dart` - `v2.0.5`](#nhost_dart---v205)
+ - [`nhost_sdk` - `v5.3.1`](#nhost_sdk---v531)
+ - [`nhost_flutter_auth` - `v4.0.5`](#nhost_flutter_auth---v405)
+ - [`nhost_flutter_graphql` - `v3.0.6`](#nhost_flutter_graphql---v306)
+ - [`nhost_graphql_adapter` - `v4.0.5`](#nhost_graphql_adapter---v405)
+ - [`nhost_storage_dart` - `v2.0.5`](#nhost_storage_dart---v205)
+ - [`nhost_gql_links` - `v4.0.6`](#nhost_gql_links---v406)
+ - [`nhost_auth_dart` - `v2.2.1`](#nhost_auth_dart---v221)
+ - [`nhost_functions_dart` - `v2.0.5`](#nhost_functions_dart---v205)
+
+Packages with dependency updates only:
+
+> Packages listed below depend on other packages in this workspace that have had changes. Their versions have been incremented to bump the minimum dependency versions of the packages they depend upon in this project.
+
+ - `nhost_flutter_auth` - `v4.0.5`
+ - `nhost_flutter_graphql` - `v3.0.6`
+ - `nhost_graphql_adapter` - `v4.0.5`
+ - `nhost_storage_dart` - `v2.0.5`
+ - `nhost_gql_links` - `v4.0.6`
+ - `nhost_auth_dart` - `v2.2.1`
+ - `nhost_functions_dart` - `v2.0.5`
+
+---
+
+#### `nhost_dart` - `v2.0.5`
+
+ - **FIX**: test: add required parameter.
+
+#### `nhost_sdk` - `v5.3.1`
+
+ - **FIX**: handle null phoneNumber in User fromJson.
+
+
 ## 2024-02-06
 
 ### Changes
