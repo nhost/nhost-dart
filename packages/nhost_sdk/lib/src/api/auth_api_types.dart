@@ -137,7 +137,7 @@ class User {
           ? null
           : <String, Object?>{...json['metadata']},
       emailVerified: json['emailVerified'] as bool,
-      phoneNumber: json['phoneNumber'] as String,
+      phoneNumber: json['phoneNumber'] ?? '',
       phoneNumberVerified: json['phoneNumberVerified'] as bool,
     );
   }
