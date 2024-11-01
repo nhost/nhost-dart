@@ -13,6 +13,7 @@ dependencies:
   provider: '>=6.0.4'
   shared_preferences: ^2.0.15
   url_launcher: ^6.1.7
+  flutter_secure_storage: ^9.2.2
 
   # Nhost packages
   nhost_flutter_auth:
