@@ -263,22 +263,27 @@ class NhostAuthClient implements HasuraAuthClient {
     return res;
   }
 
-  /// Authenticates a user using an [idToken].
+  /// Authenticates a user using an ID token from a third-party provider.
   ///
-  /// If the user has multi-factor authentication enabled, the returned
-  /// [AuthResponse] will only have its [AuthResponse.mfa] field set, which can
-  /// then be used to complete the sign in via [completeMfaSignIn] alongside the
-  /// user's one-time-password.
+  /// This method allows users to sign in using an OpenID Connect [idToken] from a specified
+  /// [provider] (google, apple). An optional [nonce] parameter can be provided for additional security.
   ///
   /// Throws an [NhostException] if sign in fails.
   @override
   Future<AuthResponse> signInIdToken({
     required String provider,
     required String idToken,
-    String? nonce
+    String? nonce,
+    String? locale,
+    String? defaultRole,
+    Map<String, Object?>? metadata,
+    List<String>? roles,
+    String? displayName,
+    String? redirectTo,
   }) async {
     log.finer('Attempting sign in (idToken)');
     AuthResponse? res;
+
     try {
       res = await _apiClient.post(
         '/signin/idtoken',
@@ -286,6 +291,12 @@ class NhostAuthClient implements HasuraAuthClient {
           'provider': provider,
           'idToken': idToken,
           if (nonce != null) 'nonce': nonce,
+          if (locale != null) 'locale': locale,
+          if (defaultRole != null) 'defaultRole': defaultRole,
+          if (metadata != null) 'metadata': metadata,
+          if (roles != null) 'roles': roles,
+          if (displayName != null) 'displayName': displayName,
+          if (redirectTo != null) 'redirectTo': redirectTo,
         },
         responseDeserializer: AuthResponse.fromJson,
       );
@@ -295,16 +306,15 @@ class NhostAuthClient implements HasuraAuthClient {
       rethrow;
     }
 
-    // If multi-factor is enabled, a second step is required before we've fully
-    // logged in.
-    if (res!.mfa != null) {
-      log.finer('Sign in requires MFA');
+    if (res != null) {
+      log.finer('Sign in successful');
+      await setSession(res.session!);
       return res;
+    } else {
+      throw AuthServiceException(
+        'Sign in failed',
+      );
     }
-
-    log.finer('Sign in successful');
-    await setSession(res.session!);
-    return res;
   }
 
   /// Signs in a user with a magic link.
