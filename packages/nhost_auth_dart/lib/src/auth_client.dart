@@ -263,6 +263,50 @@ class NhostAuthClient implements HasuraAuthClient {
     return res;
   }
 
+  /// Authenticates a user using an [idToken].
+  ///
+  /// If the user has multi-factor authentication enabled, the returned
+  /// [AuthResponse] will only have its [AuthResponse.mfa] field set, which can
+  /// then be used to complete the sign in via [completeMfaSignIn] alongside the
+  /// user's one-time-password.
+  ///
+  /// Throws an [NhostException] if sign in fails.
+  @override
+  Future<AuthResponse> signInIdToken({
+    required String provider,
+    required String idToken,
+    String? nonce
+  }) async {
+    log.finer('Attempting sign in (idToken)');
+    AuthResponse? res;
+    try {
+      res = await _apiClient.post(
+        '/signin/idtoken',
+        jsonBody: {
+          'provider': provider,
+          'idToken': idToken,
+          if (nonce != null) 'nonce': nonce,
+        },
+        responseDeserializer: AuthResponse.fromJson,
+      );
+    } catch (e, st) {
+      log.finer('Sign in failed', e, st);
+      await clearSession();
+      rethrow;
+    }
+
+    // If multi-factor is enabled, a second step is required before we've fully
+    // logged in.
+    if (res!.mfa != null) {
+      log.finer('Sign in requires MFA');
+      return res;
+    }
+
+    log.finer('Sign in successful');
+    await setSession(res.session!);
+    return res;
+  }
+
   /// Signs in a user with a magic link.
   ///
   /// An email will be sent to the [email] with a link. When the user
