@@ -317,6 +317,34 @@ class NhostAuthClient implements HasuraAuthClient {
     }
   }
 
+  /// Links an existing user account to a third-party provider using an OpenID Connect [idToken].
+  ///
+  /// This method enables linking a user account with an OpenID Connect [idToken] from a specified
+  /// [provider], such as "google" or "apple". You can optionally provide a [nonce] for enhanced security.
+  ///
+  /// Throws an [NhostException] if the link attempt fails.
+  @override
+  Future<void> linkIdToken({
+    required String provider,
+    required String idToken,
+    String? nonce,
+  }) async {
+    try {
+      await _apiClient.post<String>(
+        '/link/idtoken',
+        jsonBody: {
+          'provider': provider,
+          'idToken': idToken,
+          if (nonce != null) 'nonce': nonce,
+        },
+        headers: _session.authenticationHeaders,
+      );
+    } on NhostException catch (e) {
+      throw AuthServiceException(
+          'Failed to link account with provider $provider');
+    }
+  }
+
   /// Signs in a user with a magic link.
   ///
   /// An email will be sent to the [email] with a link. When the user
