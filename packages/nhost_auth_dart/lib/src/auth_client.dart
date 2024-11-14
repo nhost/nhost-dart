@@ -329,20 +329,15 @@ class NhostAuthClient implements HasuraAuthClient {
     required String idToken,
     String? nonce,
   }) async {
-    try {
-      await _apiClient.post<String>(
-        '/link/idtoken',
-        jsonBody: {
-          'provider': provider,
-          'idToken': idToken,
-          if (nonce != null) 'nonce': nonce,
-        },
-        headers: _session.authenticationHeaders,
-      );
-    } on NhostException catch (e) {
-      throw AuthServiceException(
-          'Failed to link account with provider $provider');
-    }
+    await _apiClient.post<String>(
+      '/link/idtoken',
+      jsonBody: {
+        'provider': provider,
+        'idToken': idToken,
+        if (nonce != null) 'nonce': nonce,
+      },
+      headers: _session.authenticationHeaders,
+    );
   }
 
   /// Signs in a user with a magic link.
