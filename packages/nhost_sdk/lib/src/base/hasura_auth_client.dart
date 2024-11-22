@@ -38,6 +38,12 @@ abstract class HasuraAuthClient {
     required String password,
   });
 
+  Future<AuthResponse> signInIdToken(
+      {required String provider, required String idToken, String? nonce});
+
+  Future<void> linkIdToken(
+      {required String provider, required String idToken, String? nonce});
+
   Future<void> signInWithEmailPasswordless(
     String email, {
     String? redirectTo,
