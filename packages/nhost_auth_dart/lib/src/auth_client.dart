@@ -379,6 +379,59 @@ class NhostAuthClient implements HasuraAuthClient {
     return res;
   }
 
+  /// Attempts to send an OTP to the specified [email] to begin the sign-in process
+  ///
+  /// Throws an [NhostException] if the request fails
+  @override
+  Future<void> signInEmailOTP({
+    required String email,
+    String? locale,
+    String? defaultRole,
+    Map<String, Object?>? metadata,
+    List<String>? roles,
+    String? displayName,
+    String? redirectTo,
+  }) async {
+    log.finer('Attempting sign in (otp)');
+
+    final includeRoleOptions =
+        defaultRole != null || (roles != null && roles.isNotEmpty);
+    final options = {
+      if (metadata != null) 'metadata': metadata,
+      if (locale != null) 'locale': locale,
+      if (includeRoleOptions) 'defaultRole': defaultRole,
+      if (includeRoleOptions) 'allowedRoles': roles,
+      if (displayName != null) 'displayName': displayName,
+      if (redirectTo != null) 'redirectTo': redirectTo,
+    };
+    await _apiClient.post(
+      '/signin/otp/email',
+      jsonBody: {
+        'email': email,
+        if (options.isNotEmpty) 'options': options,
+      },
+    );
+  }
+
+  /// Attempts to verify the one-time password (OTP) and complete the sign-in process
+  ///
+  /// Throws an [NhostException] if verification fails
+  @override
+  Future<AuthResponse> verifyEmailOTP(
+    String email,
+    String otp,
+  ) async {
+    final res = await _apiClient.post(
+      '/signin/otp/email/verify',
+      jsonBody: {'email': email, 'otp': otp},
+      responseDeserializer: AuthResponse.fromJson,
+    );
+
+    log.finer('Sign in successful');
+    await setSession(res.session!);
+    return res;
+  }
+
   /// Attempts a sign in using the credentials stored in the [AuthStore]
   /// provided during construction.
   ///

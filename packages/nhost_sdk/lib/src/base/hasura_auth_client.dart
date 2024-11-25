@@ -63,6 +63,21 @@ abstract class HasuraAuthClient {
     String otp,
   );
 
+  Future<void> signInEmailOTP({
+    required String email,
+    String? locale,
+    String? defaultRole,
+    Map<String, Object?>? metadata,
+    List<String>? roles,
+    String? displayName,
+    String? redirectTo,
+  });
+
+  Future<AuthResponse> verifyEmailOTP(
+    String email,
+    String otp,
+  );
+
   Future<AuthResponse> signInWithStoredCredentials();
   Future<AuthResponse> signInWithRefreshToken(String refreshToken);
 
