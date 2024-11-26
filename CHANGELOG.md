@@ -3,6 +3,71 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 2024-11-26
+
+### Changes
+
+---
+
+Packages with breaking changes:
+
+ - There are no breaking changes in this release.
+
+Packages with other changes:
+
+ - [`nhost_auth_dart` - `v2.3.0`](#nhost_auth_dart---v230)
+ - [`nhost_dart` - `v2.0.6`](#nhost_dart---v206)
+ - [`nhost_flutter_auth` - `v4.0.6`](#nhost_flutter_auth---v406)
+ - [`nhost_flutter_graphql` - `v3.0.7`](#nhost_flutter_graphql---v307)
+ - [`nhost_functions_dart` - `v2.0.6`](#nhost_functions_dart---v206)
+ - [`nhost_graphql_adapter` - `v4.0.6`](#nhost_graphql_adapter---v406)
+ - [`nhost_sdk` - `v5.4.0`](#nhost_sdk---v540)
+ - [`nhost_storage_dart` - `v2.0.6`](#nhost_storage_dart---v206)
+ - [`nhost_gql_links` - `v4.0.7`](#nhost_gql_links---v407)
+
+Packages with dependency updates only:
+
+> Packages listed below depend on other packages in this workspace that have had changes. Their versions have been incremented to bump the minimum dependency versions of the packages they depend upon in this project.
+
+ - `nhost_gql_links` - `v4.0.7`
+
+---
+
+#### `nhost_auth_dart` - `v2.3.0`
+
+ - **REFACTOR**: remove unnecessary and unused files (#148).
+ - **FEAT**: add email OTP sign-in and verification methods (#150).
+
+#### `nhost_dart` - `v2.0.6`
+
+ - **FIX**: test: add required parameter.
+
+#### `nhost_flutter_auth` - `v4.0.6`
+
+ - **REFACTOR**: remove unnecessary and unused files (#148).
+
+#### `nhost_flutter_graphql` - `v3.0.7`
+
+ - **REFACTOR**: remove unnecessary and unused files (#148).
+
+#### `nhost_functions_dart` - `v2.0.6`
+
+ - **REFACTOR**: remove unnecessary and unused files (#148).
+
+#### `nhost_graphql_adapter` - `v4.0.6`
+
+ - **REFACTOR**: remove unnecessary and unused files (#148).
+
+#### `nhost_sdk` - `v5.4.0`
+
+ - **FIX**: handle null phoneNumber in User fromJson.
+ - **FEAT**: add email OTP sign-in and verification methods (#150).
+
+#### `nhost_storage_dart` - `v2.0.6`
+
+ - **REFACTOR**: remove unnecessary and unused files (#148).
+
+
 ## 2024-07-19
 
 ### Changes

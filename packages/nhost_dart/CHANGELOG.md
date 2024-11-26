@@ -1,3 +1,7 @@
+## 2.0.6
+
+ - **FIX**: test: add required parameter.
+
 ## 2.0.5
 
  - **FIX**: test: add required parameter.
