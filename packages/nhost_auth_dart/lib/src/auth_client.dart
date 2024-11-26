@@ -263,6 +263,83 @@ class NhostAuthClient implements HasuraAuthClient {
     return res;
   }
 
+  /// Authenticates a user using an ID token from a third-party provider.
+  ///
+  /// This method allows users to sign in using an OpenID Connect [idToken] from a specified
+  /// [provider] (google, apple). An optional [nonce] parameter can be provided for additional security.
+  ///
+  /// Throws an [NhostException] if sign in fails.
+  @override
+  Future<AuthResponse> signInIdToken({
+    required String provider,
+    required String idToken,
+    String? nonce,
+    String? locale,
+    String? defaultRole,
+    Map<String, Object?>? metadata,
+    List<String>? roles,
+    String? displayName,
+    String? redirectTo,
+  }) async {
+    log.finer('Attempting sign in (idToken)');
+    AuthResponse? res;
+
+    try {
+      res = await _apiClient.post(
+        '/signin/idtoken',
+        jsonBody: {
+          'provider': provider,
+          'idToken': idToken,
+          if (nonce != null) 'nonce': nonce,
+          if (locale != null) 'locale': locale,
+          if (defaultRole != null) 'defaultRole': defaultRole,
+          if (metadata != null) 'metadata': metadata,
+          if (roles != null) 'roles': roles,
+          if (displayName != null) 'displayName': displayName,
+          if (redirectTo != null) 'redirectTo': redirectTo,
+        },
+        responseDeserializer: AuthResponse.fromJson,
+      );
+    } catch (e, st) {
+      log.finer('Sign in failed', e, st);
+      await clearSession();
+      rethrow;
+    }
+
+    if (res != null) {
+      log.finer('Sign in successful');
+      await setSession(res.session!);
+      return res;
+    } else {
+      throw AuthServiceException(
+        'Sign in failed',
+      );
+    }
+  }
+
+  /// Links an existing user account to a third-party provider using an OpenID Connect [idToken].
+  ///
+  /// This method enables linking a user account with an OpenID Connect [idToken] from a specified
+  /// [provider], such as "google" or "apple". You can optionally provide a [nonce] for enhanced security.
+  ///
+  /// Throws an [NhostException] if the link attempt fails.
+  @override
+  Future<void> linkIdToken({
+    required String provider,
+    required String idToken,
+    String? nonce,
+  }) async {
+    await _apiClient.post<String>(
+      '/link/idtoken',
+      jsonBody: {
+        'provider': provider,
+        'idToken': idToken,
+        if (nonce != null) 'nonce': nonce,
+      },
+      headers: _session.authenticationHeaders,
+    );
+  }
+
   /// Signs in a user with a magic link.
   ///
   /// An email will be sent to the [email] with a link. When the user
