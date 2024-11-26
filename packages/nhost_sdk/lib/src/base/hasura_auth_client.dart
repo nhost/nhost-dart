@@ -74,9 +74,7 @@ abstract class HasuraAuthClient {
   });
 
   Future<AuthResponse> verifyEmailOTP(
-    String email,
-    String otp,
-  );
+      {required String email, required String otp});
 
   Future<AuthResponse> signInWithStoredCredentials();
   Future<AuthResponse> signInWithRefreshToken(String refreshToken);

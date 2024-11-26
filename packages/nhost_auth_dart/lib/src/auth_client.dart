@@ -417,10 +417,10 @@ class NhostAuthClient implements HasuraAuthClient {
   ///
   /// Throws an [NhostException] if verification fails
   @override
-  Future<AuthResponse> verifyEmailOTP(
-    String email,
-    String otp,
-  ) async {
+  Future<AuthResponse> verifyEmailOTP({
+    required String email,
+    required String otp,
+  }) async {
     final res = await _apiClient.post(
       '/signin/otp/email/verify',
       jsonBody: {'email': email, 'otp': otp},
