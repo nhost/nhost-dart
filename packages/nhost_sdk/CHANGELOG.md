@@ -1,3 +1,7 @@
+## 5.5.0
+
+ - **FEAT**: add support for sign-in with id token (#149).
+
 ## 5.4.0
 
  - **FIX**: handle null phoneNumber in User fromJson.
