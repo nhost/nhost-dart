@@ -1,5 +1,5 @@
 name: nhost_graphql_adapter
-version: 4.0.6
+version: 4.0.7
 description: Easily connect to your Nhost.io GraphQL backend using the graphql package.
 homepage: https://nhost.io
 repository: https://github.com/nhost/nhost-dart/tree/main/packages/nhost_graphql_adapter
@@ -14,8 +14,8 @@ dependencies:
   meta: ^1.7.0
 
   #Nhost_dart
-  nhost_gql_links: ^4.0.7
-  nhost_sdk: ^5.4.0
+  nhost_gql_links: ^4.0.8
+  nhost_sdk: ^5.5.0
 dev_dependencies:
   async: ^2.10.0
   lints: any

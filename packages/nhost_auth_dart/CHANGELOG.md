@@ -1,3 +1,7 @@
+## 2.4.0
+
+ - **FEAT**: add support for sign-in with id token (#149).
+
 ## 2.3.0
 
  - **REFACTOR**: remove unnecessary and unused files (#148).
