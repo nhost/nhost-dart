@@ -10,6 +10,6 @@ dependencies:
   graphql: ^5.2.0-beta.9
 
   # Nhost packages
-  nhost_dart: ^2.0.5
+  nhost_dart: ^2.0.7
 dev_dependencies:
   lints: any
