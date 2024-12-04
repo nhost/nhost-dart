@@ -21,6 +21,14 @@
       "type": "dart"
     },
     {
+      "name": "nhost_flutter_auth_oauth_webview",
+      "cwd": "packages/nhost_flutter_auth/example",
+      "program": "lib/oauth_webview_example.dart",
+      "request": "launch",
+      "flutterMode": "debug",
+      "type": "dart"
+    },
+    {
       "name": "nhost_flutter_graphql",
       "cwd": "packages/nhost_flutter_graphql/example",
       "request": "launch",
