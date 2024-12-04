@@ -114,14 +114,18 @@ class ProviderSignInForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         TextButton(
           onPressed: () async {
-            final Uri? uri = await Navigator.of(context).push(MaterialPageRoute(
+            final Uri? uri = await Navigator.of(context).push(
+              MaterialPageRoute(
                 builder: (context) => OAuthWebView(
-                      initialUrl: Uri.parse(nhostFacebookOAuthUrl),
-                      redirectUrl: 'https://yourdomain.com',
-                    )));
+                  initialUrl: WebUri(nhostFacebookOAuthUrl),
+                  redirectUrl: 'https://yourdomain.com',
+                ),
+              ),
+            );
 
             if (uri != null) {
               await nhostClient.auth.completeOAuthProviderSignIn(uri);
@@ -131,11 +135,14 @@ class ProviderSignInForm extends StatelessWidget {
         ),
         TextButton(
           onPressed: () async {
-            final Uri? uri = await Navigator.of(context).push(MaterialPageRoute(
+            final Uri? uri = await Navigator.of(context).push(
+              MaterialPageRoute(
                 builder: (context) => OAuthWebView(
-                      initialUrl: Uri.parse(nhostGoogleOAuthUrl),
-                      redirectUrl: 'https://yourdomain.com',
-                    )));
+                  initialUrl: WebUri(nhostGoogleOAuthUrl),
+                  redirectUrl: 'https://yourdomain.com',
+                ),
+              ),
+            );
 
             if (uri != null) {
               await nhostClient.auth.completeOAuthProviderSignIn(uri);
@@ -145,11 +152,14 @@ class ProviderSignInForm extends StatelessWidget {
         ),
         TextButton(
           onPressed: () async {
-            final Uri? uri = await Navigator.of(context).push(MaterialPageRoute(
+            final Uri? uri = await Navigator.of(context).push(
+              MaterialPageRoute(
                 builder: (context) => OAuthWebView(
-                      initialUrl: Uri.parse(nhostAppleOAuthUrl),
-                      redirectUrl: 'https://yourdomain.com',
-                    )));
+                  initialUrl: WebUri(nhostAppleOAuthUrl),
+                  redirectUrl: 'https://yourdomain.com',
+                ),
+              ),
+            );
 
             if (uri != null) {
               await nhostClient.auth.completeOAuthProviderSignIn(uri);
@@ -170,7 +180,7 @@ class OAuthWebView extends StatefulWidget {
   });
 
   final String redirectUrl;
-  final Uri initialUrl;
+  final WebUri initialUrl;
 
   @override
   State<OAuthWebView> createState() => _OAuthWebViewState();
@@ -198,20 +208,13 @@ class _OAuthWebViewState extends State<OAuthWebView> {
       body: Stack(
         children: <Widget>[
           InAppWebView(
-            initialOptions: InAppWebViewGroupOptions(
-              crossPlatform: InAppWebViewOptions(
-                transparentBackground: true,
-                useShouldOverrideUrlLoading: true,
-                supportZoom: false,
-
-                /// This custom userAgent is mandatory due to security constraints of Google's OAuth2 policies (https://developers.googleblog.com/2021/06/upcoming-security-changes-to-googles-oauth-2.0-authorization-endpoint.html)
-                userAgent:
-                    'Mozilla/5.0 Mobile AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.5 Safari/605.1.15',
-                preferredContentMode: UserPreferredContentMode.MOBILE,
-              ),
-              android: AndroidInAppWebViewOptions(
-                useHybridComposition: true,
-              ),
+            initialSettings: InAppWebViewSettings(
+              userAgent:
+                  'Mozilla/5.0 Mobile AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.5 Safari/605.1.15',
+              preferredContentMode: UserPreferredContentMode.MOBILE,
+              supportZoom: false,
+              useShouldOverrideUrlLoading: true,
+              transparentBackground: true,
             ),
             initialUrlRequest: URLRequest(
               url: widget.initialUrl,
