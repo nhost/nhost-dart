@@ -43,7 +43,7 @@ class SecurePersistentAuthExampleState extends State<SecurePersistentAuthExample
         subdomain: subdomain,
         region: region,
       ),
-      // Instruct the client to store tokens using shared preferences.
+      // Instruct the client to store tokens using the `flutter_secure_storage`.
       authStore: const SecureAuthStore(),
     );
     // this will fetch refresh token and will sign user in!
@@ -69,7 +69,7 @@ class SecurePersistentAuthExampleState extends State<SecurePersistentAuthExample
     return NhostAuthProvider(
       auth: nhostClient.auth,
       child: const MaterialApp(
-        title: 'Nhost.io Persistent Flutter Authentication Example',
+        title: 'Nhost.io Secure Persistent Flutter Authentication Example',
         home: Scaffold(
           body: ExampleProtectedScreen(),
         ),
