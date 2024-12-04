@@ -1,3 +1,11 @@
+## 4.0.7
+
+ - Update a dependency to the latest release.
+
+## 4.0.6
+
+ - **REFACTOR**: remove unnecessary and unused files (#148).
+
 ## 4.0.5
 
  - Update a dependency to the latest release.

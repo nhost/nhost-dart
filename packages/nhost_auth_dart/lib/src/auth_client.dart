@@ -263,6 +263,83 @@ class NhostAuthClient implements HasuraAuthClient {
     return res;
   }
 
+  /// Authenticates a user using an ID token from a third-party provider.
+  ///
+  /// This method allows users to sign in using an OpenID Connect [idToken] from a specified
+  /// [provider] (google, apple). An optional [nonce] parameter can be provided for additional security.
+  ///
+  /// Throws an [NhostException] if sign in fails.
+  @override
+  Future<AuthResponse> signInIdToken({
+    required String provider,
+    required String idToken,
+    String? nonce,
+    String? locale,
+    String? defaultRole,
+    Map<String, Object?>? metadata,
+    List<String>? roles,
+    String? displayName,
+    String? redirectTo,
+  }) async {
+    log.finer('Attempting sign in (idToken)');
+    AuthResponse? res;
+
+    try {
+      res = await _apiClient.post(
+        '/signin/idtoken',
+        jsonBody: {
+          'provider': provider,
+          'idToken': idToken,
+          if (nonce != null) 'nonce': nonce,
+          if (locale != null) 'locale': locale,
+          if (defaultRole != null) 'defaultRole': defaultRole,
+          if (metadata != null) 'metadata': metadata,
+          if (roles != null) 'roles': roles,
+          if (displayName != null) 'displayName': displayName,
+          if (redirectTo != null) 'redirectTo': redirectTo,
+        },
+        responseDeserializer: AuthResponse.fromJson,
+      );
+    } catch (e, st) {
+      log.finer('Sign in failed', e, st);
+      await clearSession();
+      rethrow;
+    }
+
+    if (res != null) {
+      log.finer('Sign in successful');
+      await setSession(res.session!);
+      return res;
+    } else {
+      throw AuthServiceException(
+        'Sign in failed',
+      );
+    }
+  }
+
+  /// Links an existing user account to a third-party provider using an OpenID Connect [idToken].
+  ///
+  /// This method enables linking a user account with an OpenID Connect [idToken] from a specified
+  /// [provider], such as "google" or "apple". You can optionally provide a [nonce] for enhanced security.
+  ///
+  /// Throws an [NhostException] if the link attempt fails.
+  @override
+  Future<void> linkIdToken({
+    required String provider,
+    required String idToken,
+    String? nonce,
+  }) async {
+    await _apiClient.post<String>(
+      '/link/idtoken',
+      jsonBody: {
+        'provider': provider,
+        'idToken': idToken,
+        if (nonce != null) 'nonce': nonce,
+      },
+      headers: _session.authenticationHeaders,
+    );
+  }
+
   /// Signs in a user with a magic link.
   ///
   /// An email will be sent to the [email] with a link. When the user
@@ -371,6 +448,59 @@ class NhostAuthClient implements HasuraAuthClient {
     final res = await _apiClient.post(
       '/signin/passwordless/sms/otp',
       jsonBody: {'phoneNumber': phoneNumber, 'otp': otp},
+      responseDeserializer: AuthResponse.fromJson,
+    );
+
+    log.finer('Sign in successful');
+    await setSession(res.session!);
+    return res;
+  }
+
+  /// Attempts to send an OTP to the specified [email] to begin the sign-in process
+  ///
+  /// Throws an [NhostException] if the request fails
+  @override
+  Future<void> signInEmailOTP({
+    required String email,
+    String? locale,
+    String? defaultRole,
+    Map<String, Object?>? metadata,
+    List<String>? roles,
+    String? displayName,
+    String? redirectTo,
+  }) async {
+    log.finer('Attempting sign in (otp)');
+
+    final includeRoleOptions =
+        defaultRole != null || (roles != null && roles.isNotEmpty);
+    final options = {
+      if (metadata != null) 'metadata': metadata,
+      if (locale != null) 'locale': locale,
+      if (includeRoleOptions) 'defaultRole': defaultRole,
+      if (includeRoleOptions) 'allowedRoles': roles,
+      if (displayName != null) 'displayName': displayName,
+      if (redirectTo != null) 'redirectTo': redirectTo,
+    };
+    await _apiClient.post(
+      '/signin/otp/email',
+      jsonBody: {
+        'email': email,
+        if (options.isNotEmpty) 'options': options,
+      },
+    );
+  }
+
+  /// Attempts to verify the one-time password (OTP) and complete the sign-in process
+  ///
+  /// Throws an [NhostException] if verification fails
+  @override
+  Future<AuthResponse> verifyEmailOTP({
+    required String email,
+    required String otp,
+  }) async {
+    final res = await _apiClient.post(
+      '/signin/otp/email/verify',
+      jsonBody: {'email': email, 'otp': otp},
       responseDeserializer: AuthResponse.fromJson,
     );
 
