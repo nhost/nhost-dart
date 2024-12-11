@@ -227,6 +227,7 @@ class NhostAuthClient implements HasuraAuthClient {
       rethrow;
     }
   }
+
   /// Authenticates a user using an [email] and [password].
   ///
   /// If the user has multi-factor authentication enabled, the returned
