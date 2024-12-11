@@ -171,6 +171,9 @@ class NhostAuthClient implements HasuraAuthClient {
   /// returned [AuthResponse] will not contain a session. The user must first
   /// activate their account by clicking an activation link sent to their email.
   ///
+  /// If [turnstileResponse] is provided, it will be included in the request headers
+  /// as `x-cf-turnstile-response` to support Cloudflare Turnstile protection.
+  ///
   /// Throws an [NhostException] if registration fails.
   @override
   Future<AuthResponse> signUp({
@@ -182,9 +185,12 @@ class NhostAuthClient implements HasuraAuthClient {
     List<String>? roles,
     String? displayName,
     String? redirectTo,
+    String? turnstileResponse,
   }) async {
     log.finer('Attempting user registration');
 
+    final headers =
+        turnstileResponse != null ? {'x-cf-turnstile-response': turnstileResponse} : null;
     final includeRoleOptions =
         defaultRole != null || (roles != null && roles.isNotEmpty);
     final options = {
@@ -205,6 +211,7 @@ class NhostAuthClient implements HasuraAuthClient {
           if (options.isNotEmpty) 'options': options,
         },
         responseDeserializer: AuthResponse.fromJson,
+        headers: headers,
       );
       log.finer('Registration successful');
 
