@@ -1,3 +1,9 @@
+## 5.6.0
+
+ - **FIX**: handle null phoneNumber in User fromJson.
+ - **FEAT**: add support for sign-in with id token (#149).
+ - **FEAT**: add email OTP sign-in and verification methods (#150).
+
 ## 5.5.0
 
  - **FEAT**: add support for sign-in with id token (#149).

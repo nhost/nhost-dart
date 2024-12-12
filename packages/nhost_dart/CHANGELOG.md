@@ -1,3 +1,7 @@
+## 2.0.8
+
+ - **FIX**: test: add required parameter.
+
 ## 2.0.7
 
  - Update a dependency to the latest release.

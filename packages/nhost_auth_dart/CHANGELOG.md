@@ -1,3 +1,9 @@
+## 2.5.0
+
+ - **REFACTOR**: remove unnecessary and unused files (#148).
+ - **FEAT**: add support for sign-in with id token (#149).
+ - **FEAT**: add email OTP sign-in and verification methods (#150).
+
 ## 2.4.0
 
  - **FEAT**: add support for sign-in with id token (#149).

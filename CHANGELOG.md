@@ -3,6 +3,73 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 2024-12-12
+
+### Changes
+
+---
+
+Packages with breaking changes:
+
+ - There are no breaking changes in this release.
+
+Packages with other changes:
+
+ - [`nhost_auth_dart` - `v2.5.0`](#nhost_auth_dart---v250)
+ - [`nhost_dart` - `v2.0.8`](#nhost_dart---v208)
+ - [`nhost_flutter_auth` - `v4.0.8`](#nhost_flutter_auth---v408)
+ - [`nhost_flutter_graphql` - `v3.0.9`](#nhost_flutter_graphql---v309)
+ - [`nhost_functions_dart` - `v2.0.8`](#nhost_functions_dart---v208)
+ - [`nhost_graphql_adapter` - `v4.0.8`](#nhost_graphql_adapter---v408)
+ - [`nhost_sdk` - `v5.6.0`](#nhost_sdk---v560)
+ - [`nhost_storage_dart` - `v2.0.8`](#nhost_storage_dart---v208)
+ - [`nhost_gql_links` - `v4.0.9`](#nhost_gql_links---v409)
+
+Packages with dependency updates only:
+
+> Packages listed below depend on other packages in this workspace that have had changes. Their versions have been incremented to bump the minimum dependency versions of the packages they depend upon in this project.
+
+ - `nhost_gql_links` - `v4.0.9`
+
+---
+
+#### `nhost_auth_dart` - `v2.5.0`
+
+ - **REFACTOR**: remove unnecessary and unused files (#148).
+ - **FEAT**: add support for sign-in with id token (#149).
+ - **FEAT**: add email OTP sign-in and verification methods (#150).
+
+#### `nhost_dart` - `v2.0.8`
+
+ - **FIX**: test: add required parameter.
+
+#### `nhost_flutter_auth` - `v4.0.8`
+
+ - **REFACTOR**: remove unnecessary and unused files (#148).
+
+#### `nhost_flutter_graphql` - `v3.0.9`
+
+ - **REFACTOR**: remove unnecessary and unused files (#148).
+
+#### `nhost_functions_dart` - `v2.0.8`
+
+ - **REFACTOR**: remove unnecessary and unused files (#148).
+
+#### `nhost_graphql_adapter` - `v4.0.8`
+
+ - **REFACTOR**: remove unnecessary and unused files (#148).
+
+#### `nhost_sdk` - `v5.6.0`
+
+ - **FIX**: handle null phoneNumber in User fromJson.
+ - **FEAT**: add support for sign-in with id token (#149).
+ - **FEAT**: add email OTP sign-in and verification methods (#150).
+
+#### `nhost_storage_dart` - `v2.0.8`
+
+ - **REFACTOR**: remove unnecessary and unused files (#148).
+
+
 ## 2024-11-28
 
 ### Changes
