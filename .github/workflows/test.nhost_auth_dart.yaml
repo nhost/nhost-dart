@@ -22,7 +22,8 @@ on:
 # Run the quality job at 4am every day
 # - cron: '0 4 * * *'
 
-env: {}
+env:
+  MAX_PANA_MISSING_POINTS: 40
 jobs:
   # Ensure that the package meets a suitably high pub.dev score
   score-package-quality:
