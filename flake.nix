@@ -13,7 +13,6 @@
           inherit system;
           overlays = [
             nixops.overlays.default
-            (import ./nix/overlay.nix)
           ];
         };
 
@@ -48,8 +47,8 @@
         devShells = flake-utils.lib.flattenTree rec {
           default = pkgs.mkShell {
             buildInputs = with pkgs; [
-              nhost-cli
               dart
+              flutter
             ] ++ buildInputs ++ nativeBuildInputs;
           };
         };
