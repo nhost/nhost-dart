@@ -25,11 +25,42 @@ import '../nhost_graphql_adapter.dart';
 /// requests made by the Nhost APIs, which can be useful for proxy configuration
 /// and debugging.
 /// {@endtemplate}
+///
+/// {@template nhost.graphqlClient.defaultPolicies}
+/// [defaultPolicies] (optional) customizes the default policies used by the
+/// client. This can be used to change the cache-and-network or network-only
+/// behavior of the client.
+/// {@endtemplate}
+///
+/// {@template nhost.graphqlClient.alwaysRebroadcast}
+/// [alwaysRebroadcast] (optional) if true, the client will rebroadcast watch
+/// queries when the underlying cache changes. This is false by default.
+/// {@endtemplate}
+///
+/// {@template nhost.graphqlClient.deepEquals}
+/// [deepEquals] (optional) overrides the default deep equals comparison for
+/// caching.
+/// {@endtemplate}
+///
+/// {@template nhost.graphqlClient.deduplicatePollers}
+/// [deduplicatePollers] (optional) if true, the client will deduplicate
+/// duplicate pollers. This is true by default.
+/// {@endtemplate}
+///
+/// {@template nhost.graphqlClient.queryRequestTimeout}
+/// [queryRequestTimeout] (optional) overrides the default request timeout for
+/// queries. This is 10 seconds by default.
+/// {@endtemplate}
 GraphQLClient createNhostGraphQLClient(
   NhostClientBase nhostClient, {
   GraphQLCache? gqlCache,
   Map<String, String>? defaultHeaders,
   http.Client? httpClientOverride,
+  DefaultPolicies? defaultPolicies,
+  bool? alwaysRebroadcast,
+  DeepEqualsFn? deepEquals,
+  bool? deduplicatePollers,
+  Duration? queryRequestTimeout,
 }) {
   return createNhostGraphQLClientForAuth(
     nhostClient.gqlEndpointUrl,
@@ -37,6 +68,11 @@ GraphQLClient createNhostGraphQLClient(
     gqlCache: gqlCache,
     defaultHeaders: defaultHeaders,
     httpClientOverride: httpClientOverride,
+    defaultPolicies: defaultPolicies,
+    alwaysRebroadcast: alwaysRebroadcast,
+    deepEquals: deepEquals,
+    deduplicatePollers: deduplicatePollers,
+    queryRequestTimeout: queryRequestTimeout,
   );
 }
 
@@ -52,12 +88,28 @@ GraphQLClient createNhostGraphQLClient(
 /// {@macro nhost.graphqlClient.defaultHeaders}
 ///
 /// {@macro nhost.graphqlClient.httpClientOverride}
+///
+/// {@macro nhost.graphqlClient.defaultPolicies}
+///
+/// {@macro nhost.graphqlClient.alwaysRebroadcast}
+///
+/// {@macro nhost.graphqlClient.deepEquals}
+///
+/// {@macro nhost.graphqlClient.deduplicatePollers}
+///
+/// {@macro nhost.graphqlClient.queryRequestTimeout}
+///
 GraphQLClient createNhostGraphQLClientForAuth(
   String nhostGqlEndpointUrl,
   HasuraAuthClient nhostAuth, {
   GraphQLCache? gqlCache,
   Map<String, String>? defaultHeaders,
   http.Client? httpClientOverride,
+  DefaultPolicies? defaultPolicies,
+  bool? alwaysRebroadcast,
+  DeepEqualsFn? deepEquals,
+  bool? deduplicatePollers,
+  Duration? queryRequestTimeout,
 }) {
   return GraphQLClient(
     link: combinedLinkForNhostAuth(
@@ -67,5 +119,10 @@ GraphQLClient createNhostGraphQLClientForAuth(
       httpClientOverride: httpClientOverride,
     ),
     cache: gqlCache ?? GraphQLCache(),
+    defaultPolicies: defaultPolicies,
+    alwaysRebroadcast: alwaysRebroadcast ?? false,
+    deepEquals: deepEquals,
+    deduplicatePollers: deduplicatePollers ?? false,
+    queryRequestTimeout: queryRequestTimeout ?? const Duration(seconds: 5),
   );
 }
