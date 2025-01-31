@@ -22,7 +22,8 @@ on:
 # Run the quality job at 4am every day
 # - cron: '0 4 * * *'
 
-env: {}
+env:
+  MAX_PANA_MISSING_POINTS: 40
 jobs:
   # Ensure that the package meets a suitably high pub.dev score
   score-package-quality:
@@ -61,7 +62,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Cache Flutter dependencies
-        uses: actions/cache@v1
+        uses: actions/cache@v4
         with:
           path: /opt/hostedtoolcache/flutter
           key: ${{ runner.OS }}-flutter-install-cache-${{ steps.flutter-version.outputs.version }}
