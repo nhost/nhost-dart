@@ -140,20 +140,20 @@ class ExampleRouterDelegate extends RouterDelegate<ExampleRoutePath>
         auth.authenticationState != AuthenticationState.signedIn;
     final needsSignIn = requestedRoutePath is ProtectedRoutePath &&
         auth.authenticationState != AuthenticationState.signedIn;
-
-    return Navigator(
-      key: navigatorKey,
-      pages: [
+    
+    final pages = [
         const MaterialPage(child: AppFrame(child: HomePage())),
         if (isSignInPageRequested || needsSignIn)
           const MaterialPage(child: AppFrame(child: SignInPage())),
         if (requestedRoutePath is AdminRoutePath && !needsSignIn)
           const MaterialPage(child: AppFrame(child: AdminPage())),
-      ],
-      onPopPage: (route, result) {
-        navigator.requestRoutePath(HomeRoutePath());
-        notifyListeners();
-        return route.didPop(result);
+      ];
+
+    return Navigator(
+      key: navigatorKey,
+      pages: pages,
+      onDidRemovePage: (page) {
+        pages.remove(page);
       },
     );
   }
