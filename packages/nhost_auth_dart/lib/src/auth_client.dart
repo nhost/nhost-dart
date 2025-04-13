@@ -356,19 +356,32 @@ class NhostAuthClient implements HasuraAuthClient {
   ///
   /// Throws an [NhostException] if sign in fails.
   @override
-  Future<void> signInWithEmailPasswordless(
-    String email, {
+  Future<void> signInWithEmailPasswordless({
+    required String email,
+    String? locale,
+    String? defaultRole,
+    Map<String, Object?>? metadata,
+    List<String>? roles,
+    String? displayName,
     String? redirectTo,
   }) async {
     log.finer('Attempting sign in (passwordless email)');
+
+    final includeRoleOptions = defaultRole != null || (roles != null && roles.isNotEmpty);
+    final options = {
+      if (metadata != null) 'metadata': metadata,
+      if (locale != null) 'locale': locale,
+      if (includeRoleOptions) 'defaultRole': defaultRole,
+      if (includeRoleOptions) 'allowedRoles': roles,
+      if (displayName != null) 'displayName': displayName,
+      if (redirectTo != null) 'redirectTo': redirectTo,
+    };
+
     return _apiClient.post(
       '/signin/passwordless/email',
       jsonBody: {
         'email': email,
-        if (redirectTo != null)
-          'options': {
-            'redirectTo': redirectTo,
-          },
+        if (options.isNotEmpty) 'options': options,
       },
     );
   }
