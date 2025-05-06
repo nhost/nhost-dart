@@ -291,6 +291,16 @@ class NhostAuthClient implements HasuraAuthClient {
     log.finer('Attempting sign in (idToken)');
     AuthResponse? res;
 
+    final includeRoleOptions = defaultRole != null || (roles != null && roles.isNotEmpty);
+    final options = {
+      if (metadata != null) 'metadata': metadata,
+      if (locale != null) 'locale': locale,
+      if (includeRoleOptions) 'defaultRole': defaultRole,
+      if (includeRoleOptions) 'allowedRoles': roles,
+      if (displayName != null) 'displayName': displayName,
+      if (redirectTo != null) 'redirectTo': redirectTo,
+    };
+
     try {
       res = await _apiClient.post(
         '/signin/idtoken',
@@ -298,12 +308,7 @@ class NhostAuthClient implements HasuraAuthClient {
           'provider': provider,
           'idToken': idToken,
           if (nonce != null) 'nonce': nonce,
-          if (locale != null) 'locale': locale,
-          if (defaultRole != null) 'defaultRole': defaultRole,
-          if (metadata != null) 'metadata': metadata,
-          if (roles != null) 'roles': roles,
-          if (displayName != null) 'displayName': displayName,
-          if (redirectTo != null) 'redirectTo': redirectTo,
+          if (options.isNotEmpty) 'options': options
         },
         responseDeserializer: AuthResponse.fromJson,
       );
