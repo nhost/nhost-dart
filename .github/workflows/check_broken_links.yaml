@@ -17,9 +17,9 @@ jobs:
       - uses: actions/checkout@master
       - name: Check links
         id: check_links
-        uses: lycheeverse/lychee-action@v1.2.0
+        uses: lycheeverse/lychee-action@v2
         with:
-          format: detailed
+          format: markdown
           fail: true # Fail the action if the link check fails
           args: >
             --config .github/workflows/link_check_config.lychee.toml
