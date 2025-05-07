@@ -26,7 +26,7 @@ httpPoolSize = 100
 
 [functions]
 [functions.node]
-version = 18
+version = 22
 
 [auth]
 version = '0.21.2'
