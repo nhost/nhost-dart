@@ -99,4 +99,4 @@ jobs:
 
       # Run tests for package in question
       - name: Execute tests
-        run: melos exec --scope=nhost_dart --dir-exists=test -- 'flutter test --no-pub --machine'
+        run: melos exec --scope=nhost_dart --dir-exists=test -- 'flutter test --no-pub'
