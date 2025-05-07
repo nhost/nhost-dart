@@ -137,6 +137,9 @@ issuer = 'hasura-auth'
 [postgres]
 version = '14.6-20231018-1'
 
+[postgres.resources.storage]
+capacity = 1
+
 [provider]
 
 [storage]
