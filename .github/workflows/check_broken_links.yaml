@@ -27,3 +27,4 @@ jobs:
             **/*.yaml
             **/*.dart
             --github-token $GITHUB_TOKEN
+            --max-concurrency 10
