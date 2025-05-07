@@ -1,7 +1,7 @@
 [global]
 
 [hasura]
-version = 'v2.33.4-ce'
+version = 'v2.46.0-ce'
 adminSecret = '{{ secrets.HASURA_GRAPHQL_ADMIN_SECRET }}'
 webhookSecret = '{{ secrets.NHOST_WEBHOOK_SECRET }}'
 
@@ -26,10 +26,30 @@ httpPoolSize = 100
 
 [functions]
 [functions.node]
-version = 18
+version = 22
 
 [auth]
-version = '0.21.2'
+version = '0.38.0'
+
+[auth.rateLimit.bruteForce]
+interval = "5m"
+limit = 1000
+
+[auth.rateLimit.emails]
+interval = "1h"
+limit = 10
+
+[auth.rateLimit.global]
+interval = "1m"
+limit = 1000
+
+[auth.rateLimit.signups]
+interval = "5m"
+limit = 1000
+
+[auth.rateLimit.sms]
+interval = "1h"
+limit = 1000
 
 [auth.redirections]
 clientUrl = 'http://localhost:3000'
@@ -135,12 +155,15 @@ enabled = true
 issuer = 'hasura-auth'
 
 [postgres]
-version = '14.6-20231018-1'
+version = '14.17-20250506-1'
+
+[postgres.resources.storage]
+capacity = 1
 
 [provider]
 
 [storage]
-version = '0.4.0'
+version = '0.7.1'
 
 [observability]
 [observability.grafana]
