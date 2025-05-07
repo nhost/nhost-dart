@@ -31,6 +31,26 @@ version = 22
 [auth]
 version = '0.38.0'
 
+[auth.rateLimit.bruteForce]
+interval = "5m"
+limit = 1000
+
+[auth.rateLimit.emails]
+interval = "1h"
+limit = 10
+
+[auth.rateLimit.global]
+interval = "1m"
+limit = 1000
+
+[auth.rateLimit.signups]
+interval = "5m"
+limit = 1000
+
+[auth.rateLimit.sms]
+interval = "1h"
+limit = 1000
+
 [auth.redirections]
 clientUrl = 'http://localhost:3000'
 
