@@ -78,7 +78,6 @@ jobs:
         run: |
           echo "$HOME/.pub-cache/bin" >> $GITHUB_PATH
           dart pub get
-          dart pub global activate junitreport
           dart pub global activate melos 3.2.0
 
       - name: Bootstrap packages
@@ -94,31 +93,4 @@ jobs:
           melos exec
           --scope=nhost_functions_dart
           --dir-exists=test --
-          'flutter test --no-pub --machine --coverage | tojunit
-          > test-results.xml'
-
-      # Report test results
-      - name: Report test results
-        uses: mikepenz/action-junit-report@v2
-        with:
-          check_name: "Test results: nhost_functions_dart"
-          require_tests: false
-          report_paths: "packages/nhost_functions_dart/test-results.xml"
-          github_token: ${{ github.token }}
-
-      # Check if coverage was generated
-      - name: Check for coverage file
-        id: check_coverage_exists
-        uses: andstor/file-existence-action@v1
-        with:
-          files: "packages/nhost_functions_dart/coverage/lcov.info"
-
-      # Report coverage
-      - name: Report coverage
-        uses: zgosalvez/github-actions-report-lcov@v1
-        with:
-          artifact-name: "Test coverage for nhost_functions_dart"
-          coverage-files: packages/nhost_functions_dart/coverage/lcov.info
-          working-directory: packages/nhost_functions_dart/
-          github-token: ${{ github.token }}
-        if: ${{ github.event_name != 'pull_request' && steps.check_coverage_exists.outputs.files_exists == 'true' }}
+          'flutter test --no-pub'
