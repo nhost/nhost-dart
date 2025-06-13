@@ -32,13 +32,6 @@ scripts:
       Publish packages with proper commands for Dart and Flutter packages.
       Use --no-dry-run to actually publish.
 
-  publish:flutter:
-    run: |
-      dart run melos exec --flutter -c 1 --ignore="*example*" -- flutter pub publish --dry-run
-    description: |
-      Publish packages with proper commands for Dart and Flutter packages.
-      Use --no-dry-run to actually publish.
-
   publish:real:
     run: |
       echo "Publishing Dart packages..."

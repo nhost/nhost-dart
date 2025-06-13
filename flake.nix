@@ -52,6 +52,7 @@
               dart
               melos
               flutter327
+              nhost-cli
             ] ++ checkDeps ++ buildInputs ++ nativeBuildInputs;
           };
         };

@@ -75,12 +75,15 @@ void main() async {
     });
 
     test('should not be able to sign up same user twice', () async {
-      await auth.signUp(email: testEmail, password: testPassword);
+      final uniqueEmail = getTestEmail();
+      await auth.signUp(email: uniqueEmail, password: testPassword);
 
-      expect(
-        auth.signUp(email: testEmail, password: testPassword),
-        throwsA(anything),
-      );
+      try {
+        await auth.signUp(email: uniqueEmail, password: testPassword);
+        fail('Expected second signup to throw an exception, but it succeeded');
+      } catch (e) {
+        expect(e, isA<Exception>());
+      }
     });
 
     test('should not be able to sign up user with invalid email', () async {
