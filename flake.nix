@@ -51,6 +51,7 @@
             buildInputs = with pkgs; [
               dart
               melos
+              flutter327
             ] ++ checkDeps ++ buildInputs ++ nativeBuildInputs;
           };
         };

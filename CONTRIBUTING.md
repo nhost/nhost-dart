@@ -67,10 +67,10 @@ it looks:
 ```sh
 # Dry run by default. This will run a basic lint, and give you some feedback
 # so you can gut check.
-dart run melos publish
+dart run melos run publish
 
 # Publishes to pub.dev. No turning back.
-dart run melos publish --no-dry-run
+dart run melos run publish:real
 ```
 
 #[TODO]: In case of error eveything under example_Server can be deleted
