@@ -1,3 +1,7 @@
+## 5.6.0
+
+ - **FEAT**: Allow metadata to be passed in signInWithEmailPasswordless (#162).
+
 ## 5.5.0
 
  - **FEAT**: add support for sign-in with id token (#149).

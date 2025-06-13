@@ -3,6 +3,58 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 2025-06-13
+
+### Changes
+
+---
+
+Packages with breaking changes:
+
+ - There are no breaking changes in this release.
+
+Packages with other changes:
+
+ - [`nhost_auth_dart` - `v2.5.0`](#nhost_auth_dart---v250)
+ - [`nhost_flutter_auth` - `v4.1.0`](#nhost_flutter_auth---v410)
+ - [`nhost_flutter_graphql` - `v3.1.0`](#nhost_flutter_graphql---v310)
+ - [`nhost_sdk` - `v5.6.0`](#nhost_sdk---v560)
+ - [`nhost_dart` - `v2.0.8`](#nhost_dart---v208)
+ - [`nhost_graphql_adapter` - `v4.0.8`](#nhost_graphql_adapter---v408)
+ - [`nhost_storage_dart` - `v2.0.8`](#nhost_storage_dart---v208)
+ - [`nhost_functions_dart` - `v2.0.8`](#nhost_functions_dart---v208)
+ - [`nhost_gql_links` - `v4.0.9`](#nhost_gql_links---v409)
+
+Packages with dependency updates only:
+
+> Packages listed below depend on other packages in this workspace that have had changes. Their versions have been incremented to bump the minimum dependency versions of the packages they depend upon in this project.
+
+ - `nhost_dart` - `v2.0.8`
+ - `nhost_graphql_adapter` - `v4.0.8`
+ - `nhost_storage_dart` - `v2.0.8`
+ - `nhost_functions_dart` - `v2.0.8`
+ - `nhost_gql_links` - `v4.0.9`
+
+---
+
+#### `nhost_auth_dart` - `v2.5.0`
+
+ - **FEAT**: Allow metadata to be passed in signInWithEmailPasswordless (#162).
+ - **FEAT**: add support for Cloudflare Turnstile response param in signUp (#155) (#156).
+
+#### `nhost_flutter_auth` - `v4.1.0`
+
+ - **FEAT**: add a new example for oauth that uses webview (#147).
+
+#### `nhost_flutter_graphql` - `v3.1.0`
+
+ - **FEAT**: add a new example for oauth that uses webview (#147).
+
+#### `nhost_sdk` - `v5.6.0`
+
+ - **FEAT**: Allow metadata to be passed in signInWithEmailPasswordless (#162).
+
+
 ## 2024-11-28
 
 ### Changes

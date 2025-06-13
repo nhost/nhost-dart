@@ -1,3 +1,7 @@
+## 4.1.0
+
+ - **FEAT**: add a new example for oauth that uses webview (#147).
+
 ## 4.0.7
 
  - Update a dependency to the latest release.
