@@ -1,3 +1,8 @@
+## 2.5.0
+
+ - **FEAT**: Allow metadata to be passed in signInWithEmailPasswordless (#162).
+ - **FEAT**: add support for Cloudflare Turnstile response param in signUp (#155) (#156).
+
 ## 2.4.0
 
  - **FEAT**: add support for sign-in with id token (#149).

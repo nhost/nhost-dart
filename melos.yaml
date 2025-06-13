@@ -22,6 +22,25 @@ scripts:
   test:
     run: dart run melos exec -c 1 -- 'if [ -d test ]; then flutter test --reporter=expanded; fi'
 
+  publish:
+    run: |
+      echo "Publishing Dart packages..."
+      dart run melos exec --no-flutter -c 1 --ignore="*example*" -- dart pub publish --dry-run
+      echo "Publishing Flutter packages..."
+      dart run melos exec --flutter -c 1 --ignore="*example*" -- flutter pub publish --dry-run
+    description: |
+      Publish packages with proper commands for Dart and Flutter packages.
+      Use --no-dry-run to actually publish.
+
+  publish:real:
+    run: |
+      echo "Publishing Dart packages..."
+      dart run melos exec --no-flutter -c 1 --ignore="*example*" -- dart pub publish
+      echo "Publishing Flutter packages..."
+      dart run melos exec --flutter -c 1 --ignore="*example*" -- flutter pub publish
+    description: |
+      Actually publish packages to pub.dev (no dry run).
+
 command:
   version:
     message: |

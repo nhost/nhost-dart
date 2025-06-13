@@ -1,17 +1,18 @@
 name: nhost_flutter_auth_example
 description: Nhost Flutter auth package example
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
+private: true
 version: 2.0.0
 
 environment:
-  sdk: '>=3.6.1 <4.0.0'
+  sdk: ">=3.6.1 <4.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
   app_links: ^3.3.0
   flutter_inappwebview: ^6.1.5
-  provider: '>=6.0.4'
+  provider: ">=6.0.4"
   shared_preferences: ^2.0.15
   url_launcher: ^6.1.7
   flutter_secure_storage: ^9.2.2
