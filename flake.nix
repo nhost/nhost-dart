@@ -4,9 +4,10 @@
     nixpkgs.follows = "nixops/nixpkgs";
     flake-utils.follows = "nixops/flake-utils";
     nix-filter.follows = "nixops/nix-filter";
+    nix2container.follows = "nixops/nix2container";
   };
 
-  outputs = { self, nixops, nixpkgs, flake-utils, nix-filter }:
+  outputs = { self, nixops, nixpkgs, flake-utils, nix-filter, nix2container }:
     flake-utils.lib.eachDefaultSystem (system:
       let
         overlays = [
@@ -32,11 +33,13 @@
         nativeBuildInputs = with pkgs; [
         ];
 
-        nixops-lib = nixops.lib { inherit pkgs; };
+        nix2containerPkgs = nix2container.packages.${system};
+        nixops-lib = nixops.lib { inherit pkgs nix2containerPkgs; };
 
         name = "nhost-dart";
         description = "Nhost Dart SDK";
-        version = pkgs.lib.fileContents ./VERSION;
+        version = "0.0.0-dev";
+        created = "1970-01-01T00:00:00Z";
       in
       {
         checks = flake-utils.lib.flattenTree rec {
