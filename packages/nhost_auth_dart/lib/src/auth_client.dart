@@ -427,6 +427,15 @@ class NhostAuthClient implements HasuraAuthClient {
     }
   }
 
+  @override
+  Future<void> deanonymize(DeanonymizeOptions options) async {
+    await _apiClient.post<String>(
+      '/user/deanonymize',
+      jsonBody: options.toJson(),
+      headers: _session.authenticationHeaders,
+    );
+  }
+
   /// Authenticates a user using a [phoneNumber].
   ///
   /// The returned [AuthResponse] will only have its [AuthResponse.mfa] field
