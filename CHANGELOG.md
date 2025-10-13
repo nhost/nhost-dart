@@ -3,6 +3,65 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 2025-10-13
+
+### Changes
+
+---
+
+Packages with breaking changes:
+
+ - There are no breaking changes in this release.
+
+Packages with other changes:
+
+ - [`nhost_auth_dart` - `v2.6.0`](#nhost_auth_dart---v260)
+ - [`nhost_dart` - `v2.1.0`](#nhost_dart---v210)
+ - [`nhost_flutter_auth` - `v4.2.0`](#nhost_flutter_auth---v420)
+ - [`nhost_sdk` - `v5.7.0`](#nhost_sdk---v570)
+ - [`nhost_storage_dart` - `v2.1.0`](#nhost_storage_dart---v210)
+ - [`nhost_flutter_graphql` - `v3.1.1`](#nhost_flutter_graphql---v311)
+ - [`nhost_graphql_adapter` - `v4.0.9`](#nhost_graphql_adapter---v409)
+ - [`nhost_functions_dart` - `v2.0.9`](#nhost_functions_dart---v209)
+ - [`nhost_gql_links` - `v4.0.10`](#nhost_gql_links---v4010)
+
+Packages with dependency updates only:
+
+> Packages listed below depend on other packages in this workspace that have had changes. Their versions have been incremented to bump the minimum dependency versions of the packages they depend upon in this project.
+
+ - `nhost_flutter_graphql` - `v3.1.1`
+ - `nhost_graphql_adapter` - `v4.0.9`
+ - `nhost_functions_dart` - `v2.0.9`
+ - `nhost_gql_links` - `v4.0.10`
+
+---
+
+#### `nhost_auth_dart` - `v2.6.0`
+
+ - **FEAT**: added deanonymizeUser (#166).
+ - **FEAT**: Allow metadata to be passed in signInWithEmailPasswordless (#162).
+ - **FEAT**: add support for Cloudflare Turnstile response param in signUp (#155) (#156).
+
+#### `nhost_dart` - `v2.1.0`
+
+ - **FEAT**(storage): update SDK to use modern way of uploading files (#167).
+ - **FEAT**: added deanonymizeUser (#166).
+
+#### `nhost_flutter_auth` - `v4.2.0`
+
+ - **FEAT**(storage): update SDK to use modern way of uploading files (#167).
+
+#### `nhost_sdk` - `v5.7.0`
+
+ - **FEAT**(storage): update SDK to use modern way of uploading files (#167).
+ - **FEAT**: added deanonymizeUser (#166).
+ - **FEAT**: Allow metadata to be passed in signInWithEmailPasswordless (#162).
+
+#### `nhost_storage_dart` - `v2.1.0`
+
+ - **FEAT**(storage): update SDK to use modern way of uploading files (#167).
+
+
 ## 2025-06-13
 
 ### Changes

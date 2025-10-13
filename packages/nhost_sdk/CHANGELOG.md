@@ -1,3 +1,9 @@
+## 5.7.0
+
+ - **FEAT**(storage): update SDK to use modern way of uploading files (#167).
+ - **FEAT**: added deanonymizeUser (#166).
+ - **FEAT**: Allow metadata to be passed in signInWithEmailPasswordless (#162).
+
 ## 5.6.0
 
  - **FEAT**: Allow metadata to be passed in signInWithEmailPasswordless (#162).

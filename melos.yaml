@@ -35,9 +35,9 @@ scripts:
   publish:real:
     run: |
       echo "Publishing Dart packages..."
-      dart run melos exec --no-flutter -c 1 --ignore="*example*" -- dart pub publish
+      dart run melos exec --no-flutter -c 1 --ignore="*example*" -- dart pub publish --force
       echo "Publishing Flutter packages..."
-      dart run melos exec --flutter -c 1 --ignore="*example*" -- flutter pub publish
+      dart run melos exec --flutter -c 1 --ignore="*example*" -- flutter pub publish --force
     description: |
       Actually publish packages to pub.dev (no dry run).
 

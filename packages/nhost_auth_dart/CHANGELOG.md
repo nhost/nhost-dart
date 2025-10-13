@@ -1,3 +1,9 @@
+## 2.6.0
+
+ - **FEAT**: added deanonymizeUser (#166).
+ - **FEAT**: Allow metadata to be passed in signInWithEmailPasswordless (#162).
+ - **FEAT**: add support for Cloudflare Turnstile response param in signUp (#155) (#156).
+
 ## 2.5.0
 
  - **FEAT**: Allow metadata to be passed in signInWithEmailPasswordless (#162).
