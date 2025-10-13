@@ -140,7 +140,7 @@ enum DeanonymizeSignInMethod {
   passwordless;
 
   String get serialized {
-    switch(this) {
+    switch (this) {
       case DeanonymizeSignInMethod.emailPassword:
         return 'email-password';
       case DeanonymizeSignInMethod.passwordless:
@@ -175,15 +175,18 @@ class DeanonymizeOptions {
 
   Map<String, dynamic> toJson() {
     if (password != null && (password!.length < 3 || password!.length > 50)) {
-      throw ArgumentError.value(password, 'password', 'Must be between 3 and 50 characters');
+      throw ArgumentError.value(
+          password, 'password', 'Must be between 3 and 50 characters');
     }
 
     if (locale != null && locale!.length != 2) {
-      throw ArgumentError.value(locale, 'locale', 'Must be a 2-character locale');
+      throw ArgumentError.value(
+          locale, 'locale', 'Must be a 2-character locale');
     }
 
     if (displayName != null && displayName!.length > 32) {
-      throw ArgumentError.value(displayName, 'displayName', 'Must be at most 32 characters');
+      throw ArgumentError.value(
+          displayName, 'displayName', 'Must be at most 32 characters');
     }
 
     return {

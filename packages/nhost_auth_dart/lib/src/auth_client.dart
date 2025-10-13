@@ -189,8 +189,9 @@ class NhostAuthClient implements HasuraAuthClient {
   }) async {
     log.finer('Attempting user registration');
 
-    final headers =
-        turnstileResponse != null ? {'x-cf-turnstile-response': turnstileResponse} : null;
+    final headers = turnstileResponse != null
+        ? {'x-cf-turnstile-response': turnstileResponse}
+        : null;
     final includeRoleOptions =
         defaultRole != null || (roles != null && roles.isNotEmpty);
     final options = {
@@ -291,7 +292,8 @@ class NhostAuthClient implements HasuraAuthClient {
     log.finer('Attempting sign in (idToken)');
     AuthResponse? res;
 
-    final includeRoleOptions = defaultRole != null || (roles != null && roles.isNotEmpty);
+    final includeRoleOptions =
+        defaultRole != null || (roles != null && roles.isNotEmpty);
     final options = {
       if (metadata != null) 'metadata': metadata,
       if (locale != null) 'locale': locale,
@@ -372,7 +374,8 @@ class NhostAuthClient implements HasuraAuthClient {
   }) async {
     log.finer('Attempting sign in (passwordless email)');
 
-    final includeRoleOptions = defaultRole != null || (roles != null && roles.isNotEmpty);
+    final includeRoleOptions =
+        defaultRole != null || (roles != null && roles.isNotEmpty);
     final options = {
       if (metadata != null) 'metadata': metadata,
       if (locale != null) 'locale': locale,

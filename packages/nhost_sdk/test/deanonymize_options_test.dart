@@ -53,7 +53,8 @@ void main() {
         expect(optionsMap['displayName'], equals('Test User'));
         expect(optionsMap['locale'], equals('en'));
         expect(optionsMap['metadata'], equals({'key': 'value'}));
-        expect(optionsMap['redirectTo'], equals('https://example.com/callback'));
+        expect(
+            optionsMap['redirectTo'], equals('https://example.com/callback'));
       });
 
       test('should not include optional fields when not provided', () {

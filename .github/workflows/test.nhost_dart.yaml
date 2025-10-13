@@ -95,7 +95,7 @@ jobs:
       - name: Start the nhost test_backend
         run: |
           cd packages/nhost_dart/test/test_backend
-          nhost --data-folder /tmp/nhost-cli up --down-on-error
+          nhost up --down-on-error
 
       # Run tests for package in question
       - name: Execute tests
