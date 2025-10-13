@@ -127,13 +127,15 @@ class ApiClient {
   Future<ResponseType> postMultipart<ResponseType>(
     String path, {
     required Iterable<http.MultipartFile> files,
+    Map<String, String>? fields,
     Map<String, String>? headers,
     JsonDeserializer<ResponseType>? responseDeserializer,
     UploadProgressCallback? onUploadProgress,
   }) async {
     final url = baseUrl.extend(path);
     final multipartRequest = http.MultipartRequest('post', url)
-      ..files.addAll(files);
+      ..files.addAll(files)
+      ..fields.addAll(fields ?? {});
 
     http.BaseRequest requestToSend;
     if (onUploadProgress != null) {

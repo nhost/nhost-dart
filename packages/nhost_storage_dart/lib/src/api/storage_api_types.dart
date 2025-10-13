@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:nhost_sdk/nhost_sdk.dart';
 
 ///
@@ -147,4 +149,101 @@ class ImageCornerRadius implements ImageCornerRadiusBase {
 
   @override
   String toQueryValue() => isFull ? 'full' : inPixels!.toStringAsFixed(1);
+}
+
+/// Generic file representation (like Blob/File in JavaScript).
+class FileData {
+  FileData(
+    this.bytes, {
+    this.filename,
+    this.contentType,
+  });
+
+  /// The file contents as bytes.
+  final Uint8List bytes;
+
+  /// Optional filename for the file.
+  final String? filename;
+
+  /// Optional MIME type for the file.
+  final String? contentType;
+}
+
+/// Metadata provided when uploading a new file.
+class UploadFileMetadata {
+  UploadFileMetadata({
+    this.id,
+    this.name,
+    this.metadata,
+  });
+
+  /// Optional custom ID for the file. If not provided, a UUID will be generated.
+  final String? id;
+
+  /// Name to assign to the file. If not provided, the original filename will be used.
+  final String? name;
+
+  /// Custom metadata to associate with the file.
+  final Map<String, dynamic>? metadata;
+
+  Map<String, dynamic> toJson() {
+    return {
+      if (id != null) 'id': id,
+      if (name != null) 'name': name,
+      if (metadata != null) 'metadata': metadata,
+    };
+  }
+}
+
+/// Response containing successfully processed files and error information.
+class UploadFilesResponse {
+  UploadFilesResponse({
+    required this.processedFiles,
+  });
+
+  /// List of successfully processed files with their metadata.
+  final List<FileMetadata> processedFiles;
+
+  static UploadFilesResponse fromJson(dynamic json) {
+    return UploadFilesResponse(
+      processedFiles: (json['processedFiles'] as List)
+          .map((e) => FileMetadata.fromJson(e))
+          .toList(),
+    );
+  }
+}
+
+/// Error response that includes any files that were successfully processed before the error occurred.
+class ErrorResponseWithProcessedFiles implements Exception {
+  ErrorResponseWithProcessedFiles({
+    this.processedFiles = const [],
+    required this.message,
+    this.data,
+  });
+
+  /// List of files that were successfully processed before the error occurred.
+  final List<FileMetadata> processedFiles;
+
+  /// Human-readable error message.
+  final String message;
+
+  /// Additional data related to the error, if any.
+  final Map<String, dynamic>? data;
+
+  @override
+  String toString() {
+    return 'ErrorResponseWithProcessedFiles(message=$message, processedFiles=${processedFiles.length})';
+  }
+
+  static ErrorResponseWithProcessedFiles fromJson(dynamic json) {
+    return ErrorResponseWithProcessedFiles(
+      processedFiles: json['processedFiles'] != null
+          ? (json['processedFiles'] as List)
+              .map((e) => FileMetadata.fromJson(e))
+              .toList()
+          : [],
+      message: json['error']['message'] as String,
+      data: json['error']['data'] as Map<String, dynamic>?,
+    );
+  }
 }

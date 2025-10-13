@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:http_parser/http_parser.dart';
 import 'package:nhost_sdk/nhost_sdk.dart';
 import 'package:http/http.dart' as http;
@@ -39,6 +42,9 @@ class NhostStorageClient implements HasuraStorageClient {
   /// If not provided, [mimeType] defaults to `application/octet-stream`.
   ///
   /// Throws an [ApiException] if the upload fails.
+  ///
+  /// **Deprecated**: Use [uploadFiles] instead for better flexibility and batch upload support.
+  @Deprecated('Use uploadFiles instead for better flexibility and batch upload support')
   @override
   Future<FileMetadata> uploadBytes({
     required String fileName,
@@ -46,20 +52,27 @@ class NhostStorageClient implements HasuraStorageClient {
     String? fileId,
     String? bucketId,
     String mimeType = applicationOctetStreamType,
+    Map<String, dynamic>? metadata,
     UploadProgressCallback? onUploadProgress,
   }) async {
-    return await _uploadMultipartFile(
-      file: http.MultipartFile.fromBytes(
-        'file',
-        fileContents,
-        filename: fileName,
-        contentType: MediaType.parse(mimeType),
-      ),
-      fileName: fileName,
-      fileId: fileId,
+    final fileData = FileData(
+      Uint8List.fromList(fileContents),
+      filename: fileName,
+      contentType: mimeType,
+    );
+
+    final uploadMetadata = (fileId != null || metadata != null)
+        ? UploadFileMetadata(id: fileId, name: fileName, metadata: metadata)
+        : null;
+
+    final results = await uploadFiles(
+      files: [fileData],
       bucketId: bucketId,
+      metadataList: uploadMetadata != null ? [uploadMetadata] : null,
       onUploadProgress: onUploadProgress,
     );
+
+    return results.first;
   }
 
   /// Uploads a file to the backend from a string.
@@ -67,6 +80,9 @@ class NhostStorageClient implements HasuraStorageClient {
   /// If not provided, [mimeType] defaults to `application/octet-stream`.
   ///
   /// Throws an [ApiException] if the upload fails.
+  ///
+  /// **Deprecated**: Use [uploadFiles] instead for better flexibility and batch upload support.
+  @Deprecated('Use uploadFiles instead for better flexibility and batch upload support')
   @override
   Future<FileMetadata> uploadString({
     required String fileName,
@@ -74,41 +90,100 @@ class NhostStorageClient implements HasuraStorageClient {
     String? fileId,
     String? bucketId,
     String mimeType = applicationOctetStreamType,
+    Map<String, dynamic>? metadata,
     UploadProgressCallback? onUploadProgress,
   }) async {
-    return await _uploadMultipartFile(
-      file: http.MultipartFile.fromString(
-        'file',
-        fileContents,
-        filename: fileName,
-        contentType: MediaType.parse(mimeType),
-      ),
-      fileId: fileId,
-      fileName: fileName,
+    final fileData = FileData(
+      Uint8List.fromList(utf8.encode(fileContents)),
+      filename: fileName,
+      contentType: mimeType,
+    );
+
+    final uploadMetadata = (fileId != null || metadata != null)
+        ? UploadFileMetadata(id: fileId, name: fileName, metadata: metadata)
+        : null;
+
+    final results = await uploadFiles(
+      files: [fileData],
       bucketId: bucketId,
+      metadataList: uploadMetadata != null ? [uploadMetadata] : null,
       onUploadProgress: onUploadProgress,
     );
+
+    return results.first;
   }
 
-  Future<FileMetadata> _uploadMultipartFile({
-    required http.MultipartFile file,
-    String? fileName,
-    String? fileId,
+  /// Uploads files to the backend matching the TypeScript API.
+  ///
+  /// This method closely mirrors the TypeScript `uploadFiles` API, providing
+  /// a more flexible interface for file uploads.
+  ///
+  /// [files] is a list of FileData objects to upload.
+  /// [metadataList] is an optional list of metadata for each file. If provided,
+  /// must match the order and length of [files].
+  /// [bucketId] specifies the target bucket for the upload.
+  ///
+  /// Returns a list of [FileMetadata] for the successfully uploaded files.
+  ///
+  /// Throws an [ApiException] if the upload fails.
+  Future<List<FileMetadata>> uploadFiles({
+    required List<FileData> files,
     String? bucketId,
+    List<UploadFileMetadata>? metadataList,
     UploadProgressCallback? onUploadProgress,
   }) async {
-    return await _apiClient.postMultipart(
+    if (metadataList != null && metadataList.length != files.length) {
+      throw ArgumentError(
+        'metadataList length (${metadataList.length}) must match files length (${files.length})',
+      );
+    }
+
+    final fields = <String, String>{};
+    final multipartFiles = <http.MultipartFile>[];
+
+    // Add bucket-id if present
+    if (bucketId != null) {
+      fields['bucket-id'] = bucketId;
+    }
+
+    // Add metadata[] if present
+    if (metadataList != null) {
+      for (final metadata in metadataList) {
+        multipartFiles.add(
+          http.MultipartFile.fromBytes(
+            'metadata[]',
+            utf8.encode(jsonEncode(metadata.toJson())),
+            filename: '',
+            contentType: MediaType('application', 'json'),
+          ),
+        );
+      }
+    }
+
+    // Add file[] if present
+    for (final file in files) {
+      multipartFiles.add(
+        http.MultipartFile.fromBytes(
+          'file[]',
+          file.bytes,
+          filename: file.filename ?? '',
+          contentType: file.contentType != null
+              ? MediaType.parse(file.contentType!)
+              : null,
+        ),
+      );
+    }
+
+    final response = await _apiClient.postMultipart(
       '/files',
-      files: [file],
-      headers: {
-        ..._session.authenticationHeaders,
-        if (bucketId != null) 'x-nhost-bucket-id': bucketId,
-        if (fileId != null) 'x-nhost-file-id': fileId,
-        if (fileName != null) 'x-nhost-file-name': fileName,
-      },
-      responseDeserializer: FileMetadata.fromJson,
+      files: multipartFiles,
+      fields: fields,
+      headers: _session.authenticationHeaders,
+      responseDeserializer: UploadFilesResponse.fromJson,
       onUploadProgress: onUploadProgress,
     );
+
+    return response.processedFiles;
   }
 
   /// Downloads the file with the specified identifier.

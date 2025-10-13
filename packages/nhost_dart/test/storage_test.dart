@@ -1,4 +1,5 @@
 import 'dart:math' as math;
+import 'dart:typed_data';
 
 import 'package:http/http.dart';
 import 'package:mockito/mockito.dart';
@@ -67,7 +68,7 @@ void main() async {
       final fileMetadata = await storage.uploadString(
         fileName: filePath,
         fileContents: fileContents,
-        mimeType: 'text/plain',
+        mimeType: 'text/plain; charset=utf-8',
       );
 
       // Verify metadata
@@ -150,6 +151,143 @@ void main() async {
 
       // Verify increasing uploadedBytes
       expect(progressCallArgs.map((args) => args[1]), isIncreasing);
+    });
+
+    test('uploadFiles can upload single file', () async {
+      final filePath = 'single-file.txt';
+      final fileContents = 'single file contents';
+      final fileData = FileData(
+        Uint8List.fromList(fileContents.codeUnits),
+        filename: filePath,
+        contentType: 'text/plain',
+      );
+
+      final results = await storage.uploadFiles(files: [fileData]);
+
+      expect(results.length, 1);
+      expect(results[0].name, filePath);
+      expect(results[0].mimeType, 'text/plain; charset=utf-8');
+
+      // Verify stored media
+      final storedFile = await gqlAdmin.getFileInfo(results[0].id);
+      expect(storedFile!.name, filePath);
+      expect(storedFile.mimeType, 'text/plain; charset=utf-8');
+    });
+
+    test('uploadFiles can upload multiple files', () async {
+      final file1Contents = 'first file';
+      final file2Contents = 'second file';
+
+      final files = [
+        FileData(
+          Uint8List.fromList(file1Contents.codeUnits),
+          filename: 'file1.txt',
+          contentType: 'text/plain',
+        ),
+        FileData(
+          Uint8List.fromList(file2Contents.codeUnits),
+          filename: 'file2.txt',
+          contentType: 'text/plain',
+        ),
+      ];
+
+      final results = await storage.uploadFiles(files: files);
+
+      expect(results.length, 2);
+      expect(results[0].name, 'file1.txt');
+      expect(results[1].name, 'file2.txt');
+
+      // Verify both files were stored
+      final storedFile1 = await gqlAdmin.getFileInfo(results[0].id);
+      final storedFile2 = await gqlAdmin.getFileInfo(results[1].id);
+      expect(storedFile1, isNotNull);
+      expect(storedFile2, isNotNull);
+    });
+
+    test('uploadFiles can upload with custom metadata', () async {
+      final fileContents = 'file with metadata';
+      final fileData = FileData(
+        Uint8List.fromList(fileContents.codeUnits),
+        filename: 'metadata-file.txt',
+        contentType: 'text/plain',
+      );
+
+      final metadata = UploadFileMetadata(
+        id: 'custom-file-id',
+        name: 'custom-name.txt',
+        metadata: {'category': 'test', 'priority': 'high'},
+      );
+
+      final results = await storage.uploadFiles(
+        files: [fileData],
+        metadataList: [metadata],
+      );
+
+      expect(results.length, 1);
+      expect(results[0].id, 'custom-file-id');
+      expect(results[0].name, 'custom-name.txt');
+
+      // Verify stored file
+      final storedFile = await gqlAdmin.getFileInfo(results[0].id);
+      expect(storedFile!.id, 'custom-file-id');
+      expect(storedFile.name, 'custom-name.txt');
+    });
+
+    test('uploadFiles can upload multiple files with metadata', () async {
+      final files = [
+        FileData(
+          Uint8List.fromList('first'.codeUnits),
+          filename: 'file1.txt',
+          contentType: 'text/plain',
+        ),
+        FileData(
+          Uint8List.fromList('second'.codeUnits),
+          filename: 'file2.txt',
+          contentType: 'text/plain',
+        ),
+      ];
+
+      final metadataList = [
+        UploadFileMetadata(
+          name: 'custom-file-1.txt',
+          metadata: {'order': 1},
+        ),
+        UploadFileMetadata(
+          name: 'custom-file-2.txt',
+          metadata: {'order': 2},
+        ),
+      ];
+
+      final results = await storage.uploadFiles(
+        files: files,
+        metadataList: metadataList,
+      );
+
+      expect(results.length, 2);
+      expect(results[0].name, 'custom-file-1.txt');
+      expect(results[1].name, 'custom-file-2.txt');
+
+      // Verify both files were stored
+      final storedFile1 = await gqlAdmin.getFileInfo(results[0].id);
+      final storedFile2 = await gqlAdmin.getFileInfo(results[1].id);
+      expect(storedFile1!.name, 'custom-file-1.txt');
+      expect(storedFile2!.name, 'custom-file-2.txt');
+    });
+
+    test('uploadFiles respects bucketId', () async {
+      final fileData = FileData(
+        Uint8List.fromList('test'.codeUnits),
+        filename: 'bucket-test.txt',
+        contentType: 'text/plain',
+      );
+
+      final results = await storage.uploadFiles(
+        files: [fileData],
+        bucketId: 'default',
+      );
+
+      expect(results.length, 1);
+      expect(results[0].bucketId, 'default');
     });
   });
 
