@@ -1,3 +1,7 @@
+## 4.2.0
+
+ - **FEAT**(storage): update SDK to use modern way of uploading files (#167).
+
 ## 4.1.0
 
  - **FEAT**: add a new example for oauth that uses webview (#147).

@@ -1,3 +1,8 @@
+## 2.1.0
+
+ - **FEAT**(storage): update SDK to use modern way of uploading files (#167).
+ - **FEAT**: added deanonymizeUser (#166).
+
 ## 2.0.8
 
  - Update a dependency to the latest release.
