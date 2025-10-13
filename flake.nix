@@ -1,6 +1,6 @@
 {
   inputs = {
-    nixops.url = "github:nhost/nixops";
+    nixops.url = "github:nhost/nhost";
     nixpkgs.follows = "nixops/nixpkgs";
     flake-utils.follows = "nixops/flake-utils";
     nix-filter.follows = "nixops/nix-filter";
@@ -47,7 +47,7 @@
         };
 
         devShells = flake-utils.lib.flattenTree rec {
-          default = nixops-lib.go.devShell {
+          default = pkgs.mkShell {
             buildInputs = with pkgs; [
               dart
               melos

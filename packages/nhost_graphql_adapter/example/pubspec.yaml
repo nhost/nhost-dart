@@ -12,4 +12,4 @@ dependencies:
   # Nhost packages
   nhost_dart: ^2.0.8
 dev_dependencies:
-  lints: any
+  lints: ^2.0.0
