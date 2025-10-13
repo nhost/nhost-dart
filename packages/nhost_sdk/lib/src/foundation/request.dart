@@ -2,8 +2,7 @@ import 'package:http/http.dart' as http;
 
 /// An HTTP request whose body is supplied via a [Stream].
 class StreamWrappingRequest extends http.BaseRequest {
-  StreamWrappingRequest(String method, Uri url, this.bodyStream)
-      : super(method, url);
+  StreamWrappingRequest(super.method, super.url, this.bodyStream);
 
   final Stream<List<int>> bodyStream;
 
