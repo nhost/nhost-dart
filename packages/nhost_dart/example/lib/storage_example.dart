@@ -1,4 +1,7 @@
+import 'dart:typed_data';
+
 import 'package:nhost_dart/nhost_dart.dart';
+import 'package:nhost_storage_dart/nhost_storage_dart.dart';
 
 import 'auth_example.dart';
 import 'config.dart';
@@ -14,12 +17,16 @@ void main() async {
   await signInOrSignUp(client,
       email: 'user-1@nhost.io', password: 'password-1');
 
-  // Create a new file...
-  final fileMetadata = await client.storage.uploadString(
-    fileName: 'some_text_file.txt',
-    fileContents: 'abcdef abcdef abcdef abcdef abcdef',
-    mimeType: 'text/plain',
+  // Create a new file using the uploadFiles API...
+  final fileContents = 'abcdef abcdef abcdef abcdef abcdef';
+  final fileData = FileData(
+    Uint8List.fromList(fileContents.codeUnits),
+    filename: 'some_text_file.txt',
+    contentType: 'text/plain',
   );
+
+  final uploadedFiles = await client.storage.uploadFiles(files: [fileData]);
+  final fileMetadata = uploadedFiles.first;
   print('File uploaded!');
 
   // ...turn around and download its contents...
