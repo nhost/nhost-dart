@@ -189,8 +189,9 @@ class NhostAuthClient implements HasuraAuthClient {
   }) async {
     log.finer('Attempting user registration');
 
-    final headers =
-        turnstileResponse != null ? {'x-cf-turnstile-response': turnstileResponse} : null;
+    final headers = turnstileResponse != null
+        ? {'x-cf-turnstile-response': turnstileResponse}
+        : null;
     final includeRoleOptions =
         defaultRole != null || (roles != null && roles.isNotEmpty);
     final options = {
@@ -291,7 +292,8 @@ class NhostAuthClient implements HasuraAuthClient {
     log.finer('Attempting sign in (idToken)');
     AuthResponse? res;
 
-    final includeRoleOptions = defaultRole != null || (roles != null && roles.isNotEmpty);
+    final includeRoleOptions =
+        defaultRole != null || (roles != null && roles.isNotEmpty);
     final options = {
       if (metadata != null) 'metadata': metadata,
       if (locale != null) 'locale': locale,
@@ -372,7 +374,8 @@ class NhostAuthClient implements HasuraAuthClient {
   }) async {
     log.finer('Attempting sign in (passwordless email)');
 
-    final includeRoleOptions = defaultRole != null || (roles != null && roles.isNotEmpty);
+    final includeRoleOptions =
+        defaultRole != null || (roles != null && roles.isNotEmpty);
     final options = {
       if (metadata != null) 'metadata': metadata,
       if (locale != null) 'locale': locale,
@@ -424,6 +427,31 @@ class NhostAuthClient implements HasuraAuthClient {
     if (res != null) {
       log.finer('Sign in anonymously successful');
       await setSession(res.session!);
+    }
+  }
+
+  /// Converts an anonymous user to a regular user.
+  ///
+  /// This method allows you to convert an anonymous user account into a permanent
+  /// account by providing authentication credentials (email/password or passwordless).
+  ///
+  /// The user must be currently signed in as an anonymous user for this operation to succeed.
+  ///
+  /// Throws an [NhostException] if deanonymization fails.
+  @override
+  Future<void> deanonymizeUser(DeanonymizeOptions options) async {
+    log.finer('Attempting to deanonymize user');
+
+    try {
+      await _apiClient.post(
+        '/user/deanonymize',
+        jsonBody: options.toJson(),
+        headers: _session.authenticationHeaders,
+      );
+      log.finer('Deanonymization successful');
+    } catch (e, st) {
+      log.finer('Deanonymization failed', e, st);
+      rethrow;
     }
   }
 

@@ -84,7 +84,7 @@ expiresIn = 43200
 
 [auth.method]
 [auth.method.anonymous]
-enabled = false
+enabled = true
 
 [auth.method.emailPasswordless]
 enabled = false
