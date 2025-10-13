@@ -60,7 +60,7 @@ abstract class HasuraAuthClient {
     Map<String, dynamic>? metadata,
   );
 
-  Future<void> deanonymize(
+  Future<void> deanonymizeUser(
     DeanonymizeOptions options,
   );
 

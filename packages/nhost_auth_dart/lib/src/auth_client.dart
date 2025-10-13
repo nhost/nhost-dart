@@ -439,7 +439,7 @@ class NhostAuthClient implements HasuraAuthClient {
   ///
   /// Throws an [NhostException] if deanonymization fails.
   @override
-  Future<void> deanonymize(DeanonymizeOptions options) async {
+  Future<void> deanonymizeUser(DeanonymizeOptions options) async {
     log.finer('Attempting to deanonymize user');
 
     try {

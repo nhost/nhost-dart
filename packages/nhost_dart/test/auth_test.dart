@@ -312,7 +312,7 @@ void main() async {
     });
   });
 
-  group('deanonymize', () {
+  group('deanonymizeUser', () {
     setUp(() async {
       // Sign in as an anonymous user first
       await auth.signInAnonymous(null, null, null);
@@ -328,7 +328,7 @@ void main() async {
       );
 
       expect(
-        auth.deanonymize(options),
+        auth.deanonymizeUser(options),
         completes,
       );
     });
@@ -340,7 +340,7 @@ void main() async {
       );
 
       expect(
-        auth.deanonymize(options),
+        auth.deanonymizeUser(options),
         completes,
       );
     });
@@ -358,7 +358,7 @@ void main() async {
       );
 
       expect(
-        auth.deanonymize(options),
+        auth.deanonymizeUser(options),
         completes,
       );
     });
@@ -373,7 +373,7 @@ void main() async {
       );
 
       expect(
-        auth.deanonymize(options),
+        auth.deanonymizeUser(options),
         throwsA(isA<ApiException>()),
       );
     });
