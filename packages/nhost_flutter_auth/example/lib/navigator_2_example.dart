@@ -140,14 +140,14 @@ class ExampleRouterDelegate extends RouterDelegate<ExampleRoutePath>
         auth.authenticationState != AuthenticationState.signedIn;
     final needsSignIn = requestedRoutePath is ProtectedRoutePath &&
         auth.authenticationState != AuthenticationState.signedIn;
-    
+
     final pages = [
-        const MaterialPage(child: AppFrame(child: HomePage())),
-        if (isSignInPageRequested || needsSignIn)
-          const MaterialPage(child: AppFrame(child: SignInPage())),
-        if (requestedRoutePath is AdminRoutePath && !needsSignIn)
-          const MaterialPage(child: AppFrame(child: AdminPage())),
-      ];
+      const MaterialPage(child: AppFrame(child: HomePage())),
+      if (isSignInPageRequested || needsSignIn)
+        const MaterialPage(child: AppFrame(child: SignInPage())),
+      if (requestedRoutePath is AdminRoutePath && !needsSignIn)
+        const MaterialPage(child: AppFrame(child: AdminPage())),
+    ];
 
     return Navigator(
       key: navigatorKey,

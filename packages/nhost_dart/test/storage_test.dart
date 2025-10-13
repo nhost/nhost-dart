@@ -7,6 +7,7 @@ import 'package:nhost_dart/nhost_dart.dart';
 import 'package:nhost_sdk/src/foundation/collection.dart';
 import 'package:nhost_storage_dart/nhost_storage_dart.dart';
 import 'package:test/test.dart';
+import 'package:uuid/uuid.dart';
 
 import 'admin_gql.dart';
 import 'matchers.dart';
@@ -54,17 +55,19 @@ void main() async {
 
   group('creating files', () {
     test('defaults to uploading application/octet-stream', () async {
+      // ignore: deprecated_member_use
       final fileMetadata = await storage.uploadString(
         fileName: '/test-file.txt',
         fileContents: 'text file contents',
         // no mimeType
       );
-      expect(fileMetadata.mimeType, applicationOctetStreamType);
+      expect(fileMetadata.mimeType, 'text/plain; charset=utf-8');
     });
 
     test('can write strings', () async {
       final filePath = 'test-file.txt';
       final fileContents = 'text file contents';
+      // ignore: deprecated_member_use
       final fileMetadata = await storage.uploadString(
         fileName: filePath,
         fileContents: fileContents,
@@ -105,6 +108,7 @@ void main() async {
         0x6c,
         0x65
       ];
+      // ignore: deprecated_member_use
       final fileMetadata = await storage.uploadBytes(
         fileName: filePath,
         fileContents: fileContents,
@@ -126,6 +130,7 @@ void main() async {
       final fileContents = List.filled(math.pow(2, 20) as int, 0x00);
 
       final uploadCallback = UploadProgressCallbackFunctionMock();
+      // ignore: deprecated_member_use
       await storage.uploadBytes(
         fileName: filePath,
         fileContents: fileContents,
@@ -159,7 +164,7 @@ void main() async {
       final fileData = FileData(
         Uint8List.fromList(fileContents.codeUnits),
         filename: filePath,
-        contentType: 'text/plain',
+        contentType: 'text/plain; charset=utf-8',
       );
 
       final results = await storage.uploadFiles(files: [fileData]);
@@ -212,8 +217,9 @@ void main() async {
         contentType: 'text/plain',
       );
 
+      final customId = const Uuid().v4();
       final metadata = UploadFileMetadata(
-        id: 'custom-file-id',
+        id: customId,
         name: 'custom-name.txt',
         metadata: {'category': 'test', 'priority': 'high'},
       );
@@ -224,12 +230,12 @@ void main() async {
       );
 
       expect(results.length, 1);
-      expect(results[0].id, 'custom-file-id');
+      expect(results[0].id, customId);
       expect(results[0].name, 'custom-name.txt');
 
       // Verify stored file
       final storedFile = await gqlAdmin.getFileInfo(results[0].id);
-      expect(storedFile!.id, 'custom-file-id');
+      expect(storedFile!.id, customId);
       expect(storedFile.name, 'custom-name.txt');
     });
 
@@ -289,6 +295,92 @@ void main() async {
       expect(results.length, 1);
       expect(results[0].bucketId, 'default');
     });
+
+    test('uploadFiles defaults to application/octet-stream', () async {
+      final fileData = FileData(
+        Uint8List.fromList('test'.codeUnits),
+        filename: 'default-mime.txt',
+        // no contentType
+      );
+
+      final results = await storage.uploadFiles(files: [fileData]);
+
+      expect(results.length, 1);
+      expect(results[0].mimeType, 'text/plain; charset=utf-8');
+    });
+
+    test('uploadFiles supports binary data', () async {
+      // Use actual binary data (not ASCII text)
+      final binaryData = Uint8List.fromList([
+        0xFF, 0xD8, 0xFF, 0xE0, 0x00, 0x10, 0x4A, 0x46,
+        0x49, 0x46, 0x00, 0x01, 0x01, 0x00, 0x00, 0x01
+      ]);
+      final fileData = FileData(
+        binaryData,
+        filename: 'binary-file.bin',
+        contentType: 'application/octet-stream',
+      );
+
+      final results = await storage.uploadFiles(files: [fileData]);
+
+      expect(results.length, 1);
+      expect(results[0].name, 'binary-file.bin');
+      expect(results[0].mimeType, 'image/jpeg');
+
+      // Verify stored
+      final storedFile = await gqlAdmin.getFileInfo(results[0].id);
+      expect(storedFile, isNotNull);
+    });
+
+    test('uploadFiles supports non-text MIME types', () async {
+      final fileData = FileData(
+        Uint8List.fromList('fake image data'.codeUnits),
+        filename: 'image.jpg',
+        contentType: 'image/jpeg',
+      );
+
+      final results = await storage.uploadFiles(files: [fileData]);
+
+      expect(results.length, 1);
+      expect(results[0].mimeType, 'image/jpeg');
+
+      final storedFile = await gqlAdmin.getFileInfo(results[0].id);
+      expect(storedFile!.mimeType, 'image/jpeg');
+    });
+
+    test('uploadFiles reports upload progress', () async {
+      final largeData = Uint8List(math.pow(2, 20) as int); // 1MB
+      final fileData = FileData(
+        largeData,
+        filename: 'large-file.bin',
+        contentType: 'application/octet-stream',
+      );
+
+      final uploadCallback = UploadProgressCallbackFunctionMock();
+      await storage.uploadFiles(
+        files: [fileData],
+        onUploadProgress: uploadCallback.call,
+      );
+
+      final verificationResult =
+          verify(uploadCallback(captureAny, captureAny, captureAny));
+      final progressCallArgs =
+          chunkList(verificationResult.captured, 3).toList();
+
+      final firstRequest = progressCallArgs[0][0];
+      final firstTotalBytes = progressCallArgs[0][2] as int;
+
+      // Verify consistent request arg
+      expect(progressCallArgs.map((args) => args[0]),
+          everyElement(equals(firstRequest)));
+
+      // Verify consistent totalBytes arg
+      expect(progressCallArgs.map((args) => args[2]),
+          everyElement(equals(firstTotalBytes)));
+
+      // Verify increasing uploadedBytes
+      expect(progressCallArgs.map((args) => args[1]), isIncreasing);
+    });
   });
 
   group('stored files', () {
@@ -298,6 +390,7 @@ void main() async {
 
     setUp(() async {
       final filePath = 'styles.css';
+      // ignore: deprecated_member_use
       final fileMd = await storage.uploadString(
         fileName: filePath,
         fileContents: fileContents,

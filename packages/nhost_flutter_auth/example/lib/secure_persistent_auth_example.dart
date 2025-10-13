@@ -28,10 +28,12 @@ class SecurePersistentAuthExample extends StatefulWidget {
   });
 
   @override
-  SecurePersistentAuthExampleState createState() => SecurePersistentAuthExampleState();
+  SecurePersistentAuthExampleState createState() =>
+      SecurePersistentAuthExampleState();
 }
 
-class SecurePersistentAuthExampleState extends State<SecurePersistentAuthExample> {
+class SecurePersistentAuthExampleState
+    extends State<SecurePersistentAuthExample> {
   late NhostClient nhostClient;
 
   @override

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:nhost_dart/nhost_dart.dart';
+import 'package:nhost_storage_dart/nhost_storage_dart.dart';
 
 import 'auth_example.dart';
 import 'config.dart';
@@ -16,12 +17,15 @@ void main() async {
   await signInOrSignUp(client,
       email: 'user-1@nhost.io', password: 'password-1');
 
-  // Upload a new image file...
-  final imageMetadata = await client.storage.uploadBytes(
-    fileName: 'henry.jpg',
-    fileContents: File('./assets/henry.jpg').readAsBytesSync(),
-    mimeType: 'image/jpeg',
+  // Upload a new image file using uploadFiles API...
+  final imageData = FileData(
+    File('./assets/henry.jpg').readAsBytesSync(),
+    filename: 'henry.jpg',
+    contentType: 'image/jpeg',
   );
+
+  final uploadedImages = await client.storage.uploadFiles(files: [imageData]);
+  final imageMetadata = uploadedImages.first;
   print('Uploaded image');
   print('Size: ${imageMetadata.size}');
 

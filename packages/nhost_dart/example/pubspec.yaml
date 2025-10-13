@@ -11,3 +11,5 @@ dependencies:
   # Nhost packages
   nhost_dart:
     path: ../
+  nhost_storage_dart:
+    path: ../../nhost_storage_dart

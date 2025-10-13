@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 import 'api/storage_api_types.dart';
 
 /// The default used during file upload if not provided.
-const applicationOctetStreamType = 'application/octet-stream; charset=utf-8';
+const applicationOctetStreamType = 'application/octet-stream';
 
 /// The Nhost storage service.
 ///
@@ -44,7 +44,8 @@ class NhostStorageClient implements HasuraStorageClient {
   /// Throws an [ApiException] if the upload fails.
   ///
   /// **Deprecated**: Use [uploadFiles] instead for better flexibility and batch upload support.
-  @Deprecated('Use uploadFiles instead for better flexibility and batch upload support')
+  @Deprecated(
+      'Use uploadFiles instead for better flexibility and batch upload support')
   @override
   Future<FileMetadata> uploadBytes({
     required String fileName,
@@ -82,7 +83,8 @@ class NhostStorageClient implements HasuraStorageClient {
   /// Throws an [ApiException] if the upload fails.
   ///
   /// **Deprecated**: Use [uploadFiles] instead for better flexibility and batch upload support.
-  @Deprecated('Use uploadFiles instead for better flexibility and batch upload support')
+  @Deprecated(
+      'Use uploadFiles instead for better flexibility and batch upload support')
   @override
   Future<FileMetadata> uploadString({
     required String fileName,
@@ -162,14 +164,16 @@ class NhostStorageClient implements HasuraStorageClient {
 
     // Add file[] if present
     for (final file in files) {
+      final contentType = MediaType.parse(
+        file.contentType ?? applicationOctetStreamType,
+      );
+
       multipartFiles.add(
         http.MultipartFile.fromBytes(
           'file[]',
           file.bytes,
           filename: file.filename ?? '',
-          contentType: file.contentType != null
-              ? MediaType.parse(file.contentType!)
-              : null,
+          contentType: contentType,
         ),
       );
     }
