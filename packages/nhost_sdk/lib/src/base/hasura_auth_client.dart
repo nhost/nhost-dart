@@ -174,7 +174,7 @@ class DeanonymizeOptions {
   final Uri? redirectTo;
 
   Map<String, dynamic> toJson() {
-    if (password != null && password!.length < 3 || password!.length > 50) {
+    if (password != null && (password!.length < 3 || password!.length > 50)) {
       throw ArgumentError.value(password, 'password', 'Must be between 3 and 50 characters');
     }
 

@@ -427,13 +427,29 @@ class NhostAuthClient implements HasuraAuthClient {
     }
   }
 
+  /// Converts an anonymous user to a regular user.
+  ///
+  /// This method allows you to convert an anonymous user account into a permanent
+  /// account by providing authentication credentials (email/password or passwordless).
+  ///
+  /// The user must be currently signed in as an anonymous user for this operation to succeed.
+  ///
+  /// Throws an [NhostException] if deanonymization fails.
   @override
   Future<void> deanonymize(DeanonymizeOptions options) async {
-    await _apiClient.post<String>(
-      '/user/deanonymize',
-      jsonBody: options.toJson(),
-      headers: _session.authenticationHeaders,
-    );
+    log.finer('Attempting to deanonymize user');
+
+    try {
+      await _apiClient.post(
+        '/user/deanonymize',
+        jsonBody: options.toJson(),
+        headers: _session.authenticationHeaders,
+      );
+      log.finer('Deanonymization successful');
+    } catch (e, st) {
+      log.finer('Deanonymization failed', e, st);
+      rethrow;
+    }
   }
 
   /// Authenticates a user using a [phoneNumber].

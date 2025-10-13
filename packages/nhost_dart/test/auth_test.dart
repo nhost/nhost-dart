@@ -312,6 +312,86 @@ void main() async {
     });
   });
 
+  group('deanonymize', () {
+    setUp(() async {
+      // Sign in as an anonymous user first
+      await auth.signInAnonymous(null, null, null);
+      assert(auth.authenticationState == AuthenticationState.signedIn);
+      assert(auth.currentUser != null);
+    });
+
+    test('should succeed with email-password method', () async {
+      final options = DeanonymizeOptions(
+        signInMethod: DeanonymizeSignInMethod.emailPassword,
+        email: getTestEmail(),
+        password: testPassword,
+      );
+
+      expect(
+        auth.deanonymize(options),
+        completes,
+      );
+    });
+
+    test('should succeed with passwordless method', () async {
+      final options = DeanonymizeOptions(
+        signInMethod: DeanonymizeSignInMethod.passwordless,
+        email: getTestEmail(),
+      );
+
+      expect(
+        auth.deanonymize(options),
+        completes,
+      );
+    });
+
+    test('should succeed with optional parameters', () async {
+      final options = DeanonymizeOptions(
+        signInMethod: DeanonymizeSignInMethod.emailPassword,
+        email: getTestEmail(),
+        password: testPassword,
+        displayName: 'Test User',
+        locale: 'en',
+        defaultRole: 'user',
+        allowedRoles: ['user', 'me'],
+        metadata: {'source': 'test'},
+      );
+
+      expect(
+        auth.deanonymize(options),
+        completes,
+      );
+    });
+
+    test('should fail when not signed in as anonymous user', () async {
+      await auth.signOut();
+
+      final options = DeanonymizeOptions(
+        signInMethod: DeanonymizeSignInMethod.emailPassword,
+        email: getTestEmail(),
+        password: testPassword,
+      );
+
+      expect(
+        auth.deanonymize(options),
+        throwsA(isA<ApiException>()),
+      );
+    });
+
+    test('should fail with invalid password length', () {
+      final options = DeanonymizeOptions(
+        signInMethod: DeanonymizeSignInMethod.emailPassword,
+        email: getTestEmail(),
+        password: 'ab',
+      );
+
+      expect(
+        () => options.toJson(),
+        throwsA(isA<ArgumentError>()),
+      );
+    });
+  });
+
   group('authentication state callbacks', () {
     AuthenticationState? authStateVar;
     late UnsubscribeDelegate unsubscribe;
