@@ -1,4 +1,4 @@
-import 'package:test_api/expect.dart';
+import 'package:test/test.dart';
 
 /// Matches when the provided iterable is monotonically increasing.
 const isIncreasing = _IsIncreasingMatcher();
