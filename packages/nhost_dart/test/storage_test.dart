@@ -500,7 +500,7 @@ void main() async {
       final newFile = FileData(
         Uint8List.fromList(newContents.codeUnits),
         filename: 'data.json',
-        contentType: 'application/json',
+        contentType: 'application/octet-stream',
       );
 
       final result = await storage.replaceFile(
