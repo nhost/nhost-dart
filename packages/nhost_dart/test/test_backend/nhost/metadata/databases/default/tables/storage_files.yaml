@@ -93,10 +93,14 @@ update_permissions:
         - is_uploaded
         - size
         - metadata
+        - bucket_id
         - etag
         - mime_type
         - name
+        - created_at
         - updated_at
+        - id
+        - uploaded_by_user_id
       filter: {}
       check: {}
     comment: ""
