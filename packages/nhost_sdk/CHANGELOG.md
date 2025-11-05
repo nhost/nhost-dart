@@ -1,3 +1,7 @@
+## 5.8.0
+
+ - **FEAT**(storage): added replaceFile method (#172).
+
 ## 5.7.0
 
  - **FEAT**(storage): update SDK to use modern way of uploading files (#167).

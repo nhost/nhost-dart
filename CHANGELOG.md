@@ -3,6 +3,54 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 2025-11-05
+
+### Changes
+
+---
+
+Packages with breaking changes:
+
+ - There are no breaking changes in this release.
+
+Packages with other changes:
+
+ - [`nhost_dart` - `v2.2.0`](#nhost_dart---v220)
+ - [`nhost_sdk` - `v5.8.0`](#nhost_sdk---v580)
+ - [`nhost_storage_dart` - `v2.2.0`](#nhost_storage_dart---v220)
+ - [`nhost_flutter_auth` - `v4.2.1`](#nhost_flutter_auth---v421)
+ - [`nhost_flutter_graphql` - `v3.1.2`](#nhost_flutter_graphql---v312)
+ - [`nhost_graphql_adapter` - `v4.0.10`](#nhost_graphql_adapter---v4010)
+ - [`nhost_functions_dart` - `v2.0.10`](#nhost_functions_dart---v2010)
+ - [`nhost_auth_dart` - `v2.6.1`](#nhost_auth_dart---v261)
+ - [`nhost_gql_links` - `v4.0.11`](#nhost_gql_links---v4011)
+
+Packages with dependency updates only:
+
+> Packages listed below depend on other packages in this workspace that have had changes. Their versions have been incremented to bump the minimum dependency versions of the packages they depend upon in this project.
+
+ - `nhost_flutter_auth` - `v4.2.1`
+ - `nhost_flutter_graphql` - `v3.1.2`
+ - `nhost_graphql_adapter` - `v4.0.10`
+ - `nhost_functions_dart` - `v2.0.10`
+ - `nhost_auth_dart` - `v2.6.1`
+ - `nhost_gql_links` - `v4.0.11`
+
+---
+
+#### `nhost_dart` - `v2.2.0`
+
+ - **FEAT**(storage): added replaceFile method (#172).
+
+#### `nhost_sdk` - `v5.8.0`
+
+ - **FEAT**(storage): added replaceFile method (#172).
+
+#### `nhost_storage_dart` - `v2.2.0`
+
+ - **FEAT**(storage): added replaceFile method (#172).
+
+
 ## 2025-10-13
 
 ### Changes
