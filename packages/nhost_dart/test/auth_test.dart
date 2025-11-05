@@ -39,9 +39,6 @@ void main() async {
   });
 
   setUp(() async {
-    // Clear out any data from the previous test
-    await gqlAdmin.clearUsers();
-
     // Create the service objects that we're going to be using to test
     nhost = createApiTestClient(
       http.Client(),
@@ -56,6 +53,11 @@ void main() async {
   });
 
   group('sign up', () {
+    setUp(() {
+      // Generate unique email for each test in this group
+      testEmail = getTestEmail();
+    });
+
     test('should succeed', () async {
       expect(
         auth.signUp(email: testEmail, password: testPassword),
@@ -139,10 +141,13 @@ void main() async {
 
   group('signIn', () {
     late String refreshToken;
+    late String signInEmail;
     // Each tests registers a basic user, and leaves auth in a logged out state
     setUp(() async {
+      // Generate a unique email for this test run
+      signInEmail = getTestEmail();
       final res =
-          await registerAndSignInBasicUser(auth, testEmail, testPassword);
+          await registerAndSignInBasicUser(auth, signInEmail, testPassword);
       refreshToken = res.session!.refreshToken!;
       // Don't log out, so we can keep a valid refresh token
       await auth.clearSession();
@@ -151,19 +156,19 @@ void main() async {
 
     test('should be able to signIn with the correct password', () async {
       expect(
-        auth.signInEmailPassword(email: testEmail, password: testPassword),
+        auth.signInEmailPassword(email: signInEmail, password: testPassword),
         completes,
       );
     });
 
     test('should be able to signOut and signIn', () async {
       await expectLater(
-        auth.signInEmailPassword(email: testEmail, password: testPassword),
+        auth.signInEmailPassword(email: signInEmail, password: testPassword),
         completes,
       );
       await auth.signOut();
       expect(
-        auth.signInEmailPassword(email: testEmail, password: testPassword),
+        auth.signInEmailPassword(email: signInEmail, password: testPassword),
         completes,
       );
     });
@@ -171,7 +176,7 @@ void main() async {
     test('should not be able to signIn with wrong password', () async {
       expect(
         auth.signInEmailPassword(
-            email: testEmail, password: 'wrong-password-1'),
+            email: signInEmail, password: 'wrong-password-1'),
         throwsA(isA<ApiException>().having(
           (e) => e.statusCode,
           'statusCode',
@@ -181,17 +186,17 @@ void main() async {
     });
 
     test('should be authenticated', () async {
-      await auth.signInEmailPassword(email: testEmail, password: testPassword);
+      await auth.signInEmailPassword(email: signInEmail, password: testPassword);
       expect(auth.authenticationState, AuthenticationState.signedIn);
     });
 
     test('should be able to retreive JWT Token', () async {
-      await auth.signInEmailPassword(email: testEmail, password: testPassword);
+      await auth.signInEmailPassword(email: signInEmail, password: testPassword);
       expect(auth.accessToken, isA<String>());
     });
 
     test('should be able to get user id as JWT claim', () async {
-      await auth.signInEmailPassword(email: testEmail, password: testPassword);
+      await auth.signInEmailPassword(email: signInEmail, password: testPassword);
       expect(auth.getClaim('x-hasura-user-id'), isA<String>());
     });
 
@@ -264,9 +269,11 @@ void main() async {
   });
 
   group('signOut', () {
+    late String signOutEmail;
     // All signOut tests log a user in first
     setUp(() async {
-      await registerAndSignInBasicUser(auth, testEmail, testPassword);
+      signOutEmail = getTestEmail();
+      await registerAndSignInBasicUser(auth, signOutEmail, testPassword);
       assert(auth.currentUser != null);
     });
 
@@ -296,6 +303,12 @@ void main() async {
   });
 
   group('sending verification email', () {
+    late String verifyEmail;
+
+    setUp(() {
+      verifyEmail = getTestEmail();
+    });
+
     test('should fail when the user does not exist', () {
       expect(
         auth.sendVerificationEmail(email: 'foo@bar.com'),
@@ -304,9 +317,9 @@ void main() async {
     });
 
     test('succeeds if the user exists', () async {
-      await registerTestUser(auth, testEmail, testPassword);
+      await registerTestUser(auth, verifyEmail, testPassword);
       expect(
-        auth.sendVerificationEmail(email: testEmail),
+        auth.sendVerificationEmail(email: verifyEmail),
         completes,
       );
     });
@@ -395,8 +408,10 @@ void main() async {
   group('authentication state callbacks', () {
     AuthenticationState? authStateVar;
     late UnsubscribeDelegate unsubscribe;
+    late String callbackEmail;
 
     setUp(() {
+      callbackEmail = getTestEmail();
       authStateVar = AuthenticationState.inProgress;
       unsubscribe = auth.addAuthStateChangedCallback((authState) {
         authStateVar = authState;
@@ -404,21 +419,21 @@ void main() async {
     });
 
     test('should be called on sign in', () async {
-      await registerTestUser(auth, testEmail, testPassword);
-      await auth.signInEmailPassword(email: testEmail, password: testPassword);
+      await registerTestUser(auth, callbackEmail, testPassword);
+      await auth.signInEmailPassword(email: callbackEmail, password: testPassword);
       expect(authStateVar, AuthenticationState.signedIn);
     });
 
     test('should be called on sign out', () async {
-      await registerTestUser(auth, testEmail, testPassword);
+      await registerTestUser(auth, callbackEmail, testPassword);
       await auth.signOut();
       expect(authStateVar, AuthenticationState.signedOut);
     });
 
     test('should not be called once unsubscribed', () async {
-      await registerTestUser(auth, testEmail, testPassword);
+      await registerTestUser(auth, callbackEmail, testPassword);
       unsubscribe();
-      await auth.signInEmailPassword(email: testEmail, password: testPassword);
+      await auth.signInEmailPassword(email: callbackEmail, password: testPassword);
       expect(authStateVar, AuthenticationState.signedOut);
     });
   });
@@ -557,8 +572,11 @@ void main() async {
   });
 
   group('email change', () {
+    late String emailChangeEmail;
+
     setUp(() async {
-      await registerAndSignInBasicUser(auth, testEmail, testPassword);
+      emailChangeEmail = getTestEmail();
+      await registerAndSignInBasicUser(auth, emailChangeEmail, testPassword);
     });
 
     // This should be tested, but requires a server configured with
@@ -602,8 +620,11 @@ void main() async {
   });
 
   group('password change', () {
+    late String passwordChangeEmail;
+
     setUp(() async {
-      await registerAndSignInBasicUser(auth, testEmail, testPassword);
+      passwordChangeEmail = getTestEmail();
+      await registerAndSignInBasicUser(auth, passwordChangeEmail, testPassword);
     });
 
     test('should be able to change password directly', () async {
@@ -618,7 +639,7 @@ void main() async {
       // Now signOut, and try with the new pass
       await auth.signOut();
       expect(
-        auth.signInEmailPassword(email: testEmail, password: newPassword),
+        auth.signInEmailPassword(email: passwordChangeEmail, password: newPassword),
         completes,
       );
     });
@@ -644,8 +665,14 @@ void main() async {
   });
 
   group('multi-factor authentication', () {
+    late String mfaEmail;
+
+    setUp(() {
+      mfaEmail = getTestEmail();
+    });
+
     test('can be enabled on a user', () async {
-      await registerAndSignInBasicUser(auth, testEmail, testPassword);
+      await registerAndSignInBasicUser(auth, mfaEmail, testPassword);
 
       // Ask the backend to generate MFA configuration, and from that, generate
       // a time-based OTP.
@@ -659,10 +686,10 @@ void main() async {
     });
 
     test('should require TOTP for sign in once enabled', () async {
-      final otpSecret = await registerMfaUser(auth, testEmail, testPassword);
+      final otpSecret = await registerMfaUser(auth, mfaEmail, testPassword);
 
       final firstFactorAuthResult = await auth.signInEmailPassword(
-          email: testEmail, password: testPassword);
+          email: mfaEmail, password: testPassword);
       expect(firstFactorAuthResult.user, isNull);
       expect(auth.authenticationState, AuthenticationState.signedOut);
       expect(auth.accessToken, isNull);
@@ -678,7 +705,7 @@ void main() async {
 
     test('can be disabled', () async {
       final otpSecret =
-          await registerMfaUser(auth, testEmail, testPassword, signOut: false);
+          await registerMfaUser(auth, mfaEmail, testPassword, signOut: false);
 
       expect(
         auth.disableMfa(totpFromSecret(otpSecret)),
