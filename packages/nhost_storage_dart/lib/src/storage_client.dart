@@ -190,6 +190,60 @@ class NhostStorageClient implements HasuraStorageClient {
     return response.processedFiles;
   }
 
+  /// Replaces an existing file on the backend.
+  ///
+  /// [fileId] is the ID of the file to replace.
+  /// [file] is the new file data to upload.
+  /// [metadata] is optional metadata for the replacement file.
+  ///
+  /// Returns the [FileMetadata] for the replaced file.
+  ///
+  /// Throws an [ApiException] if the replacement fails.
+  Future<FileMetadata> replaceFile({
+    required String fileId,
+    required FileData file,
+    UploadFileMetadata? metadata,
+    UploadProgressCallback? onUploadProgress,
+  }) async {
+    final multipartFiles = <http.MultipartFile>[];
+
+    // Add metadata as multipart file if present (consistent with uploadFiles)
+    if (metadata != null) {
+      multipartFiles.add(
+        http.MultipartFile.fromBytes(
+          'metadata',
+          utf8.encode(jsonEncode(metadata.toJson())),
+          filename: '',
+          contentType: MediaType('application', 'json'),
+        ),
+      );
+    }
+
+    // Add the file
+    final contentType = MediaType.parse(
+      file.contentType ?? applicationOctetStreamType,
+    );
+
+    multipartFiles.add(
+      http.MultipartFile.fromBytes(
+        'file',
+        file.bytes,
+        filename: file.filename ?? '',
+        contentType: contentType,
+      ),
+    );
+
+    final response = await _apiClient.putMultipart(
+      '/files/$fileId',
+      files: multipartFiles,
+      headers: _session.authenticationHeaders,
+      responseDeserializer: FileMetadata.fromJson,
+      onUploadProgress: onUploadProgress,
+    );
+
+    return response;
+  }
+
   /// Downloads the file with the specified identifier.
   @override
   Future<http.Response> downloadFile(String fileId) async {
