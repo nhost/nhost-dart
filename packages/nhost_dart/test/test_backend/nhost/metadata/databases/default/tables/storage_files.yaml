@@ -86,6 +86,20 @@ select_permissions:
         - uploaded_by_user_id
       filter: {}
     comment: ""
+update_permissions:
+  - role: user
+    permission:
+      columns:
+        - is_uploaded
+        - size
+        - metadata
+        - etag
+        - mime_type
+        - name
+        - updated_at
+      filter: {}
+      check: {}
+    comment: ""
 delete_permissions:
   - role: user
     permission:
