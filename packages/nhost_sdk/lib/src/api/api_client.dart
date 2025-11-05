@@ -202,6 +202,69 @@ class ApiClient {
     );
   }
 
+  /// Performs an HTTP PUT multipart api call.
+  ///
+  /// {@macro nhost.api.ApiClient.path}
+  ///
+  /// {@macro nhost.api.ApiClient.responseDeserializer}
+  Future<ResponseType> putMultipart<ResponseType>(
+    String path, {
+    required Iterable<http.MultipartFile> files,
+    Map<String, String>? fields,
+    Map<String, String>? headers,
+    JsonDeserializer<ResponseType>? responseDeserializer,
+    UploadProgressCallback? onUploadProgress,
+  }) async {
+    final url = baseUrl.extend(path);
+    final multipartRequest = http.MultipartRequest('put', url)
+      ..files.addAll(files)
+      ..fields.addAll(fields ?? {});
+
+    http.BaseRequest requestToSend;
+    if (onUploadProgress != null) {
+      final chunkedByteStream = chunkStream(
+        multipartRequest.finalize(),
+        chunkLength: multipartChunkSize,
+      );
+
+      // Reporting upload progress isn't straightforward, so we have to jump
+      // through a few hoops to get it going.
+      //
+      // The central idea is that we create the stream representation of the
+      // request, set ourselves up to watch the stream's consumption rate, then
+      // send it over the wire. The consumed bytes are reported to the callback
+      // as the upload progress.
+      var bytesUploaded = 0;
+      final bytesTotal = multipartRequest.contentLength;
+      final observedByteStream = chunkedByteStream
+          .transform(StreamTransformer<List<int>, List<int>>.fromHandlers(
+        handleData: (data, sink) {
+          // Pass the data along the chain
+          sink.add(data);
+
+          // ...and report progress
+          bytesUploaded += data.length;
+          onUploadProgress(multipartRequest, bytesUploaded, bytesTotal);
+        },
+        handleError: (error, stackTrace, sink) =>
+            throw AsyncError(error, stackTrace),
+        handleDone: (sink) => sink.close(),
+      ));
+
+      requestToSend = StreamWrappingRequest('put', url, observedByteStream)
+        ..contentLength = multipartRequest.contentLength
+        ..headers.addAll(multipartRequest.headers);
+    } else {
+      requestToSend = multipartRequest;
+    }
+
+    return send<ResponseType>(
+      requestToSend,
+      headers: headers,
+      responseDeserializer: responseDeserializer,
+    );
+  }
+
   /// Performs an HTTP request of the specified method.
   Future<ResponseType> request<ResponseType>(
     String method,
