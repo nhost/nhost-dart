@@ -424,6 +424,214 @@ void main() async {
       expect(await gqlAdmin.getFileInfo(fileId), isNull);
     });
   });
+
+  group('replacing files', () {
+    late String fileId;
+    final originalFileContents = 'original content';
+    final originalContentType = 'text/plain';
+
+    setUp(() async {
+      final filePath = 'replaceable-file.txt';
+      final fileData = FileData(
+        Uint8List.fromList(originalFileContents.codeUnits),
+        filename: filePath,
+        contentType: originalContentType,
+      );
+
+      final results = await storage.uploadFiles(files: [fileData]);
+      fileId = results[0].id;
+    });
+
+    test('can replace file content', () async {
+      final newContents = 'updated content';
+      final newFile = FileData(
+        Uint8List.fromList(newContents.codeUnits),
+        filename: 'replaced-file.txt',
+        contentType: 'text/plain',
+      );
+
+      final result = await storage.replaceFile(
+        fileId: fileId,
+        file: newFile,
+      );
+
+      // Verify the file ID remains the same
+      expect(result.id, fileId);
+      expect(result.name, 'replaced-file.txt');
+      expect(result.mimeType, 'text/plain');
+
+      // Verify stored file was updated
+      final storedFile = await gqlAdmin.getFileInfo(fileId);
+      expect(storedFile, isNotNull);
+      expect(storedFile!.id, fileId);
+      expect(storedFile.name, 'replaced-file.txt');
+    });
+
+    test('can replace file with metadata', () async {
+      final newContents = 'content with metadata';
+      final newFile = FileData(
+        Uint8List.fromList(newContents.codeUnits),
+        filename: 'metadata-replaced.txt',
+        contentType: 'text/plain',
+      );
+
+      final metadata = UploadFileMetadata(
+        name: 'custom-replaced-name.txt',
+        metadata: {'version': '2.0', 'updated': 'true'},
+      );
+
+      final result = await storage.replaceFile(
+        fileId: fileId,
+        file: newFile,
+        metadata: metadata,
+      );
+
+      // Verify metadata was applied
+      expect(result.id, fileId);
+      expect(result.name, 'custom-replaced-name.txt');
+
+      // Verify stored file
+      final storedFile = await gqlAdmin.getFileInfo(fileId);
+      expect(storedFile!.name, 'custom-replaced-name.txt');
+    });
+
+    test('can replace file with different content type', () async {
+      final newContents = '{"data": "json content"}';
+      final newFile = FileData(
+        Uint8List.fromList(newContents.codeUnits),
+        filename: 'data.json',
+        contentType: 'application/json',
+      );
+
+      final result = await storage.replaceFile(
+        fileId: fileId,
+        file: newFile,
+      );
+
+      expect(result.id, fileId);
+      expect(result.mimeType, 'application/json');
+
+      // Verify stored file has new content type
+      final storedFile = await gqlAdmin.getFileInfo(fileId);
+      expect(storedFile!.mimeType, 'application/json');
+    });
+
+    test('reports replace progress', () async {
+      final largeData = Uint8List(math.pow(2, 20) as int); // 1MB
+      final newFile = FileData(
+        largeData,
+        filename: 'large-replacement.bin',
+        contentType: 'application/octet-stream',
+      );
+
+      final uploadCallback = UploadProgressCallbackFunctionMock();
+      await storage.replaceFile(
+        fileId: fileId,
+        file: newFile,
+        onUploadProgress: uploadCallback.call,
+      );
+
+      final verificationResult =
+          verify(uploadCallback(captureAny, captureAny, captureAny));
+      final progressCallArgs =
+          chunkList(verificationResult.captured, 3).toList();
+
+      final firstRequest = progressCallArgs[0][0];
+      final firstTotalBytes = progressCallArgs[0][2] as int;
+
+      // Verify consistent request arg
+      expect(progressCallArgs.map((args) => args[0]),
+          everyElement(equals(firstRequest)));
+
+      // Verify consistent totalBytes arg
+      expect(progressCallArgs.map((args) => args[2]),
+          everyElement(equals(firstTotalBytes)));
+
+      // Verify increasing uploadedBytes
+      expect(progressCallArgs.map((args) => args[1]), isIncreasing);
+    });
+
+    test('replaceFile preserves file ID', () async {
+      final newFile = FileData(
+        Uint8List.fromList('new content'.codeUnits),
+        filename: 'new-name.txt',
+        contentType: 'text/plain',
+      );
+
+      // Store original file info
+      final originalFile = await gqlAdmin.getFileInfo(fileId);
+      expect(originalFile, isNotNull);
+
+      // Replace the file
+      final result = await storage.replaceFile(
+        fileId: fileId,
+        file: newFile,
+      );
+
+      // File ID should remain unchanged
+      expect(result.id, fileId);
+      expect(result.id, originalFile!.id);
+
+      // But file should be updated
+      final updatedFile = await gqlAdmin.getFileInfo(fileId);
+      expect(updatedFile!.name, 'new-name.txt');
+    });
+
+    test('replaceFile defaults to application/octet-stream', () async {
+      final newFile = FileData(
+        Uint8List.fromList('test'.codeUnits),
+        filename: 'default-mime-replace.txt',
+        // no contentType
+      );
+
+      final result = await storage.replaceFile(
+        fileId: fileId,
+        file: newFile,
+      );
+
+      expect(result.mimeType, 'text/plain; charset=utf-8');
+    });
+
+    test('can replace with binary data', () async {
+      // Use actual binary data (JPEG header)
+      final binaryData = Uint8List.fromList([
+        0xFF,
+        0xD8,
+        0xFF,
+        0xE0,
+        0x00,
+        0x10,
+        0x4A,
+        0x46,
+        0x49,
+        0x46,
+        0x00,
+        0x01,
+        0x01,
+        0x00,
+        0x00,
+        0x01
+      ]);
+      final newFile = FileData(
+        binaryData,
+        filename: 'replaced-binary.bin',
+        contentType: 'application/octet-stream',
+      );
+
+      final result = await storage.replaceFile(
+        fileId: fileId,
+        file: newFile,
+      );
+
+      expect(result.id, fileId);
+      expect(result.name, 'replaced-binary.bin');
+      expect(result.mimeType, 'image/jpeg');
+
+      // Verify stored
+      final storedFile = await gqlAdmin.getFileInfo(fileId);
+      expect(storedFile!.mimeType, 'image/jpeg');
+    });
+  });
 }
 
 abstract class UploadProgressCallbackFunction {
