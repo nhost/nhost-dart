@@ -205,12 +205,18 @@ class NhostStorageClient implements HasuraStorageClient {
     UploadFileMetadata? metadata,
     UploadProgressCallback? onUploadProgress,
   }) async {
-    final fields = <String, String>{};
     final multipartFiles = <http.MultipartFile>[];
 
-    // Add metadata as a field if present
+    // Add metadata as multipart file if present (consistent with uploadFiles)
     if (metadata != null) {
-      fields['metadata'] = jsonEncode(metadata.toJson());
+      multipartFiles.add(
+        http.MultipartFile.fromBytes(
+          'metadata',
+          utf8.encode(jsonEncode(metadata.toJson())),
+          filename: '',
+          contentType: MediaType('application', 'json'),
+        ),
+      );
     }
 
     // Add the file
@@ -230,7 +236,6 @@ class NhostStorageClient implements HasuraStorageClient {
     final response = await _apiClient.putMultipart(
       '/files/$fileId',
       files: multipartFiles,
-      fields: fields,
       headers: _session.authenticationHeaders,
       responseDeserializer: FileMetadata.fromJson,
       onUploadProgress: onUploadProgress,
