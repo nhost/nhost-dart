@@ -447,6 +447,7 @@ class NhostAuthClient implements HasuraAuthClient {
         '/user/deanonymize',
         jsonBody: options.toJson(),
         headers: _session.authenticationHeaders,
+        responseDeserializer: AuthResponse.fromJson,
       );
       log.finer('Deanonymization successful');
     } catch (e, st) {
