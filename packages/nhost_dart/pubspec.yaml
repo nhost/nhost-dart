@@ -36,5 +36,5 @@ dev_dependencies:
   nhost_gql_links: ^4.0.10
   async: ^2.10.0
   stream_channel: ^2.1.1
-  web_socket_channel: ^2.2.0
+  web_socket_channel: ^3.0.0
   uuid: ^4.0.0

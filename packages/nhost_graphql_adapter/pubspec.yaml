@@ -23,4 +23,4 @@ dev_dependencies:
   nock: ^1.2.1
   stream_channel: ^2.1.1
   test: ^1.22.0
-  web_socket_channel: ^2.2.0
+  web_socket_channel: ^3.0.0
