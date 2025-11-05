@@ -17,7 +17,7 @@ dependencies:
   http: ^1.1.0
   logging: ^1.1.0
   meta: ^1.7.0
-  web_socket_channel: ^2.2.0
+  web_socket_channel: ^3.0.0
 
   #Nhost_dart
   nhost_sdk: ^5.7.0
