@@ -20,7 +20,7 @@ scripts:
     run: dart ./tool/generate_package_workflows.dart
 
   test:
-    run: dart run melos exec -c 1 -- 'if [ -d test ]; then flutter test --reporter=expanded; fi'
+    run: dart run melos exec -c 1 -- 'if [ -d test ]; then flutter test --concurrency=1 --reporter=expanded; fi'
 
   publish:
     run: |
