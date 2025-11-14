@@ -30,26 +30,26 @@ import '../nhost_graphql_adapter.dart';
 /// [defaultPolicies] (optional) default fetch and error policies for queries,
 /// mutations, and subscriptions.
 /// {@endtemplate}
-/// 
+///
 /// {@template nhost.graphqlClient.alwaysRebroadcast}
 /// [alwaysRebroadcast] (optional) if true, always rebroadcasts changes to
 /// listeners, even if data is unchanged.
 /// {@endtemplate}
-/// 
+///
 /// {@template nhost.graphqlClient.deepEquals}
 /// [deepEquals] (optional) function to compare query results for deep equality.
 /// {@endtemplate}
-/// 
+///
 /// {@template nhost.graphqlClient.asyncDeepEquals}
 /// [asyncDeepEquals] (optional) async function to compare query results for
 /// deep equality.
 /// {@endtemplate}
-/// 
+///
 /// {@template nhost.graphqlClient.deduplicatePollers}
 /// [deduplicatePollers] (optional) if true, deduplicates polling queries to
 /// avoid duplicate requests.
 /// {@endtemplate}
-/// 
+///
 /// {@template nhost.graphqlClient.queryRequestTimeout}
 /// [queryRequestTimeout] (optional) timeout duration for query requests.
 /// Defaults to 1 minute.
@@ -93,19 +93,19 @@ GraphQLClient createNhostGraphQLClient(
 /// {@macro nhost.graphqlClient.defaultHeaders}
 ///
 /// {@macro nhost.graphqlClient.httpClientOverride}
-/// 
+///
 /// {@macro nhost.graphqlClient.defaultPolicies}
-/// 
+///
 /// {@macro nhost.graphqlClient.alwaysRebroadcast}
-/// 
+///
 /// {@macro nhost.graphqlClient.deepEquals}
-/// 
+///
 /// {@macro nhost.graphqlClient.asyncDeepEquals}
-/// 
+///
 /// {@macro nhost.graphqlClient.deduplicatePollers}
-/// 
+///
 /// {@macro nhost.graphqlClient.queryRequestTimeout}
-/// 
+///
 GraphQLClient createNhostGraphQLClientForAuth(
   String nhostGqlEndpointUrl,
   HasuraAuthClient nhostAuth, {
