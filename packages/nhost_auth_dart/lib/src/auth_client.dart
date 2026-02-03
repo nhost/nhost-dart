@@ -39,7 +39,7 @@ class NhostAuthClient implements HasuraAuthClient {
         _authStore = authStore ?? InMemoryAuthStore(),
         _tokenRefreshInterval = tokenRefreshInterval,
         _refreshTokenLock = false,
-        _loading = false;
+        _loading = true;
 
   /// The HTTP client used by this client's services.
   final ApiClient _apiClient;
