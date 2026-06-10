@@ -66,4 +66,5 @@ packages/**/example/android/app/src/main/kotlin/io/flutter/plugins/GeneratedPlug
 .env.production.local
 .melos_tool
 
+# AI
 docs/superpowers/
