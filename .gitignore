@@ -1,16 +1,14 @@
 .DS_Store
 .atom/
 .idea/
-.vscode/
 
 .packages
 .pub/
 .dart_tool/
 pubspec.lock
+coverage/
 pubspec_overrides.local.yaml
 flutter_export_environment.sh
-coverage
-coverage/
 
 *.iml
 *.ipr
@@ -35,7 +33,6 @@ todos.md
 # Dart / Flutter generated docs and build output
 doc/api/
 build/
-.dart_tool/
 
 # Flutter example generated platform files
 packages/**/example/.metadata
@@ -54,7 +51,6 @@ packages/**/example/ios/Flutter/flutter_assets/
 packages/**/example/ios/Pods/
 packages/**/example/ios/.symlinks/
 packages/**/example/ios/Runner/GeneratedPluginRegistrant.*
-packages/**/example/ios/Podfile.lock
 packages/**/example/android/.gradle/
 packages/**/example/android/local.properties
 packages/**/example/android/app/debug/
