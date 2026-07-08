@@ -11,14 +11,21 @@ import 'src/logging.dart';
 export 'package:nhost_sdk/nhost_sdk.dart'
     show
         ApiException,
+        NhostException,
+        NhostNetworkException,
         Session,
+        User,
+        AuthResponse,
+        MultiFactorAuthResponse,
         createNhostServiceEndpoint,
         ServiceUrls,
         Subdomain,
         AuthenticationState,
         AuthStateChangedCallback,
         UnsubscribeDelegate,
-        AuthStore;
+        AuthStore,
+        DeanonymizeOptions,
+        DeanonymizeSignInMethod;
 export 'package:nhost_storage_dart/nhost_storage_dart.dart'
     show NhostStorageClient, ImageCornerRadius, ImageTransform;
 export 'package:nhost_auth_dart/nhost_auth_dart.dart' show NhostAuthClient;

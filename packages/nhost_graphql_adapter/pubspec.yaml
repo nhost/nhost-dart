@@ -1,6 +1,6 @@
 name: nhost_graphql_adapter
 version: 4.0.10
-description: Easily connect to your Nhost.io GraphQL backend using the graphql package.
+description: GraphQL client helpers for connecting package:graphql clients to an authenticated Nhost backend.
 homepage: https://nhost.io
 repository: https://github.com/nhost/nhost-dart/tree/main/packages/nhost_graphql_adapter
 issue_tracker: https://github.com/nhost/nhost-dart/issues

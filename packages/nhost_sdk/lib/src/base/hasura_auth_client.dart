@@ -128,6 +128,66 @@ abstract class HasuraAuthClient {
 
   Future<void> completeOAuthProviderSignIn(Uri redirectUrl);
 
+  /// Signs in using a Personal Access Token (PAT).
+  ///
+  /// PATs are long-lived tokens suited for CI/CD, scripts, and server-to-server
+  /// calls. Create a PAT in the Nhost dashboard → Account settings → PATs.
+  Future<AuthResponse> signInWithPat(String pat);
+
+  /// Fetches the current user's profile directly from the server.
+  ///
+  /// Useful for forcing a user-data refresh without a full token cycle.
+  Future<User> fetchUser();
+
+  /// Verifies whether [accessToken] is still valid on the server.
+  ///
+  /// Returns `true` if the token is valid, `false` otherwise.
+  Future<bool> verifyToken(String accessToken);
+
+  // ---------------------------------------------------------------------------
+  // WebAuthn — platform-dependent
+  // The methods below require a FIDO2/WebAuthn platform integration.
+  // On Flutter, pair with a native plugin (e.g. flutter_web_auth_2).
+  // Call the server endpoints, but the challenge creation/assertion must be
+  // handled by the platform layer before calling these.
+  // ---------------------------------------------------------------------------
+
+  /// Initiates WebAuthn sign-in. Returns the server challenge that the
+  /// platform layer must sign before calling [verifyWebAuthnSignIn].
+  Future<Map<String, dynamic>> signInWithWebAuthn();
+
+  /// Completes WebAuthn sign-in with the [assertionResponse] produced by the
+  /// platform authenticator.
+  Future<AuthResponse> verifyWebAuthnSignIn(
+    Map<String, dynamic> assertionResponse,
+  );
+
+  /// Initiates WebAuthn sign-up. Returns the server challenge that the
+  /// platform layer must use to create a new credential.
+  Future<Map<String, dynamic>> signUpWithWebAuthn({String? email});
+
+  /// Completes WebAuthn sign-up with the [attestationResponse] produced by
+  /// the platform authenticator.
+  Future<AuthResponse> verifyWebAuthnSignUp(
+    Map<String, dynamic> attestationResponse,
+  );
+
+  /// Initiates adding a new WebAuthn credential to an existing account.
+  Future<Map<String, dynamic>> addWebAuthnCredential();
+
+  /// Completes adding a WebAuthn credential with the [attestationResponse].
+  Future<void> verifyAddWebAuthnCredential(
+    Map<String, dynamic> attestationResponse,
+  );
+
+  /// Initiates a session-elevation flow via WebAuthn.
+  Future<Map<String, dynamic>> elevateWithWebAuthn();
+
+  /// Completes session elevation with the [assertionResponse].
+  Future<AuthResponse> verifyWebAuthnElevation(
+    Map<String, dynamic> assertionResponse,
+  );
+
   @visibleForTesting
   Future<void> setSession(Session session);
 

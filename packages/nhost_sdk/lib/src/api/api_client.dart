@@ -295,11 +295,19 @@ class ApiClient {
     log.finest(() =>
         'Sending a ${request.method.toUpperCase()} request to ${request.url}');
 
-    return _handleResponse<ResponseType>(
-      request,
-      await http.Response.fromStream(await _httpClient.send(request)),
-      responseDeserializer: responseDeserializer,
-    );
+    try {
+      return _handleResponse<ResponseType>(
+        request,
+        await http.Response.fromStream(await _httpClient.send(request)),
+        responseDeserializer: responseDeserializer,
+      );
+    } on NhostException {
+      rethrow;
+    } catch (e, st) {
+      // Wrap raw network-layer failures (SocketException, TimeoutException,
+      // etc.) so callers have a single Nhost type hierarchy to catch.
+      throw NhostNetworkException(cause: e, causeStackTrace: st);
+    }
   }
 
   http.Request _newApiRequest(
@@ -357,6 +365,19 @@ class ApiClient {
 ///
 /// An API call is considered failed if its [response]'s [statusCode] falls
 /// outside the 2xx range.
+///
+/// Nhost error bodies follow a consistent shape:
+/// `{"error": "invalid-request", "message": "...", "status": 400}`
+///
+/// Use [errorCode] and [errorMessage] to access those fields without casting
+/// the raw [responseBody]. Use the convenience booleans for common checks:
+///
+/// ```dart
+/// } on ApiException catch (e) {
+///   if (e.isUnauthorized) { ... }
+///   print(e.errorMessage); // "Invalid email or password"
+/// }
+/// ```
 class ApiException extends NhostException {
   ApiException(this.url, this.body, this.request, this.response);
 
@@ -368,10 +389,34 @@ class ApiException extends NhostException {
   dynamic get responseBody => body;
   int get statusCode => response.statusCode;
 
+  /// Nhost error code from the response body, e.g. `"invalid-request"`,
+  /// `"email-already-in-use"`. `null` if the body is not a JSON object.
+  String? get errorCode => body is Map ? body['error'] as String? : null;
+
+  /// Human-readable error message from the response body.
+  /// `null` if the body is not a JSON object.
+  String? get errorMessage => body is Map ? body['message'] as String? : null;
+
+  /// `true` when [statusCode] is 401 — credentials missing or expired.
+  bool get isUnauthorized => statusCode == 401;
+
+  /// `true` when [statusCode] is 403 — authenticated but access denied.
+  bool get isForbidden => statusCode == 403;
+
+  /// `true` when [statusCode] is 404 — resource not found.
+  bool get isNotFound => statusCode == 404;
+
+  /// `true` when [statusCode] is 400 or 422 — request body failed validation.
+  bool get isValidationError => statusCode == 400 || statusCode == 422;
+
+  /// `true` when [statusCode] is 5xx — server-side failure.
+  bool get isServerError => statusCode >= 500;
+
   @override
   String toString() {
+    final extra = errorCode != null ? ' errorCode=$errorCode' : '';
     return 'ApiException: '
-        'apiUrl=$url, statusCode=$statusCode, responseBody=$responseBody';
+        'apiUrl=$url, statusCode=$statusCode$extra, responseBody=$responseBody';
   }
 }
 
