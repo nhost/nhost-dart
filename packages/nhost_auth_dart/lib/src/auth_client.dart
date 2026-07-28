@@ -851,8 +851,11 @@ class NhostAuthClient implements HasuraAuthClient {
         headers: {'Authorization': 'Bearer $accessToken'},
       );
       return true;
-    } on ApiException {
-      return false;
+    } on ApiException catch (e) {
+      if (e.statusCode == 401 || e.statusCode == 403) {
+        return false;
+      }
+      rethrow;
     }
   }
 
