@@ -58,7 +58,7 @@ void main() async {
     files: [
       FileData(
         Uint8List.fromList([/* ... */]),
-        filename: '/users/${currentUser.id}/image.jpg',
+        filename: '/users/${currentUser!.id}/image.jpg',
         contentType: 'image/jpeg',
       ),
     ],
