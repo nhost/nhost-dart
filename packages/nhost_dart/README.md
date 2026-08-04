@@ -50,10 +50,14 @@ void main() async {
 
   // Upload a file
   final currentUser = authResponse.user ?? nhost.auth.currentUser;
-  await nhost.storage.uploadBytes(
-    fileName: '/users/${currentUser!.id}/image.jpg',
-    fileContents: [/* ... */],
-    mimeType: 'image/jpeg',
+  await nhost.storage.uploadFiles(
+    files: [
+      FileData(
+        Uint8List.fromList([/* ... */]),
+        filename: '/users/${currentUser!.id}/image.jpg',
+        contentType: 'image/jpeg',
+      ),
+    ],
   );
 
   // Log out
