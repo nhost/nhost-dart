@@ -1,8 +1,8 @@
 name: nhost_auth_dart
-description: Nhost Dart Auth Service SDK
+description: Dart client for Nhost Auth with email/password, passwordless, MFA, anonymous sign-in, and session management.
 version: 2.6.1
 homepage: https://nhost.io
-repository: https://github.com/nhost/nhost-dart/tree/main/packages/nhost_sdk
+repository: https://github.com/nhost/nhost-dart/tree/main/packages/nhost_auth_dart
 issue_tracker: https://github.com/nhost/nhost-dart/issues
 
 environment:

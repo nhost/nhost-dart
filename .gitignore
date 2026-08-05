@@ -6,18 +6,58 @@
 .pub/
 .dart_tool/
 pubspec.lock
+coverage/
+pubspec_overrides.local.yaml
 flutter_export_environment.sh
-coverage
 
 *.iml
+*.ipr
+*.iws
 
 .flutter-plugins
 .flutter-plugins-dependencies
+devtools_options.yaml
 
 .project
 .classpath
 .settings
 .last_build_id
+.metadata
+
+# Local planning notes
+backlog.md
+task-list.md
+todo.md
+todos.md
+
+# Dart / Flutter generated docs and build output
+doc/api/
+build/
+
+# Flutter example generated platform files
+packages/**/example/.metadata
+packages/**/example/.flutter-plugins
+packages/**/example/.flutter-plugins-dependencies
+packages/**/example/devtools_options.yaml
+packages/**/example/build/
+packages/**/example/ios/Flutter/.last_build_id
+packages/**/example/ios/Flutter/Generated.xcconfig
+packages/**/example/ios/Flutter/flutter_export_environment.sh
+packages/**/example/ios/Flutter/ephemeral/
+packages/**/example/ios/Flutter/Flutter.framework
+packages/**/example/ios/Flutter/Flutter.podspec
+packages/**/example/ios/Flutter/App.framework
+packages/**/example/ios/Flutter/flutter_assets/
+packages/**/example/ios/Pods/
+packages/**/example/ios/.symlinks/
+packages/**/example/ios/Runner/GeneratedPluginRegistrant.*
+packages/**/example/android/.gradle/
+packages/**/example/android/local.properties
+packages/**/example/android/app/debug/
+packages/**/example/android/app/profile/
+packages/**/example/android/app/release/
+packages/**/example/android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java
+packages/**/example/android/app/src/main/kotlin/io/flutter/plugins/GeneratedPluginRegistrant.kt
 
 # Misc
 .env.local
@@ -25,3 +65,5 @@ coverage
 .env.test.local
 .env.production.local
 .melos_tool
+
+docs/superpowers/

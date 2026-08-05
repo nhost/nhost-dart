@@ -18,42 +18,53 @@ Includes support for:
 ### Sample
 
 ```dart
+import 'dart:typed_data';
 import 'package:nhost_dart/nhost_dart.dart';
+import 'package:nhost_storage_dart/nhost_storage_dart.dart' show FileData;
 
 void main() async {
   final nhost = NhostClient(
     subdomain: Subdomain(
-        region: 'eu-central-1',
-        subdomain: 'backend-5e69d1d7',
-      ),
-    );
+      region: 'eu-central-1',
+      subdomain: 'backend-5e69d1d7',
+    ),
+  );
 
-
-    // for self host or local host you may use ServiceUrls
-    /*
-    final nhost = NhostClient(
-      serviceUrls: ServiceUrls(
-        authUrl: '',
-        storageUrl: '',
-        functionsUrl: '',
-        graphqlUrl: '',
-      ),
-    );
-    */
+  // For self-hosted or local projects, use ServiceUrls instead.
+  /*
+  final nhost = NhostClient(
+    serviceUrls: ServiceUrls(
+      authUrl: 'http://localhost:1337/v1/auth',
+      storageUrl: 'http://localhost:1337/v1/storage',
+      functionsUrl: 'http://localhost:1337/v1/functions',
+      graphqlUrl: 'http://localhost:1337/v1/graphql',
+    ),
+  );
+  */
 
   // User registration
-  await nhost.auth.register(email: 'new-user@gmail.com', password: 'xxxxx');
+  final authResponse = await nhost.auth.signUp(
+    email: 'new-user@gmail.com',
+    password: 'password-1',
+  );
 
   // Upload a file
-  final currentUser = nhost.auth.currentUser;
-  await nhost.storage.uploadBytes(
-    filePath: '/users/${currentUser.id}/image.jpg',
-    bytes: [/* ... */],
-    contentType: 'image/jpeg',
-  ),
+  final currentUser = authResponse.user ?? nhost.auth.currentUser;
+  await nhost.storage.uploadFiles(
+    files: [
+      FileData(
+        Uint8List.fromList([/* ... */]),
+        filename: '/users/${currentUser!.id}/image.jpg',
+        contentType: 'image/jpeg',
+      ),
+    ],
+  );
 
   // Log out
-  await nhost.auth.logout();
+  await nhost.auth.signOut();
+
+  // Release resources
+  nhost.close();
 }
 ```
 
@@ -63,7 +74,7 @@ void main() async {
 
 ```yaml
 dependencies:
-  nhost_dart: ^1.0.1
+  nhost_dart: ^2.2.0
 ```
 
 ## 🔥 More Dart & Flutter packages from Nhost
