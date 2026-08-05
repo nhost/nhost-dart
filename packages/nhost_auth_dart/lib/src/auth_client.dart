@@ -963,8 +963,9 @@ class NhostAuthClient implements HasuraAuthClient {
   @override
   String toString() {
     return {
-      'accessToken': accessToken,
-      'refreshToken': _session.session?.refreshToken,
+      'accessToken': accessToken == null ? null : '<redacted>',
+      'refreshToken':
+          _session.session?.refreshToken == null ? null : '<redacted>',
       'accessTokenExpiresIn': _session.session?.accessTokenExpiresIn,
       'userEmail': _session.session?.user?.email,
     }.toString();
