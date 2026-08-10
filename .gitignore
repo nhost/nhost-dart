@@ -7,9 +7,9 @@
 .pub/
 .dart_tool/
 pubspec.lock
+coverage/
 pubspec_overrides.local.yaml
 flutter_export_environment.sh
-coverage
 
 *.iml
 *.ipr
@@ -50,7 +50,6 @@ packages/**/example/ios/Flutter/flutter_assets/
 packages/**/example/ios/Pods/
 packages/**/example/ios/.symlinks/
 packages/**/example/ios/Runner/GeneratedPluginRegistrant.*
-packages/**/example/ios/Podfile.lock
 packages/**/example/android/.gradle/
 packages/**/example/android/local.properties
 packages/**/example/android/app/debug/
