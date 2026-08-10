@@ -805,6 +805,152 @@ class NhostAuthClient implements HasuraAuthClient {
 
   //#endregion
 
+  //#region PAT, fetchUser, verifyToken
+
+  /// Signs in using a Personal Access Token (PAT).
+  @override
+  Future<AuthResponse> signInWithPat(String pat) async {
+    log.finer('Attempting sign in (PAT)');
+    AuthResponse? res;
+    try {
+      res = await _apiClient.post(
+        '/signin/pat',
+        jsonBody: {'personalAccessToken': pat},
+        responseDeserializer: AuthResponse.fromJson,
+      );
+    } catch (e, st) {
+      log.finer('Sign in (PAT) failed', e, st);
+      await clearSession();
+      rethrow;
+    }
+    log.finer('Sign in (PAT) successful');
+    await setSession(res!.session!);
+    return res;
+  }
+
+  /// Fetches the current user's profile from the server.
+  @override
+  Future<User> fetchUser() async {
+    log.finer('Fetching current user');
+    final user = await _apiClient.get<User>(
+      '/user',
+      responseDeserializer: User.fromJson,
+      headers: _session.authenticationHeaders,
+    );
+    _currentUser = user;
+    return user;
+  }
+
+  /// Verifies whether [accessToken] is still valid on the server.
+  @override
+  Future<bool> verifyToken(String accessToken) async {
+    log.finer('Verifying token');
+    try {
+      await _apiClient.post<void>(
+        '/token/verify',
+        headers: {'Authorization': 'Bearer $accessToken'},
+      );
+      return true;
+    } on ApiException {
+      return false;
+    }
+  }
+
+  //#endregion
+
+  //#region WebAuthn — platform-dependent stubs
+
+  @override
+  Future<Map<String, dynamic>> signInWithWebAuthn() async {
+    return _apiClient.post(
+      '/signin/webauthn',
+      responseDeserializer: (json) => Map<String, dynamic>.from(json as Map),
+    );
+  }
+
+  @override
+  Future<AuthResponse> verifyWebAuthnSignIn(
+    Map<String, dynamic> assertionResponse,
+  ) async {
+    log.finer('Attempting WebAuthn sign-in verification');
+    final res = await _apiClient.post(
+      '/signin/webauthn/verify',
+      jsonBody: assertionResponse,
+      responseDeserializer: AuthResponse.fromJson,
+    );
+    await setSession(res.session!);
+    return res;
+  }
+
+  @override
+  Future<Map<String, dynamic>> signUpWithWebAuthn({String? email}) async {
+    return _apiClient.post(
+      '/signup/webauthn',
+      jsonBody: {if (email != null) 'email': email},
+      responseDeserializer: (json) => Map<String, dynamic>.from(json as Map),
+    );
+  }
+
+  @override
+  Future<AuthResponse> verifyWebAuthnSignUp(
+    Map<String, dynamic> attestationResponse,
+  ) async {
+    log.finer('Attempting WebAuthn sign-up verification');
+    final res = await _apiClient.post(
+      '/signup/webauthn/verify',
+      jsonBody: attestationResponse,
+      responseDeserializer: AuthResponse.fromJson,
+    );
+    if (res.session != null) await setSession(res.session!);
+    return res;
+  }
+
+  @override
+  Future<Map<String, dynamic>> addWebAuthnCredential() async {
+    return _apiClient.post(
+      '/user/webauthn/add',
+      headers: _session.authenticationHeaders,
+      responseDeserializer: (json) => Map<String, dynamic>.from(json as Map),
+    );
+  }
+
+  @override
+  Future<void> verifyAddWebAuthnCredential(
+    Map<String, dynamic> attestationResponse,
+  ) async {
+    await _apiClient.post<void>(
+      '/user/webauthn/verify',
+      jsonBody: attestationResponse,
+      headers: _session.authenticationHeaders,
+    );
+  }
+
+  @override
+  Future<Map<String, dynamic>> elevateWithWebAuthn() async {
+    return _apiClient.post(
+      '/elevate/webauthn',
+      headers: _session.authenticationHeaders,
+      responseDeserializer: (json) => Map<String, dynamic>.from(json as Map),
+    );
+  }
+
+  @override
+  Future<AuthResponse> verifyWebAuthnElevation(
+    Map<String, dynamic> assertionResponse,
+  ) async {
+    log.finer('Attempting WebAuthn elevation verification');
+    final res = await _apiClient.post(
+      '/elevate/webauthn/verify',
+      jsonBody: assertionResponse,
+      headers: _session.authenticationHeaders,
+      responseDeserializer: AuthResponse.fromJson,
+    );
+    if (res.session != null) await setSession(res.session!);
+    return res;
+  }
+
+  //#endregion
+
   //#region Token and session Handling
 
   Future<Session> _refreshSession([String? initRefreshToken]) async {
@@ -857,6 +1003,12 @@ class NhostAuthClient implements HasuraAuthClient {
       if (e is ApiException && e.statusCode == unauthorizedStatus) {
         log.finest('Unauthorized refresh token. Forcing signout.');
         await signOut();
+      } else {
+        // Non-401 failure (e.g. network error, 5xx): clearSession is not called,
+        // so we must manually clear _loading to prevent authenticationState from
+        // remaining stuck at inProgress forever (issue #180).
+        _loading = false;
+        _onAuthStateChanged(authenticationState);
       }
 
       log.severe('Exception during token refresh', e, st);

@@ -1,0 +1,28 @@
+name: nhost_flutter
+description: >
+  First-class Flutter package for Nhost. Includes auth, storage, GraphQL,
+  secure persistence by default, and modern sealed auth state APIs.
+version: 1.0.0
+homepage: https://nhost.io
+repository: https://github.com/nhost/nhost-dart/tree/main/packages/nhost_flutter
+issue_tracker: https://github.com/nhost/nhost-dart/issues
+
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+  flutter: ">=3.10.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  nhost_dart: ^2.2.0
+  nhost_flutter_auth: ^4.2.1
+  nhost_flutter_graphql: ^3.1.2
+  nhost_sdk: ^5.8.0
+  flutter_secure_storage: ^9.0.0
+  http: ^1.1.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  lints: ^5.1.1
+  mockito: ^5.4.5
