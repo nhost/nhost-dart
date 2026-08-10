@@ -1,6 +1,7 @@
 .DS_Store
 .atom/
 .idea/
+.vscode/
 
 .packages
 .pub/
@@ -36,8 +37,6 @@ build/
 
 # Flutter example generated platform files
 packages/**/example/.metadata
-packages/**/example/.flutter-plugins
-packages/**/example/.flutter-plugins-dependencies
 packages/**/example/devtools_options.yaml
 packages/**/example/build/
 packages/**/example/ios/Flutter/.last_build_id
@@ -66,4 +65,5 @@ packages/**/example/android/app/src/main/kotlin/io/flutter/plugins/GeneratedPlug
 .env.production.local
 .melos_tool
 
+# AI
 docs/superpowers/
