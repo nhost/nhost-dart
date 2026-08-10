@@ -24,7 +24,9 @@ dependencies:
 Then, import the package and create new NhostClient
 
 ```dart
+import 'dart:typed_data';
 import 'package:nhost_dart/nhost_dart.dart';
+import 'package:nhost_storage_dart/nhost_storage_dart.dart' show FileData;
 
 void main() async {
   final nhost = NhostClient(
@@ -52,11 +54,15 @@ void main() async {
 
   // Upload a file
   final currentUser = nhost.auth.currentUser;
-  await nhost.storage.uploadBytes(
-    filePath: '/users/${currentUser.id}/image.jpg',
-    bytes: [/* ... */],
-    contentType: 'image/jpeg',
-  ),
+  await nhost.storage.uploadFiles(
+    files: [
+      FileData(
+        Uint8List.fromList([/* ... */]),
+        filename: '/users/${currentUser!.id}/image.jpg',
+        contentType: 'image/jpeg',
+      ),
+    ],
+  );
 
   // Log out
   await nhost.auth.logout();

@@ -18,7 +18,9 @@ Includes support for:
 ### Sample
 
 ```dart
+import 'dart:typed_data';
 import 'package:nhost_dart/nhost_dart.dart';
+import 'package:nhost_storage_dart/nhost_storage_dart.dart' show FileData;
 
 void main() async {
   final nhost = NhostClient(
