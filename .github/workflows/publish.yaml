@@ -1,0 +1,95 @@
+# Publishes a single package to pub.dev when its git tag is pushed.
+#
+# This repo is a melos monorepo, so `melos version` creates one tag per package
+# in the form `<package>-v<version>` (e.g. `nhost_sdk-v5.9.0`). Each package is a
+# separate pub.dev package under the nhost.io publisher, so publishing is driven
+# per package by the tag that names it.
+#
+# Authentication uses pub.dev's OIDC-based automated publishing (no long-lived
+# tokens). For each package this workflow must be enabled once on pub.dev:
+#   Admin -> Automated publishing -> Enable publishing from GitHub Actions
+#     Repository: nhost/nhost-dart
+#     Tag pattern: <package>-v{{version}}   e.g. nhost_sdk-v{{version}}
+#     Environment: pub.dev
+# Until that is configured for a package, the publish step for it will be
+# rejected by pub.dev (the workflow itself is harmless before then; it only runs
+# on tag pushes).
+#
+# Docs: https://dart.dev/tools/pub/automated-publishing
+
+name: Publish to pub.dev
+
+on:
+  push:
+    tags:
+      # melos tag shape: <package>-v<semver>, including pre-releases
+      - "*-v[0-9]+.[0-9]+.[0-9]+"
+      - "*-v[0-9]+.[0-9]+.[0-9]+-*"
+
+# One publish run per tag; never cancel an in-flight publish.
+concurrency:
+  group: publish-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    # Required by pub.dev's automated-publishing security model. Configure a
+    # matching environment named "pub.dev" on each package for extra protection
+    # (e.g. required reviewers).
+    environment: pub.dev
+    permissions:
+      id-token: write # OIDC token used to authenticate to pub.dev.
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Resolve package and version from tag
+        id: tag
+        run: |
+          tag="${GITHUB_REF_NAME}"
+          name="${tag%-v*}"     # everything before the last "-v"
+          version="${tag##*-v}" # everything after the last "-v"
+          if [ -z "$name" ] || [ -z "$version" ]; then
+            echo "Tag '$tag' is not in <package>-v<version> form" >&2
+            exit 1
+          fi
+          echo "name=$name" >> "$GITHUB_OUTPUT"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "dir=packages/$name" >> "$GITHUB_OUTPUT"
+          echo "Resolved: package=$name version=$version"
+
+      - name: Verify the package exists and is publishable
+        env:
+          DIR: ${{ steps.tag.outputs.dir }}
+          NAME: ${{ steps.tag.outputs.name }}
+          VERSION: ${{ steps.tag.outputs.version }}
+        run: |
+          pubspec="$DIR/pubspec.yaml"
+          if [ ! -f "$pubspec" ]; then
+            echo "No pubspec at $pubspec for tag package '$NAME'" >&2
+            exit 1
+          fi
+          if grep -qE '^publish_to:\s*none' "$pubspec"; then
+            echo "$NAME sets publish_to: none; refusing to publish" >&2
+            exit 1
+          fi
+          declared=$(grep -m1 '^version:' "$pubspec" | awk '{print $2}')
+          if [ "$declared" != "$VERSION" ]; then
+            echo "pubspec version ($declared) does not match tag version ($VERSION)" >&2
+            exit 1
+          fi
+
+      # Flutter provides the Dart SDK too, so this covers both the pure-Dart and
+      # the Flutter packages in the workspace. Pinned to the version the test
+      # workflows use.
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.27.3"
+          channel: stable
+
+      - name: Publish ${{ steps.tag.outputs.name }} ${{ steps.tag.outputs.version }}
+        working-directory: ${{ steps.tag.outputs.dir }}
+        run: |
+          flutter pub get
+          flutter pub publish --force
