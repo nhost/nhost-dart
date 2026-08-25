@@ -1,6 +1,7 @@
 ## 2.3.0
 
  - **FEAT**(sdk): export `User`, `AuthResponse`, `MultiFactorAuthResponse`, `DeanonymizeOptions` and `DeanonymizeSignInMethod` (#189).
+ - **CHORE**: improve package description and fix repository link (#187).
 
 ## 2.2.0
 
