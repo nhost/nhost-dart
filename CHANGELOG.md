@@ -3,6 +3,82 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 2026-08-25
+
+### Changes
+
+---
+
+Packages with breaking changes:
+
+ - There are no breaking changes in this release.
+
+Packages with other changes:
+
+ - [`nhost_dart` - `v2.3.0`](#nhost_dart---v230)
+ - [`nhost_sdk` - `v5.9.0`](#nhost_sdk---v590)
+ - [`nhost_storage_dart` - `v2.2.1`](#nhost_storage_dart---v221)
+ - [`nhost_flutter_auth` - `v4.2.2`](#nhost_flutter_auth---v422)
+ - [`nhost_flutter_graphql` - `v3.1.3`](#nhost_flutter_graphql---v313)
+ - [`nhost_graphql_adapter` - `v4.1.0`](#nhost_graphql_adapter---v410)
+ - [`nhost_functions_dart` - `v2.0.11`](#nhost_functions_dart---v2011)
+ - [`nhost_auth_dart` - `v2.7.0`](#nhost_auth_dart---v270)
+ - [`nhost_gql_links` - `v4.0.12`](#nhost_gql_links---v4012)
+
+---
+
+#### `nhost_dart` - `v2.3.0`
+
+ - **FEAT**(sdk): export `User`, `AuthResponse`, `MultiFactorAuthResponse`, `DeanonymizeOptions` and `DeanonymizeSignInMethod` (#189).
+ - **CHORE**: improve package description and fix repository link (#187).
+
+#### `nhost_sdk` - `v5.9.0`
+
+ - **FEAT**(sdk): auth API surface for Flutter integration (#189).
+
+   Adds `signInWithPat`, `fetchUser`, `verifyToken` and the WebAuthn methods to
+   the `HasuraAuthClient` interface. These are new members on a public abstract
+   class, so anything that implements `HasuraAuthClient` directly (test mocks,
+   alternative clients) has to add them. Code that uses `NhostClient` or
+   `NhostAuthClient` is unaffected.
+ - **CHORE**: improve package description and fix repository link (#187).
+
+#### `nhost_storage_dart` - `v2.2.1`
+
+ - **CHORE**: improve package description and fix repository link (#187).
+
+#### `nhost_flutter_auth` - `v4.2.2`
+
+ - **CHORE**: improve package description and fix repository link (#187).
+
+#### `nhost_flutter_graphql` - `v3.1.3`
+
+ - **CHORE**: improve package description and fix repository link (#187).
+
+#### `nhost_graphql_adapter` - `v4.1.0`
+
+ - **FEAT**: add new package arguments for better control (#176).
+ - **CHORE**: improve package description and fix repository link (#187).
+
+#### `nhost_functions_dart` - `v2.0.11`
+
+ - **CHORE**: improve package description and fix repository link (#187).
+
+#### `nhost_auth_dart` - `v2.7.0`
+
+ - **FEAT**(sdk): auth API surface for Flutter integration (#189).
+
+   `NhostAuthClient` now implements `signInWithPat`, `fetchUser`, `verifyToken`
+   and the WebAuthn methods. This requires `nhost_sdk` 5.9.0.
+ - **FIX**: redact auth tokens in string output (#188).
+ - **FIX**(auth): set `_loading` to true when instantiating `NhostAuthClient` (#179).
+ - **CHORE**: improve package description and fix repository link (#187).
+
+#### `nhost_gql_links` - `v4.0.12`
+
+ - **CHORE**: improve package description and fix repository link (#187).
+
+
 ## 2025-11-05
 
 ### Changes
