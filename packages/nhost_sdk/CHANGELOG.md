@@ -7,6 +7,7 @@
    class, so anything that implements `HasuraAuthClient` directly (test mocks,
    alternative clients) has to add them. Code that uses `NhostClient` or
    `NhostAuthClient` is unaffected.
+ - **CHORE**: improve package description and fix repository link (#187).
 
 ## 5.8.0
 

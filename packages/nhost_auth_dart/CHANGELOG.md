@@ -1,11 +1,12 @@
 ## 2.7.0
 
  - **FEAT**(sdk): auth API surface for Flutter integration (#189).
- - **FIX**: redact auth tokens in string output (#188).
- - **FIX**(auth): set `_loading` to true when instantiating `NhostAuthClient` (#179).
 
    `NhostAuthClient` now implements `signInWithPat`, `fetchUser`, `verifyToken`
    and the WebAuthn methods. This requires `nhost_sdk` 5.9.0.
+ - **FIX**: redact auth tokens in string output (#188).
+ - **FIX**(auth): set `_loading` to true when instantiating `NhostAuthClient` (#179).
+ - **CHORE**: improve package description and fix repository link (#187).
 
 ## 2.6.1
 
