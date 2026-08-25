@@ -23,6 +23,22 @@ void main() {
       expect(find.text('home'), findsNothing);
     });
 
+    testWidgets('falls back to loading when signed in without a user',
+        (tester) async {
+      final auth = FakeAuthClient(AuthenticationState.signedIn)
+        ..simulateSessionWithoutUser(makeSession());
+      await tester.pumpWidget(_wrap(
+        auth,
+        NhostAuthGate(
+          loading: (_) => const Text('splash'),
+          signedOut: (_) => const Text('login'),
+          signedIn: (_, __, ___) => const Text('home'),
+        ),
+      ));
+      expect(find.text('splash'), findsOneWidget);
+      expect(find.text('home'), findsNothing);
+    });
+
     testWidgets('shows signedIn widget with user when signed in',
         (tester) async {
       final auth = FakeAuthClient(AuthenticationState.signedIn)

@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:nhost_dart/nhost_dart.dart';
 
 import 'auth_state.dart';
+import 'auth_state_mapping.dart';
 
 extension NhostAuthClientFlutterX on NhostAuthClient {
   static final _state = Expando<_AuthFlutterState>();
@@ -38,14 +39,7 @@ class _AuthFlutterState {
   Stream<AuthState> get stream => _controller.stream;
   ValueListenable<AuthState> get notifier => _notifier;
 
-  AuthState _mapCurrentState() => switch (_auth.authenticationState) {
-        AuthenticationState.inProgress => const AuthStateLoading(),
-        AuthenticationState.signedOut => const AuthStateSignedOut(),
-        AuthenticationState.signedIn => AuthStateSignedIn(
-            user: _auth.currentUser!,
-            session: _auth.userSession.session!,
-          ),
-      };
+  AuthState _mapCurrentState() => authStateOf(_auth);
 
   void dispose() {
     _unsubscribe();

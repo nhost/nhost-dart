@@ -12,15 +12,15 @@ void main() {
     testWidgets('shows child when signed in', (tester) async {
       final auth = FakeAuthClient(AuthenticationState.signedIn)
         ..simulateSignIn(makeUser(), makeSession());
-      await tester.pumpWidget(
-          _wrap(auth, const NhostSignedIn(child: Text('admin'))));
+      await tester
+          .pumpWidget(_wrap(auth, const NhostSignedIn(child: Text('admin'))));
       expect(find.text('admin'), findsOneWidget);
     });
 
     testWidgets('hides child when signed out', (tester) async {
       final auth = FakeAuthClient(AuthenticationState.signedOut);
-      await tester.pumpWidget(
-          _wrap(auth, const NhostSignedIn(child: Text('admin'))));
+      await tester
+          .pumpWidget(_wrap(auth, const NhostSignedIn(child: Text('admin'))));
       expect(find.text('admin'), findsNothing);
     });
 
@@ -39,16 +39,16 @@ void main() {
   group('NhostSignedOut', () {
     testWidgets('shows child when signed out', (tester) async {
       final auth = FakeAuthClient(AuthenticationState.signedOut);
-      await tester.pumpWidget(
-          _wrap(auth, const NhostSignedOut(child: Text('login'))));
+      await tester
+          .pumpWidget(_wrap(auth, const NhostSignedOut(child: Text('login'))));
       expect(find.text('login'), findsOneWidget);
     });
 
     testWidgets('hides child when signed in', (tester) async {
       final auth = FakeAuthClient(AuthenticationState.signedIn)
         ..simulateSignIn(makeUser(), makeSession());
-      await tester.pumpWidget(
-          _wrap(auth, const NhostSignedOut(child: Text('login'))));
+      await tester
+          .pumpWidget(_wrap(auth, const NhostSignedOut(child: Text('login'))));
       expect(find.text('login'), findsNothing);
     });
 
@@ -58,8 +58,7 @@ void main() {
         ..simulateSignIn(makeUser(), makeSession());
       await tester.pumpWidget(_wrap(
         auth,
-        const NhostSignedOut(
-            child: Text('login'), orElse: Text('dashboard')),
+        const NhostSignedOut(child: Text('login'), orElse: Text('dashboard')),
       ));
       expect(find.text('dashboard'), findsOneWidget);
       expect(find.text('login'), findsNothing);

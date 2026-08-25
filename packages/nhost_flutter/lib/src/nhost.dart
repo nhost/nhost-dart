@@ -1,7 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
+import 'package:nhost_auth_dart/nhost_auth_dart.dart' show AuthServiceException;
 import 'package:nhost_dart/nhost_dart.dart';
 
+import 'logging.dart';
 import 'secure_auth_store.dart';
 
 /// Entry point for the Nhost Flutter SDK.
@@ -54,9 +56,17 @@ class Nhost {
     );
 
     if (restoreSession) {
-      await _instance!.auth
-          .signInWithStoredCredentials()
-          .catchError((_) => AuthResponse(session: null));
+      try {
+        await _instance!.auth.signInWithStoredCredentials();
+      } on AuthServiceException {
+        // No refresh token in the store. This is the normal path on a fresh
+        // install, so it is not worth logging.
+      } on Exception catch (e, st) {
+        // The stored session could not be restored (network failure, 5xx,
+        // revoked token). The client stays signed out, but swallowing this
+        // silently makes a broken backend look like a logged-out user.
+        log.warning('Could not restore the stored session', e, st);
+      }
     }
 
     return _instance!;

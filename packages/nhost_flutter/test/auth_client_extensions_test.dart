@@ -23,8 +23,8 @@ void main() {
 
         await Future.microtask(() {});
         expect(states, [isA<AuthStateSignedIn>()]);
-        expect((states.first as AuthStateSignedIn).user.email,
-            'test@example.com');
+        expect(
+            (states.first as AuthStateSignedIn).user.email, 'test@example.com');
       });
 
       test('emits AuthStateSignedOut when client fires signedOut callback',
@@ -57,8 +57,7 @@ void main() {
       });
 
       test('notifies listeners on state change', () {
-        final notifier =
-            auth.authStateListenable as ValueNotifier<AuthState>;
+        final notifier = auth.authStateListenable as ValueNotifier<AuthState>;
         var notified = false;
         notifier.addListener(() => notified = true);
 

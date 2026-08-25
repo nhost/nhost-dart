@@ -1,6 +1,9 @@
 import 'package:flutter/widgets.dart';
 import 'package:nhost_flutter_auth/nhost_flutter_auth.dart';
 
+import '../auth_state.dart';
+import '../auth_state_mapping.dart';
+
 /// Routes to different widgets based on the current authentication state.
 ///
 /// Must be a descendant of [NhostAuthProvider].
@@ -34,12 +37,11 @@ class NhostAuthGate extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final auth = NhostAuthProvider.of(context)!;
-    return switch (auth.authenticationState) {
-      AuthenticationState.inProgress =>
-        loading?.call(context) ?? const SizedBox.shrink(),
-      AuthenticationState.signedOut => signedOut(context),
-      AuthenticationState.signedIn =>
-        signedIn(context, auth.currentUser!, auth.userSession.session!),
+    return switch (authStateOf(auth)) {
+      AuthStateLoading() => loading?.call(context) ?? const SizedBox.shrink(),
+      AuthStateSignedOut() => signedOut(context),
+      AuthStateSignedIn(:final user, :final session) =>
+        signedIn(context, user, session),
     };
   }
 }

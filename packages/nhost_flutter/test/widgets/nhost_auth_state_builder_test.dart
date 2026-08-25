@@ -51,6 +51,21 @@ void main() {
       expect((received as AuthStateSignedIn).user.email, 'x@y.com');
     });
 
+    testWidgets('passes AuthStateLoading when signed in without a user',
+        (tester) async {
+      final auth = FakeAuthClient(AuthenticationState.signedIn)
+        ..simulateSessionWithoutUser(makeSession());
+      AuthState? received;
+      await tester.pumpWidget(_wrap(
+        auth,
+        NhostAuthStateBuilder(builder: (_, state) {
+          received = state;
+          return const SizedBox();
+        }),
+      ));
+      expect(received, isA<AuthStateLoading>());
+    });
+
     testWidgets('rebuilds when auth state changes', (tester) async {
       final auth = FakeAuthClient(AuthenticationState.signedOut);
       final states = <AuthState>[];

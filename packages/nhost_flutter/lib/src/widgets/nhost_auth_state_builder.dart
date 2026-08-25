@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:nhost_flutter_auth/nhost_flutter_auth.dart';
 
 import '../auth_state.dart';
+import '../auth_state_mapping.dart';
 
 /// Builds a widget tree based on the current [AuthState].
 ///
@@ -27,14 +28,6 @@ class NhostAuthStateBuilder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final auth = NhostAuthProvider.of(context)!;
-    final state = switch (auth.authenticationState) {
-      AuthenticationState.inProgress => const AuthStateLoading(),
-      AuthenticationState.signedOut => const AuthStateSignedOut(),
-      AuthenticationState.signedIn => AuthStateSignedIn(
-          user: auth.currentUser!,
-          session: auth.userSession.session!,
-        ),
-    };
-    return builder(context, state);
+    return builder(context, authStateOf(auth));
   }
 }

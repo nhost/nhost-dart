@@ -14,12 +14,14 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  nhost_auth_dart: ^2.6.1
   nhost_dart: ^2.2.0
   nhost_flutter_auth: ^4.2.1
   nhost_flutter_graphql: ^3.1.2
   nhost_sdk: ^5.8.0
   flutter_secure_storage: ^9.0.0
   http: ^1.1.0
+  logging: ^1.1.0
 
 dev_dependencies:
   flutter_test:

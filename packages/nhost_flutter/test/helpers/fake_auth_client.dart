@@ -22,6 +22,19 @@ class FakeAuthClient implements NhostAuthClient {
     }
   }
 
+  /// Simulates a session that arrived without a user.
+  ///
+  /// `Session.user` is nullable and a `/token` refresh can come back without
+  /// one, so `signedIn` does not imply that `currentUser` is set.
+  void simulateSessionWithoutUser(Session session) {
+    _user = null;
+    _cachedSession = UserSession()..session = session;
+    _state = AuthenticationState.signedIn;
+    for (final l in List.of(_listeners)) {
+      l(AuthenticationState.signedIn);
+    }
+  }
+
   void simulateSignOut() {
     _user = null;
     _cachedSession = UserSession();
@@ -55,8 +68,7 @@ class FakeAuthClient implements NhostAuthClient {
   @override
   void close() {}
   @override
-  UnsubscribeDelegate addTokenChangedCallback(TokenChangedCallback cb) =>
-      () {};
+  UnsubscribeDelegate addTokenChangedCallback(TokenChangedCallback cb) => () {};
   @override
   UnsubscribeDelegate addSessionRefreshFailedCallback(
           SessionRefreshFailedCallback cb) =>
@@ -91,9 +103,7 @@ class FakeAuthClient implements NhostAuthClient {
       throw UnimplementedError();
   @override
   Future<void> linkIdToken(
-          {required String provider,
-          required String idToken,
-          String? nonce}) =>
+          {required String provider, required String idToken, String? nonce}) =>
       throw UnimplementedError();
   @override
   Future<void> signInWithEmailPasswordless(
@@ -156,8 +166,7 @@ class FakeAuthClient implements NhostAuthClient {
   @override
   Future<void> changeEmail(String newEmail) => throw UnimplementedError();
   @override
-  Future<void> changePassword(
-          {required String newPassword, String? ticket}) =>
+  Future<void> changePassword({required String newPassword, String? ticket}) =>
       throw UnimplementedError();
   @override
   Future<void> resetPassword({required String email, String? redirectTo}) =>
@@ -230,8 +239,7 @@ User makeUser({String email = 'test@example.com'}) => User(
     );
 
 // A valid JWT is required because UserSession.session= calls JwtDecoder.decode.
-const _validJwt =
-    'eyJhbGciOiJIUzI1NiJ9'
+const _validJwt = 'eyJhbGciOiJIUzI1NiJ9'
     '.eyJodHRwczovL2hhc3VyYS5pby9qd3QvY2xhaW1zIjp7IngtaGFzdXJhLWFsbG93ZWQtcm9sZXMiOlsidXNlciJdLCJ4LWhhc3VyYS1kZWZhdWx0LXJvbGUiOiJ1c2VyIiwieC1oYXN1cmEtdXNlci1pZCI6InUxIn0sInN1YiI6InUxIiwiaWF0IjoxNjAwMDAwMDAwLCJleHAiOjk5OTk5OTk5OTl9'
     '.signature';
 
