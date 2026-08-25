@@ -1,3 +1,7 @@
+## 4.2.2
+
+ - **CHORE**: improve package description and fix repository link (#187).
+
 ## 4.2.1
 
  - Update a dependency to the latest release.

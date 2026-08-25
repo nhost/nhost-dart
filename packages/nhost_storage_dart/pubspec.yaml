@@ -1,6 +1,6 @@
 name: nhost_storage_dart
 description: Dart client for Nhost Storage with file upload, download, deletion, presigned URLs, and image transforms.
-version: 2.2.0
+version: 2.2.1
 homepage: https://nhost.io
 repository: https://github.com/nhost/nhost-dart/tree/main/packages/nhost_storage_dart
 issue_tracker: https://github.com/nhost/nhost-dart/issues

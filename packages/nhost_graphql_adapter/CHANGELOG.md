@@ -1,3 +1,7 @@
+## 4.1.0
+
+ - **FEAT**: add new package arguments for better control (#176).
+
 ## 4.0.10
 
  - Update a dependency to the latest release.

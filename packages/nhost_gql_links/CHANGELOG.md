@@ -1,3 +1,7 @@
+## 4.0.12
+
+ - **CHORE**: improve package description and fix repository link (#187).
+
 ## 4.0.11
 
  - Update a dependency to the latest release.
