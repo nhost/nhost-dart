@@ -2,7 +2,7 @@ name: nhost_flutter_auth
 description: >
   Flutter widgets and listenables for exposing Nhost authentication state in
   your app.
-version: 4.2.1
+version: 4.2.2
 homepage: https://nhost.io
 repository: https://github.com/nhost/nhost-dart/tree/main/packages/nhost_flutter_auth
 issue_tracker: https://github.com/nhost/nhost-dart/issues

@@ -1,3 +1,7 @@
+## 2.3.0
+
+ - **FEAT**(sdk): export `User`, `AuthResponse`, `MultiFactorAuthResponse`, `DeanonymizeOptions` and `DeanonymizeSignInMethod` (#189).
+
 ## 2.2.0
 
  - **FEAT**(storage): added replaceFile method (#172).

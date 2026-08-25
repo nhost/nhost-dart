@@ -1,3 +1,13 @@
+## 5.9.0
+
+ - **FEAT**(sdk): auth API surface for Flutter integration (#189).
+
+   Adds `signInWithPat`, `fetchUser`, `verifyToken` and the WebAuthn methods to
+   the `HasuraAuthClient` interface. These are new members on a public abstract
+   class, so anything that implements `HasuraAuthClient` directly (test mocks,
+   alternative clients) has to add them. Code that uses `NhostClient` or
+   `NhostAuthClient` is unaffected.
+
 ## 5.8.0
 
  - **FEAT**(storage): added replaceFile method (#172).
