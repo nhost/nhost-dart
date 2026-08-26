@@ -11,12 +11,12 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 Packages with breaking changes:
 
- - There are no breaking changes in this release.
+ - [`nhost_sdk` - `v6.0.0`](#nhost_sdk---v600)
+   - New abstract members on the public `HasuraAuthClient` interface require direct implementers to add them.
 
 Packages with other changes:
 
  - [`nhost_dart` - `v2.3.0`](#nhost_dart---v230)
- - [`nhost_sdk` - `v5.9.0`](#nhost_sdk---v590)
  - [`nhost_storage_dart` - `v2.2.1`](#nhost_storage_dart---v221)
  - [`nhost_flutter_auth` - `v4.2.2`](#nhost_flutter_auth---v422)
  - [`nhost_flutter_graphql` - `v3.1.3`](#nhost_flutter_graphql---v313)
@@ -32,7 +32,7 @@ Packages with other changes:
  - **FEAT**(sdk): export `User`, `AuthResponse`, `MultiFactorAuthResponse`, `DeanonymizeOptions` and `DeanonymizeSignInMethod` (#189).
  - **CHORE**: improve package description and fix repository link (#187).
 
-#### `nhost_sdk` - `v5.9.0`
+#### `nhost_sdk` - `v6.0.0`
 
  - **FEAT**(sdk): auth API surface for Flutter integration (#189).
 
@@ -69,7 +69,7 @@ Packages with other changes:
  - **FEAT**(sdk): auth API surface for Flutter integration (#189).
 
    `NhostAuthClient` now implements `signInWithPat`, `fetchUser`, `verifyToken`
-   and the WebAuthn methods. This requires `nhost_sdk` 5.9.0.
+   and the WebAuthn methods. This requires `nhost_sdk` 6.0.0.
  - **FIX**: redact auth tokens in string output (#188).
  - **FIX**(auth): set `_loading` to true when instantiating `NhostAuthClient` (#179).
  - **CHORE**: improve package description and fix repository link (#187).

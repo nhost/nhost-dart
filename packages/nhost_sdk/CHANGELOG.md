@@ -1,4 +1,4 @@
-## 5.9.0
+## 6.0.0
 
  - **FEAT**(sdk): auth API surface for Flutter integration (#189).
 

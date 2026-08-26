@@ -15,7 +15,7 @@ dependencies:
   flutter:
     sdk: flutter
   #Nhost_dart
-  nhost_dart: ^2.2.0
+  nhost_dart: ^2.3.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
