@@ -1,5 +1,9 @@
 import 'package:flutter/widgets.dart';
 import 'package:nhost_flutter_auth/nhost_flutter_auth.dart';
+// Redundant under the melos path overrides, but the published nhost_dart does
+// not re-export User yet, so the type has to come from nhost_sdk directly.
+// ignore: unnecessary_import
+import 'package:nhost_sdk/nhost_sdk.dart' show User;
 
 /// Builds a widget using the currently authenticated [User].
 ///
