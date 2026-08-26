@@ -64,23 +64,53 @@ One-time setup, per package, by a publisher admin on pub.dev:
 - Tag pattern: `<package>-v{{version}}` (e.g. `nhost_sdk-v{{version}}`)
 - Environment: `pub.dev`
 
-Then a release is:
+Then a release is: push the release commit, then push the per-package tags that
+`melos version` created one at a time.
 
 ```
-git push --follow-tags origin main
+git push origin main
 ```
+
+Do not push the tags with `git push --follow-tags` or `git push --tags`. GitHub
+does not create a workflow run for every tag when more than three tags arrive in
+a single push (see GitHub's "Events that trigger workflows" docs). A release here
+tags nearly every package, well more than three, so a single multi-tag push would
+start a publish run for at most three of them and silently skip the rest: the
+tags exist, pub.dev is stale, and CI stays green because the runs were never
+created. Push each tag on its own so every tag gets exactly one run.
 
 Dependency ordering matters. A package cannot publish until the sibling versions
 it depends on already exist on pub.dev (for example `nhost_dart 2.3.0` needs
-`nhost_sdk 5.9.0` published first). Each tag push starts its own workflow run in
-parallel, so push base packages first, let them finish, then the dependents; or
-push everything and re-run the runs that failed because a dependency was not yet
-available. Publish order for this workspace:
+`nhost_sdk 6.0.0` published first). Push one tier, wait for its runs to finish
+and the new versions to appear on pub.dev, then push the next tier. All the
+release tags point at the release commit, so `git tag --points-at HEAD` lists
+them and each `git push` below sends a single tag:
 
-1. `nhost_sdk`
-2. `nhost_gql_links`, `nhost_functions_dart`, `nhost_storage_dart`
-3. `nhost_graphql_adapter`, `nhost_auth_dart`
-4. `nhost_dart`, `nhost_flutter_auth`, `nhost_flutter_graphql`
+```
+# Tier 1
+git push origin "$(git tag --points-at HEAD | grep '^nhost_sdk-v')"
+
+# Tier 2 (after tier 1 is on pub.dev)
+for pkg in nhost_gql_links nhost_functions_dart nhost_storage_dart; do
+  git push origin "$(git tag --points-at HEAD | grep "^${pkg}-v")"
+done
+
+# Tier 3 (after tier 2 is on pub.dev)
+for pkg in nhost_graphql_adapter nhost_auth_dart; do
+  git push origin "$(git tag --points-at HEAD | grep "^${pkg}-v")"
+done
+
+# Tier 4 (after tier 3 is on pub.dev)
+for pkg in nhost_dart nhost_flutter_auth nhost_flutter_graphql; do
+  git push origin "$(git tag --points-at HEAD | grep "^${pkg}-v")"
+done
+```
+
+Each loop runs one `git push` per package, so no push ever carries more than one
+tag and every tag gets its own run. If a package's run fails because a dependency
+was not published yet, wait for the dependency, then re-run that failed run from
+the GitHub Actions UI; the tag already exists, so there is a run to re-run.
+Pushing the same tag again is a no-op and will not start a new run.
 
 ### Manual publish (fallback / today)
 
@@ -98,8 +128,11 @@ packages, examples excluded). When it is clean, publish for real:
 nix develop -c bash -c "melos run publish:real"
 ```
 
-`publish:real` runs `pub publish --force` per package. melos publishes in
-dependency order, so the ordering caveat above is handled for you.
+`publish:real` runs `pub publish --force` per package with `--order-dependents`,
+so melos publishes each package after the siblings it depends on. It runs the
+pure-Dart packages first and the Flutter packages second, and no pure-Dart
+package depends on a Flutter one, so the ordering caveat above is handled for
+you.
 
 After a manual publish, make sure the tags exist on the remote so history and
 pub.dev agree:
