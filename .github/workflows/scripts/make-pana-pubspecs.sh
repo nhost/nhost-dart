@@ -31,10 +31,28 @@ get_packages () {
 }
 
 # Latest version of a package on pub.dev, empty if it has never been published.
+# Only a definitive 404 counts as "never published" (the caller then falls back
+# to "any"). Any other failure (transport error, 5xx, missing python3) fails loud
+# rather than silently degrading the declared constraint to "any".
 published_version () {
-  curl -sf "https://pub.dev/api/packages/$1" 2>/dev/null \
-    | python3 -c 'import sys, json; print(json.load(sys.stdin)["latest"]["version"])' 2>/dev/null \
-    || true
+  local body status
+  if ! body=$(curl -s -w '\n%{http_code}' "https://pub.dev/api/packages/$1"); then
+    echo "could not reach pub.dev for $1" >&2
+    exit 1
+  fi
+  status=${body##*$'\n'}
+  body=${body%$'\n'*}
+  case "$status" in
+    200)
+      printf '%s' "$body" \
+        | python3 -c 'import sys, json; print(json.load(sys.stdin)["latest"]["version"])'
+      ;;
+    404) ;;
+    *)
+      echo "pub.dev returned $status for $1" >&2
+      exit 1
+      ;;
+  esac
 }
 
 for target_package in $(get_packages); do
