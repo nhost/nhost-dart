@@ -1,0 +1,51 @@
+import 'package:flutter/widgets.dart';
+import 'package:nhost_flutter_auth/nhost_flutter_auth.dart';
+// Redundant under the melos path overrides, but the published nhost_dart does
+// not re-export User yet, so the types have to come from nhost_sdk directly.
+// ignore: unnecessary_import
+import 'package:nhost_sdk/nhost_sdk.dart' show Session, User;
+
+import '../auth_state.dart';
+import '../auth_state_mapping.dart';
+
+/// Routes to different widgets based on the current authentication state.
+///
+/// Must be a descendant of [NhostAuthProvider].
+///
+/// ```dart
+/// NhostAuthGate(
+///   loading:   (context) => const SplashScreen(),
+///   signedOut: (context) => const LoginScreen(),
+///   signedIn:  (context, user, session) => HomeScreen(user: user),
+/// )
+/// ```
+class NhostAuthGate extends StatelessWidget {
+  const NhostAuthGate({
+    super.key,
+    required this.signedOut,
+    required this.signedIn,
+    this.loading,
+  });
+
+  /// Builder shown while authentication state is being determined.
+  /// Defaults to [SizedBox.shrink].
+  final WidgetBuilder? loading;
+
+  /// Builder shown when no user is authenticated.
+  final WidgetBuilder signedOut;
+
+  /// Builder shown when a user is authenticated.
+  final Widget Function(BuildContext context, User user, Session session)
+      signedIn;
+
+  @override
+  Widget build(BuildContext context) {
+    final auth = NhostAuthProvider.of(context)!;
+    return switch (authStateOf(auth)) {
+      AuthStateLoading() => loading?.call(context) ?? const SizedBox.shrink(),
+      AuthStateSignedOut() => signedOut(context),
+      AuthStateSignedIn(:final user, :final session) =>
+        signedIn(context, user, session),
+    };
+  }
+}
