@@ -1,79 +1,104 @@
 #!/usr/bin/env bash
 
-# In order to run pana against local package changes, we need to point the
-# sibling dependencies at this checkout. That has to be done on two fronts,
-# because pana looks at the pubspec in two different ways:
+# pana scores a package by resolving its dependencies from pub.dev. On a release
+# commit the sibling constraints already name versions that are only published
+# after the commit lands, so the resolution fails and pana exits with an error
+# unless we rewrite the pubspecs first.
 #
-#   * `dependency_overrides` is what makes static analysis resolve against the
-#     local sibling. It cannot be the only thing we do, because pana runs
-#     `dart pub outdated ... --no-dependency-overrides`, which ignores it and
-#     solves the declared constraint against pub.dev. On a release commit that
-#     constraint names a version that is only published after the commit lands,
-#     so solving fails and pana exits with an error.
+# The declared constraint in `dependencies` is the only lever available.
+# `dependency_overrides` (and `pubspec_overrides.yaml`) cannot help: pana deletes
+# both from the pubspec before *every* pub invocation. `pub get`, `pub upgrade`,
+# `pub downgrade` and `pub outdated` all run inside
+# `_withStripAndAugmentPubspecYaml`, which calls
+# `parsed.remove('dependency_overrides')` — `lib/src/sdk_env.dart:645` in pana
+# 0.23.5, the version baked into `axel-op/dart-package-analyzer@v3`. So the
+# `.dart_tool/package_config.json` that `dart analyze` reads never sees a path
+# override, however we write it. Do not re-add one; it is inert.
 #
-#   * The declared constraint in `dependencies` is what that solve sees, so it
-#     has to name something that already exists on pub.dev. We rewrite it to the
-#     currently published version. A `path` dependency would also solve, but
-#     costs 20 points under "Publishable packages can't have 'path'
-#     dependencies", which drops the score below the gate.
+# So: rewrite each sibling constraint to the version currently published on
+# pub.dev, which both `pub get` and `pub outdated --no-dependency-overrides` can
+# solve.
 #
-# So: declared constraint stays resolvable and version-shaped, and the override
-# carries the local code.
+# The consequence — and the reason this job is not a local-vs-local check — is
+# that pana analyzes each package's *local* source against its *published*
+# siblings. Local code targeting a sibling API that is not published yet
+# analyzes as warnings, and any warning at all drops "Pass static analysis" from
+# 50 to 30 points (`lib/src/report/static_analysis.dart:45-54`). That 20-point
+# hole is what the per-package `MAX_PANA_MISSING_POINTS` budgets absorb: e.g.
+# `nhost_auth_dart` carries a 40-point budget because local `NhostAuthClient`
+# marks 11 members `@override` that the published `HasuraAuthClient` does not
+# declare yet. Those budgets are release-window slack, not unexplained laxity.
+#
+# Local source against local siblings is covered by the separate `test-package`
+# job (`melos bootstrap` + `melos analyze`).
 
 set -e
 
 script_dir=$(dirname "$BASH_SOURCE")
 repo_dir=$(realpath "$script_dir/../../..")
-pana_package_root=/github/workspace
-
-echo "make-pana-pubspecs.sh: rewriting tracked pubspec.yaml files under packages/ in place; intended for a throwaway CI checkout." >&2
 
 get_packages() {
 	ls -1 $repo_dir/packages
 }
 
-# Memoized per package name, so a target package's fan-out over every sibling
-# only ever queries pub.dev once per distinct package name across this run.
-# Sets $published_version_result rather than printing, because printing would
-# force callers to capture it via `$(published_version ...)`, which runs the
-# function in a subshell and silently discards the cache writes below.
+# Memo cache for `published_version`. Requires bash 4+, which the `ubuntu-latest`
+# runner has.
 declare -A published_version_cache
-published_version_result=""
 
-# Latest version of a package on pub.dev, empty if it has never been published.
-# Only a definitive 404 counts as "never published" (the caller then falls back
-# to "any"). Any other failure (transport error, 5xx, missing python3) fails loud
-# rather than silently degrading the declared constraint to "any".
+response_body=$(mktemp)
+trap 'rm -f "$response_body"' EXIT
+
+# Sets `published_version_result` to the latest version of a package on pub.dev,
+# or to the empty string if the package has never been published. Only a
+# definitive 404 counts as "never published"; every other failure (transport
+# error, timeout after retries, 5xx, unparseable body, missing python3) exits
+# non-zero rather than silently degrading the declared constraint.
+#
+# The result is returned in a global rather than on stdout so the memo cache
+# survives the call: `latest=$(published_version ...)` would run the function in
+# a subshell and throw the cache away with it.
 published_version() {
-	local pkg=$1 body status result
-
-	if [ "${published_version_cache[$pkg]+isset}" ]; then
-		published_version_result="${published_version_cache[$pkg]}"
+	local package=$1
+	if [ -n "${published_version_cache[$package]+set}" ]; then
+		published_version_result=${published_version_cache[$package]}
 		return
 	fi
 
-	if ! body=$(curl -sS --connect-timeout 10 --max-time 30 --retry 3 --retry-all-errors \
-		-w '\n%{http_code}' "https://pub.dev/api/packages/$pkg"); then
-		echo "could not reach pub.dev for $pkg" >&2
+	local status version
+	# The body is written to a file instead of being captured next to the `-w`
+	# output, because with `--retry` curl appends the body of every failed attempt
+	# to stdout: a recovered 503-then-200 would hand us two error pages glued in
+	# front of the JSON. `-o` is truncated per attempt, so only the final body
+	# survives and the retry actually helps.
+	#
+	# `--retry-all-errors` extends retries past curl's default retryable set to
+	# cover connection resets. A 404 is not an error to curl (we do not pass
+	# `--fail`), so it is answered immediately rather than retried.
+	if ! status=$(curl -s --connect-timeout 10 --max-time 30 \
+		--retry 3 --retry-delay 2 --retry-all-errors \
+		-o "$response_body" -w '%{http_code}' \
+		"https://pub.dev/api/packages/$package"); then
+		echo "could not reach pub.dev for $package" >&2
 		exit 1
 	fi
-	status=${body##*$'\n'}
-	body=${body%$'\n'*}
-	result=""
+
 	case "$status" in
 	200)
-		result=$(printf '%s' "$body" |
-			python3 -c 'import sys, json; print(json.load(sys.stdin)["latest"]["version"])')
+		# `version` is declared by `local` above and assigned here on purpose.
+		# Writing `local version=$(...)` would yield `local`'s exit status instead
+		# of the command substitution's, hiding a failing python3 from `set -e`.
+		version=$(python3 -c 'import sys, json; print(json.load(sys.stdin)["latest"]["version"])' \
+			<"$response_body")
 		;;
-	404) ;;
+	404) version="" ;;
 	*)
-		echo "pub.dev returned $status for $pkg" >&2
+		echo "pub.dev returned $status for $package" >&2
 		exit 1
 		;;
 	esac
 
-	published_version_cache[$pkg]="$result"
-	published_version_result="$result"
+	published_version_cache[$package]=$version
+	published_version_result=$version
 }
 
 for target_package in $(get_packages); do
@@ -85,7 +110,6 @@ for target_package in $(get_packages); do
 
 	pushd $repo_dir/packages/$target_package >/dev/null
 
-	overrides=""
 	for dependency_package in $(get_packages); do
 		if [ "$target_package" == "$dependency_package" ]; then
 			continue
@@ -94,45 +118,26 @@ for target_package in $(get_packages); do
 		# Check if this package depends on the dependency_package (in dependencies or dev_dependencies)
 		if grep -qE "^  $dependency_package:" pubspec.yaml; then
 			published_version "$dependency_package"
-			latest="$published_version_result"
-			if [ -n "$latest" ]; then
-				constraint="^$latest"
-			else
-				# Never published, so there is nothing for pub to solve against.
-				constraint="any"
+			latest=$published_version_result
+			if [ -z "$latest" ]; then
+				# A wider constraint would not rescue this: `any` still makes pub ask
+				# pub.dev for the version list, which 404s just the same. The only
+				# thing that could work is a source pub can resolve without pub.dev,
+				# and per the header comment pana strips path overrides.
+				echo "$target_package depends on $dependency_package, which has never been published to pub.dev; pana cannot solve that constraint" >&2
+				exit 1
 			fi
+			constraint="^$latest"
 
-			echo "$target_package: $dependency_package -> $constraint (overridden to local path)"
+			echo "$target_package: $dependency_package -> $constraint"
 
-			# Only rewrite the declared constraint inside `dependencies:` /
-			# `dev_dependencies:`, never elsewhere (e.g. the `dependency_overrides`
-			# block this script appends below), so a re-run over an
-			# already-processed pubspec.yaml is a no-op instead of corrupting it.
 			awk -v dep="$dependency_package" -v constraint="$constraint" '
-          /^[a-zA-Z_]/ { in_deps = ($0 ~ /^(dependencies|dev_dependencies):[[:space:]]*$/) }
-          in_deps && $0 ~ ("^  " dep ":") {
-            if ($0 ~ ("^  " dep ": *[^[:space:]]")) {
-              print "  " dep ": " constraint
-              next
-            }
-            print "make-pana-pubspecs.sh: " dep " is declared in nested map form; refusing to flatten it" > "/dev/stderr"
-            exit 1
-          }
+          $0 ~ "^  " dep ":" { print "  " dep ": " constraint; next }
           { print }
         ' pubspec.yaml >pubspec.new
 			mv pubspec.new pubspec.yaml
-
-			overrides="${overrides}  ${dependency_package}:
-    path: ${pana_package_root}/packages/${dependency_package}
-"
 		fi
 	done
-
-	if [ -n "$overrides" ]; then
-		echo "" >>pubspec.yaml
-		echo "dependency_overrides:" >>pubspec.yaml
-		printf "%s" "$overrides" >>pubspec.yaml
-	fi
 
 	popd >/dev/null
 done
