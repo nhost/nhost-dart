@@ -1,3 +1,8 @@
+## 3.0.0
+
+ - **CHORE**: improve package description and fix repository link (#187).
+ - **CHORE**: require `nhost_sdk` ^6.0.0.
+
 ## 2.0.10
 
  - Update a dependency to the latest release.

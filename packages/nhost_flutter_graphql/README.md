@@ -12,7 +12,7 @@ to work with [Nhost](https://nhost.io).
 
 ```yaml
 dependencies:
-  nhost_flutter_graphql: ^3.1.2
+  nhost_flutter_graphql: ^4.0.0
 ```
 
 ## 🔥 More Dart & Flutter packages from Nhost

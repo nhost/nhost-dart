@@ -1,3 +1,9 @@
+## 5.0.0
+
+ - **FEAT**: add new package arguments for better control (#176).
+ - **CHORE**: improve package description and fix repository link (#187).
+ - **CHORE**: require `nhost_sdk` ^6.0.0 and `nhost_gql_links` ^5.0.0.
+
 ## 4.0.10
 
  - Update a dependency to the latest release.
