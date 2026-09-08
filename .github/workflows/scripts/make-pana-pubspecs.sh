@@ -131,8 +131,20 @@ for target_package in $(get_packages); do
 
 			echo "$target_package: $dependency_package -> $constraint"
 
+			# Rewrite only the inline `  dep: <constraint>` form, and only inside
+			# `dependencies:` / `dev_dependencies:`. The inline-value check refuses a
+			# nested-map declaration (`  dep:` with `version:`/`hosted:`/`git:` indented
+			# under it) instead of flattening the key line and orphaning the block below.
 			awk -v dep="$dependency_package" -v constraint="$constraint" '
-          $0 ~ "^  " dep ":" { print "  " dep ": " constraint; next }
+          /^[a-zA-Z_]/ { in_deps = ($0 ~ /^(dependencies|dev_dependencies):[[:space:]]*$/) }
+          in_deps && $0 ~ ("^  " dep ":") {
+            if ($0 ~ ("^  " dep ": *[^[:space:]]")) {
+              print "  " dep ": " constraint
+              next
+            }
+            print "make-pana-pubspecs.sh: " dep " is declared in nested map form; refusing to flatten it" > "/dev/stderr"
+            exit 1
+          }
           { print }
         ' pubspec.yaml >pubspec.new
 			mv pubspec.new pubspec.yaml
