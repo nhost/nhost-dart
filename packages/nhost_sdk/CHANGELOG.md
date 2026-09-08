@@ -4,9 +4,12 @@
 
    Adds `signInWithPat`, `fetchUser`, `verifyToken` and the WebAuthn methods to
    the `HasuraAuthClient` interface. These are new members on a public abstract
-   class, so anything that implements `HasuraAuthClient` directly (test mocks,
-   alternative clients) has to add them. Code that uses `NhostClient` or
-   `NhostAuthClient` is unaffected.
+   class, so anything that implements `HasuraAuthClient` or `NhostAuthClient`
+   directly (hand-written test fakes, alternative clients) has to add them, and
+   code that passes a custom auth client into `combinedLinkForNhostAuth`,
+   `httpLinkForNhost`, `webSocketLinkForNhost` or
+   `createNhostGraphQLClientForAuth` must be updated. Code that only calls
+   methods on `NhostClient` or `NhostAuthClient` is unaffected.
  - **CHORE**: improve package description and fix repository link (#187).
 
 ## 5.8.0

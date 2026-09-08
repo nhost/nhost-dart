@@ -1,6 +1,7 @@
-## 4.2.2
+## 5.0.0
 
  - **CHORE**: improve package description and fix repository link (#187).
+ - **CHORE**: require `nhost_dart` ^3.0.0 (transitively `nhost_sdk` ^6.0.0).
 
 ## 4.2.1
 

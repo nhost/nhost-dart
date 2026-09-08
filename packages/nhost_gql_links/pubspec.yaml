@@ -1,5 +1,5 @@
 name: nhost_gql_links
-version: 4.0.12
+version: 5.0.0
 description: Low-level GraphQL links for Nhost authentication over HTTP and WebSocket transports.
 homepage: https://nhost.io
 repository: https://github.com/nhost/nhost-dart/tree/main/packages/nhost_gql_links

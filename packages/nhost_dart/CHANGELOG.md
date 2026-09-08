@@ -1,7 +1,8 @@
-## 2.3.0
+## 3.0.0
 
  - **FEAT**(sdk): export `User`, `AuthResponse`, `MultiFactorAuthResponse`, `DeanonymizeOptions` and `DeanonymizeSignInMethod` (#189).
  - **CHORE**: improve package description and fix repository link (#187).
+ - **CHORE**: require `nhost_sdk` ^6.0.0, `nhost_storage_dart` ^3.0.0, `nhost_auth_dart` ^3.0.0, `nhost_functions_dart` ^3.0.0, and `nhost_graphql_adapter` ^5.0.0.
 
 ## 2.2.0
 

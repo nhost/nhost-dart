@@ -14,7 +14,7 @@ and generally isn't meant for use directly.
 
 ```yaml
 dependencies:
-  nhost_gql_links: ^4.0.11
+  nhost_gql_links: ^5.0.0
 ```
 
 ## 🔥 More Dart & Flutter packages from Nhost

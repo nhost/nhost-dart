@@ -16,21 +16,27 @@ Packages with breaking changes:
 
 Packages with other changes:
 
- - [`nhost_dart` - `v2.3.0`](#nhost_dart---v230)
- - [`nhost_storage_dart` - `v2.2.1`](#nhost_storage_dart---v221)
- - [`nhost_flutter_auth` - `v4.2.2`](#nhost_flutter_auth---v422)
- - [`nhost_flutter_graphql` - `v3.1.3`](#nhost_flutter_graphql---v313)
- - [`nhost_graphql_adapter` - `v4.1.0`](#nhost_graphql_adapter---v410)
- - [`nhost_functions_dart` - `v2.0.11`](#nhost_functions_dart---v2011)
- - [`nhost_auth_dart` - `v2.7.0`](#nhost_auth_dart---v270)
- - [`nhost_gql_links` - `v4.0.12`](#nhost_gql_links---v4012)
+ - [`nhost_dart` - `v3.0.0`](#nhost_dart---v300)
+ - [`nhost_graphql_adapter` - `v5.0.0`](#nhost_graphql_adapter---v500)
+ - [`nhost_auth_dart` - `v3.0.0`](#nhost_auth_dart---v300)
+
+Packages with dependency updates only:
+
+> Packages listed below depend on other packages in this workspace that have had changes. Their versions have been incremented to bump the minimum dependency versions of the packages they depend upon in this project.
+
+ - [`nhost_storage_dart` - `v3.0.0`](#nhost_storage_dart---v300)
+ - [`nhost_flutter_auth` - `v5.0.0`](#nhost_flutter_auth---v500)
+ - [`nhost_flutter_graphql` - `v4.0.0`](#nhost_flutter_graphql---v400)
+ - [`nhost_functions_dart` - `v3.0.0`](#nhost_functions_dart---v300)
+ - [`nhost_gql_links` - `v5.0.0`](#nhost_gql_links---v500)
 
 ---
 
-#### `nhost_dart` - `v2.3.0`
+#### `nhost_dart` - `v3.0.0`
 
  - **FEAT**(sdk): export `User`, `AuthResponse`, `MultiFactorAuthResponse`, `DeanonymizeOptions` and `DeanonymizeSignInMethod` (#189).
  - **CHORE**: improve package description and fix repository link (#187).
+ - **CHORE**: require `nhost_sdk` ^6.0.0, `nhost_storage_dart` ^3.0.0, `nhost_auth_dart` ^3.0.0, `nhost_functions_dart` ^3.0.0, and `nhost_graphql_adapter` ^5.0.0.
 
 #### `nhost_sdk` - `v6.0.0`
 
@@ -38,46 +44,57 @@ Packages with other changes:
 
    Adds `signInWithPat`, `fetchUser`, `verifyToken` and the WebAuthn methods to
    the `HasuraAuthClient` interface. These are new members on a public abstract
-   class, so anything that implements `HasuraAuthClient` directly (test mocks,
-   alternative clients) has to add them. Code that uses `NhostClient` or
-   `NhostAuthClient` is unaffected.
+   class, so anything that implements `HasuraAuthClient` or `NhostAuthClient`
+   directly (hand-written test fakes, alternative clients) has to add them, and
+   code that passes a custom auth client into `combinedLinkForNhostAuth`,
+   `httpLinkForNhost`, `webSocketLinkForNhost` or
+   `createNhostGraphQLClientForAuth` must be updated. Code that only calls
+   methods on `NhostClient` or `NhostAuthClient` is unaffected.
  - **CHORE**: improve package description and fix repository link (#187).
 
-#### `nhost_storage_dart` - `v2.2.1`
+#### `nhost_storage_dart` - `v3.0.0`
 
  - **CHORE**: improve package description and fix repository link (#187).
+ - **CHORE**: require `nhost_sdk` ^6.0.0.
 
-#### `nhost_flutter_auth` - `v4.2.2`
-
- - **CHORE**: improve package description and fix repository link (#187).
-
-#### `nhost_flutter_graphql` - `v3.1.3`
+#### `nhost_flutter_auth` - `v5.0.0`
 
  - **CHORE**: improve package description and fix repository link (#187).
+ - **CHORE**: require `nhost_dart` ^3.0.0 (transitively `nhost_sdk` ^6.0.0).
 
-#### `nhost_graphql_adapter` - `v4.1.0`
+#### `nhost_flutter_graphql` - `v4.0.0`
+
+ - **CHORE**: improve package description and fix repository link (#187).
+ - **CHORE**: require `nhost_flutter_auth` ^5.0.0 (transitively `nhost_sdk` ^6.0.0).
+
+#### `nhost_graphql_adapter` - `v5.0.0`
 
  - **FEAT**: add new package arguments for better control (#176).
  - **CHORE**: improve package description and fix repository link (#187).
+ - **CHORE**: require `nhost_sdk` ^6.0.0 and `nhost_gql_links` ^5.0.0.
 
-#### `nhost_functions_dart` - `v2.0.11`
+#### `nhost_functions_dart` - `v3.0.0`
 
  - **CHORE**: improve package description and fix repository link (#187).
+ - **CHORE**: require `nhost_sdk` ^6.0.0.
 
-#### `nhost_auth_dart` - `v2.7.0`
+#### `nhost_auth_dart` - `v3.0.0`
 
  - **FEAT**(sdk): auth API surface for Flutter integration (#189).
 
    `NhostAuthClient` now implements `signInWithPat`, `fetchUser`, `verifyToken`
-   and the WebAuthn methods. This requires `nhost_sdk` 6.0.0.
+   and the WebAuthn methods. This requires `nhost_sdk` 6.0.0. Because
+   `NhostAuthClient` implements `HasuraAuthClient`, hand-written fakes that
+   implement `NhostAuthClient` directly must add these new members too.
  - **FIX**: redact auth tokens in string output (#188).
  - **FIX**(auth): set `_loading` to true when instantiating `NhostAuthClient` (#179).
  - **CHORE**: improve package description and fix repository link (#187).
+ - **CHORE**: require `nhost_sdk` ^6.0.0.
 
-#### `nhost_gql_links` - `v4.0.12`
+#### `nhost_gql_links` - `v5.0.0`
 
  - **CHORE**: improve package description and fix repository link (#187).
-
+ - **CHORE**: require `nhost_sdk` ^6.0.0.
 
 ## 2025-11-05
 
@@ -125,7 +142,6 @@ Packages with dependency updates only:
 #### `nhost_storage_dart` - `v2.2.0`
 
  - **FEAT**(storage): added replaceFile method (#172).
-
 
 ## 2025-10-13
 
@@ -185,7 +201,6 @@ Packages with dependency updates only:
 
  - **FEAT**(storage): update SDK to use modern way of uploading files (#167).
 
-
 ## 2025-06-13
 
 ### Changes
@@ -237,7 +252,6 @@ Packages with dependency updates only:
 
  - **FEAT**: Allow metadata to be passed in signInWithEmailPasswordless (#162).
 
-
 ## 2024-11-28
 
 ### Changes
@@ -281,7 +295,6 @@ Packages with dependency updates only:
 #### `nhost_sdk` - `v5.5.0`
 
  - **FEAT**: add support for sign-in with id token (#149).
-
 
 ## 2024-11-26
 
@@ -347,7 +360,6 @@ Packages with dependency updates only:
 
  - **REFACTOR**: remove unnecessary and unused files (#148).
 
-
 ## 2024-07-19
 
 ### Changes
@@ -391,7 +403,6 @@ Packages with dependency updates only:
 #### `nhost_sdk` - `v5.3.1`
 
  - **FIX**: handle null phoneNumber in User fromJson.
-
 
 ## 2024-02-06
 
@@ -437,7 +448,6 @@ Packages with dependency updates only:
 
  - **FEAT**(nhost_flutter_auth): Allow displayName and locale to be passed on signInAnonymous (#131).
 
-
 ## 2024-02-06
 
 ### Changes
@@ -481,7 +491,6 @@ Packages with dependency updates only:
 #### `nhost_sdk` - `v5.2.0`
 
  - **FEAT**(nhost_flutter_auth): Allow displayName and locale to be passed on signInAnonymous (#131).
-
 
 ## 2024-01-31
 
@@ -547,7 +556,6 @@ Packages with other changes:
  - **FIX**: point to latest dep version to fix incompatible deps (#128).
  - **FIX**: point to latest dep version to fix incompatible deps.
 
-
 ## 2024-01-11
 
 ### Changes
@@ -601,7 +609,6 @@ Packages with dependency updates only:
 
  - **FIX**: point to latest dep version to fix incompatible deps.
 
-
 ## 2023-12-04
 
 ### Changes
@@ -633,7 +640,6 @@ Packages with dependency updates only:
 
  - **CHORE**(nhost-sdk): remove support for using `localhost` in favor of passing `local` as subdomain when developing locally
  - **FEAT**(nhost_sdk): Allow metadata to be passed in signInWithSmsPassword… (#123).
-
 
 ## 2023-11-09
 
@@ -678,4 +684,3 @@ Packages with dependency updates only:
 #### `nhost_storage_dart` - `v1.1.0`
 
  - **FEAT**(nhost-storage): added image transform options to getPresignedUrl (#102).
-

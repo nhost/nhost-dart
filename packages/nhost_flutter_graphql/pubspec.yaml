@@ -2,14 +2,14 @@ name: nhost_flutter_graphql
 description: >
   Flutter GraphQL provider for authenticated Nhost queries and subscriptions
   with graphql_flutter.
-version: 3.1.3
+version: 4.0.0
 homepage: https://nhost.io
 repository: https://github.com/nhost/nhost-dart/tree/main/packages/nhost_flutter_graphql
 issue_tracker: https://github.com/nhost/nhost-dart/issues
 
 environment:
-  sdk: '>=2.14.0 <4.0.0'
-  flutter: '>=2.8.0'
+  sdk: ">=2.14.0 <4.0.0"
+  flutter: ">=2.8.0"
 
 dependencies:
   flutter:
@@ -18,7 +18,7 @@ dependencies:
   logging: ^1.1.0
 
   #Nhost_dart
-  nhost_flutter_auth: ^4.2.2
+  nhost_flutter_auth: ^5.0.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
