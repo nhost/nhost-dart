@@ -1,3 +1,7 @@
+## 3.1.3
+
+ - **CHORE**: improve package description and fix repository link (#187).
+
 ## 3.1.2
 
  - Update a dependency to the latest release.
