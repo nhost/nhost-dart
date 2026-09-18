@@ -16,7 +16,7 @@ Packages with breaking changes:
 Packages with other changes:
 
  - [`nhost_dart` - `v2.3.0`](#nhost_dart---v230)
- - [`nhost_sdk` - `v5.9.0`](#nhost_sdk---v590)
+ - [`nhost_sdk` - `v5.8.1`](#nhost_sdk---v581)
  - [`nhost_storage_dart` - `v2.2.1`](#nhost_storage_dart---v221)
  - [`nhost_flutter_auth` - `v4.2.2`](#nhost_flutter_auth---v422)
  - [`nhost_flutter_graphql` - `v3.1.3`](#nhost_flutter_graphql---v313)
@@ -32,15 +32,8 @@ Packages with other changes:
  - **FEAT**(sdk): export `User`, `AuthResponse`, `MultiFactorAuthResponse`, `DeanonymizeOptions` and `DeanonymizeSignInMethod` (#189).
  - **CHORE**: improve package description and fix repository link (#187).
 
-#### `nhost_sdk` - `v5.9.0`
+#### `nhost_sdk` - `v5.8.1`
 
- - **FEAT**(sdk): auth API surface for Flutter integration (#189).
-
-   Adds `signInWithPat`, `fetchUser`, `verifyToken` and the WebAuthn methods to
-   the `HasuraAuthClient` interface. These are new members on a public abstract
-   class, so anything that implements `HasuraAuthClient` directly (test mocks,
-   alternative clients) has to add them. Code that uses `NhostClient` or
-   `NhostAuthClient` is unaffected.
  - **CHORE**: improve package description and fix repository link (#187).
 
 #### `nhost_storage_dart` - `v2.2.1`
@@ -68,8 +61,12 @@ Packages with other changes:
 
  - **FEAT**(sdk): auth API surface for Flutter integration (#189).
 
-   `NhostAuthClient` now implements `signInWithPat`, `fetchUser`, `verifyToken`
-   and the WebAuthn methods. This requires `nhost_sdk` 5.9.0.
+   Adds `signInWithPat`, `fetchUser`, `verifyToken` and the WebAuthn methods to
+   `NhostAuthClient`. They are declared on the class itself rather than on the
+   `HasuraAuthClient` interface, so existing `HasuraAuthClient` implementations
+   and code that passes a custom auth client into the GraphQL link helpers keep
+   working unchanged. Hand-written fakes that implement `NhostAuthClient`
+   directly need to add the new members; Mockito mocks are unaffected.
  - **FIX**: redact auth tokens in string output (#188).
  - **FIX**(auth): set `_loading` to true when instantiating `NhostAuthClient` (#179).
  - **CHORE**: improve package description and fix repository link (#187).
