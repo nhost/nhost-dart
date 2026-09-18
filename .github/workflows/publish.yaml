@@ -1,0 +1,144 @@
+# Publishes a single package to pub.dev when its git tag is pushed.
+#
+# This repo is a melos monorepo, so `melos version` creates one tag per package
+# in the form `<package>-v<version>` (e.g. `nhost_sdk-v5.9.0`). Each package is
+# a separate pub.dev package under the nhost.io publisher, so publishing is
+# driven per package by the tag that names it.
+#
+# Authentication uses pub.dev's OIDC-based automated publishing (no long-lived
+# tokens). `dart-lang/setup-dart` below performs the token exchange; the job's
+# `id-token: write` permission only makes the exchange possible, it does not
+# perform it. For each package this workflow must be enabled once on pub.dev:
+#   Admin -> Automated publishing -> Enable publishing from GitHub Actions
+#     Repository: nhost/nhost-dart
+#     Tag pattern: <package>-v{{version}}   e.g. nhost_sdk-v{{version}}
+#     Environment: pub.dev
+# Until that is configured for a package, the publish step for it will be
+# rejected by pub.dev (the workflow itself is harmless before then; it only runs
+# on tag pushes).
+#
+# Docs: https://dart.dev/tools/pub/automated-publishing
+
+name: Publish to pub.dev
+
+on:
+  push:
+    tags:
+      # melos tag shape: <package>-v<semver>, including pre-releases
+      # (`-v1.2.3-dev.1`) and build metadata (`-v1.2.3+1`, which this repo has
+      # used before). Deliberately broad rather than anchored on digits: in
+      # GitHub's filter-pattern syntax `+` means "one or more of the preceding
+      # character", so a digit pattern like `*-v[0-9]+.[0-9]+.[0-9]+` does not
+      # match a `+1` suffix, and the failure mode is silent -- no run is
+      # created, pub.dev stays stale, and nothing goes red. The "Verify the
+      # package exists and is publishable" step below is the single place that
+      # decides what a real release tag is, so a non-release `*-v*` tag fails
+      # loudly there instead of a real release tag being skipped quietly.
+      - "*-v*"
+
+# One publish run per tag; never cancel an in-flight publish.
+concurrency:
+  group: publish-${{ github.ref }}
+  cancel-in-progress: false
+
+# `shell: bash` runs every step as `bash --noprofile --norc -eo pipefail {0}`.
+# GitHub's default is `bash -e {0}`, which has no `pipefail`, so a failing
+# command in the middle of a pipeline is masked by the exit status of the last
+# one.
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    # Required by pub.dev's automated-publishing security model. Configure a
+    # matching environment named "pub.dev" on each package for extra protection
+    # (e.g. required reviewers).
+    environment: pub.dev
+    permissions:
+      id-token: write # OIDC token used to authenticate to pub.dev.
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Resolve package and version from tag
+        id: tag
+        run: |
+          tag="${GITHUB_REF_NAME}"
+          name="${tag%-v*}"     # everything before the last "-v"
+          version="${tag##*-v}" # everything after the last "-v"
+          if [ -z "$name" ] || [ -z "$version" ]; then
+            echo "Tag '$tag' is not in <package>-v<version> form" >&2
+            exit 1
+          fi
+          echo "name=$name" >> "$GITHUB_OUTPUT"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "dir=packages/$name" >> "$GITHUB_OUTPUT"
+          echo "Resolved: package=$name version=$version"
+
+      - name: Verify the package exists and is publishable
+        env:
+          DIR: ${{ steps.tag.outputs.dir }}
+          NAME: ${{ steps.tag.outputs.name }}
+          VERSION: ${{ steps.tag.outputs.version }}
+        run: |
+          pubspec="$DIR/pubspec.yaml"
+          if [ ! -f "$pubspec" ]; then
+            echo "No pubspec at $pubspec for tag package '$NAME'" >&2
+            exit 1
+          fi
+          # These checks are what stands between a bad tag and an irreversible
+          # upload, so parse the pubspec as YAML with yq (v4, preinstalled on
+          # ubuntu-latest) instead of grepping lines: yq handles quoted scalars
+          # (`publish_to: "none"`, `version: "6.0.0"` -- both forms already
+          # appear in this repo) and prints `null` for an absent key.
+          publish_to="$(yq '.publish_to' "$pubspec")"
+          if [ "$publish_to" = "none" ]; then
+            echo "$NAME sets publish_to: none; refusing to publish" >&2
+            exit 1
+          fi
+          declared="$(yq '.version' "$pubspec")"
+          if [ -z "$declared" ] || [ "$declared" = "null" ]; then
+            echo "No top-level version: in $pubspec" >&2
+            exit 1
+          fi
+          if [ "$declared" != "$VERSION" ]; then
+            echo "pubspec version ($declared) does not match" \
+                 "tag version ($VERSION)" >&2
+            exit 1
+          fi
+
+      # Provisions the pub.dev credential: exchanges the job's GitHub OIDC
+      # id-token for a pub.dev token, exports it as PUB_TOKEN, and registers it
+      # with `dart pub token add https://pub.dev --env-var PUB_TOKEN`. Nothing
+      # else here does that exchange -- `subosito/flutter-action` only installs
+      # the SDK -- so without this step `pub publish` runs unauthenticated. The
+      # credential lands in the pub token store under PUB_CACHE (also exported
+      # here), so the Flutter SDK's bundled pub picks it up even though its
+      # `dart` shadows this SDK's on PATH. This mirrors the reference workflow
+      # dart-lang/setup-dart/.github/workflows/publish.yml.
+      - uses: dart-lang/setup-dart@v1
+
+      # Flutter provides the Dart SDK too, so this covers both the pure-Dart and
+      # the Flutter packages in the workspace. Pinned to the version the test
+      # workflows use.
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.27.3"
+          channel: stable
+
+      # Publishing is effectively irreversible -- a retracted version keeps its
+      # version number forever -- so validate first, in its own step. `--force`
+      # below skips the confirmation prompt, not the validation, but it buries
+      # the warnings in the log of the step that already uploaded; this keeps
+      # them in a clearly labelled step of their own.
+      - name: Validate ${{ github.ref_name }}
+        working-directory: ${{ steps.tag.outputs.dir }}
+        run: |
+          flutter pub get
+          flutter pub publish --dry-run
+
+      - name: Publish ${{ github.ref_name }}
+        working-directory: ${{ steps.tag.outputs.dir }}
+        run: flutter pub publish --force
