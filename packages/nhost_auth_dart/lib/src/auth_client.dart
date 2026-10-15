@@ -808,7 +808,6 @@ class NhostAuthClient implements HasuraAuthClient {
   //#region PAT, fetchUser, verifyToken
 
   /// Signs in using a Personal Access Token (PAT).
-  @override
   Future<AuthResponse> signInWithPat(String pat) async {
     log.finer('Attempting sign in (PAT)');
     AuthResponse? res;
@@ -829,7 +828,6 @@ class NhostAuthClient implements HasuraAuthClient {
   }
 
   /// Fetches the current user's profile from the server.
-  @override
   Future<User> fetchUser() async {
     log.finer('Fetching current user');
     final user = await _apiClient.get<User>(
@@ -842,7 +840,6 @@ class NhostAuthClient implements HasuraAuthClient {
   }
 
   /// Verifies whether [accessToken] is still valid on the server.
-  @override
   Future<bool> verifyToken(String accessToken) async {
     log.finer('Verifying token');
     try {
@@ -863,7 +860,6 @@ class NhostAuthClient implements HasuraAuthClient {
 
   //#region WebAuthn — platform-dependent stubs
 
-  @override
   Future<Map<String, dynamic>> signInWithWebAuthn() async {
     return _apiClient.post(
       '/signin/webauthn',
@@ -871,7 +867,6 @@ class NhostAuthClient implements HasuraAuthClient {
     );
   }
 
-  @override
   Future<AuthResponse> verifyWebAuthnSignIn(
     Map<String, dynamic> assertionResponse,
   ) async {
@@ -885,7 +880,6 @@ class NhostAuthClient implements HasuraAuthClient {
     return res;
   }
 
-  @override
   Future<Map<String, dynamic>> signUpWithWebAuthn({String? email}) async {
     return _apiClient.post(
       '/signup/webauthn',
@@ -894,7 +888,6 @@ class NhostAuthClient implements HasuraAuthClient {
     );
   }
 
-  @override
   Future<AuthResponse> verifyWebAuthnSignUp(
     Map<String, dynamic> attestationResponse,
   ) async {
@@ -908,7 +901,6 @@ class NhostAuthClient implements HasuraAuthClient {
     return res;
   }
 
-  @override
   Future<Map<String, dynamic>> addWebAuthnCredential() async {
     return _apiClient.post(
       '/user/webauthn/add',
@@ -917,7 +909,6 @@ class NhostAuthClient implements HasuraAuthClient {
     );
   }
 
-  @override
   Future<void> verifyAddWebAuthnCredential(
     Map<String, dynamic> attestationResponse,
   ) async {
@@ -928,7 +919,6 @@ class NhostAuthClient implements HasuraAuthClient {
     );
   }
 
-  @override
   Future<Map<String, dynamic>> elevateWithWebAuthn() async {
     return _apiClient.post(
       '/elevate/webauthn',
@@ -937,7 +927,6 @@ class NhostAuthClient implements HasuraAuthClient {
     );
   }
 
-  @override
   Future<AuthResponse> verifyWebAuthnElevation(
     Map<String, dynamic> assertionResponse,
   ) async {
