@@ -1,3 +1,7 @@
+## 5.8.1
+
+ - **CHORE**: improve package description and fix repository link (#187).
+
 ## 5.8.0
 
  - **FEAT**(storage): added replaceFile method (#172).

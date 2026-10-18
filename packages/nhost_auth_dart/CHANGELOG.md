@@ -1,3 +1,17 @@
+## 2.7.0
+
+ - **FEAT**(sdk): auth API surface for Flutter integration (#189).
+
+   Adds `signInWithPat`, `fetchUser`, `verifyToken` and the WebAuthn methods to
+   `NhostAuthClient`. They are declared on the class itself rather than on the
+   `HasuraAuthClient` interface, so existing `HasuraAuthClient` implementations
+   and code that passes a custom auth client into the GraphQL link helpers keep
+   working unchanged. Hand-written fakes that implement `NhostAuthClient`
+   directly need to add the new members; Mockito mocks are unaffected.
+ - **FIX**: redact auth tokens in string output (#188).
+ - **FIX**(auth): set `_loading` to true when instantiating `NhostAuthClient` (#179).
+ - **CHORE**: improve package description and fix repository link (#187).
+
 ## 2.6.1
 
  - Update a dependency to the latest release.
