@@ -37,6 +37,8 @@ build/
 
 # Flutter example generated platform files
 packages/**/example/.metadata
+packages/**/example/.flutter-plugins
+packages/**/example/.flutter-plugins-dependencies
 packages/**/example/devtools_options.yaml
 packages/**/example/build/
 packages/**/example/ios/Flutter/.last_build_id
@@ -50,6 +52,7 @@ packages/**/example/ios/Flutter/flutter_assets/
 packages/**/example/ios/Pods/
 packages/**/example/ios/.symlinks/
 packages/**/example/ios/Runner/GeneratedPluginRegistrant.*
+packages/**/example/ios/Podfile.lock
 packages/**/example/android/.gradle/
 packages/**/example/android/local.properties
 packages/**/example/android/app/debug/
