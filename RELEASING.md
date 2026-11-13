@@ -268,11 +268,44 @@ packages, examples excluded). When it is clean, publish for real:
 nix develop -c bash -c "melos run publish:real"
 ```
 
-`publish:real` runs `pub publish --force` per package with `--order-dependents`,
-so melos publishes each package after the siblings it depends on. It runs the
-pure-Dart packages first and the Flutter packages second, and no pure-Dart
-package depends on a Flutter one, so the ordering caveat above is handled for
-you.
+`publish:real` is for a release that bumped every package. It runs `pub publish
+--force` for every non-example package, the pure-Dart packages in one `melos
+exec` and the Flutter packages in a second, and `--order-dependents` makes each
+`exec` publish a package only after the siblings it depends on have succeeded
+in that same `exec`. The Flutter `exec` runs only if the pure-Dart one
+succeeded, and no pure-Dart package depends on a Flutter one, so a fully bumped
+release goes up in the same tier order as the automated path.
+
+That ordering is the only thing between you and the bad release the automated
+path's Validate step catches. `pub publish` resolves siblings through the
+committed `pubspec_overrides.yaml` (pub prints a hint about it, nothing more),
+so a dependent uploads fine even when the sibling version it needs is not on
+pub.dev. And `--order-dependents` has two limits worth knowing before you rely
+on it:
+
+- A package this release did not bump fails with a version-already-exists
+  error, and every package that depends on it is then skipped, listed as
+  `(dependency failed)` in the melos summary. An unbumped `nhost_sdk` publishes
+  none of the pure-Dart packages. The dry run does not warn you: it returns
+  before asking pub.dev anything, so it is green for an unbumped package.
+- Dependents are only waited on inside the same `exec`. The Flutter `exec`
+  cannot wait on `nhost_dart`, which is why it is skipped outright when the
+  pure-Dart `exec` fails rather than uploading `nhost_flutter_auth` against an
+  `nhost_dart` that never made it.
+
+So read the melos summary at the end of each `exec`. After any failure, do not
+re-run `publish:real`: everything it already uploaded now fails with
+version-already-exists and takes its dependents down with it. Publish the
+remaining packages one at a time instead, in the tier order above, waiting for
+each tier to appear on pub.dev before starting the next:
+
+```bash
+melos exec --scope=nhost_dart -- dart pub publish --force
+melos exec --scope=nhost_flutter_auth -- flutter pub publish --force
+```
+
+The same per-package command is how to publish a release that bumps only some
+packages.
 
 Publish a given package manually *or* by tag, never both: the manual path uploads
 it, and a later tag push would start a run that tries to upload the same version
