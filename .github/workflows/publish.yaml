@@ -114,9 +114,10 @@ jobs:
       # with `dart pub token add https://pub.dev --env-var PUB_TOKEN`. Nothing
       # else here does that exchange -- `subosito/flutter-action` only installs
       # the SDK -- so without this step `pub publish` runs unauthenticated. The
-      # credential lands in the pub token store under PUB_CACHE (also exported
-      # here), so the Flutter SDK's bundled pub picks it up even though its
-      # `dart` shadows this SDK's on PATH. This mirrors the reference workflow
+      # token entry is written to the per-user Dart config directory
+      # (~/.config/dart/pub-tokens.json on Linux) and references PUB_TOKEN, so
+      # the Flutter SDK's bundled pub reads the same file even though its `dart`
+      # shadows this SDK's on PATH. This mirrors the reference workflow
       # dart-lang/setup-dart/.github/workflows/publish.yml.
       - uses: dart-lang/setup-dart@v1
 
