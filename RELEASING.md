@@ -86,7 +86,7 @@ pre-merge tip of the release branch — move them:
 
 ```bash
 # The release branch you just merged; its local tip still carries melos's tags.
-release_branch=chore/release-6.0.0
+release_branch=chore/release-X.Y.Z
 
 for tag in $(git tag --points-at "$release_branch"); do
   git tag -f "$tag"   # re-point onto the merged commit, which is now HEAD
@@ -97,8 +97,8 @@ If you hand-edited the bump, no tags exist anywhere, so create them — one per
 bumped package, and only for packages this release actually bumped:
 
 ```bash
-git tag -f nhost_sdk-v6.0.0
-git tag -f nhost_dart-v2.3.0
+git tag -f nhost_sdk-vX.Y.Z
+git tag -f nhost_dart-vX.Y.Z
 # ...one per bumped package
 ```
 
@@ -141,10 +141,12 @@ Until a package is enabled, its tag still starts a run — `publish.yaml` trigge
 on `*-v*` — and pub.dev rejects the upload at the end. So a partially enabled
 rollout is the expected state, not an edge case.
 
-> **Pending:** the 6.0.0 release commit on this branch was hand-authored and
-> carries no tags (`git tag --points-at HEAD` is empty; the newest tag in the repo
-> is from 2024-07-19, so the last few releases were never tagged either). Nothing
-> can publish until Phase 2 is run for it. Delete this note once those tags exist.
+> **Status:** the 5.8.1 release (#193) is tagged on its merged commit and every
+> package is published at the version its `pubspec.yaml` declares, so nothing is
+> outstanding. GitHub runs a tag-push workflow from the tagged commit's tree, and
+> that commit predates `publish.yaml`, so pushing any remaining 5.8.1 tags starts
+> no run. The first release tagged on a commit that contains `publish.yaml` is
+> the first that can publish automatically.
 
 With Phase 2 done — release commit on `main`, tags on `HEAD`, nothing pushed yet
 — a release is just pushing those tags, one at a time, in dependency order.
@@ -168,8 +170,8 @@ half-worked; there will be none. Push each tag on its own so every tag gets
 exactly one run.
 
 Dependency ordering matters. A package cannot publish until the sibling versions
-it depends on already exist on pub.dev (for example `nhost_dart 2.3.0` needs
-`nhost_sdk 6.0.0` published first). The Validate step enforces that: every
+it depends on already exist on pub.dev (say a future `nhost_dart 2.4.0` that
+needs `nhost_sdk 6.0.0` published first). The Validate step enforces that: every
 package ships a committed `pubspec_overrides.yaml` (melos-managed `path:
 ../sibling` overrides) and `actions/checkout@v4` restores them, so the step
 `git rm`s the package's own override before `flutter pub get`. Siblings then
@@ -288,7 +290,7 @@ done
 ```
 
 Not `git push --tags`. Beyond the three-tag event cliff, `--tags` pushes *every*
-local tag rather than this release's: there are 347 of them here, and some (e.g.
+local tag rather than this release's: there are hundreds of them, and some (e.g.
 `nhost_sdk-v5.3.1`) are not ancestors of `origin/main`, so it would publish stale
 refs that were never meant to leave the machine. Scoping to `--points-at HEAD`
 also means the loop simply does nothing if Phase 2 was skipped, instead of
