@@ -127,8 +127,8 @@ Phase 2 put on the release commit. `.github/workflows/publish.yaml` picks up a t
 of the form `<package>-v<version>`, resolves the package, checks its pubspec
 version against the tag, authenticates to pub.dev over OIDC (no tokens; the
 credential is provisioned by `dart-lang/setup-dart`), validates the package with
-`flutter pub publish --dry-run`, and only then runs `flutter pub publish
---force`.
+`flutter pub publish --dry-run` with its siblings resolved from pub.dev rather
+than the checkout, and only then runs `flutter pub publish --force`.
 
 One-time setup, per package, by a publisher admin on pub.dev:
 
@@ -167,19 +167,20 @@ release, do not go hunting for three successful runs and conclude the automation
 half-worked; there will be none. Push each tag on its own so every tag gets
 exactly one run.
 
-Dependency ordering matters, and it is on you, not CI, to get it right. A package
-cannot publish until the sibling versions it depends on already exist on pub.dev
-(for example `nhost_dart 2.3.0` needs `nhost_sdk 6.0.0` published first). You
-might expect an out-of-order push to fail loudly at the Validate step, but it
-does not: every package ships a committed `pubspec_overrides.yaml` (melos-managed
-`path: ../sibling` overrides), and `actions/checkout@v4` restores them, so the
-Validate step's `flutter pub get` resolves every sibling from the checked-out
-tree rather than pub.dev. That step goes green whether or not the sibling version
-is published yet, and the package then uploads carrying a pub.dev constraint
-(`^6.0.0`) that no published version satisfies — a silent bad release, not the
-red run you were counting on. So the tiers below are load bearing: push one tier,
-wait for its runs to finish *and* for the new versions to actually appear on
-pub.dev, then push the next tier. Do not advance on a green checkmark alone.
+Dependency ordering matters. A package cannot publish until the sibling versions
+it depends on already exist on pub.dev (for example `nhost_dart 2.3.0` needs
+`nhost_sdk 6.0.0` published first). The Validate step enforces that: every
+package ships a committed `pubspec_overrides.yaml` (melos-managed `path:
+../sibling` overrides) and `actions/checkout@v4` restores them, so the step
+`git rm`s the package's own override before `flutter pub get`. Siblings then
+resolve from pub.dev, the way they do for users, and a constraint such as
+`^6.0.0` that no published version satisfies fails version solving right there,
+before anything is uploaded. An out-of-order push costs you a red run, not a bad
+release. The tiers below are how you avoid those red runs: push one tier, wait
+for its runs to finish *and* for the new versions to actually appear on pub.dev,
+then push the next tier. A green checkmark alone is not enough: pub.dev can take
+a little while to serve a version it has just accepted, and a dependent whose
+Validate step runs inside that window fails.
 
 The invariant that makes the tiers below reviewable: **no package in a tier may
 depend on another package in the same tier.** Packages inside a tier are pushed
@@ -241,14 +242,13 @@ push_tag nhost_flutter_graphql
 ```
 
 Every `push_tag` runs at most one `git push` carrying exactly one tag, so no push
-ever trips the three-tag limit and every tag gets its own run. Do not expect a
-run to go red just because a dependency is not on pub.dev yet: the Validate step
-resolves siblings locally through the committed overrides (see above), so a
-premature push publishes badly rather than failing — waiting for each tier to
-land is the only thing standing in for that missing check. If a run does fail for
-a genuine transient reason, such as a pub.dev hiccup, re-run it from the GitHub
-Actions UI once the cause is cleared; the tag already exists, so there is a run
-to re-run. Pushing the same tag again is a no-op and will not start a new run.
+ever trips the three-tag limit and every tag gets its own run. If a run goes red
+at Validate with a version-solving error naming a sibling, the tag was pushed
+before that sibling's version was on pub.dev. Nothing was uploaded, so once the
+sibling is there, re-run the failed run from the GitHub Actions UI. The same
+applies to a genuine transient failure such as a pub.dev hiccup: the tag already
+exists, so there is a run to re-run. Pushing the same tag again is a no-op and
+will not start a new run.
 
 ### Manual publish (fallback / today)
 

@@ -133,9 +133,25 @@ jobs:
       # below skips the confirmation prompt, not the validation, but it buries
       # the warnings in the log of the step that already uploaded; this keeps
       # them in a clearly labelled step of their own.
+      #
+      # The checkout restores each package's committed melos
+      # `pubspec_overrides.yaml` (`path: ../sibling` for every nhost_* sibling),
+      # so `pub get` would resolve siblings from this tree instead of pub.dev.
+      # With it in place the dry run passes even when the sibling version this
+      # package's constraint needs is not published yet, so a tag pushed out of
+      # dependency order uploads a version nothing can resolve. Dropping the
+      # override first makes resolution here match what users and pana see, so
+      # a missing sibling version fails `pub get` before anything is uploaded.
+      # `git rm` rather than `rm`: pub lists the package's files via git, and a
+      # file that is still in the index but gone from disk makes the dry run
+      # fail on every release. `--ignore-unmatch` covers nhost_sdk, which has
+      # no overrides. `example/pubspec_overrides.yaml` stays: the example is not
+      # published, and `flutter pub get` resolves it too, through its own
+      # overrides.
       - name: Validate ${{ github.ref_name }}
         working-directory: ${{ steps.tag.outputs.dir }}
         run: |
+          git rm -q --ignore-unmatch pubspec_overrides.yaml
           flutter pub get
           flutter pub publish --dry-run
 
