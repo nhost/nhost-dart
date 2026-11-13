@@ -3,7 +3,7 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## 2026-08-25
+## 2026-11-13
 
 ### Changes
 
@@ -69,6 +69,7 @@ Packages with other changes:
    directly need to add the new members; Mockito mocks are unaffected.
  - **FIX**: redact auth tokens in string output (#188).
  - **FIX**(auth): set `_loading` to true when instantiating `NhostAuthClient` (#179).
+ - **FIX**(auth): `authenticationState` no longer stays on `inProgress` when a token refresh fails with an error other than 401 (#189, fixes #180).
  - **CHORE**: improve package description and fix repository link (#187).
 
 #### `nhost_gql_links` - `v4.0.12`
