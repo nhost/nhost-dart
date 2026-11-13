@@ -27,9 +27,16 @@ Phase 3 is currently manual, and the goal is to move it to tag-triggered CI (see
 
 ## Phase 1: version and changelog
 
-From `main`, with the feature PRs already merged:
+`melos version` commits and tags on whatever branch is checked out, so start
+from a fresh release branch off `main`, with the feature PRs already merged.
+Phase 2 refers back to this branch by name, so keep the `chore/release-X.Y.Z`
+shape:
 
-```
+```bash
+git switch main
+git pull
+git switch -c chore/release-X.Y.Z
+
 nix develop -c bash -c "melos version"
 ```
 
@@ -42,7 +49,15 @@ This reads conventional-commit history since the last release and, per package:
 - creates a commit `chore(release): Publish packages` and one git tag per bumped
   package (`<package>-v<version>`).
 
-Open a PR for the release commit and let CI go green. The pana score job resolves
+Push the branch and open a PR for the release commit:
+
+```bash
+git push -u origin chore/release-X.Y.Z
+```
+
+That pushes the branch only. Do not add `--tags` or `--follow-tags`: the tags
+melos just made point at a commit `main` will never contain (see Phase 2), and a
+pushed tag starts a publish run. Let CI go green. The pana score job resolves
 sibling packages through `.github/workflows/scripts/make-pana-pubspecs.sh`, which
 rewrites each sibling constraint to its currently published version, so the job
 can resolve even though the bumped versions are not on pub.dev yet. pana therefore
@@ -80,6 +95,13 @@ git pull
 # before moving anything onto it.
 git log -1 --oneline
 ```
+
+If `git pull` instead stops on diverged branches, or `git log -1` shows a merge
+commit, the `melos version` commit was made on local `main` rather than on a
+release branch. Note the commit that carries the tags: `git rev-parse main` if
+the pull stopped, or `git rev-parse main^1` if it made a merge commit (the
+merge commit itself has no tags). Then `git reset --hard origin/main` and use
+that SHA in place of `$release_branch` below.
 
 If you ran `melos version`, the tags already exist with the right names on the
 pre-merge tip of the release branch — move them:
