@@ -1,3 +1,7 @@
+## 2.0.11
+
+ - **CHORE**: improve package description and fix repository link (#187).
+
 ## 2.0.10
 
  - Update a dependency to the latest release.

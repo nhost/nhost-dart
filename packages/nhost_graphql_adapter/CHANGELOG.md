@@ -1,3 +1,8 @@
+## 4.1.0
+
+ - **FEAT**: add new package arguments for better control (#176).
+ - **CHORE**: improve package description and fix repository link (#187).
+
 ## 4.0.10
 
  - Update a dependency to the latest release.
