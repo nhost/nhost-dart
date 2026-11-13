@@ -8,6 +8,8 @@ environment:
   sdk: ">=2.14.0 <=4.0.0"
 
 dev_dependencies:
+  # 0.3.4+1 fixes melos failing to launch on Dart 3.14.
+  cli_launcher: ^0.3.4+1
   dotenv: ^4.2.0
   melos: ^6.0.0
   path: ^1.8.3
