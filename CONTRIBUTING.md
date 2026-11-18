@@ -46,6 +46,7 @@ to pub.dev. See [RELEASING.md](RELEASING.md) for how it works.
 `melos` picks the version bumps from the [Conventional
 Commits](https://www.conventionalcommits.org/en/v1.0.0/) since each package's
 last release, so your commit messages decide which packages are released and
-how far their versions move.
+how far their versions move. Pick the type and any `!` carefully, since a
+message cannot be changed once it is merged.
 
 #[TODO]: In case of error eveything under example_Server can be deleted

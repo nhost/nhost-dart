@@ -16,8 +16,13 @@ packages it bumps.
    `<package>-v<version>` tag, bumps the packages that depend on it, and writes
    the package changelogs and the root `CHANGELOG.md`. The workflow then opens or
    updates the `release(packages): <date>` PR from the `release/packages` branch.
-   The branch is regenerated from `main` on every run, so edits pushed to it do
-   not last; fix the commit messages or the code on `main` instead.
+   The branch is regenerated from `main` on every run, so fix code problems on
+   `main` and the next run picks them up. A commit message on `main` cannot be
+   changed, so a wrong bump from a mistyped commit can only be corrected on
+   `release/packages`: fix the package's version, its changelog, its
+   dependents' constraints on it and the root `CHANGELOG.md` by hand, then merge
+   the release PR before anything else is merged to `main`, since the next run
+   discards those edits.
 
 2. Releases. Merging the release PR runs `ci_create_release.yaml`. For each
    package whose version is not on pub.dev yet, it creates a GitHub release
