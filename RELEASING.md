@@ -34,12 +34,14 @@ packages it bumps.
    `wf_release_pub.yaml` on the release's tag. pub.dev rejects publishing from
    `release` events, but accepts a `workflow_dispatch` on a tag.
 
-4. `wf_release_pub.yaml` publishes the package named by the tag. It first waits,
-   for up to an hour, until the sibling versions the package depends on are on
-   pub.dev, so all releases can be created at once and the packages still
-   publish in dependency order. It then checks the tag against `pubspec.yaml`,
-   validates the package with a dry run that resolves siblings from pub.dev,
-   publishes over OIDC (no tokens), and posts the result to Discord.
+4. `wf_release_pub.yaml` publishes the package named by the tag. It first checks
+   the tag against `pubspec.yaml` and refuses a package with `publish_to: none`,
+   so a bad tag fails at once. If the version is already on pub.dev, the run
+   stops there and succeeds. Otherwise it waits, for up to an hour, until the
+   sibling versions the package depends on are on pub.dev, so all releases can
+   be created at once and the packages still publish in dependency order. It
+   then validates the package with a dry run that resolves siblings from
+   pub.dev, publishes over OIDC (no tokens), and posts the result to Discord.
 
 Which commits bump a version is up to melos (6.x): `feat` is a minor bump;
 `fix`, `bug`, `perf`, `refactor`, `revert` and `docs` are a patch bump; any
