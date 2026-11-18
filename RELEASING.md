@@ -30,6 +30,14 @@ packages it bumps.
    changelog section as the notes. The tags are what the next `melos version` run
    counts commits from.
 
+   Merge the release PR only once it is up to date with `main`, that is, once
+   the `ci: update changelog` run for the latest commit on `main` has finished.
+   GitHub does not block merging an out-of-date release PR. If one is merged,
+   the commits merged to `main` since its last update are published in the
+   packages it bumps, but they have no changelog entry, the bump may be the
+   wrong level, and melos never counts them later because the new tags come
+   after them.
+
 3. Publish. `ci_release.yaml` runs for every published release and dispatches
    `wf_release_pub.yaml` on the release's tag. pub.dev rejects publishing from
    `release` events, but accepts a `workflow_dispatch` on a tag.
