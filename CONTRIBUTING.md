@@ -37,40 +37,15 @@ will expand.
 Tests are automatically run by GitHub on every commit, but if you want to
 run them locally, run `dart run melos run test`.
 
-## Publishing
+## Releasing
 
-### Updating package versions
+Releases are automated. Every merge to `main` updates a release PR with the next
+version bumps and changelogs, and merging that PR publishes the bumped packages
+to pub.dev. See [RELEASING.md](RELEASING.md) for how it works.
 
-To version all packages in this repo that have been changed since the previous
-release, just call `dart run melos version`.
-
-`melos` uses [Conventional
-Commits](https://www.conventionalcommits.org/en/v1.0.0/) to determine which
-semver components to increment. Handy!
-
-It will automatically update each package's `pubspec.yaml` and `CHANGELOG.md`
-files, create a new commit, and tag that commit with one or more version tags
-(eg. `nhost_sdk-v1.3.5`).
-
-If you want to update to pre-release versions instead, use
-`dart run melos version --prerelease`.
-
-### Publishing
-
-If you're unfamiliar with publishing Dart packages, you should read
-the [Publishing Packages](https://dart.dev/tools/pub/publishing) guide before
-you get started.
-
-Publishing is done in two parts — a dry run, then the real deal. Here's how
-it looks:
-
-```sh
-# Dry run by default. This will run a basic lint, and give you some feedback
-# so you can gut check.
-dart run melos run publish
-
-# Publishes to pub.dev. No turning back.
-dart run melos run publish:real
-```
+`melos` picks the version bumps from the [Conventional
+Commits](https://www.conventionalcommits.org/en/v1.0.0/) since each package's
+last release, so your commit messages decide which packages are released and
+how far their versions move.
 
 #[TODO]: In case of error eveything under example_Server can be deleted

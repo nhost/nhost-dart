@@ -1,40 +1,29 @@
-# Publishes a single package to pub.dev when its git tag is pushed.
-#
-# This repo is a melos monorepo, so `melos version` creates one tag per package
-# in the form `<package>-v<version>` (e.g. `nhost_sdk-v5.9.0`). Each package is
-# a separate pub.dev package under the nhost.io publisher, so publishing is
-# driven per package by the tag that names it.
+# Publishes one package to pub.dev, from the `<package>-v<version>` tag it runs
+# on (e.g. `nhost_sdk-v5.9.0`). ci_release.yaml dispatches it on the tag of
+# every published GitHub release.
 #
 # Authentication uses pub.dev's OIDC-based automated publishing (no long-lived
 # tokens). `dart-lang/setup-dart` below performs the token exchange; the job's
 # `id-token: write` permission only makes the exchange possible, it does not
-# perform it. For each package this workflow must be enabled once on pub.dev:
+# perform it. pub.dev accepts runs from a `push` of the tag or, opt-in, from a
+# `workflow_dispatch` on the tag (dart-lang/pub-dev#7177), but never from a
+# `release` event, which is why this workflow is dispatched rather than called
+# from ci_release.yaml. For each package this must be enabled once on pub.dev:
 #   Admin -> Automated publishing -> Enable publishing from GitHub Actions
 #     Repository: nhost/nhost-dart
 #     Tag pattern: <package>-v{{version}}   e.g. nhost_sdk-v{{version}}
 #     Environment: pub.dev
-# Until that is configured for a package, the publish step for it will be
-# rejected by pub.dev (the workflow itself is harmless before then; it only runs
-# on tag pushes).
+#     Events: workflow_dispatch enabled, push disabled
+# Until that is configured for a package, the publish step for it is rejected
+# by pub.dev.
 #
 # Docs: https://dart.dev/tools/pub/automated-publishing
 
 name: Publish to pub.dev
+run-name: Publish ${{ github.ref_name }} to pub.dev
 
 on:
-  push:
-    tags:
-      # melos tag shape: <package>-v<semver>, including pre-releases
-      # (`-v1.2.3-dev.1`) and build metadata (`-v1.2.3+1`, which this repo has
-      # used before). Deliberately broad rather than anchored on digits: in
-      # GitHub's filter-pattern syntax `+` means "one or more of the preceding
-      # character", so a digit pattern like `*-v[0-9]+.[0-9]+.[0-9]+` does not
-      # match a `+1` suffix, and the failure mode is silent -- no run is
-      # created, pub.dev stays stale, and nothing goes red. The "Verify the
-      # package exists and is publishable" step below is the single place that
-      # decides what a real release tag is, so a non-release `*-v*` tag fails
-      # loudly there instead of a real release tag being skipped quietly.
-      - "*-v*"
+  workflow_dispatch:
 
 # One publish run per tag; never cancel an in-flight publish.
 concurrency:
@@ -52,29 +41,39 @@ defaults:
 jobs:
   publish:
     runs-on: ubuntu-latest
+    # The wait for sibling dependencies alone can take up to an hour.
+    timeout-minutes: 90
     # Required by pub.dev's automated-publishing security model. Configure a
     # matching environment named "pub.dev" on each package for extra protection
     # (e.g. required reviewers).
     environment: pub.dev
     permissions:
+      contents: read
       id-token: write # OIDC token used to authenticate to pub.dev.
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Resolve package and version from tag
         id: tag
         run: |
+          if [ "$GITHUB_REF_TYPE" != "tag" ]; then
+            echo "Run this workflow on a <package>-v<version> tag," \
+                 "not on $GITHUB_REF" >&2
+            exit 1
+          fi
           tag="${GITHUB_REF_NAME}"
           name="${tag%-v*}"     # everything before the last "-v"
           version="${tag##*-v}" # everything after the last "-v"
-          if [ -z "$name" ] || [ -z "$version" ]; then
+          if [ -z "$name" ] || [ -z "$version" ] || [ "$name" = "$tag" ]; then
             echo "Tag '$tag' is not in <package>-v<version> form" >&2
             exit 1
           fi
-          echo "name=$name" >> "$GITHUB_OUTPUT"
-          echo "version=$version" >> "$GITHUB_OUTPUT"
-          echo "dir=packages/$name" >> "$GITHUB_OUTPUT"
+          {
+            echo "name=$name"
+            echo "version=$version"
+            echo "dir=packages/$name"
+          } >> "$GITHUB_OUTPUT"
           echo "Resolved: package=$name version=$version"
 
       - name: Verify the package exists and is publishable
@@ -109,6 +108,68 @@ jobs:
             exit 1
           fi
 
+      # A version that is already on pub.dev counts as published, so re-running
+      # this workflow after a partial failure is always safe.
+      - name: Check whether ${{ github.ref_name }} is already on pub.dev
+        id: published
+        env:
+          NAME: ${{ steps.tag.outputs.name }}
+          VERSION: ${{ steps.tag.outputs.version }}
+        run: |
+          status=0
+          .github/workflows/scripts/pub-dev-has-version.sh "$NAME" "$VERSION" \
+            || status=$?
+          case "$status" in
+            0)
+              echo "$NAME $VERSION is already on pub.dev; nothing to publish"
+              echo "exists=true" >> "$GITHUB_OUTPUT"
+              ;;
+            1) echo "exists=false" >> "$GITHUB_OUTPUT" ;;
+            *) exit 1 ;;
+          esac
+
+      # ci_create_release.yaml creates every release of a release PR at once, so
+      # this run can start before the sibling versions this package depends on
+      # are on pub.dev. Waiting for them here is what publishes the packages in
+      # dependency order. The version to wait for is the sibling's version in
+      # this checkout, the one released alongside this package. dev_dependencies
+      # count too, because `pub get` in the Validate step resolves them.
+      - name: Wait for sibling dependencies to be on pub.dev
+        if: steps.published.outputs.exists == 'false'
+        env:
+          DIR: ${{ steps.tag.outputs.dir }}
+          WAIT_MINUTES: 60
+        run: |
+          declare -A versions
+          for pubspec in packages/*/pubspec.yaml; do
+            if [ "$(yq '.publish_to' "$pubspec")" = "none" ]; then
+              continue
+            fi
+            versions["$(yq '.name' "$pubspec")"]="$(yq '.version' "$pubspec")"
+          done
+
+          deps="$(yq '(.dependencies, .dev_dependencies)
+            | select(. != null) | keys | .[]' "$DIR/pubspec.yaml")"
+
+          deadline=$((SECONDS + WAIT_MINUTES * 60))
+          for dep in $deps; do
+            want="${versions[$dep]:-}"
+            if [ -z "$want" ]; then
+              continue
+            fi
+            until .github/workflows/scripts/pub-dev-has-version.sh \
+                "$dep" "$want"; do
+              if [ "$SECONDS" -ge "$deadline" ]; then
+                echo "Gave up after $WAIT_MINUTES minutes waiting for" \
+                     "$dep $want to be on pub.dev" >&2
+                exit 1
+              fi
+              echo "Waiting for $dep $want to be on pub.dev"
+              sleep 30
+            done
+            echo "$dep $want is on pub.dev"
+          done
+
       # Provisions the pub.dev credential: exchanges the job's GitHub OIDC
       # id-token for a pub.dev token, exports it as PUB_TOKEN, and registers it
       # with `dart pub token add https://pub.dev --env-var PUB_TOKEN`. Nothing
@@ -120,11 +181,13 @@ jobs:
       # shadows this SDK's on PATH. This mirrors the reference workflow
       # dart-lang/setup-dart/.github/workflows/publish.yml.
       - uses: dart-lang/setup-dart@v1
+        if: steps.published.outputs.exists == 'false'
 
       # Flutter provides the Dart SDK too, so this covers both the pure-Dart and
       # the Flutter packages in the workspace. Pinned to the version the test
       # workflows use.
       - uses: subosito/flutter-action@v2
+        if: steps.published.outputs.exists == 'false'
         with:
           flutter-version: "3.27.3"
           channel: stable
@@ -139,10 +202,10 @@ jobs:
       # `pubspec_overrides.yaml` (`path: ../sibling` for every nhost_* sibling),
       # so `pub get` would resolve siblings from this tree instead of pub.dev.
       # With it in place the dry run passes even when the sibling version this
-      # package's constraint needs is not published yet, so a tag pushed out of
-      # dependency order uploads a version nothing can resolve. Dropping the
-      # override first makes resolution here match what users and pana see, so
-      # a missing sibling version fails `pub get` before anything is uploaded.
+      # package's constraint needs is not published yet, and the upload is a
+      # version nothing can resolve. Dropping the override first makes
+      # resolution here match what users and pana see, so a missing sibling
+      # version fails `pub get` before anything is uploaded.
       # `git rm` rather than `rm`: pub lists the package's files via git, and a
       # file that is still in the index but gone from disk makes the dry run
       # fail on every release. `--ignore-unmatch` covers nhost_sdk, which has
@@ -150,6 +213,7 @@ jobs:
       # published, and `flutter pub get` resolves it too, through its own
       # overrides.
       - name: Validate ${{ github.ref_name }}
+        if: steps.published.outputs.exists == 'false'
         working-directory: ${{ steps.tag.outputs.dir }}
         run: |
           git rm -q --ignore-unmatch pubspec_overrides.yaml
@@ -157,5 +221,25 @@ jobs:
           flutter pub publish --dry-run
 
       - name: Publish ${{ github.ref_name }}
+        if: steps.published.outputs.exists == 'false'
         working-directory: ${{ steps.tag.outputs.dir }}
         run: flutter pub publish --force
+
+      - name: Send Discord notification
+        if: always() && steps.published.outputs.exists != 'true'
+        continue-on-error: true
+        uses: tsickert/discord-webhook@v7.0.0
+        with:
+          webhook-url: ${{ secrets.DISCORD_WEBHOOK_PRODUCTION }}
+          embed-title: "Published ${{ github.ref_name }} to pub.dev"
+          embed-url: >-
+            ${{ github.server_url }}/${{ github.repository
+            }}/actions/runs/${{ github.run_id }}
+          embed-description: |
+            **Status**: ${{ job.status }}
+            **Triggered by**: ${{ github.actor }}
+
+            **Details**:
+            - Version: ${{ steps.tag.outputs.version }}
+            - Package: ${{ steps.tag.outputs.name }}
+          embed-color: ${{ job.status == 'success' && '5763719' || '15548997' }}

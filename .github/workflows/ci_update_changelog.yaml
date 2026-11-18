@@ -1,0 +1,94 @@
+---
+name: "ci: update changelog"
+on:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  update-changelog:
+    if: ${{ !startsWith(github.event.head_commit.message, 'release(') }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    permissions:
+      contents: read
+
+    steps:
+      - name: "Generate App token"
+        id: app-token
+        uses: actions/create-github-app-token@v3
+        with:
+          client-id: ${{ secrets.NHOST_BOT_APP_ID }}
+          private-key: ${{ secrets.NHOST_BOT_PRIVATE_KEY }}
+
+      # melos needs the full history and the `<package>-v<version>` tags to find
+      # each package's commits since its last release.
+      - name: "Check out repository"
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          token: ${{ steps.app-token.outputs.token }}
+
+      - uses: dart-lang/setup-dart@v1
+
+      # Bumps every package with versionable commits since its last release,
+      # bumps the packages that depend on them, and writes the package and root
+      # changelogs. Nothing is committed or tagged here: the tags are created
+      # by ci_create_release.yaml once the release PR is merged.
+      - name: "Bump versions and update changelogs"
+        run: |
+          dart pub get
+          dart run melos version --yes --no-git-commit-version
+
+      # melos heads the new root CHANGELOG.md section with today's date, which
+      # names the release PR. With nothing to release this reads the previous
+      # section instead, but then there is no diff and no PR either.
+      - name: "Prepare release PR"
+        id: release
+        run: |
+          date="$(awk '/^## / { print $2; exit }' CHANGELOG.md)"
+          echo "date=$date" >> "$GITHUB_OUTPUT"
+
+          body="$RUNNER_TEMP/release-pr-body.md"
+          {
+            echo "Version bumps and changelogs for every package with" \
+                 "releasable changes since its last release. Every merge to" \
+                 "\`main\` regenerates this PR."
+            echo
+            echo "Merging it creates a GitHub release for each bumped" \
+                 "package, and each release publishes its package to" \
+                 "pub.dev. See RELEASING.md."
+            echo
+            awk '/^## / { n++ } n == 1' CHANGELOG.md
+          } > "$body"
+          echo "body=$body" >> "$GITHUB_OUTPUT"
+
+      - name: "Create Pull Request"
+        uses: peter-evans/create-pull-request@v8
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+          commit-message: "release(packages): ${{ steps.release.outputs.date }}"
+          title: "release(packages): ${{ steps.release.outputs.date }}"
+          body-path: ${{ steps.release.outputs.body }}
+          committer: >-
+            ${{ format(
+              '{0}[bot] <{0}[bot]@users.noreply.github.com>',
+              steps.app-token.outputs.app-slug
+            ) }}
+          author: >-
+            ${{ format(
+              '{0}[bot] <{0}[bot]@users.noreply.github.com>',
+              steps.app-token.outputs.app-slug
+            ) }}
+          branch: release/packages
+          delete-branch: true
+          labels: release
