@@ -74,10 +74,16 @@ the release PR it produces bumps the just-released packages again. Re-run that
 
 ## Publishing a single package by hand
 
-Create a release from the Releases page, the same way as on `nhost/nhost`. Tag it
-`<package>-v<version>` with the version in that package's `pubspec.yaml` on
-`main`, and target `main`. `ci_release.yaml` then publishes it like any other
-release.
+If `ci_create_release.yaml` failed, re-run it instead. It tags the release PR's
+merge commit and skips the packages that are already released.
+
+Otherwise, create a release from the Releases page, the same way as on
+`nhost/nhost`. Tag it `<package>-v<version>` with the version in that package's
+`pubspec.yaml` on `main`, and target the merge commit of the release PR that set
+that version, as `ci_create_release.yaml` does, not `main`. Package commits
+merged since then would be published under that version without a changelog
+entry, and melos would never count them for a later release.
+`ci_release.yaml` then publishes it like any other release.
 
 To publish a release whose tag already exists, run the "Publish to pub.dev"
 workflow from the Actions tab and pick the tag as its ref.
