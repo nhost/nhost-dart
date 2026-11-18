@@ -67,6 +67,12 @@ environment, or a pub.dev or network error, fix it, re-run the failed
 `Publish <package>-v<version> to pub.dev` run from the Actions tab, then re-run
 the dependents that gave up.
 
+A pub.dev setup problem fails the Publish step with "The calling GitHub Action
+is not allowed to publish, because:" and the reason, such as "publishing from
+github is not enabled" or "publishing is not enabled for the '<repository>'
+repository". Fix the package's settings on its pub.dev admin page (see
+[One-time setup](#one-time-setup)), then re-run.
+
 If the cause is in the tagged commit, such as the package failing the Validate
 step or a bug in `wf_release_pub.yaml`, every re-run fails the same way. Land
 the fix on `main` in a `fix` commit that changes the package's directory, since
@@ -103,16 +109,26 @@ entry, and melos would never count them for a later release.
 To publish a release whose tag already exists, run the "Publish to pub.dev"
 workflow from the Actions tab and pick the tag as its ref.
 
+Both ways only work for a tag on a commit that already contains these
+workflows, since GitHub runs the workflow files from the tagged commit. Tags
+from before this release automation, such as `nhost_sdk-v5.8.1`, cannot be
+published this way.
+
 ## One-time setup
 
-- The nhost-bot GitHub App needs access to `nhost/nhost-dart`.
-  `ci_update_changelog.yaml` and `ci_create_release.yaml` act through its token,
-  because pushes and releases made with the default `GITHUB_TOKEN` do not trigger
-  other workflows.
-- On pub.dev, for each package: Admin -> Automated publishing -> Enable
+This is in place for every current package. Only a new package needs a step
+repeated.
+
+- The nhost-helper-bot GitHub App is installed on every `nhost` repo, this one
+  included. `ci_update_changelog.yaml` and `ci_create_release.yaml` act through
+  its token, from the `NHOST_BOT_APP_ID` and `NHOST_BOT_PRIVATE_KEY` secrets,
+  because pushes and releases made with the default `GITHUB_TOKEN` do not
+  trigger other workflows.
+- On pub.dev, each package has Admin -> Automated publishing -> Enable
   publishing from GitHub Actions, with repository `nhost/nhost-dart`, tag pattern
   `<package>-v{{version}}` (e.g. `nhost_sdk-v{{version}}`), environment
   `pub.dev`, `workflow_dispatch` events enabled and `push` events disabled.
-  Until a package has this, its publish run fails at the Publish step.
-- In this repo's settings, create the `pub.dev` environment and limit its
-  deployments to `*-v*` tags.
+  A new package needs this before its first release, or its publish run fails
+  at the Publish step.
+- This repo has a `pub.dev` environment whose deployments are limited to `*-v*`
+  tags.

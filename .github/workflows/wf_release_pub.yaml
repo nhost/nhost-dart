@@ -231,7 +231,7 @@ jobs:
         uses: tsickert/discord-webhook@v7.0.0
         with:
           webhook-url: ${{ secrets.DISCORD_WEBHOOK_PRODUCTION }}
-          embed-title: "Published ${{ github.ref_name }} to pub.dev"
+          embed-title: "Publish ${{ github.ref_name }} to pub.dev"
           embed-url: >-
             ${{ github.server_url }}/${{ github.repository
             }}/actions/runs/${{ github.run_id }}

@@ -66,7 +66,8 @@ jobs:
             echo
             echo "Merging it creates a GitHub release for each bumped" \
                  "package, and each release publishes its package to" \
-                 "pub.dev. See RELEASING.md."
+                 "pub.dev. See" \
+                 "[RELEASING.md]($GITHUB_SERVER_URL/$GITHUB_REPOSITORY/blob/main/RELEASING.md)."
             echo
             awk '/^## / { n++ } n == 1' CHANGELOG.md
           } > "$body"
