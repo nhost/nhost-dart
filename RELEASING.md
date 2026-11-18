@@ -44,9 +44,21 @@ types, such as `chore`, `ci` and `test`, release nothing.
 ## When something fails
 
 Nothing retries on its own. A failed publish posts to Discord, and every package
-that depends on it gives up waiting after an hour and posts too. Fix the cause,
-re-run the failed `Publish <package>-v<version> to pub.dev` run from the Actions
-tab, then re-run the dependents that gave up.
+that depends on it gives up waiting after an hour and posts too.
+
+A re-run uses the tagged commit, including its copy of `wf_release_pub.yaml`. If
+the cause is outside the repo, such as the pub.dev setup, the `pub.dev`
+environment, or a pub.dev or network error, fix it, re-run the failed
+`Publish <package>-v<version> to pub.dev` run from the Actions tab, then re-run
+the dependents that gave up.
+
+If the cause is in the tagged commit, such as the package failing the Validate
+step or a bug in `wf_release_pub.yaml`, every re-run fails the same way. Land
+the fix on `main` in a `fix` commit that changes the package's directory, since
+melos ignores commits that do not, and merge the next release PR. It releases a
+new version of the package and of every package that depends on it. The failed
+versions are never published and need no further runs. Do not move or recreate
+their tags.
 
 Every workflow in the chain is safe to re-run:
 
