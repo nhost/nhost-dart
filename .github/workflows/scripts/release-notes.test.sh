@@ -10,6 +10,12 @@ dir="$(mktemp -d)"
 trap 'rm -rf "$dir"' EXIT
 
 cat >"$dir/CHANGELOG.md" <<'EOF'
+## 3.0.2
+
+## 3.0.1
+
+Fix the wrong bump from 3.0.0.
+
 ## 3.0.0
 
 > Note: This release has breaking changes.
@@ -84,5 +90,7 @@ EOF
 )"
 
 check "fails on a missing version" 9.9.9 1 ""
+check "fails on a version without entries" 3.0.1 1 ""
+check "fails on an empty version" 3.0.2 1 ""
 
 exit "$failed"

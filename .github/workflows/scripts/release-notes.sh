@@ -80,6 +80,10 @@ awk -v version="$2" -v tag="$3" -v date="$4" '
       print "release-notes.sh: no \"## " version "\" section" > "/dev/stderr"
       exit 1
     }
+    if (!count) {
+      print "release-notes.sh: no entries in \"## " version "\" section" > "/dev/stderr"
+      exit 1
+    }
     for (i = 1; i <= count; i++) add(items[i])
     printf "## [%s] - %s\n", tag, date
     for (i = 1; i <= n; i++) {
