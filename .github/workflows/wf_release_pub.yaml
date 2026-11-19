@@ -212,12 +212,24 @@ jobs:
       # no overrides. `example/pubspec_overrides.yaml` stays: the example is not
       # published, and `flutter pub get` resolves it too, through its own
       # overrides.
+      #
+      # pub.dev caches the version listing pub reads (dart-lang/pub-dev#8909),
+      # so right after the wait above sees a sibling, `pub get` can still find
+      # no version of it matching this package's constraint. pub-get-retry.sh
+      # retries that one failure for up to 15 minutes and fails at once on any
+      # other.
       - name: Validate ${{ github.ref_name }}
         if: steps.published.outputs.exists == 'false'
         working-directory: ${{ steps.tag.outputs.dir }}
         run: |
           git rm -q --ignore-unmatch pubspec_overrides.yaml
-          flutter pub get
+          mapfile -t siblings < <(
+            for pubspec in "$GITHUB_WORKSPACE"/packages/*/pubspec.yaml; do
+              yq '.name' "$pubspec"
+            done
+          )
+          "$GITHUB_WORKSPACE/.github/workflows/scripts/pub-get-retry.sh" \
+            15 "${siblings[@]}"
           flutter pub publish --dry-run
 
       - name: Publish ${{ github.ref_name }}

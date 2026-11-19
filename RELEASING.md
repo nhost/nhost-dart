@@ -50,6 +50,8 @@ packages it bumps.
    be created at once and the packages still publish in dependency order. It
    then validates the package with a dry run that resolves siblings from
    pub.dev, publishes over OIDC (no tokens), and posts the result to Discord.
+   pub.dev can take a few minutes to serve a just-published sibling to
+   `pub get`, so validation retries that one failure for up to 15 minutes.
 
 Which commits bump a version is up to melos (6.x): `feat` is a minor bump;
 `fix`, `bug`, `perf`, `refactor`, `revert` and `docs` are a patch bump; any
