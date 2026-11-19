@@ -64,15 +64,15 @@ check "groups a version's entries by type" 3.0.0 0 "$(cat <<'EOF'
 
 - Use pub add in the READMEs (#203)
 
+### 💼 Other
+
+- Tweak something
+
 ### ⚙️ Miscellaneous Tasks
 
 - Bump lints
 - Cache flutter
 - Update a dependency to the latest release
-
-### 💼 Other
-
-- Tweak something
 EOF
 )"
 

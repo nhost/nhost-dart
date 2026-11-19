@@ -14,7 +14,7 @@ fi
 
 awk -v version="$2" -v tag="$3" -v date="$4" '
   BEGIN {
-    n = split("FEAT FIX REFACTOR DOCS PERF STYLE TEST CHORE REVERT OTHER", order, " ")
+    n = split("FEAT FIX OTHER REFACTOR DOCS PERF STYLE TEST CHORE REVERT", order, " ")
     title["FEAT"] = "🚀 Features"
     title["FIX"] = "🐛 Bug Fixes"
     title["REFACTOR"] = "🚜 Refactor"
