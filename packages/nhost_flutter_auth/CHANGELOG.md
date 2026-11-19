@@ -1,3 +1,7 @@
+## 4.2.3
+
+ - **FIX**: use pub add in the nhost_flutter_auth and nhost_flutter_graphql READMEs (#203).
+
 ## 4.2.2
 
  - **CHORE**: improve package description and fix repository link (#187).
