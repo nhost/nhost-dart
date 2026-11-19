@@ -11,9 +11,8 @@ outs.
 
 ### Latest Release
 
-```yaml
-dependencies:
-  nhost_flutter_auth: ^4.2.1
+```sh
+flutter pub add nhost_flutter_auth
 ```
 
 ## 🔥 More Dart & Flutter packages from Nhost
