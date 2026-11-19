@@ -33,25 +33,29 @@ jobs:
 
       - run: .github/workflows/scripts/make-pana-pubspecs.sh
 
-      - uses: axel-op/dart-package-analyzer@v3
-        # Set an id for the current step, so we can reference it later
-        id: analysis
+      # pana needs a newer Dart than the Flutter test-package pins, and pub.dev
+      # scores with the latest stable Flutter anyway.
+      - uses: subosito/flutter-action@v2
         with:
-          githubToken: ${{ github.token }}
-          relativePath: packages/nhost_gql_links
+          flutter-version: "3.50.0"
+          channel: stable
+          cache: true
 
-      - name: Require analysis (near) perfection
-        env:
-          # "analysis" is the id set above
-          TOTAL: ${{ steps.analysis.outputs.total }}
-          TOTAL_MAX: ${{ steps.analysis.outputs.total_max }}
+      - name: Install pana
+        run: dart pub global activate pana 0.23.19
+
+      # Fails when the package misses more than MAX_PANA_MISSING_POINTS points.
+      - name: Score package
         run: |
-          PERCENTAGE=$((( $TOTAL ) * 100 / ( $TOTAL_MAX - ${MAX_PANA_MISSING_POINTS:-10} )))
-          if (( $PERCENTAGE < 100 ))
-          then
-            echo "Score to low ($TOTAL/$TOTAL_MAX)."
-            exit 1
-          fi
+          status=0
+          dart pub global run pana --json \
+            --exit-code-threshold "${MAX_PANA_MISSING_POINTS:-10}" \
+            packages/nhost_gql_links > "$RUNNER_TEMP/pana.json" || status=$?
+          jq -r '
+            "## nhost_gql_links: \(.scores.grantedPoints)/\(.scores.maxPoints) points",
+            (.report.sections[] | "", "### \(.title): \(.grantedPoints)/\(.maxPoints)", "", .summary)
+          ' "$RUNNER_TEMP/pana.json" | tee -a "$GITHUB_STEP_SUMMARY"
+          exit "$status"
 
   # Analyzes, checks formatting, and tests the packages
   test-package:
