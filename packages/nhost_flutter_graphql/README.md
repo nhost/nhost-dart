@@ -10,9 +10,8 @@ to work with [Nhost](https://nhost.io).
 
 ### Latest Release
 
-```yaml
-dependencies:
-  nhost_flutter_graphql: ^3.1.2
+```sh
+flutter pub add nhost_flutter_graphql
 ```
 
 ## 🔥 More Dart & Flutter packages from Nhost
