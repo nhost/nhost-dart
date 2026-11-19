@@ -3,6 +3,32 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 2026-11-19
+
+### Changes
+
+---
+
+Packages with breaking changes:
+
+ - There are no breaking changes in this release.
+
+Packages with other changes:
+
+ - [`nhost_flutter_auth` - `v4.2.3`](#nhost_flutter_auth---v423)
+ - [`nhost_flutter_graphql` - `v3.1.4`](#nhost_flutter_graphql---v314)
+
+---
+
+#### `nhost_flutter_auth` - `v4.2.3`
+
+ - **FIX**: use pub add in the nhost_flutter_auth and nhost_flutter_graphql READMEs (#203).
+
+#### `nhost_flutter_graphql` - `v3.1.4`
+
+ - **FIX**: use pub add in the nhost_flutter_auth and nhost_flutter_graphql READMEs (#203).
+
+
 ## 2026-11-13
 
 ### Changes

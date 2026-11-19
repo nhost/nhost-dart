@@ -1,3 +1,7 @@
+## 3.1.4
+
+ - **FIX**: use pub add in the nhost_flutter_auth and nhost_flutter_graphql READMEs (#203).
+
 ## 3.1.3
 
  - **CHORE**: improve package description and fix repository link (#187).
