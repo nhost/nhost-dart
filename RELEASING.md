@@ -26,9 +26,10 @@ packages it bumps.
 
 2. Releases. Merging the release PR runs `ci_create_release.yaml`. For each
    package whose version is not on pub.dev yet, it creates a GitHub release
-   tagged `<package>-v<version>` on the merge commit, with that version's
-   changelog section as the notes. The tags are what the next `melos version` run
-   counts commits from.
+   tagged `<package>-v<version>` on the merge commit. Its notes are that
+   version's changelog entries grouped by commit type, in the layout nhost/nhost
+   uses (`.github/workflows/scripts/release-notes.sh`). The tags are what the
+   next `melos version` run counts commits from.
 
    Merge the release PR only once it is up to date with `main`, that is, once
    the `ci: update changelog` run for the latest commit on `main` has finished.

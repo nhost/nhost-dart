@@ -72,13 +72,8 @@ jobs:
               continue
             fi
 
-            # The package's changelog section for this version, without its
-            # `## <version>` heading.
-            notes="$(awk -v version="$version" '
-              $1 == "##" && $2 == version { found = 1; next }
-              found && /^## / { exit }
-              found
-            ' "$dir/CHANGELOG.md")"
+            notes="$(.github/workflows/scripts/release-notes.sh \
+              "$dir/CHANGELOG.md" "$version" "$tag" "$(date -u +%F)")"
 
             echo "$tag: creating release"
             gh release create "$tag" \
