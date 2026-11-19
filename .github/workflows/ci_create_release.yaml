@@ -1,0 +1,88 @@
+---
+name: "ci: create release"
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - main
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  create-release:
+    if: >-
+      github.event.pull_request.merged == true &&
+      startsWith(github.event.pull_request.title, 'release(')
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    permissions:
+      contents: read
+
+    steps:
+      - name: "Generate App token"
+        id: app-token
+        uses: actions/create-github-app-token@v3
+        with:
+          client-id: ${{ secrets.NHOST_BOT_APP_ID }}
+          private-key: ${{ secrets.NHOST_BOT_PRIVATE_KEY }}
+
+      - name: "Check out repository"
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.pull_request.merge_commit_sha }}
+
+      # One release per bumped package, tagged `<package>-v<version>` on the
+      # merge commit: melos finds each package's last release by that tag, so
+      # the next `melos version` counts commits from here. Packages whose
+      # version is already on pub.dev or already has a release are skipped,
+      # which also makes this safe to re-run.
+      - name: "Create GitHub releases"
+        env:
+          # The release events must trigger ci_release.yaml, which they would
+          # not if they came from the default token.
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          TARGET: ${{ github.event.pull_request.merge_commit_sha }}
+        run: |
+          has_version=.github/workflows/scripts/pub-dev-has-version.sh
+          for pubspec in packages/*/pubspec.yaml; do
+            if [ "$(yq '.publish_to' "$pubspec")" = "none" ]; then
+              continue
+            fi
+            dir="$(dirname "$pubspec")"
+            name="$(yq '.name' "$pubspec")"
+            version="$(yq '.version' "$pubspec")"
+            tag="$name-v$version"
+
+            status=0
+            "$has_version" "$name" "$version" || status=$?
+            case "$status" in
+              0)
+                echo "$tag: already on pub.dev"
+                continue
+                ;;
+              1) ;;
+              *) exit 1 ;;
+            esac
+
+            if gh release view "$tag" >/dev/null 2>&1; then
+              echo "$tag: release already exists"
+              continue
+            fi
+
+            # The package's changelog section for this version, without its
+            # `## <version>` heading.
+            notes="$(awk -v version="$version" '
+              $1 == "##" && $2 == version { found = 1; next }
+              found && /^## / { exit }
+              found
+            ' "$dir/CHANGELOG.md")"
+
+            echo "$tag: creating release"
+            gh release create "$tag" \
+              --title "$tag" \
+              --notes "$notes" \
+              --target "$TARGET"
+          done

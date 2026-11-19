@@ -1,0 +1,38 @@
+---
+name: "ci: release"
+on:
+  release:
+    types: [published]
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    permissions:
+      actions: write
+
+    steps:
+      # pub.dev rejects OIDC tokens from `release` events, so the publish runs
+      # in its own workflow, dispatched on the release's tag. The default token
+      # can do that: workflow_dispatch is one of the events it may start.
+      - name: "Publish ${{ github.event.release.tag_name }}"
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.event.release.tag_name }}
+        run: |
+          name="${TAG%-v*}"
+          version="${TAG##*-v}"
+          if [ -z "$name" ] || [ -z "$version" ] || [ "$name" = "$TAG" ]; then
+            echo "Tag '$TAG' is not in <package>-v<version> form" >&2
+            exit 1
+          fi
+          echo "Publishing $name $version"
+
+          gh workflow run wf_release_pub.yaml \
+            --repo "$GITHUB_REPOSITORY" \
+            --ref "$TAG"
