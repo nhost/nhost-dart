@@ -68,9 +68,8 @@ void main() async {
 
 ### Latest Release
 
-```yaml
-dependencies:
-  nhost_dart: ^2.2.0
+```sh
+dart pub add nhost_dart
 ```
 
 ## 🔥 More Dart & Flutter packages from Nhost
