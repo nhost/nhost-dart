@@ -10,8 +10,8 @@
 # both from the pubspec before *every* pub invocation. `pub get`, `pub upgrade`,
 # `pub downgrade` and `pub outdated` all run inside
 # `_withStripAndAugmentPubspecYaml`, which calls
-# `parsed.remove('dependency_overrides')` — `lib/src/sdk_env.dart:645` in pana
-# 0.23.5, the version baked into `axel-op/dart-package-analyzer@v3`. So the
+# `parsed.remove('dependency_overrides')` — `lib/src/sdk_env.dart:680` in pana
+# 0.23.19, the version the score-package-quality job pins. So the
 # `.dart_tool/package_config.json` that `dart analyze` reads never sees a path
 # override, however we write it. Do not re-add one; it is inert.
 #
