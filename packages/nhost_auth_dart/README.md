@@ -42,7 +42,6 @@ void main() async {
 
 ### Latest Release
 
-```yaml
-dependencies:
-  nhost_auth_dart: ^2.6.1
+```sh
+dart pub add nhost_auth_dart
 ```

@@ -12,9 +12,8 @@ and generally isn't meant for use directly.
 
 ### Latest Release
 
-```yaml
-dependencies:
-  nhost_gql_links: ^4.0.11
+```sh
+dart pub add nhost_gql_links
 ```
 
 ## 🔥 More Dart & Flutter packages from Nhost

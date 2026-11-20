@@ -27,7 +27,6 @@ void main() async {
 
 ### Latest Release
 
-```yaml
-dependencies:
-  nhost_functions_dart: ^2.0.10
+```sh
+dart pub add nhost_functions_dart
 ```
