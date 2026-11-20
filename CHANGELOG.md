@@ -3,6 +3,61 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 2026-11-20
+
+### Changes
+
+---
+
+Packages with breaking changes:
+
+ - There are no breaking changes in this release.
+
+Packages with other changes:
+
+ - [`nhost_auth_dart` - `v2.7.1`](#nhost_auth_dart---v271)
+ - [`nhost_dart` - `v2.3.1`](#nhost_dart---v231)
+ - [`nhost_functions_dart` - `v2.0.12`](#nhost_functions_dart---v2012)
+ - [`nhost_gql_links` - `v4.0.13`](#nhost_gql_links---v4013)
+ - [`nhost_graphql_adapter` - `v4.1.1`](#nhost_graphql_adapter---v411)
+ - [`nhost_storage_dart` - `v2.2.2`](#nhost_storage_dart---v222)
+ - [`nhost_flutter_auth` - `v4.2.4`](#nhost_flutter_auth---v424)
+ - [`nhost_flutter_graphql` - `v3.1.5`](#nhost_flutter_graphql---v315)
+
+Packages with dependency updates only:
+
+> Packages listed below depend on other packages in this workspace that have had changes. Their versions have been incremented to bump the minimum dependency versions of the packages they depend upon in this project.
+
+ - `nhost_flutter_auth` - `v4.2.4`
+ - `nhost_flutter_graphql` - `v3.1.5`
+
+---
+
+#### `nhost_auth_dart` - `v2.7.1`
+
+ - **FIX**: use pub add in the remaining package README install snippets (#206).
+
+#### `nhost_dart` - `v2.3.1`
+
+ - **FIX**: use pub add in the remaining package README install snippets (#206).
+
+#### `nhost_functions_dart` - `v2.0.12`
+
+ - **FIX**: use pub add in the remaining package README install snippets (#206).
+
+#### `nhost_gql_links` - `v4.0.13`
+
+ - **FIX**: use pub add in the remaining package README install snippets (#206).
+
+#### `nhost_graphql_adapter` - `v4.1.1`
+
+ - **FIX**: use pub add in the remaining package README install snippets (#206).
+
+#### `nhost_storage_dart` - `v2.2.2`
+
+ - **FIX**: use pub add in the remaining package README install snippets (#206).
+
+
 ## 2026-11-19
 
 ### Changes

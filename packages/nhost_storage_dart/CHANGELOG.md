@@ -1,3 +1,7 @@
+## 2.2.2
+
+ - **FIX**: use pub add in the remaining package README install snippets (#206).
+
 ## 2.2.1
 
  - **CHORE**: improve package description and fix repository link (#187).

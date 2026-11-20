@@ -1,3 +1,7 @@
+## 2.7.1
+
+ - **FIX**: use pub add in the remaining package README install snippets (#206).
+
 ## 2.7.0
 
  - **FEAT**(sdk): auth API surface for Flutter integration (#189).
