@@ -1,3 +1,7 @@
+## 4.0.13
+
+ - **FIX**: use pub add in the remaining package README install snippets (#206).
+
 ## 4.0.12
 
  - **CHORE**: improve package description and fix repository link (#187).

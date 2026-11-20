@@ -1,3 +1,7 @@
+## 2.3.1
+
+ - **FIX**: use pub add in the remaining package README install snippets (#206).
+
 ## 2.3.0
 
  - **FEAT**(sdk): export `User`, `AuthResponse`, `MultiFactorAuthResponse`, `DeanonymizeOptions` and `DeanonymizeSignInMethod` (#189).

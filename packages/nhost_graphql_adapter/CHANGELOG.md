@@ -1,3 +1,7 @@
+## 4.1.1
+
+ - **FIX**: use pub add in the remaining package README install snippets (#206).
+
 ## 4.1.0
 
  - **FEAT**: add new package arguments for better control (#176).

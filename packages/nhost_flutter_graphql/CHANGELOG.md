@@ -1,3 +1,7 @@
+## 3.1.5
+
+ - Update a dependency to the latest release.
+
 ## 3.1.4
 
  - **FIX**: use pub add in the nhost_flutter_auth and nhost_flutter_graphql READMEs (#203).
